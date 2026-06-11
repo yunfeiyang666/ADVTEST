@@ -1,0 +1,40 @@
+================================================================================
+本地 NuScenes-QA val — 统一帧表文件名 + 拆 3 份
+================================================================================
+
+【统一命名】（deploy 目录）
+  nuscenesqa_val_plan_full.json     6011 帧（全量）
+  nuscenesqa_val_plan_w1.json       第 1 份（约 2004 帧）
+  nuscenesqa_val_plan_w2.json       第 2 份（约 2004 帧）
+  nuscenesqa_val_plan_w3.json       第 3 份（约 2003 帧）
+
+【重生全量 + 拆分】（在 official_pipeline 目录）
+  python build_frame_plan_from_test6019_bundle.py ^
+    --bundle-dir E:/Project/ADVTEST/DATA_new/data/test6019_bundle ^
+    --out E:/Project/ADVTEST/DATA_new/code/deploy/nuscenesqa_val_plan_full.json
+
+  python split_frame_plan.py ^
+    --in E:/Project/ADVTEST/DATA_new/code/deploy/nuscenesqa_val_plan_full.json ^
+    --parts 3 ^
+    --out-dir E:/Project/ADVTEST/DATA_new/code/deploy ^
+    --prefix nuscenesqa_val_plan
+
+【Neo4j】同一实例不要三进程并行 V17；多台机各跑 w1/w2/w3，或本机串行。
+
+【PowerShell — 仅改帧表】（启动 python 前设置，可覆盖 .env）
+  任务 1：$env:ADVTEST_FRAME_PLAN_JSON="E:\Project\ADVTEST\DATA_new\code\deploy\nuscenesqa_val_plan_w1.json"
+  任务 2：$env:ADVTEST_FRAME_PLAN_JSON="E:\Project\ADVTEST\DATA_new\code\deploy\nuscenesqa_val_plan_w2.json"
+  任务 3：$env:ADVTEST_FRAME_PLAN_JSON="E:\Project\ADVTEST\DATA_new\code\deploy\nuscenesqa_val_plan_w3.json"
+
+  全量：  $env:ADVTEST_FRAME_PLAN_JSON="E:\Project\ADVTEST\DATA_new\code\deploy\nuscenesqa_val_plan_full.json"
+
+【跑 V17】
+  $env:ADVTEST_ROOT="E:\Project\ADVTEST\DATA_new"
+  $env:PYTHONUNBUFFERED="1"
+  $env:PYTHONIOENCODING="utf-8"
+  Set-Location E:\Project\ADVTEST\DATA_new\code\official_pipeline
+  python run_v17_production.py
+
+【说明】Windows 控制台默认 GBK，不设 PYTHONIOENCODING=utf-8 时日志里的 ✅ 等可能触发 UnicodeEncodeError。
+
+================================================================================

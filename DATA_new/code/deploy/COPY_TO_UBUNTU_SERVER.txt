@@ -1,0 +1,42 @@
+ADVTEST — 把 E:\Project\ADVTEST\DATA_new\code 同步到 Ubuntu 后操作摘要
+======================================================================
+
+〇、运行时到底读哪个 env？
+  仅 official_pipeline/advtest_runtime.env（或 .advtest_runtime.env），由 advtest_env.load_advtest_env() 加载。
+  *.example、*.SERVER_COPYME、*.linux.example、*.yunyang_ubuntu 都只是模板，程序不会自动读。
+  主模型默认与 Windows 模板一致：VQA_MODEL_NAME= Qwen3.5-35B-A3B（三行 AUDIT/RENDER 须同名）。
+
+一、为何服务器曾出现 ADVTEST_ROOT=E:/...
+  常见原因：把 official_pipeline/advtest_runtime.env.example（Windows）当成了 env。
+  正确做法：只用带 Linux 路径的模板生成 advtest_runtime.env。
+
+二、在服务器 official_pipeline 目录下（路径按你机器修改）
+
+  cd ~/ADVTEST/DATA_new/code/official_pipeline
+
+  # 覆盖生成「程序唯一读取」的配置（不要用 .example）
+  cp -f advtest_runtime.env.SERVER_COPYME advtest_runtime.env
+  nano advtest_runtime.env
+  # 至少填写：NEO4J_PASSWORD=   VQA_API_KEY=
+
+  # 若用户名不是 yunyang：
+  # sed -i 's|/home/yunyang|/home/你的用户名|g' advtest_runtime.env
+
+  # 新开 shell 或先清掉旧 export，再加载
+  unset ADVTEST_ROOT NUSCENES_DATAROOT VQA_QA_JSON ADVTEST_EXCEL_PATH \
+        ADVTEST_GEN_QA_DIR FILTERED_SG_DIR ADVTEST_FRAME_PLAN_JSON
+  set -a && source ./advtest_runtime.env && set +a
+  echo "$ADVTEST_ROOT"    # 应输出 /home/.../DATA_new ，不能含 E:
+
+三、续跑帧表（可选）
+
+  若需 nuscenesqa_val_plan_resume_skip3.json，在 deploy 目录用仓库内说明生成后，
+  在 advtest_runtime.env 里注释 full、取消注释 resume 那一行 ADVTEST_FRAME_PLAN_JSON。
+
+四、运行 V17
+
+  source /etc/anaconda3/etc/profile.d/conda.sh && conda activate advtest
+  export JAVA_HOME="$CONDA_PREFIX" PATH="$CONDA_PREFIX/bin:$PATH"
+  cd ~/ADVTEST/DATA_new/code/official_pipeline
+  set -a && source ./advtest_runtime.env && set +a
+  python run_v17_production.py 2>&1 | tee -a ~/v17_run.log

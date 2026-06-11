@@ -1,0 +1,8 @@
+{
+  "site": "local",
+  "note": "仅 2 帧，适合晚上断电；与 server_a/server_b 无重叠",
+  "frames": [
+    {"scene_id": "scene-0103", "frame_id": 0, "sg_filename": "scene-0103_frame0_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 1, "sg_filename": "scene-0103_frame1_scene_graph.json"}
+  ]
+}

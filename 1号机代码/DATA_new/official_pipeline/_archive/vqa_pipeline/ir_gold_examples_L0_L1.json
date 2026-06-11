@@ -1,0 +1,265 @@
+[
+  {
+    "id": "scene-0553_frame8_q03",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 3,
+    "L": 0,
+    "question_type": "status",
+    "question": "What status is the bicycle?",
+    "expected_answer": "with rider",
+    "query_plan": {
+      "question_type": "status",
+      "answer_property": "status",
+      "target": {
+        "type": "bicycle",
+        "status": null,
+        "alias": "bike1",
+        "constraints": [],
+        "relations": []
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q08",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 8,
+    "L": 1,
+    "question_type": "status",
+    "question": "There is a truck that is to the back of me; what is its status?",
+    "expected_answer": "stopped",
+    "query_plan": {
+      "question_type": "status",
+      "answer_property": "status",
+      "target": {
+        "type": "truck",
+        "status": null,
+        "alias": "truck1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back",
+            "ref": {
+              "type": "ego",
+              "status": null,
+              "alias": "ego",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q02",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 2,
+    "L": 0,
+    "question_type": "object",
+    "question": "The with rider thing is what?",
+    "expected_answer": "bicycle",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "bicycle",
+        "status": "with_rider",
+        "alias": "bike1",
+        "constraints": [],
+        "relations": []
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q21",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 21,
+    "L": 1,
+    "question_type": "object",
+    "question": "The moving thing that is to the front left of the not standing pedestrian is what?",
+    "expected_answer": "pedestrian",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": "moving",
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "front_left",
+            "ref": {
+              "type": "pedestrian",
+              "status": "not_standing",
+              "alias": "ped1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0916_frame8_q09",
+    "scene": "scene-0916",
+    "frame_idx": 8,
+    "question_index": 9,
+    "L": 0,
+    "question_type": "count",
+    "question": "How many motorcycles are there?",
+    "expected_answer": "8",
+    "query_plan": {
+      "question_type": "count",
+      "answer_property": "count",
+      "target": {
+        "type": "motorcycle",
+        "status": null,
+        "alias": "moto1",
+        "constraints": [],
+        "relations": []
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q12",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 12,
+    "L": 1,
+    "question_type": "count",
+    "question": "How many barriers are to the front of the trailer?",
+    "expected_answer": "5",
+    "query_plan": {
+      "question_type": "count",
+      "answer_property": "count",
+      "target": {
+        "type": "barrier",
+        "status": null,
+        "alias": "bar1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "front",
+            "ref": {
+              "type": "truck",
+              "status": null,
+              "alias": "truck1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q15",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 15,
+    "L": 0,
+    "question_type": "exist",
+    "question": "Are there any trailers?",
+    "expected_answer": "yes",
+    "query_plan": {
+      "question_type": "exist",
+      "answer_property": "exists",
+      "target": {
+        "type": "truck",
+        "status": null,
+        "alias": "truck1",
+        "constraints": [],
+        "relations": []
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q17",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 17,
+    "L": 1,
+    "question_type": "exist",
+    "question": "Are there any stopped trailers to the front of the stopped trailer?",
+    "expected_answer": "no",
+    "query_plan": {
+      "question_type": "exist",
+      "answer_property": "exists",
+      "target": {
+        "type": "truck",
+        "status": "stopped",
+        "alias": "t2",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "front",
+            "ref": {
+              "type": "truck",
+              "status": "stopped",
+              "alias": "t1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q04",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 4,
+    "L": 1,
+    "question_type": "comparison",
+    "question": "There is a trailer; is it the same status as the truck to the back right of the with rider bicycle?",
+    "expected_answer": "yes",
+    "query_plan": {
+      "question_type": "comparison",
+      "answer_property": "boolean",
+      "target": null,
+      "comparison": {
+        "property": "status",
+        "lhs": {
+          "type": "truck",
+          "status": null,
+          "alias": "truck1",
+          "constraints": [],
+          "relations": []
+        },
+        "rhs": {
+          "type": "truck",
+          "status": null,
+          "alias": "truck2",
+          "constraints": [],
+          "relations": [
+            {
+              "direction": "back_right",
+              "ref": {
+                "type": "bicycle",
+                "status": "with_rider",
+                "alias": "bike1",
+                "constraints": [],
+                "relations": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+]

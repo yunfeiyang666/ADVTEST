@@ -1,0 +1,2337 @@
+[
+  {
+    "question_id": "scene-0103_frame38_q0001",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "car1",
+      "car2",
+      "car3",
+      "car4",
+      "car5",
+      "car6",
+      "car7",
+      "car8",
+      "car9",
+      "car10"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any cars?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "count": 32
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0002",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian1",
+      "pedestrian2",
+      "pedestrian3",
+      "pedestrian4",
+      "pedestrian5",
+      "pedestrian6",
+      "pedestrian7",
+      "pedestrian8"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any pedestrians?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT_LEFT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "count": 8
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0003",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle1",
+      "bicycle2",
+      "bicycle3",
+      "bicycle4"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any bicycles?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "count": 4
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0004",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "motorcycle1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any motorcycles?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "motorcycle",
+      "count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0005",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "truck1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any trucks?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "truck",
+      "count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0006",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any trailers?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "trailer",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0007",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "barrier1",
+      "barrier2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are there any barriers?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT",
+      "CAM_BACK_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "barrier",
+      "count": 2
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0008",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any without rider cars visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "status": "without_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0009",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "car32",
+      "car29",
+      "car25",
+      "car10",
+      "car7",
+      "car28",
+      "car19",
+      "car3",
+      "car6",
+      "car2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any stopped cars visible?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT_RIGHT",
+      "CAM_FRONT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "status": "stopped",
+      "count": 29
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0010",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any without rider pedestrians visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "status": "without_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0011",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian5",
+      "pedestrian4",
+      "pedestrian8",
+      "pedestrian6",
+      "pedestrian2",
+      "pedestrian1",
+      "pedestrian3",
+      "pedestrian7"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any moving pedestrians visible?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT_LEFT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "status": "moving",
+      "count": 8
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0012",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider pedestrians visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0013",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any stopped pedestrians visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "status": "stopped",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0014",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle1",
+      "bicycle3",
+      "bicycle4"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any without rider bicycles visible?",
+    "answer": "yes",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "status": "without_rider",
+      "count": 3
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0015",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any moving bicycles visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "status": "moving",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0016",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider motorcycles visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "motorcycle",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0017",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any moving trucks visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "truck",
+      "status": "moving",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0018",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider buses visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "bus",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0019",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any stopped buses visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "bus",
+      "status": "stopped",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0020",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any without rider trailers visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "trailer",
+      "status": "without_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0021",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider trailers visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "trailer",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0022",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any stopped trailers visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "trailer",
+      "status": "stopped",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0023",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any without rider barriers visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "barrier",
+      "status": "without_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0024",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider traffic cones visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "traffic_cone",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0025",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any stopped traffic cones visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "traffic_cone",
+      "status": "stopped",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0026",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "exist",
+    "template_id": "L0_exist_status",
+    "difficulty": "L0",
+    "target_objects": [],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "Are any with rider construction vehicles visible?",
+    "answer": "no",
+    "answer_type": "bool",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [],
+    "with_options": {
+      "options": [
+        "yes",
+        "no"
+      ],
+      "formatted_options": [
+        "(A) yes",
+        "(B) no"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "construction_vehicle",
+      "status": "with_rider",
+      "count": 0
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0027",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "car1",
+      "car2",
+      "car3",
+      "car4",
+      "car5",
+      "car6",
+      "car7",
+      "car8",
+      "car9",
+      "car10",
+      "car11",
+      "car12",
+      "car13",
+      "car14",
+      "car15",
+      "car16",
+      "car17",
+      "car18",
+      "car19",
+      "car20",
+      "car21",
+      "car22",
+      "car23",
+      "car24",
+      "car25",
+      "car26",
+      "car27",
+      "car28",
+      "car29",
+      "car30",
+      "car31",
+      "car32"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many cars are there?",
+    "answer": "10",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "8",
+        "9",
+        "10"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 8",
+        "(C) 9",
+        "(D) 10"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "actual_count": 32
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0028",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian1",
+      "pedestrian2",
+      "pedestrian3",
+      "pedestrian4",
+      "pedestrian5",
+      "pedestrian6",
+      "pedestrian7",
+      "pedestrian8"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many pedestrians are there?",
+    "answer": "8",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT_LEFT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "6",
+        "7",
+        "8"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 6",
+        "(C) 7",
+        "(D) 8"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "pedestrian",
+      "actual_count": 8
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0029",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle1",
+      "bicycle2",
+      "bicycle3",
+      "bicycle4"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many bicycles are there?",
+    "answer": "4",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "2",
+        "3",
+        "4"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 2",
+        "(C) 3",
+        "(D) 4"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "actual_count": 4
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0030",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "motorcycle1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many motorcycles are there?",
+    "answer": "1",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "motorcycle",
+      "actual_count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0031",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "truck1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many trucks are there?",
+    "answer": "1",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "truck",
+      "actual_count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0032",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_type",
+    "difficulty": "L0",
+    "target_objects": [
+      "barrier1",
+      "barrier2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "How many barriers are there?",
+    "answer": "2",
+    "answer_type": "number",
+    "requires_temporal": false,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT",
+      "CAM_BACK_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "barrier",
+      "actual_count": 2
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0033",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "car14",
+      "car5",
+      "car12"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What number of moving cars are there?",
+    "answer": "3",
+    "answer_type": "number",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "status": "moving",
+      "actual_count": 3
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0034",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "car32",
+      "car29",
+      "car25",
+      "car10",
+      "car7",
+      "car28",
+      "car19",
+      "car3",
+      "car6",
+      "car2",
+      "car24",
+      "car31",
+      "car15",
+      "car17",
+      "car21",
+      "car23",
+      "car26",
+      "car11",
+      "car1",
+      "car18",
+      "car8",
+      "car16",
+      "car4",
+      "car20",
+      "car9",
+      "car13",
+      "car22",
+      "car30",
+      "car27"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What number of stopped cars are there?",
+    "answer": "10",
+    "answer_type": "number",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT_RIGHT",
+      "CAM_FRONT",
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "8",
+        "9",
+        "10"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 8",
+        "(C) 9",
+        "(D) 10"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "car",
+      "status": "stopped",
+      "actual_count": 29
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0035",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle1",
+      "bicycle3",
+      "bicycle4"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What number of without rider bicycles are there?",
+    "answer": "3",
+    "answer_type": "number",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT",
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "status": "without_rider",
+      "actual_count": 3
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0036",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What number of with rider bicycles are there?",
+    "answer": "1",
+    "answer_type": "number",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "bicycle",
+      "status": "with_rider",
+      "actual_count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0037",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "count",
+    "template_id": "L0_count_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "motorcycle1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What number of without rider motorcycles are there?",
+    "answer": "1",
+    "answer_type": "number",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "formatted_options": [
+        "(A) 0",
+        "(B) 1",
+        "(C) 2",
+        "(D) 3"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "motorcycle",
+      "status": "without_rider",
+      "actual_count": 1
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0038",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car2?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "moving",
+        "stopped",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) moving",
+        "(C) stopped",
+        "(D) without rider"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0039",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of pedestrian1?",
+    "answer": "moving",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "not standing",
+        "moving",
+        "with rider",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) not standing",
+        "(B) moving",
+        "(C) with rider",
+        "(D) without rider"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "pedestrian"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0040",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of bicycle1?",
+    "answer": "without_rider",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "without rider",
+        "moving",
+        "not standing",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) without rider",
+        "(B) moving",
+        "(C) not standing",
+        "(D) with rider"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "bicycle"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0041",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car9"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car9?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "without rider",
+        "moving",
+        "stopped"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) without rider",
+        "(C) moving",
+        "(D) stopped"
+      ],
+      "answer_idx": 3,
+      "answer_label": "D"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0042",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of pedestrian2?",
+    "answer": "moving",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "not standing",
+        "moving",
+        "without rider",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) not standing",
+        "(B) moving",
+        "(C) without rider",
+        "(D) with rider"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "pedestrian"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0043",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car13"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car13?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "moving",
+        "with rider",
+        "stopped",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) moving",
+        "(B) with rider",
+        "(C) stopped",
+        "(D) without rider"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0044",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car15"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car15?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "stopped",
+        "without rider",
+        "moving",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) stopped",
+        "(B) without rider",
+        "(C) moving",
+        "(D) with rider"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0045",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car16"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car16?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "moving",
+        "stopped",
+        "without rider",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) moving",
+        "(B) stopped",
+        "(C) without rider",
+        "(D) with rider"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0046",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car21"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car21?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "stopped",
+        "without rider",
+        "moving",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) stopped",
+        "(B) without rider",
+        "(C) moving",
+        "(D) with rider"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0047",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car23"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car23?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "moving",
+        "stopped",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) moving",
+        "(C) stopped",
+        "(D) without rider"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0048",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car25"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car25?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "stopped",
+        "without rider",
+        "with rider",
+        "moving"
+      ],
+      "formatted_options": [
+        "(A) stopped",
+        "(B) without rider",
+        "(C) with rider",
+        "(D) moving"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0049",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian5"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of pedestrian5?",
+    "answer": "moving",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "without rider",
+        "moving",
+        "not standing"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) without rider",
+        "(C) moving",
+        "(D) not standing"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "pedestrian"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0050",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "truck1"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of truck1?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_FRONT_LEFT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "moving",
+        "stopped",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) moving",
+        "(C) stopped",
+        "(D) without rider"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "truck"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0051",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car28"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car28?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "stopped",
+        "without rider",
+        "moving"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) stopped",
+        "(C) without rider",
+        "(D) moving"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0052",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle3"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of bicycle3?",
+    "answer": "without_rider",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "without rider",
+        "moving",
+        "with rider",
+        "not standing"
+      ],
+      "formatted_options": [
+        "(A) without rider",
+        "(B) moving",
+        "(C) with rider",
+        "(D) not standing"
+      ],
+      "answer_idx": 0,
+      "answer_label": "A"
+    },
+    "metadata": {
+      "obj_type": "bicycle"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0053",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "pedestrian8"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of pedestrian8?",
+    "answer": "moving",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "not standing",
+        "without rider",
+        "moving",
+        "with rider"
+      ],
+      "formatted_options": [
+        "(A) not standing",
+        "(B) without rider",
+        "(C) moving",
+        "(D) with rider"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_type": "pedestrian"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0054",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "status",
+    "template_id": "L0_status_query",
+    "difficulty": "L0",
+    "target_objects": [
+      "car32"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the status of car32?",
+    "answer": "stopped",
+    "answer_type": "status",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK_RIGHT"
+    ],
+    "with_options": {
+      "options": [
+        "with rider",
+        "stopped",
+        "moving",
+        "without rider"
+      ],
+      "formatted_options": [
+        "(A) with rider",
+        "(B) stopped",
+        "(C) moving",
+        "(D) without rider"
+      ],
+      "answer_idx": 1,
+      "answer_label": "B"
+    },
+    "metadata": {
+      "obj_type": "car"
+    }
+  },
+  {
+    "question_id": "scene-0103_frame38_q0055",
+    "scene_name": "scene-0103",
+    "frame_idx": 38,
+    "sample_token": null,
+    "question_type": "object",
+    "template_id": "L0_object_status",
+    "difficulty": "L0",
+    "target_objects": [
+      "bicycle2"
+    ],
+    "reference_objects": [],
+    "direction_frame": "source",
+    "directions_used": [],
+    "question": "What is the with rider thing?",
+    "answer": "bicycle",
+    "answer_type": "type",
+    "requires_temporal": true,
+    "recommended_frame_window": 5,
+    "cameras_for_analysis": [
+      "CAM_BACK"
+    ],
+    "with_options": {
+      "options": [
+        "car",
+        "motorcycle",
+        "bicycle",
+        "truck"
+      ],
+      "formatted_options": [
+        "(A) car",
+        "(B) motorcycle",
+        "(C) bicycle",
+        "(D) truck"
+      ],
+      "answer_idx": 2,
+      "answer_label": "C"
+    },
+    "metadata": {
+      "obj_id": "bicycle2",
+      "status": "with_rider"
+    }
+  }
+]

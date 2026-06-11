@@ -1,0 +1,238 @@
+[
+  {
+    "index": 1,
+    "question": "There is a stopped thing; what is it?",
+    "answer": "car",
+    "status": "unresolved",
+    "reason": "The question asks for a 'stopped thing' and the answer is 'car'. The scene graph contains no object with type 'car' and status 'stopped' (car1, car3, car4, car7 are all 'moving'). The only 'stopped' objects are barriers (barrier1, barrier2). Since the required anchor (a stopped car) does not exist in the scene graph, the status is unresolved.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question asks for a 'stopped thing' and the answer is 'car'. The scene graph contains no object with type 'car' and status 'stopped' (car1, car3, car4, car7 are all 'moving'). The only 'stopped' objects are barriers (barrier1, barrier2). Since the required anchor (a stopped car) does not exist in the scene graph, the status is unresolved."
+    }
+  },
+  {
+    "index": 2,
+    "question": "There is a truck; what status is it?",
+    "answer": "parked",
+    "status": "unresolved",
+    "reason": "The question asks about a 'truck', but the scene graph contains no object with type 'truck' or category containing 'truck'. The available objects are ego, pedestrians, barriers, and cars. Since the required anchor object does not exist, the status is unresolved.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question asks about a 'truck', but the scene graph contains no object with type 'truck' or category containing 'truck'. The available objects are ego, pedestrians, barriers, and cars. Since the required anchor object does not exist, the status is unresolved."
+    }
+  },
+  {
+    "index": 3,
+    "question": "There is a moving thing that is to the front of the stopped car; what is it?",
+    "answer": "car",
+    "status": "unresolved",
+    "reason": "The question requires a 'stopped car' as an anchor. The scene graph contains car1, car3, car4, and car7, but all are explicitly listed with status='moving'. No stopped car exists, so the anchor is absent.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question requires a 'stopped car' as an anchor. The scene graph contains car1, car3, car4, and car7, but all are explicitly listed with status='moving'. No stopped car exists, so the anchor is absent."
+    }
+  },
+  {
+    "index": 4,
+    "question": "The moving thing to the front of the stopped thing is what?",
+    "answer": "car",
+    "status": "grounded",
+    "reason": "The question asks for the moving thing to the front of the stopped thing. The scene graph identifies barrier1 and barrier2 as 'stopped'. The edges from barrier1 and barrier2 to car1, car3, car4, and car7 are all labeled 'front'. The status of car1, car3, car4, and car7 is 'moving'. Therefore, all four cars satisfy the condition of being a moving thing to the front of a stopped thing. The answer 'car' is consistent with the evidence.",
+    "l0": 6,
+    "l1": 8,
+    "l2": 16,
+    "nodes": [
+      "barrier1",
+      "barrier2",
+      "car1",
+      "car3",
+      "car4",
+      "car7"
+    ],
+    "edges": [
+      "barrier1|car1",
+      "barrier1|car3",
+      "barrier1|car4",
+      "barrier1|car7",
+      "barrier2|car1",
+      "barrier2|car3",
+      "barrier2|car4",
+      "barrier2|car7"
+    ],
+    "payload": {
+      "status": "grounded",
+      "nodes": [
+        "barrier1",
+        "barrier2",
+        "car1",
+        "car3",
+        "car4",
+        "car7"
+      ],
+      "edges": [
+        [
+          "barrier1",
+          "car1"
+        ],
+        [
+          "barrier1",
+          "car3"
+        ],
+        [
+          "barrier1",
+          "car4"
+        ],
+        [
+          "barrier1",
+          "car7"
+        ],
+        [
+          "barrier2",
+          "car1"
+        ],
+        [
+          "barrier2",
+          "car3"
+        ],
+        [
+          "barrier2",
+          "car4"
+        ],
+        [
+          "barrier2",
+          "car7"
+        ]
+      ],
+      "reason": "The question asks for the moving thing to the front of the stopped thing. The scene graph identifies barrier1 and barrier2 as 'stopped'. The edges from barrier1 and barrier2 to car1, car3, car4, and car7 are all labeled 'front'. The status of car1, car3, car4, and car7 is 'moving'. Therefore, all four cars satisfy the condition of being a moving thing to the front of a stopped thing. The answer 'car' is consistent with the evidence."
+    }
+  },
+  {
+    "index": 5,
+    "question": "What is the status of the thing to the front of the parked car?",
+    "answer": "parked",
+    "status": "unresolved",
+    "reason": "The question asks for the status of an object in front of 'the parked car'. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' exists in the provided scene graph, making the anchor object 'parked car' absent.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question asks for the status of an object in front of 'the parked car'. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' exists in the provided scene graph, making the anchor object 'parked car' absent."
+    }
+  },
+  {
+    "index": 6,
+    "question": "Are any traffic cones visible?",
+    "answer": "yes",
+    "status": "unresolved",
+    "reason": "The question asks for 'traffic cones'. The scene graph contains no objects with type 'traffic_cone' or category containing 'trafficcone'. The available objects are ego, pedestrians, barriers, and cars. Since the required anchor object type does not exist in the scene graph, the status is unresolved.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question asks for 'traffic cones'. The scene graph contains no objects with type 'traffic_cone' or category containing 'trafficcone'. The available objects are ego, pedestrians, barriers, and cars. Since the required anchor object type does not exist in the scene graph, the status is unresolved."
+    }
+  },
+  {
+    "index": 7,
+    "question": "Are there any things to the front left of the parked car?",
+    "answer": "no",
+    "status": "unresolved",
+    "reason": "The question requires identifying a 'parked car' as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object satisfies the 'parked car' constraint, making the anchor absent.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question requires identifying a 'parked car' as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object satisfies the 'parked car' constraint, making the anchor absent."
+    }
+  },
+  {
+    "index": 8,
+    "question": "Are there any moving cars to the back left of the parked car?",
+    "answer": "no",
+    "status": "unresolved",
+    "reason": "The question requires identifying a 'parked car' as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' and type 'car' exists in the provided scene graph. According to Rule 5, if the required anchor object does not exist, the status is 'unresolved'.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question requires identifying a 'parked car' as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' and type 'car' exists in the provided scene graph. According to Rule 5, if the required anchor object does not exist, the status is 'unresolved'."
+    }
+  },
+  {
+    "index": 9,
+    "question": "Is there another barrier that has the same status as the thing to the front of the parked car?",
+    "answer": "no",
+    "status": "unresolved",
+    "reason": "The question requires identifying a 'parked car' to use as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object satisfies the 'parked car' constraint, making the anchor object absent.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question requires identifying a 'parked car' to use as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object satisfies the 'parked car' constraint, making the anchor object absent."
+    }
+  },
+  {
+    "index": 10,
+    "question": "Are there any other traffic cones that in the same status as the thing that is to the front of the parked car?",
+    "answer": "no",
+    "status": "unresolved",
+    "reason": "The question requires identifying a 'parked car' to serve as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' exists, making the anchor object absent.",
+    "l0": 0,
+    "l1": 0,
+    "l2": 0,
+    "nodes": [],
+    "edges": [],
+    "payload": {
+      "status": "unresolved",
+      "nodes": [],
+      "edges": [],
+      "reason": "The question requires identifying a 'parked car' to serve as an anchor. The scene graph contains cars (car1, car3, car4, car7), but all are explicitly listed with status='moving'. No object with status='parked' exists, making the anchor object absent."
+    }
+  }
+]

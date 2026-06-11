@@ -1,0 +1,8 @@
+{
+  "total_frames": 6011,
+  "n_success": 5767,
+  "n_trivial": 244,
+  "n_skip": 0,
+  "max_questions": 527839,
+  "extraction_time_s": 623.5636076927185
+}

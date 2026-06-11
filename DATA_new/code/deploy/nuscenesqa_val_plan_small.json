@@ -1,0 +1,6381 @@
+{
+  "description": "小节点帧（<15节点）",
+  "n_frames": 1275,
+  "frames": [
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 0,
+      "sg_filename": "scene-0012_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 1,
+      "sg_filename": "scene-0012_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 2,
+      "sg_filename": "scene-0012_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 3,
+      "sg_filename": "scene-0012_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 4,
+      "sg_filename": "scene-0012_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 5,
+      "sg_filename": "scene-0012_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 6,
+      "sg_filename": "scene-0012_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 7,
+      "sg_filename": "scene-0012_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 8,
+      "sg_filename": "scene-0012_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 9,
+      "sg_filename": "scene-0012_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 10,
+      "sg_filename": "scene-0012_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 11,
+      "sg_filename": "scene-0012_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 12,
+      "sg_filename": "scene-0012_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 13,
+      "sg_filename": "scene-0012_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 14,
+      "sg_filename": "scene-0012_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 15,
+      "sg_filename": "scene-0012_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 16,
+      "sg_filename": "scene-0012_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 17,
+      "sg_filename": "scene-0012_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 18,
+      "sg_filename": "scene-0012_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 19,
+      "sg_filename": "scene-0012_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 20,
+      "sg_filename": "scene-0012_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 21,
+      "sg_filename": "scene-0012_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 22,
+      "sg_filename": "scene-0012_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 23,
+      "sg_filename": "scene-0012_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 24,
+      "sg_filename": "scene-0012_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 25,
+      "sg_filename": "scene-0012_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 26,
+      "sg_filename": "scene-0012_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 27,
+      "sg_filename": "scene-0012_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 28,
+      "sg_filename": "scene-0012_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 29,
+      "sg_filename": "scene-0012_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 30,
+      "sg_filename": "scene-0012_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 31,
+      "sg_filename": "scene-0012_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 32,
+      "sg_filename": "scene-0012_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 33,
+      "sg_filename": "scene-0012_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 34,
+      "sg_filename": "scene-0012_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 35,
+      "sg_filename": "scene-0012_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 36,
+      "sg_filename": "scene-0012_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 37,
+      "sg_filename": "scene-0012_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 38,
+      "sg_filename": "scene-0012_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0012",
+      "frame_id": 39,
+      "sg_filename": "scene-0012_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 0,
+      "sg_filename": "scene-0013_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 1,
+      "sg_filename": "scene-0013_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 2,
+      "sg_filename": "scene-0013_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 3,
+      "sg_filename": "scene-0013_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 4,
+      "sg_filename": "scene-0013_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 5,
+      "sg_filename": "scene-0013_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 6,
+      "sg_filename": "scene-0013_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 7,
+      "sg_filename": "scene-0013_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 8,
+      "sg_filename": "scene-0013_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 34,
+      "sg_filename": "scene-0013_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 35,
+      "sg_filename": "scene-0013_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 36,
+      "sg_filename": "scene-0013_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 37,
+      "sg_filename": "scene-0013_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 38,
+      "sg_filename": "scene-0013_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 39,
+      "sg_filename": "scene-0013_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 0,
+      "sg_filename": "scene-0014_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 1,
+      "sg_filename": "scene-0014_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 2,
+      "sg_filename": "scene-0014_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 3,
+      "sg_filename": "scene-0014_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 4,
+      "sg_filename": "scene-0014_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 5,
+      "sg_filename": "scene-0014_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 7,
+      "sg_filename": "scene-0014_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 8,
+      "sg_filename": "scene-0014_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 9,
+      "sg_filename": "scene-0014_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 10,
+      "sg_filename": "scene-0014_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 11,
+      "sg_filename": "scene-0014_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 12,
+      "sg_filename": "scene-0014_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 13,
+      "sg_filename": "scene-0014_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 14,
+      "sg_filename": "scene-0014_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 15,
+      "sg_filename": "scene-0014_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 16,
+      "sg_filename": "scene-0014_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 17,
+      "sg_filename": "scene-0014_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 18,
+      "sg_filename": "scene-0014_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 19,
+      "sg_filename": "scene-0014_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 20,
+      "sg_filename": "scene-0014_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 21,
+      "sg_filename": "scene-0014_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 22,
+      "sg_filename": "scene-0014_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 23,
+      "sg_filename": "scene-0014_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 24,
+      "sg_filename": "scene-0014_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 25,
+      "sg_filename": "scene-0014_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 26,
+      "sg_filename": "scene-0014_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 27,
+      "sg_filename": "scene-0014_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 28,
+      "sg_filename": "scene-0014_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 29,
+      "sg_filename": "scene-0014_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 30,
+      "sg_filename": "scene-0014_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 31,
+      "sg_filename": "scene-0014_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 32,
+      "sg_filename": "scene-0014_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 33,
+      "sg_filename": "scene-0014_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 34,
+      "sg_filename": "scene-0014_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 35,
+      "sg_filename": "scene-0014_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 36,
+      "sg_filename": "scene-0014_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 37,
+      "sg_filename": "scene-0014_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 38,
+      "sg_filename": "scene-0014_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0014",
+      "frame_id": 39,
+      "sg_filename": "scene-0014_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 0,
+      "sg_filename": "scene-0015_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 1,
+      "sg_filename": "scene-0015_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 2,
+      "sg_filename": "scene-0015_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 3,
+      "sg_filename": "scene-0015_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 4,
+      "sg_filename": "scene-0015_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 5,
+      "sg_filename": "scene-0015_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 6,
+      "sg_filename": "scene-0015_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 7,
+      "sg_filename": "scene-0015_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 8,
+      "sg_filename": "scene-0015_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 9,
+      "sg_filename": "scene-0015_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 37,
+      "sg_filename": "scene-0015_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 38,
+      "sg_filename": "scene-0015_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 39,
+      "sg_filename": "scene-0015_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 31,
+      "sg_filename": "scene-0036_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 32,
+      "sg_filename": "scene-0036_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 33,
+      "sg_filename": "scene-0036_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 0,
+      "sg_filename": "scene-0038_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 1,
+      "sg_filename": "scene-0038_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 22,
+      "sg_filename": "scene-0038_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 23,
+      "sg_filename": "scene-0038_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 24,
+      "sg_filename": "scene-0038_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 25,
+      "sg_filename": "scene-0038_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 26,
+      "sg_filename": "scene-0038_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 27,
+      "sg_filename": "scene-0038_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 28,
+      "sg_filename": "scene-0038_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 29,
+      "sg_filename": "scene-0038_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 30,
+      "sg_filename": "scene-0038_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 31,
+      "sg_filename": "scene-0038_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 32,
+      "sg_filename": "scene-0038_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 33,
+      "sg_filename": "scene-0038_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 34,
+      "sg_filename": "scene-0038_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 35,
+      "sg_filename": "scene-0038_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 36,
+      "sg_filename": "scene-0038_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 37,
+      "sg_filename": "scene-0038_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 38,
+      "sg_filename": "scene-0038_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 39,
+      "sg_filename": "scene-0038_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 0,
+      "sg_filename": "scene-0271_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 1,
+      "sg_filename": "scene-0271_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 2,
+      "sg_filename": "scene-0271_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 3,
+      "sg_filename": "scene-0271_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 4,
+      "sg_filename": "scene-0271_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 5,
+      "sg_filename": "scene-0271_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 6,
+      "sg_filename": "scene-0271_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 7,
+      "sg_filename": "scene-0271_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 8,
+      "sg_filename": "scene-0271_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 9,
+      "sg_filename": "scene-0271_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 10,
+      "sg_filename": "scene-0271_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 11,
+      "sg_filename": "scene-0271_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 12,
+      "sg_filename": "scene-0271_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 13,
+      "sg_filename": "scene-0271_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 14,
+      "sg_filename": "scene-0271_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 0,
+      "sg_filename": "scene-0346_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 1,
+      "sg_filename": "scene-0346_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 2,
+      "sg_filename": "scene-0346_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 3,
+      "sg_filename": "scene-0346_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 4,
+      "sg_filename": "scene-0346_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 5,
+      "sg_filename": "scene-0346_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 6,
+      "sg_filename": "scene-0346_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 7,
+      "sg_filename": "scene-0346_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 8,
+      "sg_filename": "scene-0346_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 9,
+      "sg_filename": "scene-0346_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 10,
+      "sg_filename": "scene-0346_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 11,
+      "sg_filename": "scene-0346_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 12,
+      "sg_filename": "scene-0346_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 13,
+      "sg_filename": "scene-0346_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 14,
+      "sg_filename": "scene-0346_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 15,
+      "sg_filename": "scene-0346_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 16,
+      "sg_filename": "scene-0346_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 17,
+      "sg_filename": "scene-0346_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 18,
+      "sg_filename": "scene-0346_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 19,
+      "sg_filename": "scene-0346_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 20,
+      "sg_filename": "scene-0346_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 39,
+      "sg_filename": "scene-0346_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 0,
+      "sg_filename": "scene-0632_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 1,
+      "sg_filename": "scene-0632_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 2,
+      "sg_filename": "scene-0632_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 3,
+      "sg_filename": "scene-0632_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 4,
+      "sg_filename": "scene-0632_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 5,
+      "sg_filename": "scene-0632_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 6,
+      "sg_filename": "scene-0632_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 11,
+      "sg_filename": "scene-0632_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 12,
+      "sg_filename": "scene-0632_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 13,
+      "sg_filename": "scene-0632_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 14,
+      "sg_filename": "scene-0632_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 15,
+      "sg_filename": "scene-0632_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 27,
+      "sg_filename": "scene-0632_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 28,
+      "sg_filename": "scene-0632_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 29,
+      "sg_filename": "scene-0632_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 30,
+      "sg_filename": "scene-0632_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 31,
+      "sg_filename": "scene-0632_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 19,
+      "sg_filename": "scene-0633_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 20,
+      "sg_filename": "scene-0633_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 40,
+      "sg_filename": "scene-0638_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 35,
+      "sg_filename": "scene-0796_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 38,
+      "sg_filename": "scene-0796_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 39,
+      "sg_filename": "scene-0796_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 0,
+      "sg_filename": "scene-0797_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 1,
+      "sg_filename": "scene-0797_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 2,
+      "sg_filename": "scene-0797_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 3,
+      "sg_filename": "scene-0797_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 4,
+      "sg_filename": "scene-0797_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 5,
+      "sg_filename": "scene-0797_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 6,
+      "sg_filename": "scene-0797_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 7,
+      "sg_filename": "scene-0797_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 8,
+      "sg_filename": "scene-0797_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 14,
+      "sg_filename": "scene-0797_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 19,
+      "sg_filename": "scene-0800_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 20,
+      "sg_filename": "scene-0800_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 21,
+      "sg_filename": "scene-0800_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 25,
+      "sg_filename": "scene-0800_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 26,
+      "sg_filename": "scene-0800_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 27,
+      "sg_filename": "scene-0800_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 0,
+      "sg_filename": "scene-0919_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 1,
+      "sg_filename": "scene-0919_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 2,
+      "sg_filename": "scene-0919_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 3,
+      "sg_filename": "scene-0919_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 4,
+      "sg_filename": "scene-0919_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 5,
+      "sg_filename": "scene-0919_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 6,
+      "sg_filename": "scene-0919_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 7,
+      "sg_filename": "scene-0919_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 8,
+      "sg_filename": "scene-0919_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 9,
+      "sg_filename": "scene-0919_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 10,
+      "sg_filename": "scene-0919_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 11,
+      "sg_filename": "scene-0919_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 12,
+      "sg_filename": "scene-0919_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 13,
+      "sg_filename": "scene-0919_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 14,
+      "sg_filename": "scene-0919_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 15,
+      "sg_filename": "scene-0919_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 16,
+      "sg_filename": "scene-0919_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 17,
+      "sg_filename": "scene-0919_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 18,
+      "sg_filename": "scene-0919_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 19,
+      "sg_filename": "scene-0919_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 20,
+      "sg_filename": "scene-0919_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 21,
+      "sg_filename": "scene-0919_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 22,
+      "sg_filename": "scene-0919_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 23,
+      "sg_filename": "scene-0919_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 24,
+      "sg_filename": "scene-0919_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 25,
+      "sg_filename": "scene-0919_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 26,
+      "sg_filename": "scene-0919_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 28,
+      "sg_filename": "scene-0919_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 29,
+      "sg_filename": "scene-0919_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 30,
+      "sg_filename": "scene-0919_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 31,
+      "sg_filename": "scene-0919_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 32,
+      "sg_filename": "scene-0919_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 33,
+      "sg_filename": "scene-0919_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 34,
+      "sg_filename": "scene-0919_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 35,
+      "sg_filename": "scene-0919_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 36,
+      "sg_filename": "scene-0919_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 37,
+      "sg_filename": "scene-0919_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 38,
+      "sg_filename": "scene-0919_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 39,
+      "sg_filename": "scene-0919_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0919",
+      "frame_id": 40,
+      "sg_filename": "scene-0919_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 0,
+      "sg_filename": "scene-0920_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 1,
+      "sg_filename": "scene-0920_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 2,
+      "sg_filename": "scene-0920_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 3,
+      "sg_filename": "scene-0920_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 4,
+      "sg_filename": "scene-0920_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 5,
+      "sg_filename": "scene-0920_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 6,
+      "sg_filename": "scene-0920_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 7,
+      "sg_filename": "scene-0920_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 8,
+      "sg_filename": "scene-0920_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 9,
+      "sg_filename": "scene-0920_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 10,
+      "sg_filename": "scene-0920_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 11,
+      "sg_filename": "scene-0920_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 17,
+      "sg_filename": "scene-0920_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 18,
+      "sg_filename": "scene-0920_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 19,
+      "sg_filename": "scene-0920_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 20,
+      "sg_filename": "scene-0920_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 21,
+      "sg_filename": "scene-0920_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 22,
+      "sg_filename": "scene-0920_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 23,
+      "sg_filename": "scene-0920_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 24,
+      "sg_filename": "scene-0920_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 25,
+      "sg_filename": "scene-0920_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 38,
+      "sg_filename": "scene-0920_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 39,
+      "sg_filename": "scene-0920_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 40,
+      "sg_filename": "scene-0920_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 0,
+      "sg_filename": "scene-0921_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 1,
+      "sg_filename": "scene-0921_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 3,
+      "sg_filename": "scene-0921_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 4,
+      "sg_filename": "scene-0921_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 5,
+      "sg_filename": "scene-0921_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 6,
+      "sg_filename": "scene-0921_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 7,
+      "sg_filename": "scene-0921_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 8,
+      "sg_filename": "scene-0921_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 22,
+      "sg_filename": "scene-0921_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 23,
+      "sg_filename": "scene-0921_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 24,
+      "sg_filename": "scene-0921_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 25,
+      "sg_filename": "scene-0921_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 26,
+      "sg_filename": "scene-0921_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 27,
+      "sg_filename": "scene-0921_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 28,
+      "sg_filename": "scene-0921_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 29,
+      "sg_filename": "scene-0921_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 30,
+      "sg_filename": "scene-0921_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 31,
+      "sg_filename": "scene-0921_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 32,
+      "sg_filename": "scene-0921_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 33,
+      "sg_filename": "scene-0921_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 34,
+      "sg_filename": "scene-0921_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 35,
+      "sg_filename": "scene-0921_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 36,
+      "sg_filename": "scene-0921_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 37,
+      "sg_filename": "scene-0921_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 38,
+      "sg_filename": "scene-0921_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 39,
+      "sg_filename": "scene-0921_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 40,
+      "sg_filename": "scene-0921_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 19,
+      "sg_filename": "scene-0922_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 20,
+      "sg_filename": "scene-0922_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 21,
+      "sg_filename": "scene-0922_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 30,
+      "sg_filename": "scene-0922_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 32,
+      "sg_filename": "scene-0922_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 33,
+      "sg_filename": "scene-0922_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 34,
+      "sg_filename": "scene-0922_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 35,
+      "sg_filename": "scene-0922_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 36,
+      "sg_filename": "scene-0922_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 37,
+      "sg_filename": "scene-0922_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 38,
+      "sg_filename": "scene-0922_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 39,
+      "sg_filename": "scene-0922_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 40,
+      "sg_filename": "scene-0922_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 27,
+      "sg_filename": "scene-0923_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 28,
+      "sg_filename": "scene-0923_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 29,
+      "sg_filename": "scene-0923_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 30,
+      "sg_filename": "scene-0923_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 31,
+      "sg_filename": "scene-0923_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 39,
+      "sg_filename": "scene-0923_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 0,
+      "sg_filename": "scene-0924_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 1,
+      "sg_filename": "scene-0924_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 2,
+      "sg_filename": "scene-0924_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 3,
+      "sg_filename": "scene-0924_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 5,
+      "sg_filename": "scene-0924_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 6,
+      "sg_filename": "scene-0924_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 7,
+      "sg_filename": "scene-0924_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 8,
+      "sg_filename": "scene-0924_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 9,
+      "sg_filename": "scene-0924_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 0,
+      "sg_filename": "scene-0926_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 1,
+      "sg_filename": "scene-0926_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 2,
+      "sg_filename": "scene-0926_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 3,
+      "sg_filename": "scene-0926_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 4,
+      "sg_filename": "scene-0926_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 5,
+      "sg_filename": "scene-0926_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 6,
+      "sg_filename": "scene-0926_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 7,
+      "sg_filename": "scene-0926_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 8,
+      "sg_filename": "scene-0926_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 9,
+      "sg_filename": "scene-0926_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 10,
+      "sg_filename": "scene-0926_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 11,
+      "sg_filename": "scene-0926_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 13,
+      "sg_filename": "scene-0929_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 14,
+      "sg_filename": "scene-0929_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 15,
+      "sg_filename": "scene-0929_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 16,
+      "sg_filename": "scene-0929_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 17,
+      "sg_filename": "scene-0929_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 18,
+      "sg_filename": "scene-0929_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 19,
+      "sg_filename": "scene-0929_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 20,
+      "sg_filename": "scene-0929_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 21,
+      "sg_filename": "scene-0929_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 22,
+      "sg_filename": "scene-0929_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 23,
+      "sg_filename": "scene-0929_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 24,
+      "sg_filename": "scene-0929_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 25,
+      "sg_filename": "scene-0929_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 26,
+      "sg_filename": "scene-0929_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 27,
+      "sg_filename": "scene-0929_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 28,
+      "sg_filename": "scene-0929_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 29,
+      "sg_filename": "scene-0929_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 30,
+      "sg_filename": "scene-0929_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 31,
+      "sg_filename": "scene-0929_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 32,
+      "sg_filename": "scene-0929_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 33,
+      "sg_filename": "scene-0929_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 34,
+      "sg_filename": "scene-0929_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 35,
+      "sg_filename": "scene-0929_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 36,
+      "sg_filename": "scene-0929_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 37,
+      "sg_filename": "scene-0929_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 38,
+      "sg_filename": "scene-0929_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 39,
+      "sg_filename": "scene-0929_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 0,
+      "sg_filename": "scene-0930_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 1,
+      "sg_filename": "scene-0930_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 2,
+      "sg_filename": "scene-0930_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 3,
+      "sg_filename": "scene-0930_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 4,
+      "sg_filename": "scene-0930_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 5,
+      "sg_filename": "scene-0930_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 6,
+      "sg_filename": "scene-0930_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 7,
+      "sg_filename": "scene-0930_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 8,
+      "sg_filename": "scene-0930_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 0,
+      "sg_filename": "scene-1060_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 1,
+      "sg_filename": "scene-1060_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 2,
+      "sg_filename": "scene-1060_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 3,
+      "sg_filename": "scene-1060_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 4,
+      "sg_filename": "scene-1060_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 5,
+      "sg_filename": "scene-1060_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 6,
+      "sg_filename": "scene-1060_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 7,
+      "sg_filename": "scene-1060_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 8,
+      "sg_filename": "scene-1060_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 9,
+      "sg_filename": "scene-1060_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 11,
+      "sg_filename": "scene-1060_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 12,
+      "sg_filename": "scene-1060_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 13,
+      "sg_filename": "scene-1060_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 14,
+      "sg_filename": "scene-1060_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 15,
+      "sg_filename": "scene-1060_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 16,
+      "sg_filename": "scene-1060_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 17,
+      "sg_filename": "scene-1060_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 18,
+      "sg_filename": "scene-1060_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 19,
+      "sg_filename": "scene-1060_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 20,
+      "sg_filename": "scene-1060_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 21,
+      "sg_filename": "scene-1060_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 22,
+      "sg_filename": "scene-1060_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 23,
+      "sg_filename": "scene-1060_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 24,
+      "sg_filename": "scene-1060_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 25,
+      "sg_filename": "scene-1060_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 26,
+      "sg_filename": "scene-1060_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 27,
+      "sg_filename": "scene-1060_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 28,
+      "sg_filename": "scene-1060_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 29,
+      "sg_filename": "scene-1060_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 30,
+      "sg_filename": "scene-1060_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 31,
+      "sg_filename": "scene-1060_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 32,
+      "sg_filename": "scene-1060_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 34,
+      "sg_filename": "scene-1060_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 35,
+      "sg_filename": "scene-1060_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 36,
+      "sg_filename": "scene-1060_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 37,
+      "sg_filename": "scene-1060_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 38,
+      "sg_filename": "scene-1060_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1060",
+      "frame_id": 39,
+      "sg_filename": "scene-1060_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 0,
+      "sg_filename": "scene-1061_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 1,
+      "sg_filename": "scene-1061_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 2,
+      "sg_filename": "scene-1061_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 3,
+      "sg_filename": "scene-1061_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 4,
+      "sg_filename": "scene-1061_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 5,
+      "sg_filename": "scene-1061_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 6,
+      "sg_filename": "scene-1061_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 7,
+      "sg_filename": "scene-1061_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 8,
+      "sg_filename": "scene-1061_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 9,
+      "sg_filename": "scene-1061_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 10,
+      "sg_filename": "scene-1061_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 11,
+      "sg_filename": "scene-1061_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 12,
+      "sg_filename": "scene-1061_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 13,
+      "sg_filename": "scene-1061_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 14,
+      "sg_filename": "scene-1061_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 15,
+      "sg_filename": "scene-1061_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 16,
+      "sg_filename": "scene-1061_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 17,
+      "sg_filename": "scene-1061_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 18,
+      "sg_filename": "scene-1061_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 19,
+      "sg_filename": "scene-1061_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 20,
+      "sg_filename": "scene-1061_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 21,
+      "sg_filename": "scene-1061_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 22,
+      "sg_filename": "scene-1061_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 23,
+      "sg_filename": "scene-1061_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 24,
+      "sg_filename": "scene-1061_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 25,
+      "sg_filename": "scene-1061_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 26,
+      "sg_filename": "scene-1061_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 27,
+      "sg_filename": "scene-1061_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 28,
+      "sg_filename": "scene-1061_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 29,
+      "sg_filename": "scene-1061_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 30,
+      "sg_filename": "scene-1061_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 31,
+      "sg_filename": "scene-1061_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 32,
+      "sg_filename": "scene-1061_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 33,
+      "sg_filename": "scene-1061_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 40,
+      "sg_filename": "scene-1061_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 0,
+      "sg_filename": "scene-1063_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 1,
+      "sg_filename": "scene-1063_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 2,
+      "sg_filename": "scene-1063_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 3,
+      "sg_filename": "scene-1063_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 7,
+      "sg_filename": "scene-1063_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 8,
+      "sg_filename": "scene-1063_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 9,
+      "sg_filename": "scene-1063_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 10,
+      "sg_filename": "scene-1063_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 11,
+      "sg_filename": "scene-1063_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 12,
+      "sg_filename": "scene-1063_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 13,
+      "sg_filename": "scene-1063_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 14,
+      "sg_filename": "scene-1063_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 15,
+      "sg_filename": "scene-1063_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 16,
+      "sg_filename": "scene-1063_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 17,
+      "sg_filename": "scene-1063_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 18,
+      "sg_filename": "scene-1063_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 19,
+      "sg_filename": "scene-1063_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 20,
+      "sg_filename": "scene-1063_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 21,
+      "sg_filename": "scene-1063_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 22,
+      "sg_filename": "scene-1063_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 23,
+      "sg_filename": "scene-1063_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 24,
+      "sg_filename": "scene-1063_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 25,
+      "sg_filename": "scene-1063_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 26,
+      "sg_filename": "scene-1063_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 27,
+      "sg_filename": "scene-1063_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 28,
+      "sg_filename": "scene-1063_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 29,
+      "sg_filename": "scene-1063_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 30,
+      "sg_filename": "scene-1063_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 31,
+      "sg_filename": "scene-1063_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 32,
+      "sg_filename": "scene-1063_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 33,
+      "sg_filename": "scene-1063_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 34,
+      "sg_filename": "scene-1063_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 35,
+      "sg_filename": "scene-1063_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 36,
+      "sg_filename": "scene-1063_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 37,
+      "sg_filename": "scene-1063_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 38,
+      "sg_filename": "scene-1063_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 39,
+      "sg_filename": "scene-1063_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 0,
+      "sg_filename": "scene-1064_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 1,
+      "sg_filename": "scene-1064_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 2,
+      "sg_filename": "scene-1064_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 3,
+      "sg_filename": "scene-1064_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 4,
+      "sg_filename": "scene-1064_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 38,
+      "sg_filename": "scene-1064_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 39,
+      "sg_filename": "scene-1064_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 0,
+      "sg_filename": "scene-1065_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 1,
+      "sg_filename": "scene-1065_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 2,
+      "sg_filename": "scene-1065_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 3,
+      "sg_filename": "scene-1065_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 4,
+      "sg_filename": "scene-1065_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 5,
+      "sg_filename": "scene-1065_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 6,
+      "sg_filename": "scene-1065_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 7,
+      "sg_filename": "scene-1065_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 8,
+      "sg_filename": "scene-1065_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 9,
+      "sg_filename": "scene-1065_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 10,
+      "sg_filename": "scene-1065_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 11,
+      "sg_filename": "scene-1065_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 12,
+      "sg_filename": "scene-1065_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 13,
+      "sg_filename": "scene-1065_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 14,
+      "sg_filename": "scene-1065_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 15,
+      "sg_filename": "scene-1065_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 16,
+      "sg_filename": "scene-1065_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 17,
+      "sg_filename": "scene-1065_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 18,
+      "sg_filename": "scene-1065_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 19,
+      "sg_filename": "scene-1065_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 20,
+      "sg_filename": "scene-1065_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 21,
+      "sg_filename": "scene-1065_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 22,
+      "sg_filename": "scene-1065_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 23,
+      "sg_filename": "scene-1065_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 24,
+      "sg_filename": "scene-1065_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 25,
+      "sg_filename": "scene-1065_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 26,
+      "sg_filename": "scene-1065_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 27,
+      "sg_filename": "scene-1065_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 28,
+      "sg_filename": "scene-1065_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 29,
+      "sg_filename": "scene-1065_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 30,
+      "sg_filename": "scene-1065_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 31,
+      "sg_filename": "scene-1065_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 32,
+      "sg_filename": "scene-1065_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 33,
+      "sg_filename": "scene-1065_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 34,
+      "sg_filename": "scene-1065_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 35,
+      "sg_filename": "scene-1065_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 36,
+      "sg_filename": "scene-1065_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 37,
+      "sg_filename": "scene-1065_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 38,
+      "sg_filename": "scene-1065_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1065",
+      "frame_id": 39,
+      "sg_filename": "scene-1065_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 15,
+      "sg_filename": "scene-1066_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 16,
+      "sg_filename": "scene-1066_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 17,
+      "sg_filename": "scene-1066_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 18,
+      "sg_filename": "scene-1066_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 19,
+      "sg_filename": "scene-1066_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 20,
+      "sg_filename": "scene-1066_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 21,
+      "sg_filename": "scene-1066_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 22,
+      "sg_filename": "scene-1066_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 23,
+      "sg_filename": "scene-1066_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 24,
+      "sg_filename": "scene-1066_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 25,
+      "sg_filename": "scene-1066_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 26,
+      "sg_filename": "scene-1066_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 27,
+      "sg_filename": "scene-1066_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 28,
+      "sg_filename": "scene-1066_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 29,
+      "sg_filename": "scene-1066_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 30,
+      "sg_filename": "scene-1066_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 31,
+      "sg_filename": "scene-1066_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 32,
+      "sg_filename": "scene-1066_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 33,
+      "sg_filename": "scene-1066_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 38,
+      "sg_filename": "scene-1066_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 39,
+      "sg_filename": "scene-1066_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 0,
+      "sg_filename": "scene-1067_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 1,
+      "sg_filename": "scene-1067_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 2,
+      "sg_filename": "scene-1067_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 3,
+      "sg_filename": "scene-1067_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 4,
+      "sg_filename": "scene-1067_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 0,
+      "sg_filename": "scene-1068_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 1,
+      "sg_filename": "scene-1068_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 2,
+      "sg_filename": "scene-1068_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 3,
+      "sg_filename": "scene-1068_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 4,
+      "sg_filename": "scene-1068_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 5,
+      "sg_filename": "scene-1068_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 6,
+      "sg_filename": "scene-1068_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 7,
+      "sg_filename": "scene-1068_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 8,
+      "sg_filename": "scene-1068_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 9,
+      "sg_filename": "scene-1068_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 10,
+      "sg_filename": "scene-1068_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 11,
+      "sg_filename": "scene-1068_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 12,
+      "sg_filename": "scene-1068_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 13,
+      "sg_filename": "scene-1068_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 14,
+      "sg_filename": "scene-1068_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 15,
+      "sg_filename": "scene-1068_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 16,
+      "sg_filename": "scene-1068_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 17,
+      "sg_filename": "scene-1068_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 18,
+      "sg_filename": "scene-1068_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 19,
+      "sg_filename": "scene-1068_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 20,
+      "sg_filename": "scene-1068_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 21,
+      "sg_filename": "scene-1068_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 22,
+      "sg_filename": "scene-1068_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 23,
+      "sg_filename": "scene-1068_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 24,
+      "sg_filename": "scene-1068_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 25,
+      "sg_filename": "scene-1068_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 26,
+      "sg_filename": "scene-1068_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 27,
+      "sg_filename": "scene-1068_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 28,
+      "sg_filename": "scene-1068_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 29,
+      "sg_filename": "scene-1068_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 15,
+      "sg_filename": "scene-1070_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 16,
+      "sg_filename": "scene-1070_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 17,
+      "sg_filename": "scene-1070_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 18,
+      "sg_filename": "scene-1070_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 19,
+      "sg_filename": "scene-1070_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 20,
+      "sg_filename": "scene-1070_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 21,
+      "sg_filename": "scene-1070_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 22,
+      "sg_filename": "scene-1070_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 23,
+      "sg_filename": "scene-1070_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 24,
+      "sg_filename": "scene-1070_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 25,
+      "sg_filename": "scene-1070_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 26,
+      "sg_filename": "scene-1070_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 27,
+      "sg_filename": "scene-1070_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 28,
+      "sg_filename": "scene-1070_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 29,
+      "sg_filename": "scene-1070_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 30,
+      "sg_filename": "scene-1070_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 31,
+      "sg_filename": "scene-1070_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 32,
+      "sg_filename": "scene-1070_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 33,
+      "sg_filename": "scene-1070_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 34,
+      "sg_filename": "scene-1070_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 35,
+      "sg_filename": "scene-1070_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 36,
+      "sg_filename": "scene-1070_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 37,
+      "sg_filename": "scene-1070_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 38,
+      "sg_filename": "scene-1070_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 39,
+      "sg_filename": "scene-1070_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 40,
+      "sg_filename": "scene-1070_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 0,
+      "sg_filename": "scene-1071_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 1,
+      "sg_filename": "scene-1071_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 2,
+      "sg_filename": "scene-1071_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 3,
+      "sg_filename": "scene-1071_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 4,
+      "sg_filename": "scene-1071_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 5,
+      "sg_filename": "scene-1071_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 6,
+      "sg_filename": "scene-1071_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 7,
+      "sg_filename": "scene-1071_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 8,
+      "sg_filename": "scene-1071_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 9,
+      "sg_filename": "scene-1071_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 10,
+      "sg_filename": "scene-1071_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 11,
+      "sg_filename": "scene-1071_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 15,
+      "sg_filename": "scene-1071_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 16,
+      "sg_filename": "scene-1071_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 17,
+      "sg_filename": "scene-1071_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 18,
+      "sg_filename": "scene-1071_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 19,
+      "sg_filename": "scene-1071_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 20,
+      "sg_filename": "scene-1071_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 21,
+      "sg_filename": "scene-1071_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 22,
+      "sg_filename": "scene-1071_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 23,
+      "sg_filename": "scene-1071_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 24,
+      "sg_filename": "scene-1071_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 25,
+      "sg_filename": "scene-1071_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 26,
+      "sg_filename": "scene-1071_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 27,
+      "sg_filename": "scene-1071_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 28,
+      "sg_filename": "scene-1071_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 29,
+      "sg_filename": "scene-1071_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 9,
+      "sg_filename": "scene-0013_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 10,
+      "sg_filename": "scene-0013_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 11,
+      "sg_filename": "scene-0013_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 12,
+      "sg_filename": "scene-0013_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 13,
+      "sg_filename": "scene-0013_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 30,
+      "sg_filename": "scene-0013_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 31,
+      "sg_filename": "scene-0013_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 32,
+      "sg_filename": "scene-0013_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0013",
+      "frame_id": 33,
+      "sg_filename": "scene-0013_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 10,
+      "sg_filename": "scene-0015_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 11,
+      "sg_filename": "scene-0015_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 29,
+      "sg_filename": "scene-0015_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 31,
+      "sg_filename": "scene-0015_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 32,
+      "sg_filename": "scene-0015_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 33,
+      "sg_filename": "scene-0015_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 34,
+      "sg_filename": "scene-0015_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 35,
+      "sg_filename": "scene-0015_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0015",
+      "frame_id": 36,
+      "sg_filename": "scene-0015_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 28,
+      "sg_filename": "scene-0036_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 29,
+      "sg_filename": "scene-0036_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 30,
+      "sg_filename": "scene-0036_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 34,
+      "sg_filename": "scene-0036_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0036",
+      "frame_id": 35,
+      "sg_filename": "scene-0036_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 2,
+      "sg_filename": "scene-0038_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 3,
+      "sg_filename": "scene-0038_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 4,
+      "sg_filename": "scene-0038_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 5,
+      "sg_filename": "scene-0038_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 6,
+      "sg_filename": "scene-0038_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 20,
+      "sg_filename": "scene-0038_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0038",
+      "frame_id": 21,
+      "sg_filename": "scene-0038_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0039",
+      "frame_id": 16,
+      "sg_filename": "scene-0039_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0039",
+      "frame_id": 23,
+      "sg_filename": "scene-0039_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0098",
+      "frame_id": 28,
+      "sg_filename": "scene-0098_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0098",
+      "frame_id": 29,
+      "sg_filename": "scene-0098_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0098",
+      "frame_id": 30,
+      "sg_filename": "scene-0098_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0098",
+      "frame_id": 37,
+      "sg_filename": "scene-0098_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0098",
+      "frame_id": 38,
+      "sg_filename": "scene-0098_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 0,
+      "sg_filename": "scene-0221_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 1,
+      "sg_filename": "scene-0221_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 2,
+      "sg_filename": "scene-0221_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 3,
+      "sg_filename": "scene-0221_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 4,
+      "sg_filename": "scene-0221_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 5,
+      "sg_filename": "scene-0221_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 10,
+      "sg_filename": "scene-0221_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 11,
+      "sg_filename": "scene-0221_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 17,
+      "sg_filename": "scene-0221_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 18,
+      "sg_filename": "scene-0221_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 19,
+      "sg_filename": "scene-0221_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 20,
+      "sg_filename": "scene-0221_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 22,
+      "sg_filename": "scene-0221_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 23,
+      "sg_filename": "scene-0221_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 24,
+      "sg_filename": "scene-0221_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 25,
+      "sg_filename": "scene-0221_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 26,
+      "sg_filename": "scene-0221_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 27,
+      "sg_filename": "scene-0221_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 28,
+      "sg_filename": "scene-0221_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 33,
+      "sg_filename": "scene-0221_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0221",
+      "frame_id": 38,
+      "sg_filename": "scene-0221_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 0,
+      "sg_filename": "scene-0268_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 1,
+      "sg_filename": "scene-0268_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 2,
+      "sg_filename": "scene-0268_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 3,
+      "sg_filename": "scene-0268_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 4,
+      "sg_filename": "scene-0268_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0268",
+      "frame_id": 5,
+      "sg_filename": "scene-0268_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0269",
+      "frame_id": 39,
+      "sg_filename": "scene-0269_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 15,
+      "sg_filename": "scene-0271_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 16,
+      "sg_filename": "scene-0271_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 17,
+      "sg_filename": "scene-0271_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 18,
+      "sg_filename": "scene-0271_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 19,
+      "sg_filename": "scene-0271_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 20,
+      "sg_filename": "scene-0271_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 21,
+      "sg_filename": "scene-0271_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 22,
+      "sg_filename": "scene-0271_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 23,
+      "sg_filename": "scene-0271_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 24,
+      "sg_filename": "scene-0271_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 25,
+      "sg_filename": "scene-0271_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 26,
+      "sg_filename": "scene-0271_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 27,
+      "sg_filename": "scene-0271_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 28,
+      "sg_filename": "scene-0271_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 29,
+      "sg_filename": "scene-0271_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 30,
+      "sg_filename": "scene-0271_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 31,
+      "sg_filename": "scene-0271_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 32,
+      "sg_filename": "scene-0271_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 33,
+      "sg_filename": "scene-0271_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 34,
+      "sg_filename": "scene-0271_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 35,
+      "sg_filename": "scene-0271_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 36,
+      "sg_filename": "scene-0271_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 37,
+      "sg_filename": "scene-0271_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0271",
+      "frame_id": 38,
+      "sg_filename": "scene-0271_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 0,
+      "sg_filename": "scene-0272_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 1,
+      "sg_filename": "scene-0272_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 2,
+      "sg_filename": "scene-0272_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 3,
+      "sg_filename": "scene-0272_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 4,
+      "sg_filename": "scene-0272_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 5,
+      "sg_filename": "scene-0272_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 6,
+      "sg_filename": "scene-0272_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 7,
+      "sg_filename": "scene-0272_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 8,
+      "sg_filename": "scene-0272_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 9,
+      "sg_filename": "scene-0272_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 10,
+      "sg_filename": "scene-0272_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 11,
+      "sg_filename": "scene-0272_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 12,
+      "sg_filename": "scene-0272_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 13,
+      "sg_filename": "scene-0272_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 14,
+      "sg_filename": "scene-0272_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 15,
+      "sg_filename": "scene-0272_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 16,
+      "sg_filename": "scene-0272_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 17,
+      "sg_filename": "scene-0272_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 18,
+      "sg_filename": "scene-0272_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 19,
+      "sg_filename": "scene-0272_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 20,
+      "sg_filename": "scene-0272_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 21,
+      "sg_filename": "scene-0272_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 22,
+      "sg_filename": "scene-0272_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 23,
+      "sg_filename": "scene-0272_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 24,
+      "sg_filename": "scene-0272_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 25,
+      "sg_filename": "scene-0272_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 26,
+      "sg_filename": "scene-0272_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 27,
+      "sg_filename": "scene-0272_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 28,
+      "sg_filename": "scene-0272_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 29,
+      "sg_filename": "scene-0272_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 30,
+      "sg_filename": "scene-0272_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 31,
+      "sg_filename": "scene-0272_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 32,
+      "sg_filename": "scene-0272_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 33,
+      "sg_filename": "scene-0272_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 34,
+      "sg_filename": "scene-0272_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 35,
+      "sg_filename": "scene-0272_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 36,
+      "sg_filename": "scene-0272_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 37,
+      "sg_filename": "scene-0272_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0272",
+      "frame_id": 38,
+      "sg_filename": "scene-0272_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0273",
+      "frame_id": 32,
+      "sg_filename": "scene-0273_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0273",
+      "frame_id": 33,
+      "sg_filename": "scene-0273_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0273",
+      "frame_id": 34,
+      "sg_filename": "scene-0273_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0273",
+      "frame_id": 35,
+      "sg_filename": "scene-0273_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 21,
+      "sg_filename": "scene-0346_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 22,
+      "sg_filename": "scene-0346_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 23,
+      "sg_filename": "scene-0346_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 24,
+      "sg_filename": "scene-0346_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 25,
+      "sg_filename": "scene-0346_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 26,
+      "sg_filename": "scene-0346_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 27,
+      "sg_filename": "scene-0346_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 28,
+      "sg_filename": "scene-0346_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 29,
+      "sg_filename": "scene-0346_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 30,
+      "sg_filename": "scene-0346_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 31,
+      "sg_filename": "scene-0346_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 32,
+      "sg_filename": "scene-0346_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 33,
+      "sg_filename": "scene-0346_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 34,
+      "sg_filename": "scene-0346_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 35,
+      "sg_filename": "scene-0346_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 36,
+      "sg_filename": "scene-0346_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 37,
+      "sg_filename": "scene-0346_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0346",
+      "frame_id": 38,
+      "sg_filename": "scene-0346_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 20,
+      "sg_filename": "scene-0556_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 21,
+      "sg_filename": "scene-0556_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 22,
+      "sg_filename": "scene-0556_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 23,
+      "sg_filename": "scene-0556_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 24,
+      "sg_filename": "scene-0556_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 25,
+      "sg_filename": "scene-0556_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 26,
+      "sg_filename": "scene-0556_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 27,
+      "sg_filename": "scene-0556_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 28,
+      "sg_filename": "scene-0556_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 29,
+      "sg_filename": "scene-0556_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 30,
+      "sg_filename": "scene-0556_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 32,
+      "sg_filename": "scene-0556_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 33,
+      "sg_filename": "scene-0556_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 34,
+      "sg_filename": "scene-0556_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 36,
+      "sg_filename": "scene-0556_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 37,
+      "sg_filename": "scene-0556_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 38,
+      "sg_filename": "scene-0556_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0556",
+      "frame_id": 39,
+      "sg_filename": "scene-0556_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 15,
+      "sg_filename": "scene-0557_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 16,
+      "sg_filename": "scene-0557_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 17,
+      "sg_filename": "scene-0557_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 18,
+      "sg_filename": "scene-0557_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 19,
+      "sg_filename": "scene-0557_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 20,
+      "sg_filename": "scene-0557_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 21,
+      "sg_filename": "scene-0557_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 22,
+      "sg_filename": "scene-0557_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 38,
+      "sg_filename": "scene-0557_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0557",
+      "frame_id": 39,
+      "sg_filename": "scene-0557_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0558",
+      "frame_id": 0,
+      "sg_filename": "scene-0558_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0625",
+      "frame_id": 0,
+      "sg_filename": "scene-0625_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0625",
+      "frame_id": 1,
+      "sg_filename": "scene-0625_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 9,
+      "sg_filename": "scene-0630_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 10,
+      "sg_filename": "scene-0630_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 11,
+      "sg_filename": "scene-0630_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 12,
+      "sg_filename": "scene-0630_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 13,
+      "sg_filename": "scene-0630_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 14,
+      "sg_filename": "scene-0630_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 15,
+      "sg_filename": "scene-0630_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 16,
+      "sg_filename": "scene-0630_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 17,
+      "sg_filename": "scene-0630_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 18,
+      "sg_filename": "scene-0630_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0630",
+      "frame_id": 22,
+      "sg_filename": "scene-0630_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 7,
+      "sg_filename": "scene-0632_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 8,
+      "sg_filename": "scene-0632_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 9,
+      "sg_filename": "scene-0632_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 10,
+      "sg_filename": "scene-0632_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 16,
+      "sg_filename": "scene-0632_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 17,
+      "sg_filename": "scene-0632_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 18,
+      "sg_filename": "scene-0632_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 19,
+      "sg_filename": "scene-0632_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 20,
+      "sg_filename": "scene-0632_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 21,
+      "sg_filename": "scene-0632_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 22,
+      "sg_filename": "scene-0632_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 23,
+      "sg_filename": "scene-0632_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 24,
+      "sg_filename": "scene-0632_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 25,
+      "sg_filename": "scene-0632_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 26,
+      "sg_filename": "scene-0632_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 32,
+      "sg_filename": "scene-0632_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 33,
+      "sg_filename": "scene-0632_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0632",
+      "frame_id": 34,
+      "sg_filename": "scene-0632_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 18,
+      "sg_filename": "scene-0633_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 21,
+      "sg_filename": "scene-0633_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 22,
+      "sg_filename": "scene-0633_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 23,
+      "sg_filename": "scene-0633_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0633",
+      "frame_id": 24,
+      "sg_filename": "scene-0633_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0636",
+      "frame_id": 35,
+      "sg_filename": "scene-0636_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0636",
+      "frame_id": 36,
+      "sg_filename": "scene-0636_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0636",
+      "frame_id": 37,
+      "sg_filename": "scene-0636_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0636",
+      "frame_id": 38,
+      "sg_filename": "scene-0636_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0636",
+      "frame_id": 39,
+      "sg_filename": "scene-0636_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 29,
+      "sg_filename": "scene-0638_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 30,
+      "sg_filename": "scene-0638_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 31,
+      "sg_filename": "scene-0638_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 32,
+      "sg_filename": "scene-0638_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 33,
+      "sg_filename": "scene-0638_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 34,
+      "sg_filename": "scene-0638_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 35,
+      "sg_filename": "scene-0638_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 36,
+      "sg_filename": "scene-0638_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 37,
+      "sg_filename": "scene-0638_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 38,
+      "sg_filename": "scene-0638_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0638",
+      "frame_id": 39,
+      "sg_filename": "scene-0638_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0782",
+      "frame_id": 40,
+      "sg_filename": "scene-0782_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 32,
+      "sg_filename": "scene-0796_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 33,
+      "sg_filename": "scene-0796_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 34,
+      "sg_filename": "scene-0796_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 36,
+      "sg_filename": "scene-0796_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0796",
+      "frame_id": 37,
+      "sg_filename": "scene-0796_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 9,
+      "sg_filename": "scene-0797_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 10,
+      "sg_filename": "scene-0797_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 11,
+      "sg_filename": "scene-0797_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 12,
+      "sg_filename": "scene-0797_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 13,
+      "sg_filename": "scene-0797_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 15,
+      "sg_filename": "scene-0797_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 16,
+      "sg_filename": "scene-0797_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 17,
+      "sg_filename": "scene-0797_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 18,
+      "sg_filename": "scene-0797_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 19,
+      "sg_filename": "scene-0797_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 20,
+      "sg_filename": "scene-0797_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 21,
+      "sg_filename": "scene-0797_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 22,
+      "sg_filename": "scene-0797_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 23,
+      "sg_filename": "scene-0797_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 24,
+      "sg_filename": "scene-0797_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 25,
+      "sg_filename": "scene-0797_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 26,
+      "sg_filename": "scene-0797_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 27,
+      "sg_filename": "scene-0797_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 28,
+      "sg_filename": "scene-0797_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 29,
+      "sg_filename": "scene-0797_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 30,
+      "sg_filename": "scene-0797_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 31,
+      "sg_filename": "scene-0797_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 32,
+      "sg_filename": "scene-0797_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 33,
+      "sg_filename": "scene-0797_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 34,
+      "sg_filename": "scene-0797_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 35,
+      "sg_filename": "scene-0797_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 36,
+      "sg_filename": "scene-0797_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 37,
+      "sg_filename": "scene-0797_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 38,
+      "sg_filename": "scene-0797_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0797",
+      "frame_id": 39,
+      "sg_filename": "scene-0797_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 0,
+      "sg_filename": "scene-0798_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 1,
+      "sg_filename": "scene-0798_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 2,
+      "sg_filename": "scene-0798_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 3,
+      "sg_filename": "scene-0798_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 6,
+      "sg_filename": "scene-0798_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 7,
+      "sg_filename": "scene-0798_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 35,
+      "sg_filename": "scene-0798_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 36,
+      "sg_filename": "scene-0798_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 37,
+      "sg_filename": "scene-0798_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 38,
+      "sg_filename": "scene-0798_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0798",
+      "frame_id": 39,
+      "sg_filename": "scene-0798_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 12,
+      "sg_filename": "scene-0799_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 19,
+      "sg_filename": "scene-0799_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 24,
+      "sg_filename": "scene-0799_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 25,
+      "sg_filename": "scene-0799_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 38,
+      "sg_filename": "scene-0799_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0799",
+      "frame_id": 39,
+      "sg_filename": "scene-0799_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 16,
+      "sg_filename": "scene-0800_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 17,
+      "sg_filename": "scene-0800_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 18,
+      "sg_filename": "scene-0800_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 22,
+      "sg_filename": "scene-0800_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 23,
+      "sg_filename": "scene-0800_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 24,
+      "sg_filename": "scene-0800_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 28,
+      "sg_filename": "scene-0800_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 29,
+      "sg_filename": "scene-0800_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0800",
+      "frame_id": 30,
+      "sg_filename": "scene-0800_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0802",
+      "frame_id": 7,
+      "sg_filename": "scene-0802_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0802",
+      "frame_id": 8,
+      "sg_filename": "scene-0802_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0802",
+      "frame_id": 9,
+      "sg_filename": "scene-0802_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0802",
+      "frame_id": 18,
+      "sg_filename": "scene-0802_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0802",
+      "frame_id": 40,
+      "sg_filename": "scene-0802_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0906",
+      "frame_id": 0,
+      "sg_filename": "scene-0906_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0907",
+      "frame_id": 36,
+      "sg_filename": "scene-0907_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0907",
+      "frame_id": 37,
+      "sg_filename": "scene-0907_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0907",
+      "frame_id": 38,
+      "sg_filename": "scene-0907_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0907",
+      "frame_id": 39,
+      "sg_filename": "scene-0907_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 0,
+      "sg_filename": "scene-0908_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 1,
+      "sg_filename": "scene-0908_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 2,
+      "sg_filename": "scene-0908_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 3,
+      "sg_filename": "scene-0908_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 4,
+      "sg_filename": "scene-0908_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 5,
+      "sg_filename": "scene-0908_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 6,
+      "sg_filename": "scene-0908_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 7,
+      "sg_filename": "scene-0908_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 8,
+      "sg_filename": "scene-0908_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 9,
+      "sg_filename": "scene-0908_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 10,
+      "sg_filename": "scene-0908_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 11,
+      "sg_filename": "scene-0908_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 12,
+      "sg_filename": "scene-0908_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 13,
+      "sg_filename": "scene-0908_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 14,
+      "sg_filename": "scene-0908_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 15,
+      "sg_filename": "scene-0908_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 16,
+      "sg_filename": "scene-0908_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 17,
+      "sg_filename": "scene-0908_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 18,
+      "sg_filename": "scene-0908_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 19,
+      "sg_filename": "scene-0908_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 20,
+      "sg_filename": "scene-0908_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0908",
+      "frame_id": 21,
+      "sg_filename": "scene-0908_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 0,
+      "sg_filename": "scene-0917_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 1,
+      "sg_filename": "scene-0917_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 2,
+      "sg_filename": "scene-0917_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 12,
+      "sg_filename": "scene-0917_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 13,
+      "sg_filename": "scene-0917_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 14,
+      "sg_filename": "scene-0917_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 15,
+      "sg_filename": "scene-0917_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 16,
+      "sg_filename": "scene-0917_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0917",
+      "frame_id": 18,
+      "sg_filename": "scene-0917_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 12,
+      "sg_filename": "scene-0920_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 13,
+      "sg_filename": "scene-0920_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 14,
+      "sg_filename": "scene-0920_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 15,
+      "sg_filename": "scene-0920_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 16,
+      "sg_filename": "scene-0920_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 26,
+      "sg_filename": "scene-0920_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 27,
+      "sg_filename": "scene-0920_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 28,
+      "sg_filename": "scene-0920_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 29,
+      "sg_filename": "scene-0920_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 30,
+      "sg_filename": "scene-0920_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 36,
+      "sg_filename": "scene-0920_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0920",
+      "frame_id": 37,
+      "sg_filename": "scene-0920_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 2,
+      "sg_filename": "scene-0921_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 9,
+      "sg_filename": "scene-0921_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 10,
+      "sg_filename": "scene-0921_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 11,
+      "sg_filename": "scene-0921_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 12,
+      "sg_filename": "scene-0921_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 13,
+      "sg_filename": "scene-0921_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 14,
+      "sg_filename": "scene-0921_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 15,
+      "sg_filename": "scene-0921_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 16,
+      "sg_filename": "scene-0921_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 17,
+      "sg_filename": "scene-0921_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 18,
+      "sg_filename": "scene-0921_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 19,
+      "sg_filename": "scene-0921_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 20,
+      "sg_filename": "scene-0921_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0921",
+      "frame_id": 21,
+      "sg_filename": "scene-0921_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 0,
+      "sg_filename": "scene-0922_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 5,
+      "sg_filename": "scene-0922_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 6,
+      "sg_filename": "scene-0922_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 7,
+      "sg_filename": "scene-0922_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 8,
+      "sg_filename": "scene-0922_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 9,
+      "sg_filename": "scene-0922_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 10,
+      "sg_filename": "scene-0922_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 11,
+      "sg_filename": "scene-0922_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 12,
+      "sg_filename": "scene-0922_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 13,
+      "sg_filename": "scene-0922_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 14,
+      "sg_filename": "scene-0922_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 15,
+      "sg_filename": "scene-0922_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 16,
+      "sg_filename": "scene-0922_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 17,
+      "sg_filename": "scene-0922_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 18,
+      "sg_filename": "scene-0922_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 22,
+      "sg_filename": "scene-0922_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 23,
+      "sg_filename": "scene-0922_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 24,
+      "sg_filename": "scene-0922_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 25,
+      "sg_filename": "scene-0922_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 26,
+      "sg_filename": "scene-0922_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 27,
+      "sg_filename": "scene-0922_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 28,
+      "sg_filename": "scene-0922_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 29,
+      "sg_filename": "scene-0922_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0922",
+      "frame_id": 31,
+      "sg_filename": "scene-0922_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 0,
+      "sg_filename": "scene-0923_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 1,
+      "sg_filename": "scene-0923_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 2,
+      "sg_filename": "scene-0923_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 3,
+      "sg_filename": "scene-0923_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 4,
+      "sg_filename": "scene-0923_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 5,
+      "sg_filename": "scene-0923_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 6,
+      "sg_filename": "scene-0923_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 15,
+      "sg_filename": "scene-0923_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 16,
+      "sg_filename": "scene-0923_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 17,
+      "sg_filename": "scene-0923_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 18,
+      "sg_filename": "scene-0923_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 19,
+      "sg_filename": "scene-0923_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 20,
+      "sg_filename": "scene-0923_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 21,
+      "sg_filename": "scene-0923_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 22,
+      "sg_filename": "scene-0923_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 23,
+      "sg_filename": "scene-0923_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 24,
+      "sg_filename": "scene-0923_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 25,
+      "sg_filename": "scene-0923_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 26,
+      "sg_filename": "scene-0923_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 32,
+      "sg_filename": "scene-0923_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 33,
+      "sg_filename": "scene-0923_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 34,
+      "sg_filename": "scene-0923_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 35,
+      "sg_filename": "scene-0923_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 36,
+      "sg_filename": "scene-0923_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 37,
+      "sg_filename": "scene-0923_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0923",
+      "frame_id": 38,
+      "sg_filename": "scene-0923_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 4,
+      "sg_filename": "scene-0924_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 10,
+      "sg_filename": "scene-0924_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 11,
+      "sg_filename": "scene-0924_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 12,
+      "sg_filename": "scene-0924_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 13,
+      "sg_filename": "scene-0924_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 15,
+      "sg_filename": "scene-0924_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 16,
+      "sg_filename": "scene-0924_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 37,
+      "sg_filename": "scene-0924_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 38,
+      "sg_filename": "scene-0924_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0924",
+      "frame_id": 39,
+      "sg_filename": "scene-0924_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 0,
+      "sg_filename": "scene-0925_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 1,
+      "sg_filename": "scene-0925_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 2,
+      "sg_filename": "scene-0925_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 3,
+      "sg_filename": "scene-0925_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 4,
+      "sg_filename": "scene-0925_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 5,
+      "sg_filename": "scene-0925_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 6,
+      "sg_filename": "scene-0925_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 7,
+      "sg_filename": "scene-0925_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 8,
+      "sg_filename": "scene-0925_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 9,
+      "sg_filename": "scene-0925_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 10,
+      "sg_filename": "scene-0925_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 11,
+      "sg_filename": "scene-0925_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 12,
+      "sg_filename": "scene-0925_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 13,
+      "sg_filename": "scene-0925_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 14,
+      "sg_filename": "scene-0925_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 15,
+      "sg_filename": "scene-0925_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 16,
+      "sg_filename": "scene-0925_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 17,
+      "sg_filename": "scene-0925_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 18,
+      "sg_filename": "scene-0925_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 19,
+      "sg_filename": "scene-0925_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 20,
+      "sg_filename": "scene-0925_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 21,
+      "sg_filename": "scene-0925_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 22,
+      "sg_filename": "scene-0925_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 23,
+      "sg_filename": "scene-0925_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 24,
+      "sg_filename": "scene-0925_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 25,
+      "sg_filename": "scene-0925_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 33,
+      "sg_filename": "scene-0925_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 34,
+      "sg_filename": "scene-0925_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 35,
+      "sg_filename": "scene-0925_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 36,
+      "sg_filename": "scene-0925_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 37,
+      "sg_filename": "scene-0925_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 38,
+      "sg_filename": "scene-0925_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0925",
+      "frame_id": 39,
+      "sg_filename": "scene-0925_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 12,
+      "sg_filename": "scene-0926_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 13,
+      "sg_filename": "scene-0926_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 14,
+      "sg_filename": "scene-0926_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 15,
+      "sg_filename": "scene-0926_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 16,
+      "sg_filename": "scene-0926_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 17,
+      "sg_filename": "scene-0926_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 18,
+      "sg_filename": "scene-0926_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 19,
+      "sg_filename": "scene-0926_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 20,
+      "sg_filename": "scene-0926_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 21,
+      "sg_filename": "scene-0926_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 22,
+      "sg_filename": "scene-0926_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 23,
+      "sg_filename": "scene-0926_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0926",
+      "frame_id": 40,
+      "sg_filename": "scene-0926_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 0,
+      "sg_filename": "scene-0929_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 2,
+      "sg_filename": "scene-0929_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 3,
+      "sg_filename": "scene-0929_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 4,
+      "sg_filename": "scene-0929_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 5,
+      "sg_filename": "scene-0929_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 6,
+      "sg_filename": "scene-0929_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 7,
+      "sg_filename": "scene-0929_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 8,
+      "sg_filename": "scene-0929_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 9,
+      "sg_filename": "scene-0929_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 10,
+      "sg_filename": "scene-0929_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 11,
+      "sg_filename": "scene-0929_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0929",
+      "frame_id": 12,
+      "sg_filename": "scene-0929_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 9,
+      "sg_filename": "scene-0930_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 10,
+      "sg_filename": "scene-0930_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 11,
+      "sg_filename": "scene-0930_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 12,
+      "sg_filename": "scene-0930_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 13,
+      "sg_filename": "scene-0930_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 14,
+      "sg_filename": "scene-0930_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0930",
+      "frame_id": 15,
+      "sg_filename": "scene-0930_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 0,
+      "sg_filename": "scene-0962_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 7,
+      "sg_filename": "scene-0962_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 8,
+      "sg_filename": "scene-0962_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 9,
+      "sg_filename": "scene-0962_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 10,
+      "sg_filename": "scene-0962_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 11,
+      "sg_filename": "scene-0962_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 12,
+      "sg_filename": "scene-0962_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 13,
+      "sg_filename": "scene-0962_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 14,
+      "sg_filename": "scene-0962_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 15,
+      "sg_filename": "scene-0962_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 16,
+      "sg_filename": "scene-0962_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 17,
+      "sg_filename": "scene-0962_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 18,
+      "sg_filename": "scene-0962_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 19,
+      "sg_filename": "scene-0962_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 20,
+      "sg_filename": "scene-0962_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 21,
+      "sg_filename": "scene-0962_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 22,
+      "sg_filename": "scene-0962_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 34,
+      "sg_filename": "scene-0962_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0962",
+      "frame_id": 40,
+      "sg_filename": "scene-0962_frame40_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0963",
+      "frame_id": 0,
+      "sg_filename": "scene-0963_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1059",
+      "frame_id": 38,
+      "sg_filename": "scene-1059_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1059",
+      "frame_id": 39,
+      "sg_filename": "scene-1059_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 34,
+      "sg_filename": "scene-1061_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 35,
+      "sg_filename": "scene-1061_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 36,
+      "sg_filename": "scene-1061_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 37,
+      "sg_filename": "scene-1061_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 38,
+      "sg_filename": "scene-1061_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1061",
+      "frame_id": 39,
+      "sg_filename": "scene-1061_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 0,
+      "sg_filename": "scene-1062_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 1,
+      "sg_filename": "scene-1062_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 2,
+      "sg_filename": "scene-1062_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 3,
+      "sg_filename": "scene-1062_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 4,
+      "sg_filename": "scene-1062_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 5,
+      "sg_filename": "scene-1062_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 6,
+      "sg_filename": "scene-1062_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 7,
+      "sg_filename": "scene-1062_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 8,
+      "sg_filename": "scene-1062_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 9,
+      "sg_filename": "scene-1062_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 10,
+      "sg_filename": "scene-1062_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 11,
+      "sg_filename": "scene-1062_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 12,
+      "sg_filename": "scene-1062_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 13,
+      "sg_filename": "scene-1062_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 14,
+      "sg_filename": "scene-1062_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 15,
+      "sg_filename": "scene-1062_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1062",
+      "frame_id": 16,
+      "sg_filename": "scene-1062_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 4,
+      "sg_filename": "scene-1063_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 5,
+      "sg_filename": "scene-1063_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1063",
+      "frame_id": 6,
+      "sg_filename": "scene-1063_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 5,
+      "sg_filename": "scene-1064_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 6,
+      "sg_filename": "scene-1064_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 7,
+      "sg_filename": "scene-1064_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 8,
+      "sg_filename": "scene-1064_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 9,
+      "sg_filename": "scene-1064_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 10,
+      "sg_filename": "scene-1064_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 11,
+      "sg_filename": "scene-1064_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 12,
+      "sg_filename": "scene-1064_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 13,
+      "sg_filename": "scene-1064_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 14,
+      "sg_filename": "scene-1064_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 15,
+      "sg_filename": "scene-1064_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 16,
+      "sg_filename": "scene-1064_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 17,
+      "sg_filename": "scene-1064_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 18,
+      "sg_filename": "scene-1064_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 19,
+      "sg_filename": "scene-1064_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 20,
+      "sg_filename": "scene-1064_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 21,
+      "sg_filename": "scene-1064_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 36,
+      "sg_filename": "scene-1064_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1064",
+      "frame_id": 37,
+      "sg_filename": "scene-1064_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 0,
+      "sg_filename": "scene-1066_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 5,
+      "sg_filename": "scene-1066_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 6,
+      "sg_filename": "scene-1066_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 7,
+      "sg_filename": "scene-1066_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 8,
+      "sg_filename": "scene-1066_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 9,
+      "sg_filename": "scene-1066_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 10,
+      "sg_filename": "scene-1066_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 11,
+      "sg_filename": "scene-1066_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 12,
+      "sg_filename": "scene-1066_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 13,
+      "sg_filename": "scene-1066_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 14,
+      "sg_filename": "scene-1066_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 34,
+      "sg_filename": "scene-1066_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 35,
+      "sg_filename": "scene-1066_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 36,
+      "sg_filename": "scene-1066_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1066",
+      "frame_id": 37,
+      "sg_filename": "scene-1066_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 5,
+      "sg_filename": "scene-1067_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 6,
+      "sg_filename": "scene-1067_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 7,
+      "sg_filename": "scene-1067_frame7_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 8,
+      "sg_filename": "scene-1067_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 9,
+      "sg_filename": "scene-1067_frame9_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 10,
+      "sg_filename": "scene-1067_frame10_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 11,
+      "sg_filename": "scene-1067_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 12,
+      "sg_filename": "scene-1067_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 13,
+      "sg_filename": "scene-1067_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 14,
+      "sg_filename": "scene-1067_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 15,
+      "sg_filename": "scene-1067_frame15_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 16,
+      "sg_filename": "scene-1067_frame16_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 17,
+      "sg_filename": "scene-1067_frame17_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 18,
+      "sg_filename": "scene-1067_frame18_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 19,
+      "sg_filename": "scene-1067_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 20,
+      "sg_filename": "scene-1067_frame20_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 21,
+      "sg_filename": "scene-1067_frame21_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 22,
+      "sg_filename": "scene-1067_frame22_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 23,
+      "sg_filename": "scene-1067_frame23_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 24,
+      "sg_filename": "scene-1067_frame24_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 25,
+      "sg_filename": "scene-1067_frame25_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 26,
+      "sg_filename": "scene-1067_frame26_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 27,
+      "sg_filename": "scene-1067_frame27_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 28,
+      "sg_filename": "scene-1067_frame28_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 29,
+      "sg_filename": "scene-1067_frame29_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 30,
+      "sg_filename": "scene-1067_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 31,
+      "sg_filename": "scene-1067_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 32,
+      "sg_filename": "scene-1067_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 33,
+      "sg_filename": "scene-1067_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 34,
+      "sg_filename": "scene-1067_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 35,
+      "sg_filename": "scene-1067_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 36,
+      "sg_filename": "scene-1067_frame36_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 37,
+      "sg_filename": "scene-1067_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 38,
+      "sg_filename": "scene-1067_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1067",
+      "frame_id": 39,
+      "sg_filename": "scene-1067_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 30,
+      "sg_filename": "scene-1068_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 31,
+      "sg_filename": "scene-1068_frame31_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 32,
+      "sg_filename": "scene-1068_frame32_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 33,
+      "sg_filename": "scene-1068_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 34,
+      "sg_filename": "scene-1068_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1068",
+      "frame_id": 35,
+      "sg_filename": "scene-1068_frame35_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1069",
+      "frame_id": 37,
+      "sg_filename": "scene-1069_frame37_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1069",
+      "frame_id": 38,
+      "sg_filename": "scene-1069_frame38_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1069",
+      "frame_id": 39,
+      "sg_filename": "scene-1069_frame39_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 0,
+      "sg_filename": "scene-1070_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 1,
+      "sg_filename": "scene-1070_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 2,
+      "sg_filename": "scene-1070_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 3,
+      "sg_filename": "scene-1070_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 4,
+      "sg_filename": "scene-1070_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 5,
+      "sg_filename": "scene-1070_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 6,
+      "sg_filename": "scene-1070_frame6_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 11,
+      "sg_filename": "scene-1070_frame11_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 12,
+      "sg_filename": "scene-1070_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 13,
+      "sg_filename": "scene-1070_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1070",
+      "frame_id": 14,
+      "sg_filename": "scene-1070_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 12,
+      "sg_filename": "scene-1071_frame12_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 13,
+      "sg_filename": "scene-1071_frame13_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 14,
+      "sg_filename": "scene-1071_frame14_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 30,
+      "sg_filename": "scene-1071_frame30_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 33,
+      "sg_filename": "scene-1071_frame33_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1071",
+      "frame_id": 34,
+      "sg_filename": "scene-1071_frame34_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 0,
+      "sg_filename": "scene-1073_frame0_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 1,
+      "sg_filename": "scene-1073_frame1_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 2,
+      "sg_filename": "scene-1073_frame2_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 3,
+      "sg_filename": "scene-1073_frame3_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 4,
+      "sg_filename": "scene-1073_frame4_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 5,
+      "sg_filename": "scene-1073_frame5_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 19,
+      "sg_filename": "scene-1073_frame19_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-1073",
+      "frame_id": 20,
+      "sg_filename": "scene-1073_frame20_scene_graph.json"
+    }
+  ]
+}

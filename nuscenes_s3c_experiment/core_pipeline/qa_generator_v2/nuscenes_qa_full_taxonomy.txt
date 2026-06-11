@@ -1,0 +1,674 @@
+====================================================================================================
+NuScenesQA 官方题集 — 完整四级分类统计
+====================================================================================================
+总问题数: 83337
+
+====================================================================================================
+【摘要】 第一级(L) × 第二级(Category) 分布
+====================================================================================================
+Level  Category          Count     Pct
+----------------------------------------
+L0     comparison         1150    1.4%
+L0     count              8119    9.7%
+L0     exist             11337   13.6%
+L0     object             2568    3.1%
+L0     status             4070    4.9%
+L1     comparison        11659   14.0%
+L1     count              8352   10.0%
+L1     exist             13297   16.0%
+L1     object            14878   17.9%
+L1     status             7907    9.5%
+----------------------------------------
+L0     ALL               27244   32.7%
+L1     ALL               56093   67.3%
+
+ALL    Category          Count     Pct
+----------------------------------------
+ALL    comparison        12809   15.4%
+ALL    count             16471   19.8%
+ALL    exist             24634   29.6%
+ALL    object            17446   20.9%
+ALL    status            11977   14.4%
+
+====================================================================================================
+【完整展开】 四级分类详情
+====================================================================================================
+
+================================================================================
+  第一级: L0 (共 27244 题)
+================================================================================
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: COMPARISON (1150 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: comparison_global (1150 题)
+        452x  Do the {TYPE} and the {TYPE} have the same status?
+        249x  Does the {TYPE} have the same status as the {TYPE}?
+        234x  Is the status of the {TYPE} the same as the {TYPE}?
+        215x  Is the {TYPE} the same status as the {TYPE}?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: COUNT (8119 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: count_status_type_global (3264 题)
+       1610x  How many {STATUS} {TYPE} are there?
+       1587x  What number of {STATUS} {TYPE} are there?
+         37x  What number of {STATUS} {TYPE}s are there?
+         30x  How many {STATUS} {TYPE}s are there?
+
+    第三级: count_same_status_global (2517 题)
+        645x  What number of other {TYPE} are there of the same status as the {TYPE}?
+        643x  How many other {TYPE} are there of the same status as the {TYPE}?
+        620x  How many other {TYPE} are in the same status as the {TYPE}?
+        609x  What number of other {TYPE} are in the same status as the {TYPE}?
+
+    第三级: count_type_global (2338 题)
+       1168x  How many {TYPE} are there?
+       1127x  What number of {TYPE} are there?
+         24x  How many {TYPE}s are there?
+         19x  What number of {TYPE}s are there?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: EXIST (11337 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: exist_status_type_global (5053 题)
+       2455x  Are there any {STATUS} {TYPE}?
+       2293x  Are any {STATUS} {TYPE} visible?
+        167x  Are there any {STATUS} {TYPE}s?
+        138x  Are any {STATUS} {TYPE}s visible?
+
+    第三级: exist_same_status_global (3475 题)
+        860x  Is there another {TYPE} that has the same status as the {TYPE}?
+        855x  Are there any other {TYPE} that in the same status as the {TYPE}?
+        850x  Is there another {TYPE} of the same status as the {TYPE}?
+        782x  Are there any other {TYPE} of the same status as the {TYPE}?
+         56x  Are there any other {TYPE}s of the same status as the {TYPE}?
+         51x  Are there any other {TYPE}s that in the same status as the {TYPE}?
+          6x  Are there any other {TYPE} of the same status as the animal?
+          4x  Are there any other {TYPE} that in the same status as the animal?
+          4x  Is there another {TYPE} that has the same status as the animal?
+          3x  Is there another {TYPE} of the same status as the animal?
+          1x  Is there another animal that has the same status as the {TYPE}?
+          1x  Are there any other animals that in the same status as the {TYPE}?
+          1x  Is there another animal that has the same status as the animal?
+          1x  Are there any other {TYPE}s that in the same status as the animal?
+
+    第三级: exist_type_global (2806 题)
+       1347x  Are any {TYPE} visible?
+       1299x  Are there any {TYPE}?
+         84x  Are there any {TYPE}s?
+         76x  Are any {TYPE}s visible?
+
+    第三级: exist_other (3 题)
+          2x  Are any animals visible?
+          1x  Are there any animals?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: OBJECT (2568 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: object_global (2568 题)
+        863x  The {STATUS} {TYPE} is what?
+        855x  There is a {STATUS} {TYPE}; what is it?
+        850x  What is the {STATUS} {TYPE}?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: STATUS (4070 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: status_of_obj_global (4070 题)
+       1047x  There is a {TYPE}; what status is it?
+       1018x  What status is the {TYPE}?
+       1012x  The {TYPE} is in what status?
+        993x  What is the status of the {TYPE}?
+
+================================================================================
+  第一级: L1 (共 56093 题)
+================================================================================
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: COMPARISON (11659 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: comparison_one_directional (7707 题)
+        232x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE}?
+        230x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} have the same status?
+        226x  Is the status of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        223x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} have the same status?
+        222x  Does the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        219x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE}?
+        219x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE}?
+        219x  There is a {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        218x  Does the {TYPE} have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        217x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE}?
+        214x  Do the {TYPE} and the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status?
+        213x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE}?
+        212x  Does the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE}?
+        212x  Does the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE}?
+        211x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE}?
+        210x  There is a {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        209x  There is a {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        205x  Do the {TYPE} and the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status?
+        198x  There is a {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        197x  Is the status of the {TYPE} the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        197x  There is a {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        196x  Is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE}?
+        196x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE}?
+        185x  There is a {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        126x  Does the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        121x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE}?
+        121x  There is a {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        121x  There is a {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        118x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE}?
+        117x  There is a {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {TYPE}?
+        116x  Do the {TYPE} and the {TYPE} to the {DIR} of the {TYPE} have the same status?
+        116x  Does the {TYPE} to the {DIR} of the {TYPE} have the same status as the {TYPE}?
+        116x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE}?
+        112x  Do the {TYPE} to the {DIR} of the {TYPE} and the {TYPE} have the same status?
+        111x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE}?
+        111x  Does the {TYPE} that is to the {DIR} of the {TYPE} have the same status as the {TYPE}?
+        109x  There is a {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+        109x  Do the {TYPE} that is to the {DIR} of the {TYPE} and the {TYPE} have the same status?
+        105x  There is a {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        104x  Is the status of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+        104x  Is the status of the {TYPE} the same as the {TYPE} to the {DIR} of the {TYPE}?
+        103x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE}?
+        102x  Does the {TYPE} have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         98x  Do the {TYPE} and the {TYPE} that is to the {DIR} of the {TYPE} have the same status?
+         96x  There is a {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         96x  Is the status of the {TYPE} that is to the {DIR} of the {TYPE} the same as the {TYPE}?
+         96x  There is a {TYPE} that is to the {DIR} of the {TYPE}; does it have the same status as the {TYPE}?
+         94x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is it the same status as the {TYPE}?
+          2x  Is the status of the {TYPE} the same as the {TYPE} to the {DIR} of the animal?
+          1x  There is a {TYPE} that is to the {DIR} of the animal; is its status the same as the {TYPE}?
+          1x  There is a {TYPE} that is to the {DIR} of the animal; does it have the same status as the {TYPE}?
+          1x  There is a {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the animal?
+
+    第三级: comparison_both_directional (3952 题)
+        104x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        104x  Is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         95x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         91x  Does the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         91x  Is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         89x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         89x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         88x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         88x  Does the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         88x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         88x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status?
+         87x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         82x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status?
+         81x  Does the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         81x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status?
+         77x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         77x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         74x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         73x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         72x  Does the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         72x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         72x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status?
+         71x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         57x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         47x  Does the {TYPE} that is to the {DIR} of the {TYPE} have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         42x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} that is to the {DIR} of the {TYPE} have the same status?
+         38x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         38x  Is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         37x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         37x  Is the status of the {TYPE} that is to the {DIR} of the {TYPE} the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         37x  Does the {TYPE} to the {DIR} of the {TYPE} have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         36x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} to the {DIR} of the {TYPE} have the same status?
+         36x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         36x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         36x  Does the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         35x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {TYPE}?
+         35x  Do the {TYPE} to the {DIR} of the {TYPE} and the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status?
+         35x  Do the {TYPE} that is to the {DIR} of the {TYPE} and the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status?
+         34x  There is a {TYPE} that is to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         34x  Is the status of the {TYPE} that is to the {DIR} of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         33x  Does the {TYPE} that is to the {DIR} of the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         33x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         33x  Does the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         33x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         32x  Do the {TYPE} that is to the {DIR} of the {TYPE} and the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status?
+         32x  Does the {TYPE} to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         31x  There is a {TYPE} that is to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         31x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         31x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} that is to the {DIR} of the {TYPE} have the same status?
+         31x  Does the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         31x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         31x  Do the {TYPE} to the {DIR} of the {TYPE} and the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} have the same status?
+         31x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         30x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         30x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {TYPE}?
+         30x  Does the {TYPE} that is to the {DIR} of the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         29x  Is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} to the {DIR} of the {TYPE}?
+         29x  Does the {TYPE} to the {DIR} of the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         29x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} to the {DIR} of the {TYPE} have the same status?
+         29x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         29x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         28x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         27x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE} to the {DIR} of the {TYPE}?
+         27x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         25x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         25x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         25x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         24x  Does the {TYPE} to the {DIR} of the {TYPE} have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         24x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         24x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         23x  Do the {TYPE} to the {DIR} of the {TYPE} and the {TYPE} that is to the {DIR} of the {TYPE} have the same status?
+         23x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {TYPE}?
+         22x  Do the {TYPE} to the {DIR} of the {TYPE} and the {TYPE} to the {DIR} of the {TYPE} have the same status?
+         22x  There is a {TYPE} that is to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         22x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {TYPE}?
+         22x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         21x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE} to the {DIR} of the {TYPE}?
+         21x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         21x  There is a {TYPE} that is to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         20x  Do the {TYPE} that is to the {DIR} of the {TYPE} and the {TYPE} to the {DIR} of the {TYPE} have the same status?
+         19x  Is the status of the {TYPE} that is to the {DIR} of the {TYPE} the same as the {TYPE} to the {DIR} of the {TYPE}?
+         19x  Is the status of the {TYPE} that is to the {DIR} of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         19x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         18x  Do the {TYPE} that is to the {DIR} of the {TYPE} and the {TYPE} that is to the {DIR} of the {TYPE} have the same status?
+         18x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         17x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the {TYPE}?
+         16x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         16x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         16x  Does the {TYPE} that is to the {DIR} of the {TYPE} have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         16x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         16x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         16x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         15x  Does the {TYPE} to the {DIR} of the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         14x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         14x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         14x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is it the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+          2x  Do the {TYPE} that is to the {DIR} of the animal and the {TYPE} to the {DIR} of the animal have the same status?
+          2x  Does the {TYPE} that is to the {DIR} of the animal have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+          1x  There is a {TYPE} to the {DIR} of the {TYPE}; does it have the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Is the status of the {TYPE} to the {DIR} of the {TYPE} the same as the {TYPE} that is to the {DIR} of the animal?
+          1x  There is a {TYPE} to the {DIR} of the {TYPE}; is it the same status as the {TYPE} to the {DIR} of the animal?
+          1x  There is a {TYPE} that is to the {DIR} of the {TYPE}; is its status the same as the {TYPE} to the {DIR} of the animal?
+          1x  There is a {TYPE} to the {DIR} of the {TYPE}; is its status the same as the {TYPE} that is to the {DIR} of the animal?
+          1x  There is a {TYPE} to the {DIR} of the animal; is its status the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+          1x  There is a {TYPE} to the {DIR} of the animal; is its status the same as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: COUNT (8352 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: count_type_near_obj (4090 题)
+        461x  There is a {STATUS} {TYPE}; what number of {TYPE} are to the {DIR} of it?
+        440x  What number of {TYPE} are to the {DIR} of the {STATUS} {TYPE}?
+        424x  How many {TYPE} are to the {DIR} of the {STATUS} {TYPE}?
+        406x  There is a {STATUS} {TYPE}; how many {TYPE} are to the {DIR} of it?
+        271x  What number of {STATUS} {TYPE} are to the {DIR} of the {STATUS} {TYPE}?
+        267x  How many {STATUS} {TYPE} are to the {DIR} of the {STATUS} {TYPE}?
+        263x  There is a {STATUS} {TYPE}; what number of {STATUS} {TYPE} are to the {DIR} of it?
+        244x  There is a {STATUS} {TYPE}; how many {STATUS} {TYPE} are to the {DIR} of it?
+        212x  There is a {TYPE}; what number of {TYPE} are to the {DIR} of it?
+        202x  There is a {TYPE}; how many {TYPE} are to the {DIR} of it?
+        192x  What number of {TYPE} are to the {DIR} of the {TYPE}?
+        185x  How many {TYPE} are to the {DIR} of the {TYPE}?
+        134x  There is a {TYPE}; how many {STATUS} {TYPE} are to the {DIR} of it?
+        125x  There is a {TYPE}; what number of {STATUS} {TYPE} are to the {DIR} of it?
+        115x  What number of {STATUS} {TYPE} are to the {DIR} of the {TYPE}?
+        107x  How many {STATUS} {TYPE} are to the {DIR} of the {TYPE}?
+          5x  How many {TYPE}s are to the {DIR} of the {STATUS} {TYPE}?
+          4x  What number of {STATUS} {TYPE}s are to the {DIR} of the {STATUS} {TYPE}?
+          4x  There is a {STATUS} {TYPE}; what number of {TYPE}s are to the {DIR} of it?
+          4x  There is a {STATUS} {TYPE}; how many {TYPE}s are to the {DIR} of it?
+          3x  There is a {TYPE}; what number of {TYPE}s are to the {DIR} of it?
+          3x  There is a {TYPE}; how many {TYPE}s are to the {DIR} of it?
+          3x  There is a {STATUS} {TYPE}; what number of {STATUS} {TYPE}s are to the {DIR} of it?
+          2x  How many {TYPE}s are to the {DIR} of the {TYPE}?
+          2x  There is a {STATUS} {TYPE}; how many {STATUS} {TYPE}s are to the {DIR} of it?
+          2x  What number of {TYPE}s are to the {DIR} of the {TYPE}?
+          2x  How many {STATUS} {TYPE}s are to the {DIR} of the {STATUS} {TYPE}?
+          2x  How many {STATUS} {TYPE} are to the {DIR} of the animal?
+          2x  There is a {TYPE}; how many {STATUS} {TYPE}s are to the {DIR} of it?
+          1x  How many {STATUS} {TYPE}s are to the {DIR} of the {TYPE}?
+          1x  There is a {TYPE}; what number of {STATUS} {TYPE}s are to the {DIR} of it?
+          1x  What number of {STATUS} {TYPE}s are to the {DIR} of the {TYPE}?
+          1x  What number of {TYPE}s are to the {DIR} of the {STATUS} {TYPE}?
+
+    第三级: count_same_status_directional (3133 题)
+        380x  What number of other {TYPE} in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        361x  How many other {TYPE} in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        357x  How many other {TYPE} are in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        357x  How many other {TYPE} are in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        346x  What number of other {TYPE} in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        334x  How many other {TYPE} in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        170x  How many other {TYPE} in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        166x  How many other {TYPE} are in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        157x  What number of other {TYPE} in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        153x  How many other {TYPE} are in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        153x  What number of other {TYPE} in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        141x  How many other {TYPE} in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+          9x  How many other {TYPE}s in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+          7x  What number of other {TYPE}s in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+          7x  How many other {TYPE}s are in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+          6x  What number of other {TYPE}s in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+          6x  How many other {TYPE}s are in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+          6x  How many other {TYPE}s in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+          5x  How many other {TYPE}s in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+          4x  What number of other {TYPE}s in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+          3x  How many other {TYPE}s are in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+          2x  How many other {TYPE}s are in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+          2x  How many other {TYPE}s in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+          1x  What number of other {TYPE}s in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+
+    第三级: count_type_near_ego (1129 题)
+        361x  How many {TYPE} are to the {DIR} of me?
+        342x  What number of {TYPE} are to the {DIR} of me?
+        215x  How many {STATUS} {TYPE} are to the {DIR} of me?
+        209x  What number of {STATUS} {TYPE} are to the {DIR} of me?
+          1x  What number of {TYPE}s are to the {DIR} of me?
+          1x  What number of {STATUS} {TYPE}s are to the {DIR} of me?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: EXIST (13297 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: exist_type_near_obj (6418 题)
+       1183x  There is a {STATUS} {TYPE}; are there any {STATUS} {TYPE} to the {DIR} of it?
+       1166x  Are there any {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        965x  Are there any {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        920x  There is a {STATUS} {TYPE}; are there any {TYPE} to the {DIR} of it?
+        521x  There is a {TYPE}; are there any {STATUS} {TYPE} to the {DIR} of it?
+        472x  Are there any {STATUS} {TYPE} to the {DIR} of the {TYPE}?
+        470x  There is a {TYPE}; are there any {TYPE} to the {DIR} of it?
+        455x  Are there any {TYPE} to the {DIR} of the {TYPE}?
+         54x  Are there any {STATUS} {TYPE}s to the {DIR} of the {STATUS} {TYPE}?
+         51x  There is a {STATUS} {TYPE}; are there any {STATUS} {TYPE}s to the {DIR} of it?
+         37x  There is a {STATUS} {TYPE}; are there any {TYPE}s to the {DIR} of it?
+         30x  There is a {TYPE}; are there any {STATUS} {TYPE}s to the {DIR} of it?
+         29x  Are there any {TYPE}s to the {DIR} of the {STATUS} {TYPE}?
+         19x  Are there any {STATUS} {TYPE}s to the {DIR} of the {TYPE}?
+         19x  There is a {TYPE}; are there any {TYPE}s to the {DIR} of it?
+         14x  Are there any {TYPE}s to the {DIR} of the {TYPE}?
+          4x  Are there any {TYPE} to the {DIR} of the animal?
+          2x  There is a animal; are there any {STATUS} {TYPE} to the {DIR} of it?
+          2x  Are there any {STATUS} {TYPE} to the {DIR} of the animal?
+          1x  Are there any animals to the {DIR} of the {TYPE}?
+          1x  There is a {TYPE}; are there any animals to the {DIR} of it?
+          1x  Are there any animals to the {DIR} of the {STATUS} {TYPE}?
+          1x  There is a animal; are there any {TYPE} to the {DIR} of it?
+          1x  There is a animal; are there any {TYPE}s to the {DIR} of it?
+
+    第三级: exist_same_status_directional (5042 题)
+        463x  Is there another {TYPE} of the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        452x  Is there another {TYPE} that has the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        451x  Is there another {TYPE} of the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        424x  Are there any other {TYPE} that in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        423x  Are there any other {TYPE} of the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        422x  Are there any other {TYPE} of the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        403x  Are there any other {TYPE} that in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        394x  Is there another {TYPE} that has the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        190x  Is there another {TYPE} that has the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        183x  Is there another {TYPE} of the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        178x  Are there any other {TYPE} that in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        177x  Is there another {TYPE} of the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        177x  Are there any other {TYPE} of the same status as the {TYPE} to the {DIR} of the {TYPE}?
+        176x  Are there any other {TYPE} that in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        175x  Are there any other {TYPE} of the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+        171x  Is there another {TYPE} that has the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         30x  Are there any other {TYPE}s of the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         27x  Are there any other {TYPE}s that in the same status as the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+         25x  Are there any other {TYPE}s of the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         21x  Are there any other {TYPE}s that in the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+         18x  Are there any other {TYPE}s that in the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         18x  Are there any other {TYPE}s of the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+         13x  Are there any other {TYPE}s of the same status as the {TYPE} to the {DIR} of the {TYPE}?
+         11x  Are there any other {TYPE}s that in the same status as the {TYPE} that is to the {DIR} of the {TYPE}?
+          4x  Is there another {TYPE} of the same status as the {TYPE} that is to the {DIR} of the animal?
+          3x  Is there another {TYPE} of the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Are there any other {TYPE} of the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Is there another animal of the same status as the {TYPE} to the {DIR} of the {TYPE}?
+          1x  Is there another {TYPE} that has the same status as the {TYPE} that is to the {DIR} of the animal?
+          1x  Is there another animal of the same status as the animal that is to the {DIR} of the {STATUS} {TYPE}?
+          1x  Is there another {TYPE} that has the same status as the animal to the {DIR} of the {STATUS} {TYPE}?
+          1x  Are there any other {TYPE} that in the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Is there another {TYPE} that has the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Are there any other {TYPE}s of the same status as the {TYPE} that is to the {DIR} of the animal?
+          1x  Are there any other animals of the same status as the {TYPE} that is to the {DIR} of the animal?
+          1x  Are there any other {TYPE} that in the same status as the {TYPE} that is to the {DIR} of the animal?
+          1x  Are there any other animals that in the same status as the {TYPE} to the {DIR} of the animal?
+          1x  Are there any other {TYPE} of the same status as the animal that is to the {DIR} of the {STATUS} {TYPE}?
+          1x  Is there another animal of the same status as the animal to the {DIR} of the {STATUS} {TYPE}?
+
+    第三级: exist_type_near_ego (1837 题)
+        956x  Are there any {STATUS} {TYPE} to the {DIR} of me?
+        820x  Are there any {TYPE} to the {DIR} of me?
+         34x  Are there any {STATUS} {TYPE}s to the {DIR} of me?
+         25x  Are there any {TYPE}s to the {DIR} of me?
+          2x  Are there any animals to the {DIR} of me?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: OBJECT (14878 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: object_near_obj (7353 题)
+        471x  The {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE} is what?
+        465x  What is the {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        461x  There is a {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE}; what is it?
+        453x  The {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} is what?
+        448x  What is the {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        446x  There is a {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; what is it?
+        223x  The {STATUS} {TYPE} that is to the {DIR} of the {TYPE} is what?
+        218x  The {STATUS} {TYPE} to the {DIR} of the {TYPE} is what?
+        217x  What is the {STATUS} {TYPE} to the {DIR} of the {TYPE}?
+        213x  There is a {STATUS} {TYPE} to the {DIR} of the {TYPE}; what is it?
+        187x  What is the {STATUS} {TYPE} that is to the {DIR} of the {TYPE}?
+        184x  There is a {STATUS} {TYPE} that is to the {DIR} of the {TYPE}; what is it?
+        147x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me is what?
+        142x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+        138x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me; what is it?
+        131x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; what is it?
+        130x  The {TYPE} to the {DIR} of the {STATUS} {TYPE} is what?
+        126x  What is the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        123x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+        122x  What is the {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me?
+        120x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} is what?
+        117x  There is a {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+        115x  What is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me?
+        114x  What is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        113x  There is a {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me; what is it?
+        110x  What is the {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+        107x  The {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me is what?
+        102x  What is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+        102x  The {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         96x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; what is it?
+         61x  What is the {TYPE} that is to the {DIR} of the {TYPE}?
+         56x  There is a {TYPE} that is to the {DIR} of the {TYPE}; what is it?
+         56x  What is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}?
+         55x  There is a {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me; what is it?
+         55x  What is the {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me?
+         54x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE} is what?
+         50x  The {TYPE} that is to the {DIR} of the {TYPE} is what?
+         49x  What is the {TYPE} to the {DIR} of the {TYPE}?
+         49x  The {TYPE} to the {DIR} of the {TYPE} is what?
+         48x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}; what is it?
+         47x  The {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me is what?
+         46x  There is a {TYPE} to the {DIR} of the {TYPE}; what is it?
+         45x  The {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         44x  What is the {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}?
+         44x  There is a {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}; what is it?
+         41x  The {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me is what?
+         40x  What is the {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+         39x  The {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         39x  What is the {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me?
+         38x  The {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE} is what?
+         35x  There is a {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+         35x  There is a {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of me; what is it?
+         33x  There is a {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+         32x  What is the {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+         20x  What is the {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}?
+         19x  What is the {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}?
+         18x  There is a {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}; what is it?
+         13x  The {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE} is what?
+         11x  The {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE} is what?
+         11x  There is a {STATUS} {TYPE} that is to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}; what is it?
+          5x  What is the {STATUS} {TYPE} to the {DIR} of the animal?
+          3x  There is a {STATUS} {TYPE} to the {DIR} of the animal; what is it?
+          3x  The {TYPE} that is to the {DIR} of the animal and the {DIR} of me is what?
+          3x  There is a {STATUS} {TYPE} that is to the {DIR} of the animal; what is it?
+          3x  What is the {STATUS} {TYPE} that is to the {DIR} of the animal?
+          3x  There is a {STATUS} {TYPE} that is to the {DIR} of the animal and the {DIR} of me; what is it?
+          2x  The {STATUS} {TYPE} to the {DIR} of the animal is what?
+          2x  What is the {TYPE} that is to the {DIR} of the animal and the {DIR} of me?
+          2x  The {STATUS} {TYPE} that is to the {DIR} of the animal and the {DIR} of me is what?
+          1x  The {TYPE} that is to the {DIR} of the animal and the {DIR} of the {STATUS} {TYPE} is what?
+          1x  The {STATUS} {TYPE} that is to the {DIR} of the animal is what?
+          1x  There is a {TYPE} that is to the {DIR} of the animal and the {DIR} of me; what is it?
+
+    第三级: object_near_ego (4219 题)
+        473x  The {STATUS} {TYPE} that is to the {DIR} of me is what?
+        465x  There is a {STATUS} {TYPE} that is to the {DIR} of me; what is it?
+        451x  What is the {STATUS} {TYPE} to the {DIR} of me?
+        446x  The {STATUS} {TYPE} to the {DIR} of me is what?
+        434x  What is the {STATUS} {TYPE} that is to the {DIR} of me?
+        427x  There is a {STATUS} {TYPE} to the {DIR} of me; what is it?
+        145x  What is the {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}?
+        142x  The {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE} is what?
+        133x  There is a {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}; what is it?
+        117x  There is a {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}; what is it?
+         90x  The {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE} is what?
+         88x  What is the {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}?
+         87x  There is a {TYPE} that is to the {DIR} of me; what is it?
+         84x  What is the {TYPE} to the {DIR} of me?
+         83x  There is a {TYPE} to the {DIR} of me; what is it?
+         81x  What is the {TYPE} that is to the {DIR} of me?
+         80x  The {TYPE} to the {DIR} of me is what?
+         71x  The {TYPE} that is to the {DIR} of me is what?
+         62x  The {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE} is what?
+         61x  What is the {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE}?
+         58x  There is a {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE}; what is it?
+         51x  The {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE} is what?
+         41x  What is the {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE}?
+         39x  There is a {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the {TYPE}; what is it?
+          3x  What is the {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the animal?
+          3x  The {TYPE} that is to the {DIR} of me and the {DIR} of the animal is what?
+          2x  What is the {TYPE} that is to the {DIR} of me and the {DIR} of the animal?
+          1x  There is a {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the animal; what is it?
+          1x  The {STATUS} {TYPE} that is to the {DIR} of me and the {DIR} of the animal is what?
+
+    第三级: object_multi_constraint (3306 题)
+        142x  There is a {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me; what is it?
+        138x  The {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me is what?
+        136x  There is a {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}; what is it?
+        133x  The {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE} is what?
+        131x  There is a {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+        125x  What is the {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}?
+        123x  What is the {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+        116x  The {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me is what?
+        115x  The {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE} is what?
+        114x  What is the {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me?
+        108x  The {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+        108x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+        103x  What is the {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}?
+         99x  There is a {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {STATUS} {TYPE}; what is it?
+         98x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me?
+         97x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of me; what is it?
+         96x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+         95x  The {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         71x  The {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE} is what?
+         63x  There is a {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE}; what is it?
+         57x  The {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me is what?
+         56x  There is a {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me; what is it?
+         52x  What is the {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me?
+         51x  The {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE} is what?
+         50x  There is a {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}; what is it?
+         50x  What is the {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE}?
+         50x  The {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         48x  What is the {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}?
+         47x  What is the {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+         46x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}; what is it?
+         44x  There is a {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+         44x  The {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE} is what?
+         43x  There is a {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE}; what is it?
+         42x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the {TYPE}?
+         41x  The {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE} is what?
+         40x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me; what is it?
+         40x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me?
+         40x  What is the {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the {TYPE}?
+         39x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}; what is it?
+         35x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE}?
+         30x  The {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {STATUS} {TYPE} is what?
+         25x  The {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of me is what?
+         24x  The {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE} is what?
+         20x  There is a {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}; what is it?
+         17x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}?
+         16x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}; what is it?
+         15x  What is the {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE}?
+         12x  The {STATUS} {TYPE} that is both to the {DIR} of the {TYPE} and the {DIR} of the {TYPE} is what?
+          4x  What is the {TYPE} that is both to the {DIR} of the animal and the {DIR} of me?
+          3x  What is the {STATUS} {TYPE} that is both to the {DIR} of the animal and the {DIR} of the {STATUS} {TYPE}?
+          2x  The {TYPE} that is both to the {DIR} of the animal and the {DIR} of me is what?
+          2x  The {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the animal is what?
+          1x  What is the {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the animal?
+          1x  The {TYPE} that is both to the {DIR} of me and the {DIR} of the animal is what?
+          1x  What is the {TYPE} that is both to the {DIR} of me and the {DIR} of the animal?
+          1x  There is a {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the animal; what is it?
+          1x  The {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the animal is what?
+          1x  There is a {TYPE} that is both to the {DIR} of me and the {DIR} of the animal; what is it?
+          1x  What is the {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the animal?
+          1x  The {STATUS} {TYPE} that is both to the {DIR} of the {STATUS} {TYPE} and the {DIR} of the animal is what?
+          1x  There is a {STATUS} {TYPE} that is both to the {DIR} of me and the {DIR} of the animal; what is it?
+          1x  The {STATUS} {TYPE} that is both to the {DIR} of the animal and the {DIR} of me is what?
+
+  ──────────────────────────────────────────────────────────────────────
+  第二级: STATUS (7907 题)
+  ──────────────────────────────────────────────────────────────────────
+
+    第三级: status_of_obj_near_obj (4958 题)
+        374x  What status is the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        367x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; what status is it?
+        366x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} is in what status?
+        344x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; what status is it?
+        344x  What status is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        340x  What is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+        339x  What is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+        328x  The {TYPE} to the {DIR} of the {STATUS} {TYPE} is in what status?
+        313x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; what is its status?
+        307x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; what is its status?
+        172x  What status is the {TYPE} to the {DIR} of the {TYPE}?
+        161x  What status is the {TYPE} that is to the {DIR} of the {TYPE}?
+        161x  The {TYPE} to the {DIR} of the {TYPE} is in what status?
+        157x  What is the status of the {TYPE} that is to the {DIR} of the {TYPE}?
+        157x  There is a {TYPE} to the {DIR} of the {TYPE}; what is its status?
+        150x  There is a {TYPE} that is to the {DIR} of the {TYPE}; what status is it?
+        149x  The {TYPE} that is to the {DIR} of the {TYPE} is in what status?
+        141x  There is a {TYPE} to the {DIR} of the {TYPE}; what status is it?
+        140x  There is a {TYPE} that is to the {DIR} of the {TYPE}; what is its status?
+        138x  What is the status of the {TYPE} to the {DIR} of the {TYPE}?
+          2x  The {TYPE} to the {DIR} of the animal is in what status?
+          2x  There is a {TYPE} that is to the {DIR} of the animal; what is its status?
+          1x  There is a {TYPE} to the {DIR} of the animal; what is its status?
+          1x  There is a {TYPE} that is to the {DIR} of the animal; what status is it?
+          1x  What is the status of the {TYPE} to the {DIR} of the animal?
+          1x  What is the status of the {TYPE} that is to the {DIR} of the animal?
+          1x  What status is the {TYPE} to the {DIR} of the animal?
+          1x  There is a {TYPE} to the {DIR} of the animal; what status is it?
+
+    第三级: status_of_obj_near_ego (2949 题)
+        328x  What is the status of the {TYPE} that is to the {DIR} of me?
+        310x  There is a {TYPE} to the {DIR} of me; what is its status?
+        310x  There is a {TYPE} that is to the {DIR} of me; what status is it?
+        307x  The {TYPE} to the {DIR} of me is in what status?
+        288x  What is the status of the {TYPE} to the {DIR} of me?
+        287x  The {TYPE} that is to the {DIR} of me is in what status?
+        286x  There is a {TYPE} that is to the {DIR} of me; what is its status?
+        283x  What status is the {TYPE} to the {DIR} of me?
+        282x  There is a {TYPE} to the {DIR} of me; what status is it?
+        268x  What status is the {TYPE} that is to the {DIR} of me?
+
+====================================================================================================
+【统计汇总】
+====================================================================================================
+  第一级 (Level):     2 个 (L0, L1)
+  第二级 (Category):  10 个组合
+  第三级 (Direction): 23 个提问方向
+  第四级 (Variant):   536 个语义变体模式
+  总问题数:           83337

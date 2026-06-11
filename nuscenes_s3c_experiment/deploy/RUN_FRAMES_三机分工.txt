@@ -1,0 +1,80 @@
+ADVTEST V17 量产 — 三机帧分工清单（共 14 帧，互不重复）
+============================================================
+全量核对：本目录 frame_plan_all.json（14 条）
+
+约定根目录（按实际改）：
+  ADVTEST_ROOT=/home/yunyang/ADVTEST/DATA_new
+
+每台必须先：
+  1) conda activate advtest
+  2) Neo4j 已启动（本机 bolt://127.0.0.1:7687）
+  3) advtest_runtime.env 已填 VQA_API_KEY、NEO4J_PASSWORD、路径
+  4) 使用「本机专属」Excel + 帧表（下表），勿与他人共用同一 RQ.xlsx
+
+运行命令（三台相同，仅环境不同）：
+  cd $ADVTEST_ROOT/code/official_pipeline
+  python run_v17_production.py
+
+
+────────────────────────────────────────────────────────────
+机器 A（Server A）— 共 6 帧
+────────────────────────────────────────────────────────────
+ADVTEST_EXCEL_PATH=$ADVTEST_ROOT/data/RQ_server_a.xlsx
+ADVTEST_FRAME_PLAN_JSON=$ADVTEST_ROOT/code/deploy/frames_server_a.json
+
+  #  scene_id      frame_id   scene_graph 文件
+  1  scene-0103         3     scene-0103_frame3_scene_graph.json
+  2  scene-0103        15     scene-0103_frame15_scene_graph.json
+  3  scene-0103        25     scene-0103_frame25_scene_graph.json
+  4  scene-0103        28     scene-0103_frame28_scene_graph.json
+  5  scene-0553         8     scene-0553_frame8_scene_graph.json
+  6  scene-0757        26     scene-0757_frame26_scene_graph.json
+
+
+────────────────────────────────────────────────────────────
+机器 B（Server B）— 共 6 帧
+────────────────────────────────────────────────────────────
+ADVTEST_EXCEL_PATH=$ADVTEST_ROOT/data/RQ_server_b.xlsx
+ADVTEST_FRAME_PLAN_JSON=$ADVTEST_ROOT/code/deploy/frames_server_b.json
+
+  #  scene_id      frame_id   scene_graph 文件
+  1  scene-0103        31     scene-0103_frame31_scene_graph.json
+  2  scene-0103        33     scene-0103_frame33_scene_graph.json
+  3  scene-0103        38     scene-0103_frame38_scene_graph.json
+  4  scene-0916         8     scene-0916_frame8_scene_graph.json
+  5  scene-0926        20     scene-0926_frame20_scene_graph.json
+  6  scene-1077        19     scene-1077_frame19_scene_graph.json
+
+
+────────────────────────────────────────────────────────────
+机器 C（本地 / 第三台）— 共 2 帧
+────────────────────────────────────────────────────────────
+ADVTEST_EXCEL_PATH=$ADVTEST_ROOT/data/RQ_local.xlsx
+ADVTEST_FRAME_PLAN_JSON=$ADVTEST_ROOT/code/deploy/frames_local.json
+
+  #  scene_id      frame_id   scene_graph 文件
+  1  scene-0103         0     scene-0103_frame0_scene_graph.json
+  2  scene-0103         1     scene-0103_frame1_scene_graph.json
+
+
+────────────────────────────────────────────────────────────
+写入 advtest_runtime.env 的示例（每台改两行）
+────────────────────────────────────────────────────────────
+机器 A：
+  ADVTEST_EXCEL_PATH=/home/yunyang/ADVTEST/DATA_new/data/RQ_server_a.xlsx
+  ADVTEST_FRAME_PLAN_JSON=/home/yunyang/ADVTEST/DATA_new/code/deploy/frames_server_a.json
+
+机器 B：
+  ADVTEST_EXCEL_PATH=/home/yunyang/ADVTEST/DATA_new/data/RQ_server_b.xlsx
+  ADVTEST_FRAME_PLAN_JSON=/home/yunyang/ADVTEST/DATA_new/code/deploy/frames_server_b.json
+
+机器 C：
+  ADVTEST_EXCEL_PATH=/home/yunyang/ADVTEST/DATA_new/data/RQ_local.xlsx
+  ADVTEST_FRAME_PLAN_JSON=/home/yunyang/ADVTEST/DATA_new/code/deploy/frames_local.json
+
+（用户名若不是 yunyang，请替换路径前缀。）
+
+────────────────────────────────────────────────────────────
+合并结果
+────────────────────────────────────────────────────────────
+各机 generated_qa/ 与各自 RQ*.xlsx 分别拉回后合并或分别存档；勿覆盖他机文件。

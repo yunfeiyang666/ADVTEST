@@ -1,0 +1,54 @@
+# Virtual environments
+.venv310/
+.venv/
+venv/
+env/
+
+# IDE/Tool configs
+.vscode/
+.claude/
+.idea/
+
+# Large binary/archive files
+*.pdf
+*.zip
+*.tar.gz
+*.pkl
+*.parquet
+*.h5
+*.npy
+*.npz
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# NuScenes datasets, raw data, and mounts
+data/
+dataset/
+mnt/
+logs/
+
+# Heavy generation outputs and plans
+**/outputs/
+**/output/
+**/data_cache/
+**/filtered_scene_graphs/
+**/test_outputs/
+**/generated_qa/
+**/plans/
+**/reports/
+**/*.log
+**/*.csv
+**/*.jsonl
+
+# Baselines cloned repositories
+baselines/
+
+# SFT generated datasets
+**/sft_dataset/
+**/sft_dataset_test/
+

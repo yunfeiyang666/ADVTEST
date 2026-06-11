@@ -1,0 +1,18 @@
+{
+  "description": "L2 pivot 重构验证 — 2帧测试",
+  "created": "2026-04-24",
+  "frames": [
+    {
+      "scene_id": "scene-0103",
+      "frame_id": 0,
+      "sg_file": "scene-0103_frame0_scene_graph.json",
+      "note": "14 nodes (10 ped + 3 car + ego)"
+    },
+    {
+      "scene_id": "scene-0103",
+      "frame_id": 3,
+      "sg_file": "scene-0103_frame3_scene_graph.json",
+      "note": "24 nodes (17 ped + 4 car + 2 barrier + ego)"
+    }
+  ]
+}

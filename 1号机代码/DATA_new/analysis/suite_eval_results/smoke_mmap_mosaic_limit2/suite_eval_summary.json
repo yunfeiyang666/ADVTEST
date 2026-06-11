@@ -1,0 +1,19 @@
+[
+  {
+    "suite": "advtest_suite.jsonl",
+    "method": "advtest",
+    "mode": "MOCK",
+    "limit": 2,
+    "questions": 2,
+    "correct": 2,
+    "wrong": 0,
+    "failure_rate": 0.0,
+    "unique_l2": 4,
+    "failed_unique_l2": 0,
+    "failed_l2_per_question": 0.0,
+    "visited_frames": 1,
+    "top_failure_families": [],
+    "elapsed_seconds": 0.38217830657958984,
+    "failure_examples": []
+  }
+]

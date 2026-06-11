@@ -1,0 +1,19 @@
+**/__pycache__/
+**/.vscode/
+**/.venv/
+
+__rq1_out/
+__out/
+*__out/
+
+__test_seeds/
+
+# output images
+*.png
+*.pdf
+
+# excel files
+*.xlsx
+
+# log files
+*.log

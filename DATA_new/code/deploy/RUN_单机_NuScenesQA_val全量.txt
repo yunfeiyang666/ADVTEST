@@ -1,0 +1,85 @@
+ADVTEST — 单机跑 NuScenes-QA val 全量帧（约 6011 帧）
+====================================================
+说明：
+  - 「六千帧」= NuScenes-QA val 去重后的关键帧数，bundle 内多为 **6011**（以 target_summary.json 为准）。
+  - **推荐**：在 advtest_runtime.env 中设置
+      VQA_BUILD_SCENE_GRAPH_ONTHEFLY=true
+    则 V17 **每帧现场**从 nuScenes 生成原始场景图 → core_universe_filter 过滤 → 导入 Neo4j，
+    **不需要**事先准备 filtered_scene_graphs/*.json。
+  - 若 **不**开现场模式，则仍要求磁盘上存在与帧表同名的过滤后 SG 文件。
+
+────────────────────────────────────────────────────────────
+一、环境（单机，路径示例 yunyang）
+────────────────────────────────────────────────────────────
+export ADVTEST_ROOT=/home/yunyang/ADVTEST/DATA_new
+
+source /etc/anaconda3/etc/profile.d/conda.sh
+conda activate advtest
+export JAVA_HOME="$CONDA_PREFIX"
+export PATH="$CONDA_PREFIX/bin:$PATH"
+
+# Neo4j
+#   cd /home/yunyang/ADVTEST/neo4j && ./bin/neo4j start
+
+cd $ADVTEST_ROOT/code/official_pipeline
+
+────────────────────────────────────────────────────────────
+二、生成全量 val 帧表 JSON（6011 条）
+────────────────────────────────────────────────────────────
+python build_frame_plan_from_test6019_bundle.py \
+  --bundle-dir "$ADVTEST_ROOT/data/test6019_bundle" \
+  --out "$ADVTEST_ROOT/code/deploy/nuscenesqa_val_plan_full.json"
+
+# 现场构图模式下可 **省略** --check-sg；若仍想核对磁盘 SG，再加：
+#   --check-sg "$ADVTEST_ROOT/filtered_scene_graphs"
+
+────────────────────────────────────────────────────────────
+三、advtest_runtime.env（单机全量 + 现场构图）
+────────────────────────────────────────────────────────────
+ADVTEST_ROOT=/home/yunyang/ADVTEST/DATA_new
+
+ADVTEST_EXCEL_PATH=/home/yunyang/ADVTEST/DATA_new/data/RQ_nuscenesqa_val_full.xlsx
+ADVTEST_GEN_QA_DIR=/home/yunyang/ADVTEST/DATA_new/generated_qa
+FILTERED_SG_DIR=/home/yunyang/ADVTEST/DATA_new/filtered_scene_graphs
+
+ADVTEST_FRAME_PLAN_JSON=/home/yunyang/ADVTEST/DATA_new/code/deploy/nuscenesqa_val_plan_full.json
+
+NUSCENES_DATAROOT=/home/yunyang/ADVTEST/DATA_new/data
+NUSCENES_VERSION=v1.0-trainval
+VQA_QA_JSON=/home/yunyang/ADVTEST/DATA_new/data/NuScenes_val_questions.json
+
+# 现场构图（必开全量时推荐）
+VQA_BUILD_SCENE_GRAPH_ONTHEFLY=true
+# nuScenes：二选一 — (1) pip install nuscenes-devkit 装进当前 conda 环境；或 (2) 源码 devkit：
+# NUSCENES_DEVKIT_PATH=/home/yunyang/ADVTEST/nuscenes-devkit/nuscenes-devkit-master/python-sdk
+
+NEO4J_URI=bolt://127.0.0.1:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=<你的密码>
+
+VQA_API_BASE_URL=http://218.197.140.7:3001/v1
+VQA_API_KEY=<你的Key>
+VQA_MODEL_NAME=Qwen3.5-35B-A3B
+VQA_MODEL_AUDIT=Qwen3.5-35B-A3B
+VQA_MODEL_RENDER=Qwen3.5-35B-A3B
+VQA_Q_BATCH_SIZE=32
+VQA_Q_N_WORKERS=32
+VQA_BASELINE_N_WORKERS=32
+VQA_LLM_TIMEOUT_READ=180
+
+VQA_CLEAR_RUN_DATA=false
+VQA_AUTO_CONNECT_VPN=false
+
+（从模板复制 RQ Excel 为 RQ_nuscenesqa_val_full.xlsx。devkit 若不在上述路径，请改成实际目录。）
+
+────────────────────────────────────────────────────────────
+四、开跑
+────────────────────────────────────────────────────────────
+cd /home/yunyang/ADVTEST/DATA_new/code/official_pipeline
+python run_v17_production.py
+
+────────────────────────────────────────────────────────────
+五、资源说明
+────────────────────────────────────────────────────────────
+  - 6011 帧 ×（构图 + Neo4j + LLM）体量极大，建议 tmux/nohup，并按网关限流调低 VQA_*_WORKERS。
+  - 第一帧会加载 NuScenes 索引，较慢；后续帧复用同一进程内句柄。

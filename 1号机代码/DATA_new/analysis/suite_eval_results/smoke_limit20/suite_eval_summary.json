@@ -1,0 +1,277 @@
+[
+  {
+    "suite": "advtest_suite.jsonl",
+    "method": "advtest",
+    "mode": "MOCK",
+    "limit": 20,
+    "questions": 20,
+    "correct": 19,
+    "wrong": 1,
+    "failure_rate": 0.05,
+    "unique_l2": 27,
+    "failed_unique_l2": 1,
+    "failed_l2_per_question": 0.05,
+    "visited_frames": 1,
+    "top_failure_families": [
+      [
+        "converge",
+        1
+      ]
+    ],
+    "elapsed_seconds": 0.001514434814453125,
+    "failure_examples": [
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "8",
+        "family": "converge",
+        "question": "What car is to the back right of car1 and to the front right of car5?",
+        "answer": "car4",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car1|car4|car5"
+        ]
+      }
+    ]
+  },
+  {
+    "suite": "qaasker_suite.jsonl",
+    "method": "qaasker",
+    "mode": "MOCK",
+    "limit": 20,
+    "questions": 20,
+    "correct": 17,
+    "wrong": 3,
+    "failure_rate": 0.15,
+    "unique_l2": 14,
+    "failed_unique_l2": 5,
+    "failed_l2_per_question": 0.25,
+    "visited_frames": 1,
+    "top_failure_families": [
+      [
+        "viewpoint_transfer",
+        2
+      ],
+      [
+        "converge",
+        1
+      ]
+    ],
+    "elapsed_seconds": 0.0010094642639160156,
+    "failure_examples": [
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "45_followup",
+        "family": "viewpoint_transfer",
+        "question": "Is the answer left for the question: \"If you face from bicycle2 toward car5, is car2 on your left or on your right?\"?",
+        "answer": "yes",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|car5|car2"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "29",
+        "family": "converge",
+        "question": "Identify the car located to the front left of car4 and to the back right of ego, and to the back right of car1.",
+        "answer": "car2",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car1|car2|car4",
+          "car1|car2|ego",
+          "car4|car2|ego"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "69",
+        "family": "viewpoint_transfer",
+        "question": "If you face from bicycle2 toward ego, is car1 on your left or on your right?",
+        "answer": "right",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|ego|car1"
+        ]
+      }
+    ]
+  },
+  {
+    "suite": "qatest_suite.jsonl",
+    "method": "qatest",
+    "mode": "MOCK",
+    "limit": 20,
+    "questions": 20,
+    "correct": 11,
+    "wrong": 9,
+    "failure_rate": 0.45,
+    "unique_l2": 22,
+    "failed_unique_l2": 9,
+    "failed_l2_per_question": 0.45,
+    "visited_frames": 1,
+    "top_failure_families": [
+      [
+        "viewpoint_transfer",
+        4
+      ],
+      [
+        "direction_chain",
+        4
+      ],
+      [
+        "distance_chain",
+        1
+      ]
+    ],
+    "elapsed_seconds": 0.0011854171752929688,
+    "failure_examples": [
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "47",
+        "family": "distance_chain",
+        "question": "Which object is car1 nearer to, bus1 or car5?",
+        "answer": "car5",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bus1|car1|car5"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "73",
+        "family": "viewpoint_transfer",
+        "question": "Imagine facing from bicycle2 toward car1; would bus1 be on your ledt or right?",
+        "answer": "left",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|car1|bus1"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "66",
+        "family": "direction_chain",
+        "question": "Does car2 lie in the same direction from car5 as car1?",
+        "answer": false,
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car1|car5|car2"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "89",
+        "family": "viewpoint_transfer",
+        "question": "Imagine facing fraom car4 toward car2; would car5 be on your left or right?",
+        "answer": "left",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car4|car2|car5"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "69",
+        "family": "viewpoint_transfer",
+        "question": "If you face from bicycle2 toward ago, is car1 on your left or on your right?",
+        "answer": "right",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|ego|car1"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "60",
+        "family": "direction_chain",
+        "question": "Considering the direction from bus1 to bicycle2, is car1 in a similar direction from bicycle2?",
+        "answer": false,
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bus1|bicycle2|car1"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "93",
+        "family": "direction_chain",
+        "question": "Considering the direction from car5 to car1, is ego in a similar direction from car1??",
+        "answer": false,
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car5|car1|ego"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "40",
+        "family": "viewpoint_transfer",
+        "question": "Standing at bicycle2 and looking toward car2, is car5 to the left or the right?",
+        "answer": "right",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|car2|car5"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "86",
+        "family": "direction_chain",
+        "question": "Considering the direction from car1 to car5, is car4 in a similar wirection from car5?",
+        "answer": false,
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "car1|car5|car4"
+        ]
+      }
+    ]
+  },
+  {
+    "suite": "random_suite.jsonl",
+    "method": "random",
+    "mode": "MOCK",
+    "limit": 20,
+    "questions": 20,
+    "correct": 18,
+    "wrong": 2,
+    "failure_rate": 0.1,
+    "unique_l2": 24,
+    "failed_unique_l2": 2,
+    "failed_l2_per_question": 0.1,
+    "visited_frames": 1,
+    "top_failure_families": [
+      [
+        "direction_chain",
+        1
+      ],
+      [
+        "viewpoint_transfer",
+        1
+      ]
+    ],
+    "elapsed_seconds": 0.0010118484497070312,
+    "failure_examples": [
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "60",
+        "family": "direction_chain",
+        "question": "Considering the direction from bus1 to bicycle2, is car1 in a similar direction from bicycle2?",
+        "answer": false,
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bus1|bicycle2|car1"
+        ]
+      },
+      {
+        "scene_frame": "scene-0013_frame31",
+        "question_id": "61",
+        "family": "viewpoint_transfer",
+        "question": "Standing at bicycle2 and looking toward car1, is car5 to the left or the right?",
+        "answer": "right",
+        "predicted": "incorrect_prediction",
+        "l2_items": [
+          "bicycle2|car1|car5"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,1199 @@
+============================================================
+Final Source Trace for 70B QuaRot / SpinQuant
+============================================================
+Time: Tue May  5 11:56:56 PM CST 2026
+PWD: /mnt/tidal-alsh01/usr/qinshengqian/research/c4/wyy/LLM-Uncertainty-Bench
+
+============================================================
+[1] Existing CP result JSON files
+============================================================
+./cp_results_2k.json
+./cp_results_aligned_scan.json
+./cp_results_all.json
+
+============================================================
+[2] Extract Llama3.1-70B related entries from CP JSON files
+============================================================
+
+------------------------------------------------------------
+JSON: ./cp_results_2k.json
+------------------------------------------------------------
+/Llama2-13B/AWQ/RC -> {'Acc': 75.97, 'SS': 2.49, 'CR': 93.52}
+/Llama2-13B/AWQ/DRS -> {'Acc': 49.12, 'SS': 3.03, 'CR': 90.61}
+/Llama2-13B/AWQ/DS -> {'Acc': 60.96, 'SS': 2.29, 'CR': 89.98}
+/Llama2-13B/AWQ/CI -> {'Acc': 61.17, 'SS': 3.13, 'CR': 91.88}
+/Llama2-13B/AWQ/QA -> {'Acc': 51.43, 'SS': 3.05, 'CR': 91.6}
+/Llama2-13B/FlatQuant/RC -> {'Acc': 62.6, 'SS': 2.74, 'CR': 91.77}
+/Llama2-13B/FlatQuant/DRS -> {'Acc': 39.34, 'SS': 3.14, 'CR': 89.42}
+/Llama2-13B/FlatQuant/DS -> {'Acc': 48.13, 'SS': 2.96, 'CR': 90.18}
+/Llama2-13B/FlatQuant/CI -> {'Acc': 38.3, 'SS': 3.33, 'CR': 89.85}
+/Llama2-13B/FlatQuant/QA -> {'Acc': 44.07, 'SS': 3.25, 'CR': 91.53}
+/Llama2-13B/GPTQ/RC -> {'Acc': 76.6, 'SS': 2.3, 'CR': 93.87}
+/Llama2-13B/GPTQ/DRS -> {'Acc': 49.22, 'SS': 2.82, 'CR': 91.71}
+/Llama2-13B/GPTQ/DS -> {'Acc': 57.58, 'SS': 2.43, 'CR': 90.1}
+/Llama2-13B/GPTQ/CI -> {'Acc': 58.33, 'SS': 2.88, 'CR': 92.38}
+/Llama2-13B/GPTQ/QA -> {'Acc': 52.23, 'SS': 3.0, 'CR': 91.47}
+/Llama2-13B/QuaRot/RC -> {'Acc': 63.0, 'SS': 3.05, 'CR': 92.4}
+/Llama2-13B/QuaRot/DRS -> {'Acc': 35.3, 'SS': 3.4, 'CR': 91.01}
+/Llama2-13B/QuaRot/DS -> {'Acc': 43.55, 'SS': 3.31, 'CR': 90.45}
+/Llama2-13B/QuaRot/CI -> {'Acc': 43.8, 'SS': 3.48, 'CR': 89.58}
+/Llama2-13B/QuaRot/QA -> {'Acc': 43.87, 'SS': 3.36, 'CR': 91.07}
+/Llama2-13B/RTN/RC -> {'Acc': 75.3, 'SS': 2.58, 'CR': 93.58}
+/Llama2-13B/RTN/DRS -> {'Acc': 49.12, 'SS': 2.99, 'CR': 92.28}
+/Llama2-13B/RTN/DS -> {'Acc': 63.33, 'SS': 2.13, 'CR': 90.33}
+/Llama2-13B/RTN/CI -> {'Acc': 56.77, 'SS': 3.13, 'CR': 91.55}
+/Llama2-13B/RTN/QA -> {'Acc': 52.73, 'SS': 3.11, 'CR': 92.27}
+/Llama2-13B/SpinQuant/RC -> {'Acc': 64.97, 'SS': 2.75, 'CR': 92.95}
+/Llama2-13B/SpinQuant/DRS -> {'Acc': 35.3, 'SS': 3.37, 'CR': 90.64}
+/Llama2-13B/SpinQuant/DS -> {'Acc': 50.97, 'SS': 2.69, 'CR': 91.15}
+/Llama2-13B/SpinQuant/CI -> {'Acc': 41.93, 'SS': 3.35, 'CR': 90.3}
+/Llama2-13B/SpinQuant/QA -> {'Acc': 44.63, 'SS': 3.23, 'CR': 91.12}
+/Llama2-70B/RTN/RC -> {'Acc': 89.57, 'SS': 1.92, 'CR': 95.52}
+/Llama2-70B/RTN/DRS -> {'Acc': 66.23, 'SS': 2.45, 'CR': 92.23}
+/Llama2-70B/RTN/DS -> {'Acc': 54.24, 'SS': 2.34, 'CR': 91.4}
+/Llama2-70B/RTN/CI -> {'Acc': 83.03, 'SS': 1.86, 'CR': 94.28}
+/Llama2-70B/RTN/QA -> {'Acc': 64.4, 'SS': 2.56, 'CR': 92.45}
+/Llama3.1-70B/AWQ/RC -> {'Acc': 94.7, 'SS': 2.04, 'CR': 97.3}
+/Llama3.1-70B/AWQ/DRS -> {'Acc': 83.48, 'SS': 2.08, 'CR': 93.39}
+/Llama3.1-70B/AWQ/DS -> {'Acc': 68.57, 'SS': 2.11, 'CR': 92.8}
+/Llama3.1-70B/AWQ/CI -> {'Acc': 88.1, 'SS': 1.94, 'CR': 95.0}
+/Llama3.1-70B/AWQ/QA -> {'Acc': 81.23, 'SS': 2.35, 'CR': 94.52}
+/Llama3.1-70B/GPTQ/RC -> {'Acc': 95.23, 'SS': 1.92, 'CR': 97.52}
+/Llama3.1-70B/GPTQ/DRS -> {'Acc': 84.42, 'SS': 2.01, 'CR': 93.71}
+/Llama3.1-70B/GPTQ/DS -> {'Acc': 72.75, 'SS': 2.02, 'CR': 92.75}
+/Llama3.1-70B/GPTQ/CI -> {'Acc': 88.9, 'SS': 1.84, 'CR': 94.97}
+/Llama3.1-70B/GPTQ/QA -> {'Acc': 81.5, 'SS': 2.25, 'CR': 94.72}
+/Llama3.1-70B/QuaRot/RC -> {'Acc': 24.9, 'SS': 4.15, 'CR': 90.78}
+/Llama3.1-70B/QuaRot/DRS -> {'Acc': 23.12, 'SS': 4.13, 'CR': 88.52}
+/Llama3.1-70B/QuaRot/DS -> {'Acc': 23.58, 'SS': 4.93, 'CR': 89.51}
+/Llama3.1-70B/QuaRot/CI -> {'Acc': 23.73, 'SS': 4.23, 'CR': 90.92}
+/Llama3.1-70B/QuaRot/QA -> {'Acc': 25.93, 'SS': 3.93, 'CR': 90.82}
+/Llama3.1-70B/RTN/RC -> {'Acc': 89.03, 'SS': 1.75, 'CR': 94.67}
+/Llama3.1-70B/RTN/DRS -> {'Acc': 73.27, 'SS': 2.08, 'CR': 93.89}
+/Llama3.1-70B/RTN/DS -> {'Acc': 54.71, 'SS': 2.18, 'CR': 91.23}
+/Llama3.1-70B/RTN/CI -> {'Acc': 66.73, 'SS': 2.37, 'CR': 92.78}
+/Llama3.1-70B/RTN/QA -> {'Acc': 74.7, 'SS': 2.32, 'CR': 92.4}
+
+------------------------------------------------------------
+JSON: ./cp_results_aligned_scan.json
+------------------------------------------------------------
+/Llama2-13B/AWQ/RC -> {'Acc': 75.97, 'SS': 2.49, 'CR': 93.52}
+/Llama2-13B/AWQ/DRS -> {'Acc': 49.12, 'SS': 3.03, 'CR': 90.61}
+/Llama2-13B/AWQ/DS -> {'Acc': 60.96, 'SS': 2.29, 'CR': 89.98}
+/Llama2-13B/AWQ/CI -> {'Acc': 61.17, 'SS': 3.13, 'CR': 91.88}
+/Llama2-13B/AWQ/QA -> {'Acc': 51.43, 'SS': 3.05, 'CR': 91.6}
+/Llama2-13B/FlatQuant/RC -> {'Acc': 62.6, 'SS': 2.74, 'CR': 91.77}
+/Llama2-13B/FlatQuant/DRS -> {'Acc': 39.34, 'SS': 3.14, 'CR': 89.42}
+/Llama2-13B/FlatQuant/DS -> {'Acc': 48.13, 'SS': 2.96, 'CR': 90.18}
+/Llama2-13B/FlatQuant/CI -> {'Acc': 38.3, 'SS': 3.33, 'CR': 89.85}
+/Llama2-13B/FlatQuant/QA -> {'Acc': 44.07, 'SS': 3.25, 'CR': 91.53}
+/Llama2-13B/GPTQ/RC -> {'Acc': 76.6, 'SS': 2.3, 'CR': 93.87}
+/Llama2-13B/GPTQ/DRS -> {'Acc': 49.22, 'SS': 2.82, 'CR': 91.71}
+/Llama2-13B/GPTQ/DS -> {'Acc': 57.58, 'SS': 2.43, 'CR': 90.1}
+/Llama2-13B/GPTQ/CI -> {'Acc': 58.33, 'SS': 2.88, 'CR': 92.38}
+/Llama2-13B/GPTQ/QA -> {'Acc': 52.23, 'SS': 3.0, 'CR': 91.47}
+/Llama2-13B/QuaRot/RC -> {'Acc': 63.0, 'SS': 3.05, 'CR': 92.4}
+/Llama2-13B/QuaRot/DRS -> {'Acc': 35.3, 'SS': 3.4, 'CR': 91.01}
+/Llama2-13B/QuaRot/DS -> {'Acc': 43.55, 'SS': 3.31, 'CR': 90.45}
+/Llama2-13B/QuaRot/CI -> {'Acc': 43.8, 'SS': 3.48, 'CR': 89.58}
+/Llama2-13B/QuaRot/QA -> {'Acc': 43.87, 'SS': 3.36, 'CR': 91.07}
+/Llama2-13B/RTN/RC -> {'Acc': 75.3, 'SS': 2.58, 'CR': 93.58}
+/Llama2-13B/RTN/DRS -> {'Acc': 49.12, 'SS': 2.99, 'CR': 92.28}
+/Llama2-13B/RTN/DS -> {'Acc': 63.33, 'SS': 2.13, 'CR': 90.33}
+/Llama2-13B/RTN/CI -> {'Acc': 56.77, 'SS': 3.13, 'CR': 91.55}
+/Llama2-13B/RTN/QA -> {'Acc': 52.73, 'SS': 3.11, 'CR': 92.27}
+/Llama2-13B/SpinQuant/RC -> {'Acc': 64.97, 'SS': 2.75, 'CR': 92.95}
+/Llama2-13B/SpinQuant/DRS -> {'Acc': 35.3, 'SS': 3.37, 'CR': 90.64}
+/Llama2-13B/SpinQuant/DS -> {'Acc': 50.97, 'SS': 2.69, 'CR': 91.15}
+/Llama2-13B/SpinQuant/CI -> {'Acc': 41.93, 'SS': 3.35, 'CR': 90.3}
+/Llama2-13B/SpinQuant/QA -> {'Acc': 44.63, 'SS': 3.23, 'CR': 91.12}
+/Llama2-70B/RTN/RC -> {'Acc': 89.57, 'SS': 1.92, 'CR': 95.52}
+/Llama2-70B/RTN/DRS -> {'Acc': 66.23, 'SS': 2.45, 'CR': 92.23}
+/Llama2-70B/RTN/DS -> {'Acc': 54.24, 'SS': 2.34, 'CR': 91.4}
+/Llama2-70B/RTN/CI -> {'Acc': 83.03, 'SS': 1.86, 'CR': 94.28}
+/Llama2-70B/RTN/QA -> {'Acc': 64.4, 'SS': 2.56, 'CR': 92.45}
+/Llama3.1-70B/QuaRot/RC -> {'Acc': 24.9, 'SS': 4.15, 'CR': 90.78}
+/Llama3.1-70B/QuaRot/DRS -> {'Acc': 23.12, 'SS': 4.13, 'CR': 88.52}
+/Llama3.1-70B/QuaRot/DS -> {'Acc': 23.58, 'SS': 4.93, 'CR': 89.51}
+/Llama3.1-70B/QuaRot/CI -> {'Acc': 23.73, 'SS': 4.23, 'CR': 90.92}
+/Llama3.1-70B/QuaRot/QA -> {'Acc': 25.93, 'SS': 3.93, 'CR': 90.82}
+/Llama3.1-70B/RTN/RC -> {'Acc': 89.03, 'SS': 1.75, 'CR': 94.67}
+/Llama3.1-70B/RTN/DRS -> {'Acc': 73.27, 'SS': 2.08, 'CR': 93.89}
+/Llama3.1-70B/RTN/DS -> {'Acc': 54.71, 'SS': 2.18, 'CR': 91.23}
+/Llama3.1-70B/RTN/CI -> {'Acc': 66.73, 'SS': 2.37, 'CR': 92.78}
+/Llama3.1-70B/RTN/QA -> {'Acc': 74.7, 'SS': 2.32, 'CR': 92.4}
+/Llama3.1-8B/AWQ/RC -> {'Acc': 87.63, 'SS': 1.95, 'CR': 94.3}
+/Llama3.1-8B/AWQ/DRS -> {'Acc': 65.77, 'SS': 2.64, 'CR': 91.86}
+/Llama3.1-8B/AWQ/DS -> {'Acc': 58.25, 'SS': 2.15, 'CR': 91.83}
+/Llama3.1-8B/AWQ/CI -> {'Acc': 62.2, 'SS': 2.95, 'CR': 91.13}
+/Llama3.1-8B/AWQ/QA -> {'Acc': 64.17, 'SS': 2.95, 'CR': 92.03}
+
+------------------------------------------------------------
+JSON: ./cp_results_all.json
+------------------------------------------------------------
+/Llama2-13B/AWQ/RC -> {'Acc': 74.03, 'SS': 2.26, 'CR': 90.63}
+/Llama2-13B/AWQ/CI -> {'Acc': 57.7, 'SS': 2.48, 'CR': 86.11}
+/Llama2-13B/AWQ/DRS -> {'Acc': 53.48, 'SS': 2.51, 'CR': 89.93}
+/Llama2-13B/AWQ/DS -> {'Acc': 57.63, 'SS': 2.71, 'CR': 92.54}
+/Llama2-13B/AWQ/QA -> {'Acc': 52.95, 'SS': 3.07, 'CR': 93.24}
+/Llama2-13B/FP16/DS -> {'Acc': 58.23, 'SS': 2.49, 'CR': 92.6}
+/Llama2-13B/FP16/CI -> {'Acc': 57.76, 'SS': 2.57, 'CR': 87.35}
+/Llama2-13B/FP16/QA -> {'Acc': 54.15, 'SS': 3.01, 'CR': 92.44}
+/Llama2-13B/FP16/DRS -> {'Acc': 51.2, 'SS': 2.57, 'CR': 91.33}
+/Llama2-13B/FP16/RC -> {'Acc': 76.84, 'SS': 2.26, 'CR': 92.3}
+/Llama2-13B/FlatQuant/QA -> {'Acc': 36.01, 'SS': 4.23, 'CR': 89.89}
+/Llama2-13B/FlatQuant/CI -> {'Acc': 28.51, 'SS': 4.72, 'CR': 93.34}
+/Llama2-13B/FlatQuant/DRS -> {'Acc': 39.56, 'SS': 3.11, 'CR': 91.47}
+/Llama2-13B/FlatQuant/RC -> {'Acc': 42.5, 'SS': 4.57, 'CR': 92.14}
+/Llama2-13B/FlatQuant/DS -> {'Acc': 49.87, 'SS': 2.97, 'CR': 90.26}
+/Llama2-13B/QuaRot/DS -> {'Acc': 12.99, 'SS': 5.72, 'CR': 94.91}
+/Llama2-13B/QuaRot/CI -> {'Acc': 24.36, 'SS': 5.78, 'CR': 94.08}
+/Llama2-13B/QuaRot/QA -> {'Acc': 8.1, 'SS': 5.33, 'CR': 92.14}
+/Llama2-13B/QuaRot/DRS -> {'Acc': 15.66, 'SS': 5.36, 'CR': 91.16}
+/Llama2-13B/QuaRot/RC -> {'Acc': 0.0, 'SS': 5.4, 'CR': 93.37}
+/Llama2-13B/RTN/DS -> {'Acc': 60.24, 'SS': 2.36, 'CR': 92.54}
+/Llama2-13B/RTN/CI -> {'Acc': 57.23, 'SS': 2.61, 'CR': 87.15}
+/Llama2-13B/RTN/QA -> {'Acc': 52.34, 'SS': 3.07, 'CR': 92.4}
+/Llama2-13B/RTN/DRS -> {'Acc': 50.33, 'SS': 2.73, 'CR': 91.03}
+/Llama2-13B/RTN/RC -> {'Acc': 75.3, 'SS': 2.4, 'CR': 92.4}
+/Llama2-13B/SpinQuant/DS -> {'Acc': 42.9, 'SS': 3.21, 'CR': 92.27}
+/Llama2-13B/SpinQuant/CI -> {'Acc': 40.7, 'SS': 3.16, 'CR': 87.01}
+/Llama2-13B/SpinQuant/QA -> {'Acc': 48.53, 'SS': 3.17, 'CR': 90.76}
+/Llama2-13B/SpinQuant/DRS -> {'Acc': 35.07, 'SS': 3.13, 'CR': 90.7}
+/Llama2-13B/SpinQuant/RC -> {'Acc': 66.73, 'SS': 2.53, 'CR': 90.06}
+/Llama2-70B/FP16/CI -> {'Acc': 81.86, 'SS': 1.82, 'CR': 93.57}
+/Llama2-70B/FP16/RC -> {'Acc': 88.29, 'SS': 1.78, 'CR': 94.24}
+/Llama2-70B/FP16/DRS -> {'Acc': 69.28, 'SS': 2.46, 'CR': 93.41}
+/Llama2-70B/FP16/DS -> {'Acc': 60.71, 'SS': 2.15, 'CR': 92.0}
+/Llama2-70B/FP16/QA -> {'Acc': 66.33, 'SS': 2.62, 'CR': 94.44}
+/Llama2-70B/AWQ/QA -> {'Acc': 66.47, 'SS': 2.56, 'CR': 94.48}
+/Llama2-70B/AWQ/RC -> {'Acc': 87.82, 'SS': 1.82, 'CR': 94.68}
+/Llama2-70B/AWQ/CI -> {'Acc': 81.53, 'SS': 1.81, 'CR': 93.17}
+/Llama2-70B/AWQ/DRS -> {'Acc': 68.41, 'SS': 2.43, 'CR': 92.67}
+/Llama2-70B/AWQ/DS -> {'Acc': 61.78, 'SS': 2.26, 'CR': 91.8}
+/Llama3.1-8B/AWQ/CI -> {'Acc': 41.57, 'SS': 3.21, 'CR': 89.69}
+/Llama3.1-8B/AWQ/DRS -> {'Acc': 56.29, 'SS': 2.75, 'CR': 90.29}
+/Llama3.1-8B/AWQ/DS -> {'Acc': 64.19, 'SS': 1.97, 'CR': 91.4}
+/Llama3.1-8B/AWQ/RC -> {'Acc': 83.53, 'SS': 2.0, 'CR': 92.94}
+/Llama3.1-8B/AWQ/QA -> {'Acc': 65.53, 'SS': 2.87, 'CR': 92.17}
+/Llama3.1-8B/FlatQuant/DRS -> {'Acc': 35.74, 'SS': 3.34, 'CR': 90.23}
+/Llama3.1-8B/FlatQuant/RC -> {'Acc': 42.77, 'SS': 3.87, 'CR': 92.37}
+/Llama3.1-8B/FlatQuant/CI -> {'Acc': 30.12, 'SS': 4.1, 'CR': 91.16}
+/Llama3.1-8B/FlatQuant/QA -> {'Acc': 35.61, 'SS': 4.06, 'CR': 91.4}
+/Llama3.1-8B/FlatQuant/DS -> {'Acc': 36.01, 'SS': 3.15, 'CR': 88.79}
+/Llama3.1-8B/GPTQ/DRS -> {'Acc': 64.32, 'SS': 2.27, 'CR': 91.87}
+/Llama3.1-8B/GPTQ/RC -> {'Acc': 83.94, 'SS': 2.0, 'CR': 94.11}
+/Llama3.1-8B/GPTQ/CI -> {'Acc': 53.82, 'SS': 2.86, 'CR': 87.78}
+/Llama3.1-8B/GPTQ/DS -> {'Acc': 66.53, 'SS': 1.84, 'CR': 90.76}
+/Llama3.1-8B/GPTQ/QA -> {'Acc': 63.12, 'SS': 2.78, 'CR': 93.98}
+/Llama3.1-8B/QuaRot/DRS -> {'Acc': 24.63, 'SS': 5.71, 'CR': 91.5}
+/Llama3.1-8B/QuaRot/QA -> {'Acc': 9.3, 'SS': 5.32, 'CR': 91.73}
+/Llama3.1-8B/QuaRot/DS -> {'Acc': 6.49, 'SS': 5.76, 'CR': 93.74}
+/Llama3.1-8B/QuaRot/CI -> {'Acc': 0.0, 'SS': 5.78, 'CR': 95.08}
+/Llama3.1-8B/QuaRot/RC -> {'Acc': 17.67, 'SS': 5.34, 'CR': 91.7}
+/Llama3.1-8B/SpinQuant/DRS -> {'Acc': 40.63, 'SS': 3.2, 'CR': 91.5}
+/Llama3.1-8B/SpinQuant/QA -> {'Acc': 51.07, 'SS': 3.17, 'CR': 92.27}
+/Llama3.1-8B/SpinQuant/DS -> {'Acc': 46.59, 'SS': 3.03, 'CR': 92.27}
+/Llama3.1-8B/SpinQuant/CI -> {'Acc': 41.57, 'SS': 3.28, 'CR': 87.08}
+/Llama3.1-8B/SpinQuant/RC -> {'Acc': 68.27, 'SS': 2.41, 'CR': 92.37}
+/Llama3.1-8B/RTN/DS -> {'Acc': 59.35, 'SS': 2.22, 'CR': 91.98}
+/Llama3.1-8B/RTN/QA -> {'Acc': 60.93, 'SS': 2.96, 'CR': 91.83}
+/Llama3.1-8B/RTN/DRS -> {'Acc': 64.16, 'SS': 3.11, 'CR': 91.37}
+/Llama3.1-8B/RTN/CI -> {'Acc': 55.67, 'SS': 3.48, 'CR': 90.73}
+/Llama3.1-8B/RTN/RC -> {'Acc': 86.37, 'SS': 1.97, 'CR': 94.7}
+
+============================================================
+[3] Check pkl counts for key directories
+============================================================
+
+DIR: outputs_quant/Llama3.1-70B/QuaRot_2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/QuaRot_2k/Llama-3.1-70B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-70B/SpinQuant_aligned2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/SpinQuant_aligned2k/meta-llama__Llama-3.1-70B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-70B/AWQ_2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/AWQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-70B/GPTQ_2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_2k/Meta-Llama-3.1-70B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k/shuyuej__Meta-Llama-3.1-70B-GPTQ_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-70B/RTN_aligned2k_redo
+PKL_COUNT: 15
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-70B/RTN_aligned2k_redo/meta-llama__Llama-3.1-70B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-8B/QuaRot_aligned2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo
+PKL_COUNT: 15
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo/meta-llama__Llama-3.1-8B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-8B/FP16_aligned2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/FP16_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_task_icl1.pkl
+
+DIR: outputs_quant/Llama3.1-8B/RTN_aligned2k
+PKL_COUNT: 15
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_cosmosqa_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_dialogue_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_halu_summarization_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_hellaswag_aligned2k_task_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_base_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_shared_icl1.pkl
+outputs_quant/Llama3.1-8B/RTN_aligned2k/meta-llama__Llama-3.1-8B_mmlu_aligned2k_task_icl1.pkl
+
+============================================================
+[4] Search table/source scripts that may map methods to JSON
+============================================================
+./3.28/methods/__init__.py:8:    OBRQuaRotMethod,
+./3.28/methods/__init__.py:9:    OBRSpinQuantMethod,
+./3.28/methods/__init__.py:20:    "quarot": OBRQuaRotMethod(),
+./3.28/methods/__init__.py:21:    "spinquant": OBRSpinQuantMethod(),
+./3.28/methods/adapters.py:57:class OBRQuaRotMethod(QuantMethod):
+./3.28/methods/adapters.py:94:class OBRSpinQuantMethod(QuantMethod):
+./3.28/methods/adapters.py:180:            "quarot": ("QuaRot", OBRQuaRotMethod()),
+./3.28/methods/adapters.py:181:            "spinquant": ("SpinQuant", OBRSpinQuantMethod()),
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:38:SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:74:  local d="$SCRIPT_DIR"
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:126:  python3 "$SCRIPT_DIR/patch_flatquant_model_utils_qwen.py" "$MU"
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:137:  python3 "$SCRIPT_DIR/patch_flatquant_args_utils_model.py" "$AU"
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:148:  python3 "$SCRIPT_DIR/patch_flatquant_data_utils_hf_hub.py" "$DU"
+./3.28/scripts/run_flatquant_qwen3_save_matrix.sh:154:QWEN_FIXED="$SCRIPT_DIR/flatquant_qwen_utils_fixed.py"
+./3.28/scripts/wyy_queue_flatquant_qwen3.sh:25:SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+./3.28/scripts/wyy_queue_flatquant_qwen3.sh:26:RUN_FQ="$SCRIPT_DIR/run_flatquant_qwen3_save_matrix.sh"
+./audit_qwen_quant/00_server_snapshot.txt:10:outputs_quant/DeepSeek-7B/AWQ_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:15:outputs_quant/Falcon-7B/AWQ
+./audit_qwen_quant/00_server_snapshot.txt:16:outputs_quant/Falcon-7B/AWQ_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:19:outputs_quant/Falcon-7B/QuaRot_debug_k16_random
+./audit_qwen_quant/00_server_snapshot.txt:23:outputs_quant/Llama2-13B/AWQ
+./audit_qwen_quant/00_server_snapshot.txt:24:outputs_quant/Llama2-13B/AWQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:31:outputs_quant/Llama2-13B/GPTQ
+./audit_qwen_quant/00_server_snapshot.txt:32:outputs_quant/Llama2-13B/GPTQ_1k
+./audit_qwen_quant/00_server_snapshot.txt:33:outputs_quant/Llama2-13B/GPTQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:34:outputs_quant/Llama2-13B/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:35:outputs_quant/Llama2-13B/QuaRot_2k
+./audit_qwen_quant/00_server_snapshot.txt:36:outputs_quant/Llama2-13B/QuaRot_aligned
+./audit_qwen_quant/00_server_snapshot.txt:37:outputs_quant/Llama2-13B/QuaRot_v2
+./audit_qwen_quant/00_server_snapshot.txt:38:outputs_quant/Llama2-13B/QuaRot_v3
+./audit_qwen_quant/00_server_snapshot.txt:39:outputs_quant/Llama2-13B/RTN
+./audit_qwen_quant/00_server_snapshot.txt:40:outputs_quant/Llama2-13B/RTN_2k
+./audit_qwen_quant/00_server_snapshot.txt:41:outputs_quant/Llama2-13B/SpinQuant
+./audit_qwen_quant/00_server_snapshot.txt:42:outputs_quant/Llama2-13B/SpinQuant_2k
+./audit_qwen_quant/00_server_snapshot.txt:43:outputs_quant/Llama2-13B/SpinQuant_aligned
+./audit_qwen_quant/00_server_snapshot.txt:45:outputs_quant/Llama2-70B/AWQ
+./audit_qwen_quant/00_server_snapshot.txt:46:outputs_quant/Llama2-70B/AWQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:49:outputs_quant/Llama2-70B/GPTQ
+./audit_qwen_quant/00_server_snapshot.txt:50:outputs_quant/Llama2-70B/GPTQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:51:outputs_quant/Llama2-70B/GPTQ_aligned2k_redo
+./audit_qwen_quant/00_server_snapshot.txt:52:outputs_quant/Llama2-70B/QuaRot_2k
+./audit_qwen_quant/00_server_snapshot.txt:54:outputs_quant/Llama2-70B/RTN
+./audit_qwen_quant/00_server_snapshot.txt:55:outputs_quant/Llama2-70B/RTN_2k
+./audit_qwen_quant/00_server_snapshot.txt:56:outputs_quant/Llama2-70B/SpinQuant_2k
+./audit_qwen_quant/00_server_snapshot.txt:61:outputs_quant/Llama2-7B/QuaRot_W6A6_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:62:outputs_quant/Llama2-7B/QuaRot_W8A8_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:63:outputs_quant/Llama2-7B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:65:outputs_quant/Llama3.1-70B
+./audit_qwen_quant/00_server_snapshot.txt:66:outputs_quant/Llama3.1-70B/AWQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:67:outputs_quant/Llama3.1-70B/GPTQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:68:outputs_quant/Llama3.1-70B/GPTQ_base_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:69:outputs_quant/Llama3.1-70B/QuaRot_2k
+./audit_qwen_quant/00_server_snapshot.txt:70:outputs_quant/Llama3.1-70B/RTN_2k
+./audit_qwen_quant/00_server_snapshot.txt:71:outputs_quant/Llama3.1-70B/RTN_aligned2k_redo
+./audit_qwen_quant/00_server_snapshot.txt:72:outputs_quant/Llama3.1-70B/SpinQuant_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:77:outputs_quant/Llama3.1-8B/QuaRot_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:78:outputs_quant/Llama3.1-8B/QuaRot_aligned2k_redo
+./audit_qwen_quant/00_server_snapshot.txt:79:outputs_quant/Llama3.1-8B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:81:outputs_quant/Llama3.2-1B/AWQ
+./audit_qwen_quant/00_server_snapshot.txt:82:outputs_quant/Llama3.2-1B/AWQ_2k
+./audit_qwen_quant/00_server_snapshot.txt:86:outputs_quant/Llama3.2-1B/GPTQ
+./audit_qwen_quant/00_server_snapshot.txt:87:outputs_quant/Llama3.2-1B/GPTQ_v2
+./audit_qwen_quant/00_server_snapshot.txt:88:outputs_quant/Llama3.2-1B/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:89:outputs_quant/Llama3.2-1B/QuaRot_aligned
+./audit_qwen_quant/00_server_snapshot.txt:90:outputs_quant/Llama3.2-1B/QuaRot_v2
+./audit_qwen_quant/00_server_snapshot.txt:91:outputs_quant/Llama3.2-1B/QuaRot_v3
+./audit_qwen_quant/00_server_snapshot.txt:92:outputs_quant/Llama3.2-1B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:93:outputs_quant/Llama3.2-1B/SpinQuant
+./audit_qwen_quant/00_server_snapshot.txt:94:outputs_quant/Llama3.2-1B/SpinQuant_aligned
+./audit_qwen_quant/00_server_snapshot.txt:96:outputs_quant/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:103:outputs_quant/Qwen3-14B/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:105:outputs_quant/Qwen3-14B/QuaRot_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:106:outputs_quant/Qwen3-14B/RTN
+./audit_qwen_quant/00_server_snapshot.txt:107:outputs_quant/Qwen3-14B/RTN_2k
+./audit_qwen_quant/00_server_snapshot.txt:108:outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:112:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:117:outputs_quant/Qwen3-30B-A3B/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:118:outputs_quant/Qwen3-30B-A3B/RTN
+./audit_qwen_quant/00_server_snapshot.txt:119:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:124:outputs_quant/Qwen3-32B/QuaRot
+./audit_qwen_quant/00_server_snapshot.txt:125:outputs_quant/Qwen3-32B/QuaRot_debug
+./audit_qwen_quant/00_server_snapshot.txt:126:outputs_quant/Qwen3-32B/RTN
+./audit_qwen_quant/00_server_snapshot.txt:132:outputs_quant/Qwen3-8B/RTN_2k
+./audit_qwen_quant/00_server_snapshot.txt:133:outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/00_server_snapshot.txt:134:outputs_quant/Qwen3-8B/SpinQuant_2k
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:3:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:4:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:5:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:6:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:7:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:8:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:9:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:10:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:11:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:12:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:13:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:14:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:15:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:16:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:17:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:63:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:64:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:65:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:66:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:67:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:68:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:69:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:70:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:71:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:72:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:73:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:74:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:75:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:76:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:77:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:78:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:79:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:80:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:81:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:82:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:83:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:84:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:85:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:86:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:87:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:88:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:89:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:90:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:91:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:92:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:93:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:94:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:95:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:96:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:97:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:98:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:99:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:100:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:101:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:102:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:103:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:104:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:105:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:106:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:107:outputs_quant/Qwen3-8B/SpinQuant_2k/Qwen__Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:111:outputs_quant/Qwen3-8B/RTN_2k                                15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:112:outputs_quant/Qwen3-8B/RTN_aligned2k                         15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:113:outputs_quant/Qwen3-8B/SpinQuant_2k                          15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:118:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:119:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:120:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:121:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:122:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:123:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:124:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:125:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:126:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:127:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:128:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:129:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:130:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:131:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:132:outputs_quant/Qwen3-14B/awq_aligned2k/Qwen__Qwen3-14B-AWQ_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:178:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:179:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:180:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:181:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:182:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:183:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:184:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:185:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:186:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:187:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:188:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:189:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:190:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:191:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:192:outputs_quant/Qwen3-14B/QuaRot_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:193:outputs_quant/Qwen3-14B/RTN_2k/models--Qwen--Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:194:outputs_quant/Qwen3-14B/RTN_2k/models--Qwen--Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:195:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:196:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:197:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:198:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:199:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:200:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:201:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:202:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:203:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:204:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:205:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:206:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:207:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:208:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:209:outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:210:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:211:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:212:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:213:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:214:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:215:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:216:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:217:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:218:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:219:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:220:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:221:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:222:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:223:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:224:outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:228:outputs_quant/Qwen3-14B/QuaRot                               0
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:229:outputs_quant/Qwen3-14B/QuaRot_aligned2k                     15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:230:outputs_quant/Qwen3-14B/RTN                                  15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:231:outputs_quant/Qwen3-14B/RTN_2k                               2
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:232:outputs_quant/Qwen3-14B/RTN_aligned2k                        15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:255:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:256:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:257:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:258:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:259:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:260:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:261:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:262:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:263:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:264:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:265:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:266:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:267:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:268:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:269:outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:272:outputs_quant/Qwen3-32B/QuaRot                               0
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:273:outputs_quant/Qwen3-32B/QuaRot_debug                         0
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:274:outputs_quant/Qwen3-32B/RTN                                  15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:277:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:278:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:279:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:280:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:281:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:282:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:283:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:284:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:285:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:286:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:287:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:288:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:289:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:290:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:291:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k/Qwen__Qwen3-30B-A3B-AWQ_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:322:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:323:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:324:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:325:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:326:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:327:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:328:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:329:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:330:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:331:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:332:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:333:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:334:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:335:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:336:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:337:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:338:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:339:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:340:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:341:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:342:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:343:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:344:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:345:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:346:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:347:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:348:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:349:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:350:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:351:outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:353:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k                    15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:356:outputs_quant/Qwen3-30B-A3B/QuaRot                           0
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:357:outputs_quant/Qwen3-30B-A3B/RTN                              15
+./audit_qwen_quant/01_qwen_dirs_and_counts.txt:358:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k                    15
+./audit_qwen_quant/02_md5_compare.txt:2:=== Qwen3-8B: FP16_2k vs RTN_2k ===
+./audit_qwen_quant/02_md5_compare.txt:18:SUMMARY Qwen3-8B FP16_2k vs RTN_2k: compared=15, same=15, missing=0
+./audit_qwen_quant/02_md5_compare.txt:20:=== Qwen3-14B: FP16 vs RTN ===
+./audit_qwen_quant/02_md5_compare.txt:36:SUMMARY Qwen3-14B FP16 vs RTN: compared=15, same=15, missing=0
+./audit_qwen_quant/02_md5_compare.txt:38:=== Qwen3-14B: FP16_2k vs RTN_2k ===
+./audit_qwen_quant/02_md5_compare.txt:41:SUMMARY Qwen3-14B FP16_2k vs RTN_2k: compared=2, same=2, missing=13
+./audit_qwen_quant/02_md5_compare.txt:43:=== Qwen3-32B: FP16 vs RTN ===
+./audit_qwen_quant/02_md5_compare.txt:59:SUMMARY Qwen3-32B FP16 vs RTN: compared=15, same=15, missing=0
+./audit_qwen_quant/02_md5_compare.txt:61:=== Qwen3-30B-A3B: FP16 vs RTN ===
+./audit_qwen_quant/02_md5_compare.txt:77:SUMMARY Qwen3-30B-A3B FP16 vs RTN: compared=15, same=15, missing=0
+./audit_qwen_quant/03_logits_compare.txt:2:=== Qwen3-8B: FP16_2k vs RTN_2k ===
+./audit_qwen_quant/03_logits_compare.txt:18:SUMMARY Qwen3-8B FP16_2k vs RTN_2k: files=15, arr_same=15, maxdiff_min=0, maxdiff_max=0, pred_same_avg=1.000000, ids_all_same=True
+./audit_qwen_quant/03_logits_compare.txt:20:=== Qwen3-14B: FP16 vs RTN ===
+./audit_qwen_quant/03_logits_compare.txt:36:SUMMARY Qwen3-14B FP16 vs RTN: files=15, arr_same=15, maxdiff_min=0, maxdiff_max=0, pred_same_avg=1.000000, ids_all_same=True
+./audit_qwen_quant/03_logits_compare.txt:38:=== Qwen3-14B: FP16_2k vs RTN_2k ===
+./audit_qwen_quant/03_logits_compare.txt:40:models--Qwen--Qwen3-14B_cosmosqa_aligned2k_shared_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:41:models--Qwen--Qwen3-14B_cosmosqa_aligned2k_task_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:42:models--Qwen--Qwen3-14B_halu_dialogue_aligned2k_base_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:43:models--Qwen--Qwen3-14B_halu_dialogue_aligned2k_shared_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:44:models--Qwen--Qwen3-14B_halu_dialogue_aligned2k_task_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:45:models--Qwen--Qwen3-14B_halu_summarization_aligned2k_base_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:46:models--Qwen--Qwen3-14B_halu_summarization_aligned2k_shared_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:47:models--Qwen--Qwen3-14B_halu_summarization_aligned2k_task_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:48:models--Qwen--Qwen3-14B_hellaswag_aligned2k_base_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:49:models--Qwen--Qwen3-14B_hellaswag_aligned2k_shared_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:50:models--Qwen--Qwen3-14B_hellaswag_aligned2k_task_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:52:models--Qwen--Qwen3-14B_mmlu_aligned2k_shared_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:53:models--Qwen--Qwen3-14B_mmlu_aligned2k_task_icl1.pkl	MISSING_IN_RTN_2k
+./audit_qwen_quant/03_logits_compare.txt:54:SUMMARY Qwen3-14B FP16_2k vs RTN_2k: files=2, arr_same=2, maxdiff_min=0, maxdiff_max=0, pred_same_avg=1.000000, ids_all_same=True
+./audit_qwen_quant/03_logits_compare.txt:56:=== Qwen3-32B: FP16 vs RTN ===
+./audit_qwen_quant/03_logits_compare.txt:72:SUMMARY Qwen3-32B FP16 vs RTN: files=15, arr_same=13, maxdiff_min=0, maxdiff_max=0, pred_same_avg=1.000000, ids_all_same=True
+./audit_qwen_quant/03_logits_compare.txt:74:=== Qwen3-30B-A3B: FP16 vs RTN ===
+./audit_qwen_quant/03_logits_compare.txt:90:SUMMARY Qwen3-30B-A3B FP16 vs RTN: files=15, arr_same=15, maxdiff_min=0, maxdiff_max=0, pred_same_avg=1.000000, ids_all_same=True
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:2:=== Qwen3-8B FP16_aligned2k vs Qwen3-8B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:4:dir_b=outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:21:SUMMARY Qwen3-8B FP16_aligned2k vs Qwen3-8B RTN_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=3.515625, maxdiff_finite_max=18.4375, pred_same_avg=0.899254
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:23:=== Qwen3-8B FP16_aligned2k vs Qwen3-8B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:42:SUMMARY Qwen3-8B FP16_aligned2k vs Qwen3-8B GPTQ_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=4.71875, maxdiff_finite_max=12.078125, pred_same_avg=0.912587
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:44:=== Qwen3-8B RTN_aligned2k vs Qwen3-8B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:45:dir_a=outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:63:SUMMARY Qwen3-8B RTN_aligned2k vs Qwen3-8B GPTQ_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=4.828125, maxdiff_finite_max=20.78125, pred_same_avg=0.863814
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:65:=== Qwen3-14B FP16_2k vs Qwen3-14B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:67:dir_b=outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:84:SUMMARY Qwen3-14B FP16_2k vs Qwen3-14B RTN_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=5.9921875, maxdiff_finite_max=19.8203125, pred_same_avg=0.871869
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:86:=== Qwen3-14B FP16_2k vs Qwen3-14B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:105:SUMMARY Qwen3-14B FP16_2k vs Qwen3-14B GPTQ_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=0.0625, maxdiff_finite_max=0.203125, pred_same_avg=0.998969
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:107:=== Qwen3-14B RTN_aligned2k vs Qwen3-14B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:108:dir_a=outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:126:SUMMARY Qwen3-14B RTN_aligned2k vs Qwen3-14B GPTQ_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=6.0078125, maxdiff_finite_max=19.8359375, pred_same_avg=0.871902
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:128:=== Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:130:dir_b=outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:147:SUMMARY Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B RTN_aligned2k: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=4.703125, maxdiff_finite_max=8.109375, pred_same_avg=0.716609
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:154:cosmosqa::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.859375	meandiff_finite=1.5331086	pred_same=0.913217	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:155:cosmosqa::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=10.296875	meandiff_finite=2.9162004	pred_same=0.662843	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:156:cosmosqa::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.953125	meandiff_finite=2.6110179	pred_same=0.783042	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:157:halu_dialogue::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=5.21875	meandiff_finite=0.53505421	pred_same=0.854718	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:158:halu_dialogue::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=6.5	meandiff_finite=1.7205753	pred_same=0.865701	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:159:halu_dialogue::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=5.3125	meandiff_finite=1.059836	pred_same=0.849226	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:160:hellaswag::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.78125	meandiff_finite=1.5484427	pred_same=0.911222	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:161:hellaswag::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.578125	meandiff_finite=2.6587815	pred_same=0.854364	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:162:hellaswag::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.875	meandiff_finite=2.7031393	pred_same=0.850374	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:163:mmlu::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=7.796875	meandiff_finite=0.8496415	pred_same=0.903741	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:164:mmlu::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.296875	meandiff_finite=2.5450449	pred_same=0.801995	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:165:mmlu::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=7.234375	meandiff_finite=1.7412146	pred_same=0.809975	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:168:=== Qwen3-30B-A3B RTN_aligned2k vs qwen3_30b_a3b_gptq ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:169:dir_a=outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:173:cosmosqa::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=11.28125	meandiff_finite=1.9275912	pred_same=0.890773	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:174:cosmosqa::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=11.015625	meandiff_finite=3.5394821	pred_same=0.735162	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:175:cosmosqa::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.859375	meandiff_finite=2.4627857	pred_same=0.712219	fileA=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:176:halu_dialogue::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=4.703125	meandiff_finite=0.98774755	pred_same=0.821268	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:177:halu_dialogue::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=6.984375	meandiff_finite=1.4679127	pred_same=0.795806	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:178:halu_dialogue::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=4.953125	meandiff_finite=0.88422054	pred_same=0.718922	fileA=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:179:hellaswag::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=6.78125	meandiff_finite=1.3142158	pred_same=0.887781	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:180:hellaswag::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.546875	meandiff_finite=2.8540447	pred_same=0.393017	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:181:hellaswag::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.9375	meandiff_finite=3.1515677	pred_same=0.600998	fileA=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:182:mmlu::base	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.359375	meandiff_finite=1.1483531	pred_same=0.881796	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:183:mmlu::shared	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.390625	meandiff_finite=2.4559813	pred_same=0.749127	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:184:mmlu::task	md5_same=False	arr_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.015625	meandiff_finite=1.7010157	pred_same=0.695262	fileA=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl	fileB=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:185:SUMMARY Qwen3-30B-A3B RTN_aligned2k vs qwen3_30b_a3b_gptq: common=12, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=4.703125, maxdiff_finite_max=11.28125, pred_same_avg=0.740178
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:208:=== Qwen3-32B RTN vs qwen3_32b_gptq ===
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:209:dir_a=outputs_quant/Qwen3-32B/RTN
+./audit_qwen_quant/13_compare_aligned2k_and_gptq.txt:227:SUMMARY Qwen3-32B RTN vs qwen3_32b_gptq: common=15, md5_same=0, arr_same=0, equal_nan_same=0, nan_cases=0, maxdiff_finite_min=NA, maxdiff_finite_max=NA, pred_same_avg=nan
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:2:=== Qwen3-8B FP16_aligned2k vs Qwen3-8B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:4:B=outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:21:SUMMARY Qwen3-8B FP16_aligned2k vs Qwen3-8B RTN_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=18.4375, pred_same_avg=0.8992538912517247
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:23:=== Qwen3-8B FP16_aligned2k vs Qwen3-8B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:42:SUMMARY Qwen3-8B FP16_aligned2k vs Qwen3-8B GPTQ_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=12.078125, pred_same_avg=0.9125872634930815
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:44:=== Qwen3-8B RTN_aligned2k vs Qwen3-8B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:45:A=outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:63:SUMMARY Qwen3-8B RTN_aligned2k vs Qwen3-8B GPTQ_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=20.78125, pred_same_avg=0.8638141226970064
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:65:=== Qwen3-14B FP16_2k vs Qwen3-14B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:67:B=outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:84:SUMMARY Qwen3-14B FP16_2k vs Qwen3-14B RTN_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=19.8203125, pred_same_avg=0.8718691742832189
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:86:=== Qwen3-14B FP16_2k vs Qwen3-14B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:105:SUMMARY Qwen3-14B FP16_2k vs Qwen3-14B GPTQ_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=0.203125, pred_same_avg=0.9989685791514226
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:107:=== Qwen3-14B RTN_aligned2k vs Qwen3-14B GPTQ_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:108:A=outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:126:SUMMARY Qwen3-14B RTN_aligned2k vs Qwen3-14B GPTQ_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=19.8359375, pred_same_avg=0.8719024577578074
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:128:=== Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B RTN_aligned2k ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:130:B=outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:147:SUMMARY Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B RTN_aligned2k: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=8.109375, pred_same_avg=0.7166086621435721
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:149:=== Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B GPTQ ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:153:cosmosqa::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.859375	pred_same=0.913217	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:154:cosmosqa::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=10.296875	pred_same=0.662843	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:155:cosmosqa::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.953125	pred_same=0.783042	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:156:halu_dialogue::base	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=5.21875	pred_same=0.854718	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:157:halu_dialogue::shared	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=6.5	pred_same=0.865701	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:158:halu_dialogue::task	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=5.3125	pred_same=0.849226	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:159:hellaswag::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.78125	pred_same=0.911222	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:160:hellaswag::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.578125	pred_same=0.854364	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:161:hellaswag::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.875	pred_same=0.850374	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:162:mmlu::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=7.796875	pred_same=0.903741	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:163:mmlu::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.296875	pred_same=0.801995	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:164:mmlu::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=7.234375	pred_same=0.809975	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:165:SUMMARY Qwen3-30B-A3B FP16_aligned2k vs Qwen3-30B-A3B GPTQ: common=12, md5_same=0, equal_nan_same=0, maxdiff_finite_max=10.296875, pred_same_avg=0.8383682165861764
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:167:=== Qwen3-30B-A3B RTN_aligned2k vs Qwen3-30B-A3B GPTQ ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:168:A=outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:171:cosmosqa::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=11.28125	pred_same=0.890773	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:172:cosmosqa::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=11.015625	pred_same=0.735162	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:173:cosmosqa::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.859375	pred_same=0.712219	Afile=Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:174:halu_dialogue::base	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=4.703125	pred_same=0.821268	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:175:halu_dialogue::shared	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=6.984375	pred_same=0.795806	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:176:halu_dialogue::task	md5_same=False	equal_nan_same=False	shape=(2003, 6)	maxdiff_finite=4.953125	pred_same=0.718922	Afile=Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:177:hellaswag::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=6.78125	pred_same=0.887781	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:178:hellaswag::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.546875	pred_same=0.393017	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:179:hellaswag::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.9375	pred_same=0.600998	Afile=Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:180:mmlu::base	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.359375	pred_same=0.881796	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:181:mmlu::shared	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=8.390625	pred_same=0.749127	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:182:mmlu::task	md5_same=False	equal_nan_same=False	shape=(2005, 6)	maxdiff_finite=9.015625	pred_same=0.695262	Afile=Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl	Bfile=Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:183:SUMMARY Qwen3-30B-A3B RTN_aligned2k vs Qwen3-30B-A3B GPTQ: common=12, md5_same=0, equal_nan_same=0, maxdiff_finite_max=11.28125, pred_same_avg=0.7401775557777217
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:185:=== Qwen3-32B FP16 vs Qwen3-32B GPTQ ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:204:SUMMARY Qwen3-32B FP16 vs Qwen3-32B GPTQ: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=NA, pred_same_avg=NA
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:206:=== Qwen3-32B RTN vs Qwen3-32B GPTQ ===
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:207:A=outputs_quant/Qwen3-32B/RTN
+./audit_qwen_quant/13_compare_real_gptq_aligned2k.txt:225:SUMMARY Qwen3-32B RTN vs Qwen3-32B GPTQ: common=15, md5_same=0, equal_nan_same=0, maxdiff_finite_max=NA, pred_same_avg=NA
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:19:================ outputs_quant/Qwen3-8B/RTN_2k ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:20:2026-03-30 19:15:46.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:21:2026-03-30 19:22:00.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:22:2026-03-30 19:28:50.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:23:2026-03-30 19:34:28.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:24:2026-03-30 19:46:28.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:25:2026-03-30 19:50:28.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:26:2026-03-30 19:57:12.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:27:2026-03-30 20:04:28.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:28:2026-03-30 20:10:08.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:29:2026-03-30 20:22:16.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:30:2026-03-30 20:26:16.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:31:2026-03-30 20:33:00.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:32:2026-03-30 20:40:30.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:33:2026-03-30 20:46:34.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:34:2026-03-30 20:58:34.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:53:================ outputs_quant/Qwen3-8B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:54:2026-04-25 12:24:59.1571133440 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:55:2026-04-25 12:27:06.5916145480 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:56:2026-04-25 12:29:34.3497128690 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:57:2026-04-25 12:31:36.3867378830 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:58:2026-04-25 12:34:34.7464974820 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:59:2026-04-25 12:36:32.5114081280 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:60:2026-04-25 12:38:43.0942497820 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:61:2026-04-25 12:41:14.2302058160 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:62:2026-04-25 12:43:15.5608070050 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:63:2026-04-25 12:46:16.7344352210 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:64:2026-04-25 12:48:16.5484230040 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:65:2026-04-25 12:50:29.1978490780 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:66:2026-04-25 12:53:00.7320184120 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:67:2026-04-25 12:55:04.4825781030 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:68:2026-04-25 12:58:08.2178935610 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:104:================ outputs_quant/Qwen3-14B/RTN ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:105:2026-03-27 22:02:46.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:106:2026-03-27 22:10:36.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:107:2026-03-27 22:24:12.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:108:2026-03-27 23:26:06.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:109:2026-03-27 23:31:02.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:110:2026-03-27 23:36:50.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:111:2026-03-27 23:41:02.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:112:2026-03-27 23:48:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:113:2026-03-27 23:51:20.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:114:2026-03-27 23:56:30.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:115:2026-03-28 00:02:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:116:2026-03-28 00:06:52.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:117:2026-03-28 00:14:34.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:118:2026-03-28 00:17:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:119:2026-03-28 00:22:40.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:138:================ outputs_quant/Qwen3-14B/RTN_2k ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:139:2026-03-30 23:27:28.0000000000 size=130422 outputs_quant/Qwen3-14B/RTN_2k/models--Qwen--Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:140:2026-03-30 23:35:54.0000000000 size=130422 outputs_quant/Qwen3-14B/RTN_2k/models--Qwen--Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:142:================ outputs_quant/Qwen3-14B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:143:2026-04-25 20:48:01.6836661700 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:144:2026-04-25 20:51:25.3442009980 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:145:2026-04-25 20:55:17.9591495690 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:146:2026-04-25 20:58:24.2199147470 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:147:2026-04-25 21:03:09.2064377400 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:148:2026-04-25 21:05:39.8891338020 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:149:2026-04-25 21:09:07.6974624900 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:150:2026-04-25 21:13:04.1923934230 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:151:2026-04-25 21:16:15.6983023260 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:152:2026-04-25 21:21:05.9417350280 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:153:2026-04-25 21:23:36.6892182900 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:154:2026-04-25 21:27:06.3243577380 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:155:2026-04-25 21:31:04.5713324650 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:156:2026-04-25 21:34:19.6072320500 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:157:2026-04-25 21:39:11.7645322180 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:193:================ outputs_quant/Qwen3-32B/RTN ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:194:2026-03-28 01:03:22.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:195:2026-03-28 01:12:40.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:196:2026-03-28 01:23:34.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:197:2026-03-28 01:31:24.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:198:2026-03-28 01:45:26.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:199:2026-03-28 01:50:46.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:200:2026-03-28 02:00:30.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:201:2026-03-28 02:11:46.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:202:2026-03-28 02:20:02.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:203:2026-03-28 02:34:26.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:204:2026-03-28 02:39:48.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:205:2026-03-28 02:49:32.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:206:2026-03-28 03:00:56.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:207:2026-03-28 03:09:20.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:208:2026-03-28 03:23:52.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:211:2026-04-25 10:10:23.3739805290 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:212:2026-04-25 10:32:46.8644591870 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:213:2026-04-25 10:56:21.4760299530 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:214:2026-04-25 11:18:10.6044293220 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:215:2026-04-25 11:43:48.3201270340 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:216:2026-04-25 12:03:42.7574969730 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:217:2026-04-25 12:26:17.6165258200 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:218:2026-04-25 12:49:56.6631199600 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:219:2026-04-25 13:11:58.2003031850 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:220:2026-04-25 13:37:54.2961764180 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:221:2026-04-25 13:57:53.6066436010 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:222:2026-04-25 14:20:33.2463573700 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:223:2026-04-25 14:44:20.5563499040 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:224:2026-04-25 15:06:28.5328925830 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:225:2026-04-25 15:32:31.9066498200 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:244:================ outputs_quant/Qwen3-30B-A3B/RTN ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:245:2026-03-28 05:03:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:246:2026-03-28 05:22:18.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:247:2026-03-28 05:40:28.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:248:2026-03-28 05:57:48.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:249:2026-03-28 06:15:54.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:250:2026-03-28 06:35:20.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:251:2026-03-28 06:53:16.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:252:2026-03-28 07:12:00.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:253:2026-03-28 07:30:46.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:254:2026-03-28 07:50:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:255:2026-03-28 08:07:54.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:256:2026-03-28 08:26:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:257:2026-03-28 08:45:06.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:258:2026-03-28 09:02:40.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:259:2026-03-28 09:21:20.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:278:================ outputs_quant/Qwen3-30B-A3B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:279:2026-04-25 21:36:15.6857227060 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:280:2026-04-25 22:40:24.2843664420 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:281:2026-04-25 23:49:26.0956391090 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:282:2026-04-26 00:53:34.7117831500 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:283:2026-04-26 02:01:19.1215516770 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:284:2026-04-26 03:11:40.0702050240 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:285:2026-04-26 04:17:53.9797192920 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:286:2026-04-26 05:26:19.6939201580 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:287:2026-04-26 06:30:55.3033960670 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:288:2026-04-26 07:40:42.3989024240 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:289:2026-04-26 08:51:19.9895024280 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:290:2026-04-26 09:58:15.5321028100 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:291:2026-04-26 11:07:52.7792811250 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:292:2026-04-26 12:13:58.2213975290 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:293:2026-04-26 13:23:37.8435806300 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:296:2026-04-18 04:30:24.3032366210 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:297:2026-04-18 05:55:07.6873784710 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:298:2026-04-18 07:18:59.0266999610 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:299:2026-04-18 08:39:23.7588533140 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:300:2026-04-18 09:57:55.7666893170 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:301:2026-04-18 11:46:23.3996596390 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:302:2026-04-18 16:09:25.8392382050 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:303:2026-04-18 19:58:29.8414791510 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:304:2026-04-19 00:28:51.7145234890 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:305:2026-04-19 15:51:53.8302533930 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:306:2026-04-19 17:07:03.4902187020 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_file_timestamps_targeted.txt:307:2026-04-19 18:22:23.8532445870 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:19:================ outputs_quant/Qwen3-8B/RTN_2k ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:20:2026-03-30 19:15:46.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:21:2026-03-30 19:22:00.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:22:2026-03-30 19:28:50.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:23:2026-03-30 19:34:28.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:24:2026-03-30 19:46:28.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:25:2026-03-30 19:50:28.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:26:2026-03-30 19:57:12.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:27:2026-03-30 20:04:28.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:28:2026-03-30 20:10:08.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:29:2026-03-30 20:22:16.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:30:2026-03-30 20:26:16.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:31:2026-03-30 20:33:00.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:32:2026-03-30 20:40:30.0000000000 size=130422 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:33:2026-03-30 20:46:34.0000000000 size=130294 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:34:2026-03-30 20:58:34.0000000000 size=130166 outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:53:================ outputs_quant/Qwen3-8B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:54:2026-04-25 12:24:59.1571133440 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:55:2026-04-25 12:27:06.5916145480 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:56:2026-04-25 12:29:34.3497128690 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:57:2026-04-25 12:31:36.3867378830 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:58:2026-04-25 12:34:34.7464974820 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:59:2026-04-25 12:36:32.5114081280 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:60:2026-04-25 12:38:43.0942497820 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:61:2026-04-25 12:41:14.2302058160 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:62:2026-04-25 12:43:15.5608070050 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:63:2026-04-25 12:46:16.7344352210 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:64:2026-04-25 12:48:16.5484230040 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:65:2026-04-25 12:50:29.1978490780 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:66:2026-04-25 12:53:00.7320184120 size=130422 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:67:2026-04-25 12:55:04.4825781030 size=130294 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:68:2026-04-25 12:58:08.2178935610 size=130166 outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:104:================ outputs_quant/Qwen3-14B/RTN ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:105:2026-03-27 22:02:46.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:106:2026-03-27 22:10:36.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:107:2026-03-27 22:24:12.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:108:2026-03-27 23:26:06.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:109:2026-03-27 23:31:02.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:110:2026-03-27 23:36:50.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:111:2026-03-27 23:41:02.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:112:2026-03-27 23:48:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:113:2026-03-27 23:51:20.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:114:2026-03-27 23:56:30.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:115:2026-03-28 00:02:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:116:2026-03-28 00:06:52.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:117:2026-03-28 00:14:34.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:118:2026-03-28 00:17:28.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:119:2026-03-28 00:22:40.0000000000 size=64884 outputs_quant/Qwen3-14B/RTN/models--Qwen--Qwen3-14B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:138:================ outputs_quant/Qwen3-14B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:139:2026-04-25 20:48:01.6836661700 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:140:2026-04-25 20:51:25.3442009980 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:141:2026-04-25 20:55:17.9591495690 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:142:2026-04-25 20:58:24.2199147470 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:143:2026-04-25 21:03:09.2064377400 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:144:2026-04-25 21:05:39.8891338020 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:145:2026-04-25 21:09:07.6974624900 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:146:2026-04-25 21:13:04.1923934230 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:147:2026-04-25 21:16:15.6983023260 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:148:2026-04-25 21:21:05.9417350280 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:149:2026-04-25 21:23:36.6892182900 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:150:2026-04-25 21:27:06.3243577380 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:151:2026-04-25 21:31:04.5713324650 size=130422 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:152:2026-04-25 21:34:19.6072320500 size=130294 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:153:2026-04-25 21:39:11.7645322180 size=130166 outputs_quant/Qwen3-14B/RTN_aligned2k/Qwen__Qwen3-14B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:189:================ outputs_quant/Qwen3-32B/RTN ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:190:2026-03-28 01:03:22.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:191:2026-03-28 01:12:40.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:192:2026-03-28 01:23:34.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:193:2026-03-28 01:31:24.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:194:2026-03-28 01:45:26.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:195:2026-03-28 01:50:46.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:196:2026-03-28 02:00:30.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:197:2026-03-28 02:11:46.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:198:2026-03-28 02:20:02.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:199:2026-03-28 02:34:26.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:200:2026-03-28 02:39:48.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:201:2026-03-28 02:49:32.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:202:2026-03-28 03:00:56.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:203:2026-03-28 03:09:20.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:204:2026-03-28 03:23:52.0000000000 size=64884 outputs_quant/Qwen3-32B/RTN/Qwen3-32B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:207:2026-04-25 10:10:23.3739805290 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:208:2026-04-25 10:32:46.8644591870 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:209:2026-04-25 10:56:21.4760299530 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:210:2026-04-25 11:18:10.6044293220 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:211:2026-04-25 11:43:48.3201270340 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:212:2026-04-25 12:03:42.7574969730 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:213:2026-04-25 12:26:17.6165258200 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:214:2026-04-25 12:49:56.6631199600 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:215:2026-04-25 13:11:58.2003031850 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:216:2026-04-25 13:37:54.2961764180 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:217:2026-04-25 13:57:53.6066436010 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:218:2026-04-25 14:20:33.2463573700 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:219:2026-04-25 14:44:20.5563499040 size=130422 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:220:2026-04-25 15:06:28.5328925830 size=130294 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:221:2026-04-25 15:32:31.9066498200 size=130166 outputs_quant/qwen3_32b_gptq/Qwen__Qwen3-32B-GPTQ-Int4_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:240:================ outputs_quant/Qwen3-30B-A3B/RTN ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:241:2026-03-28 05:03:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:242:2026-03-28 05:22:18.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:243:2026-03-28 05:40:28.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:244:2026-03-28 05:57:48.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:245:2026-03-28 06:15:54.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:246:2026-03-28 06:35:20.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:247:2026-03-28 06:53:16.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:248:2026-03-28 07:12:00.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:249:2026-03-28 07:30:46.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:250:2026-03-28 07:50:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:251:2026-03-28 08:07:54.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_mmlu_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:252:2026-03-28 08:26:08.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_cosmosqa_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:253:2026-03-28 08:45:06.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_hellaswag_1k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:254:2026-03-28 09:02:40.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_dialogue_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:255:2026-03-28 09:21:20.0000000000 size=64884 outputs_quant/Qwen3-30B-A3B/RTN/Qwen3-30B-A3B_halu_summarization_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:274:================ outputs_quant/Qwen3-30B-A3B/RTN_aligned2k ================
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:275:2026-04-25 21:36:15.6857227060 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:276:2026-04-25 22:40:24.2843664420 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:277:2026-04-25 23:49:26.0956391090 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:278:2026-04-26 00:53:34.7117831500 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:279:2026-04-26 02:01:19.1215516770 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:280:2026-04-26 03:11:40.0702050240 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:281:2026-04-26 04:17:53.9797192920 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:282:2026-04-26 05:26:19.6939201580 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:283:2026-04-26 06:30:55.3033960670 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:284:2026-04-26 07:40:42.3989024240 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:285:2026-04-26 08:51:19.9895024280 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:286:2026-04-26 09:58:15.5321028100 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:287:2026-04-26 11:07:52.7792811250 size=130422 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:288:2026-04-26 12:13:58.2213975290 size=130294 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:289:2026-04-26 13:23:37.8435806300 size=130166 outputs_quant/Qwen3-30B-A3B/RTN_aligned2k/Qwen__Qwen3-30B-A3B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:292:2026-04-18 04:30:24.3032366210 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:293:2026-04-18 05:55:07.6873784710 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:294:2026-04-18 07:18:59.0266999610 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:295:2026-04-18 08:39:23.7588533140 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:296:2026-04-18 09:57:55.7666893170 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:297:2026-04-18 11:46:23.3996596390 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:298:2026-04-18 16:09:25.8392382050 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:299:2026-04-18 19:58:29.8414791510 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:300:2026-04-19 00:28:51.7145234890 size=130422 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:301:2026-04-19 15:51:53.8302533930 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:302:2026-04-19 17:07:03.4902187020 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/14_qwen_targeted_timestamps.txt:303:2026-04-19 18:22:23.8532445870 size=130294 outputs_quant/qwen3_30b_a3b_gptq/Qwen__Qwen3-30B-A3B-GPTQ-Int4_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/15_generate_logits_load_model.txt:20:    18	        # AWQ / GPTQ compressed checkpoints need AutoModel; plain path is FP16 only.
+./audit_qwen_quant/15_generate_logits_load_model.txt:32:    30	            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/15_generate_logits_load_model.txt:33:    31	            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/15_generate_logits_load_model.txt:54:    52	                # GPTQModel 7.x compatibility with torch 2.5.x.
+./audit_qwen_quant/15_generate_logits_load_model.txt:55:    53	                # Also force GPTQ_TORCH backend to avoid AUTO selecting GPTQ_MACHETE,
+./audit_qwen_quant/15_generate_logits_load_model.txt:58:    56	                    class _TorchAcceleratorShim:
+./audit_qwen_quant/15_generate_logits_load_model.txt:91:    89	                    torch.accelerator = _TorchAcceleratorShim()
+./audit_qwen_quant/15_generate_logits_load_model.txt:92:    90	                    print("[GPTQ] added torch.accelerator compatibility shim", flush=True)
+./audit_qwen_quant/15_generate_logits_load_model.txt:94:    92	                from gptqmodel import GPTQModel
+./audit_qwen_quant/15_generate_logits_load_model.txt:97:    95	                print("[GPTQ] Loading qwen3_moe with BACKEND.GPTQ_TORCH", flush=True)
+./audit_qwen_quant/15_generate_logits_load_model.txt:98:    96	                model = GPTQModel.load(
+./audit_qwen_quant/15_generate_logits_load_model.txt:100:    98	                    backend=BACKEND.GPTQ_TORCH,
+./audit_qwen_quant/15_generate_logits_load_model.txt:105:   103	                from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/15_generate_logits_load_model.txt:107:   105	                model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/15_generate_logits_load_model.txt:187:56:        # AWQ / GPTQ compressed checkpoints need AutoModel; plain path is FP16 only.
+./audit_qwen_quant/15_generate_logits_load_model.txt:190:68:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/15_generate_logits_load_model.txt:191:69:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/15_generate_logits_load_model.txt:194:90:                # GPTQModel 7.x compatibility with torch 2.5.x.
+./audit_qwen_quant/15_generate_logits_load_model.txt:195:91:                # Also force GPTQ_TORCH backend to avoid AUTO selecting GPTQ_MACHETE,
+./audit_qwen_quant/15_generate_logits_load_model.txt:196:128:                    print("[GPTQ] added torch.accelerator compatibility shim", flush=True)
+./audit_qwen_quant/15_generate_logits_load_model.txt:197:130:                from gptqmodel import GPTQModel
+./audit_qwen_quant/15_generate_logits_load_model.txt:198:133:                print("[GPTQ] Loading qwen3_moe with BACKEND.GPTQ_TORCH", flush=True)
+./audit_qwen_quant/15_generate_logits_load_model.txt:199:134:                model = GPTQModel.load(
+./audit_qwen_quant/15_generate_logits_load_model.txt:200:136:                    backend=BACKEND.GPTQ_TORCH,
+./audit_qwen_quant/15_generate_logits_load_model.txt:201:141:                from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/15_generate_logits_load_model.txt:202:143:                model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/15_generate_logits_load_model.txt:211:413:        help="GPTQ checkpoint: qwen3_moe uses gptqmodel; other Qwen uses AutoGPTQ",
+./audit_qwen_quant/15_generate_logits_load_model.txt:213:418:        help="AWQ / compressed checkpoint loaded via HF AutoModel (Qwen)",
+./audit_qwen_quant/15_generate_logits_load_model.txt:215:423:        help="4-bit RTN via bitsandbytes NF4 (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:9:68:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:10:69:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:13:141:                from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:14:143:                model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:22:413:        help="GPTQ checkpoint: qwen3_moe uses gptqmodel; other Qwen uses AutoGPTQ",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:23:418:        help="AWQ / compressed checkpoint loaded via HF AutoModel (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:25:423:        help="4-bit RTN via bitsandbytes NF4 (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:40:68:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:41:69:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:44:80:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:45:82:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:46:278:    parser.add_argument("--use_rtn", action="store_true", help="Use RTN quantization")
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:47:280:    parser.add_argument("--use_gptq", action="store_true", help="Load GPTQ quantized model (disable_exllama)")
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:56:68:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:57:69:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:60:94:                from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:61:96:                model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:69:366:        help="GPTQ checkpoint: qwen3_moe uses gptqmodel; other Qwen uses AutoGPTQ",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:70:371:        help="AWQ / compressed checkpoint loaded via HF AutoModel (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:72:376:        help="4-bit RTN via bitsandbytes NF4 (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:81:55:            from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:82:56:            model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:85:81:                from auto_gptq import AutoGPTQForCausalLM
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:86:83:                model = AutoGPTQForCausalLM.from_quantized(
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:94:339:        help="GPTQ checkpoint: qwen3_moe uses gptqmodel; other Qwen uses AutoGPTQ",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:95:344:        help="AWQ / compressed checkpoint loaded via HF AutoModel (Qwen)",
+./audit_qwen_quant/16_all_generate_logits_versions_quant_grep.txt:97:349:        help="4-bit RTN via bitsandbytes NF4 (Qwen)",
+./audit_qwen_quant/18_qwen_python_commands_only.txt:8:./audit_qwen_quant/00_server_snapshot.txt:103:outputs_quant/Qwen3-14B/QuaRot
+./audit_qwen_quant/18_qwen_python_commands_only.txt:10:./audit_qwen_quant/00_server_snapshot.txt:105:outputs_quant/Qwen3-14B/QuaRot_aligned2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:11:./audit_qwen_quant/00_server_snapshot.txt:106:outputs_quant/Qwen3-14B/RTN
+./audit_qwen_quant/18_qwen_python_commands_only.txt:12:./audit_qwen_quant/00_server_snapshot.txt:107:outputs_quant/Qwen3-14B/RTN_2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:13:./audit_qwen_quant/00_server_snapshot.txt:108:outputs_quant/Qwen3-14B/RTN_aligned2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:17:./audit_qwen_quant/00_server_snapshot.txt:112:outputs_quant/Qwen3-30B-A3B/AWQ_aligned2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:22:./audit_qwen_quant/00_server_snapshot.txt:117:outputs_quant/Qwen3-30B-A3B/QuaRot
+./audit_qwen_quant/18_qwen_python_commands_only.txt:23:./audit_qwen_quant/00_server_snapshot.txt:118:outputs_quant/Qwen3-30B-A3B/RTN
+./audit_qwen_quant/18_qwen_python_commands_only.txt:24:./audit_qwen_quant/00_server_snapshot.txt:119:outputs_quant/Qwen3-30B-A3B/RTN_aligned2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:29:./audit_qwen_quant/00_server_snapshot.txt:124:outputs_quant/Qwen3-32B/QuaRot
+./audit_qwen_quant/18_qwen_python_commands_only.txt:30:./audit_qwen_quant/00_server_snapshot.txt:125:outputs_quant/Qwen3-32B/QuaRot_debug
+./audit_qwen_quant/18_qwen_python_commands_only.txt:31:./audit_qwen_quant/00_server_snapshot.txt:126:outputs_quant/Qwen3-32B/RTN
+./audit_qwen_quant/18_qwen_python_commands_only.txt:37:./audit_qwen_quant/00_server_snapshot.txt:132:outputs_quant/Qwen3-8B/RTN_2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:38:./audit_qwen_quant/00_server_snapshot.txt:133:outputs_quant/Qwen3-8B/RTN_aligned2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:39:./audit_qwen_quant/00_server_snapshot.txt:134:outputs_quant/Qwen3-8B/SpinQuant_2k
+./audit_qwen_quant/18_qwen_python_commands_only.txt:40:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:3:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:41:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:4:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:42:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:5:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:43:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:6:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:44:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:7:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:45:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:8:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:46:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:9:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:47:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:10:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:48:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:11:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:49:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:12:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:50:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:13:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:51:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:14:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:52:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:15:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:53:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:16:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:54:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:17:outputs_quant/Qwen3-8B/awq_aligned2k/Qwen__Qwen3-8B-AWQ_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:100:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:63:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:101:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:64:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:102:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:65:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_cosmosqa_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:103:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:66:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:104:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:67:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:105:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:68:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_dialogue_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:106:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:69:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:107:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:70:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:108:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:71:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_halu_summarization_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:109:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:72:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:110:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:73:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:111:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:74:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_hellaswag_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:112:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:75:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_base_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:113:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:76:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_shared_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:114:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:77:outputs_quant/Qwen3-8B/RTN_2k/models--Qwen--Qwen3-8B_mmlu_aligned2k_task_icl1.pkl
+./audit_qwen_quant/18_qwen_python_commands_only.txt:115:./audit_qwen_quant/01_qwen_dirs_and_counts.txt:78:outputs_quant/Qwen3-8B/RTN_aligned2k/Qwen__Qwen3-8B_cosmosqa_aligned2k_base_icl1.pkl
+
+============================================================
+[5] Decision template
+============================================================
+If Llama3.1-70B QuaRot remains around 23-26 Acc across tasks, mark invalid.
+If Llama3.1-70B SpinQuant DS/top1 remains around 35-37 and much lower than 70B AWQ/GPTQ, mark invalid.
+Do not change table until source JSON and source directories are confirmed.
+No archive generated.

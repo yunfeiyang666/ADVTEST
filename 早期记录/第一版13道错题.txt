@@ -1,0 +1,1087 @@
+测试策略:
+  - 从之前58题测试中提取13个失败案例
+  - 重点验证同义词映射和答案格式化效果
+  - 详细展示每一步的处理过程
+
+初始化VQA Pipeline...
+============================================================
+  VQA Pipeline 初始化
+============================================================
+
+⚠️ 请确保Neo4j数据库已启动!
+   启动命令: E:\node4j\neo4j-community-2025.10.1\bin\neo4j console
+   或访问: http://localhost:7474
+
+✓ Neo4j连接成功: bolt://localhost:7687
+✓ VQA Pipeline 初始化完成
+
+加载场景图: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\scene_graphs\scene-0553_frame8.json
+
+❌ 测试过程中发生错误: [Errno 2] No such file or directory: 'E:\\Project\\ADVTEST\\nuscenes_s3c_experiment\\output\\coverage_analysis\\scene_graphs\\scene-0553_frame8.json'
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\test_failed_cases_retest.py", line 295, in main
+    scene_graph = load_scene_graph(scene_graph_path)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\test_failed_cases_retest.py", line 135, in load_scene_graph
+    with open(filepath, 'r', encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\Project\\ADVTEST\\nuscenes_s3c_experiment\\output\\coverage_analysis\\scene_graphs\\scene-0553_frame8.json'
+
+✓ 日志已保存: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\vqa_results\failed_cases_retest_20260114_220549.txt
+PS E:\Project\ADVTEST\nuscenes_s3c_experiment> # 直接运行（Neo4j已启动）
+PS E:\Project\ADVTEST\nuscenes_s3c_experiment> cd E:\Project\ADVTEST\nuscenes_s3c_experiment
+PS E:\Project\ADVTEST\nuscenes_s3c_experiment> E:\Project\ADVTEST\.venv310\Scripts\python.exe test_failed_cases_retest.py
+✓ 配置加载完成
+  - NuScenes数据路径: E:\Project\ADVTEST\data\nuscenes
+  - 输出目录: E:\Project\ADVTEST\nuscenes_s3c_experiment\output
+======================================================================
+  失败案例重测 - 验证规范化改进效果
+======================================================================
+
+📝 日志文件: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\vqa_results\failed_cases_retest_20260114_220735.txt
+⏰ 开始时间: 2026-01-14 22:07:35
+
+测试策略:
+  - 从之前58题测试中提取13个失败案例
+  - 重点验证同义词映射和答案格式化效果
+  - 详细展示每一步的处理过程
+
+初始化VQA Pipeline...
+============================================================
+  VQA Pipeline 初始化
+============================================================
+
+⚠️ 请确保Neo4j数据库已启动!
+   启动命令: E:\node4j\neo4j-community-2025.10.1\bin\neo4j console
+   或访问: http://localhost:7474
+
+✓ Neo4j连接成功: bolt://localhost:7687
+✓ VQA Pipeline 初始化完成
+
+加载场景图: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\scene_graphs\scene-0553_frame8_scene_graph.json
+
+======================================================================
+  导入场景到Neo4j: scene-0553 帧8
+======================================================================
+清空数据...
+✓ 数据库已清空
+创建约束...
+✓ 约束已创建
+导入场景图...
+
+导入场景: scene-0553
+  创建对象节点...
+  ✓ 已创建 34 个对象节点
+  创建关系...
+    已创建 100 条关系...
+    已创建 200 条关系...
+    已创建 300 条关系...
+    已创建 400 条关系...
+    已创建 500 条关系...
+    已创建 600 条关系...
+    已创建 700 条关系...
+    已创建 800 条关系...
+    已创建 900 条关系...
+    已创建 1000 条关系...
+    已创建 1100 条关系...
+  ✓ 已创建 1122 条关系
+✓ 成功导入 34 个节点
+
+======================================================================
+  测试场景: scene-0553 帧8
+  问题数量: 13
+======================================================================
+
+----------------------------------------------------------------------
+问题 1/13
+失败原因: Schema类型不匹配（trailer→truck）
+======================================================================
+
+============================================================
+问题: Are there any trailers?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: Are there any trailers?
+  规范化后: Are there any trucks?
+  问题类型: exist
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 10.57秒
+  💭 AI思维过程:
+--------------------------------------------------
+    我们被要求查询是否存在卡车（truck）。用户问题："Are there any trucks?"，问题类型是exist（存在 性查询）。
+     根据Schema，节点类型中包含'truck'。因此，我们需要查询所有类型为'truck'的对象，并检查是否存在 至少一个。
+     由于是存在性查询，我们可以返回一个布尔值（true/false）或者计数。但通常存在性查询可以直接使用count然后判断是否大于0。
+     不过，根据要求，我们需要返回用户需要的信息。用户问“是否有卡车”，所以应该返回一个布尔值表示是 否存在。
+     在Cypher中，我们可以这样：RETURN count(n) > 0 as exist
+     注意：节点标签是Object，属性type为'truck'。
+
+     因此，Cypher语句为：
+     MATCH (n:Object) WHERE n.type = 'truck' RETURN count(n) > 0 as exist
+
+     但是，我们也要注意，数据库中可能有多个卡车，我们只需要知道是否存在至少一个。
+
+     然而，我们也可以使用另一种方式：MATCH (n:Object {type:'truck'}) RETURN count(n) > 0 as exist 
+
+     两种写法都可以。
+
+     根据示例，我们使用WHERE子句来筛选，所以采用第一种写法。
+
+     注意：用户问题中只问卡车，不涉及关系，所以不需要匹配关系。
+
+     另外，提醒中要求使用合适的WHERE条件，这里我们使用n.type='truck'。
+
+     因此，最终的Cypher查询语句是：
+--------------------------------------------------
+  📝 Cypher: MATCH (n:Object) WHERE n.type = 'truck' RETURN count(n) > 0 as exist
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.237秒
+  📊 结果数量: 1
+  📋 数据: [{"exist": true}]
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 5.76秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户要求我作为一个专业的问答助手，根据Neo4j查询结果生成自然语言答案。查询结果是：{"success": true, "count": 1, "data": [{"exist": true}]}。
+
+    原始问题是："Are there any trucks?"，问题类型是"exist"。
+
+    答案格式要求是：只用"yes"或"no"回答。不要添加任何解释或额外信息。
+
+    查询结果显示：{"exist": true}，这意味着存在卡车。
+
+    所以，对于存在性问题，如果exist为true，我应该回答"yes"。
+
+    要求中还说：如果结果为空，对于exist/comparison问题回答"no"。但这里结果不为空，count是1，exist 是true。
+
+    因此，答案应该是"yes"。
+
+    最后，确保严格遵守格式：只输出"yes"或"no"。
+--------------------------------------------------
+  🔄 原始答案: yes
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: yes
+  ✅ 验证通过: 是
+
+✅ 成功且答案匹配 (之前失败，现在成功！)
+  预期: yes
+  实际: yes
+
+----------------------------------------------------------------------
+问题 2/13
+失败原因: 状态推断失败
+======================================================================
+
+============================================================
+问题: What status is the bicycle?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+请求超时 (尝试 1/3)
+  ⏱️ 耗时: 148.99秒
+  💭 AI思维过程:
+--------------------------------------------------
+    我们正在处理的问题是：“What status is the bicycle?”
+     问题类型是：status
+
+     分析：用户询问自行车的状态。在给定的数据库schema中，并没有直接称为“status”的属性。但是，我们 注意到节点有属性：velocity（速度向量）和位置信息（translation）等。然而，问题中并没有指定是哪个自 行车（可能有多个自行车），也没有指定相对于哪个对象（比如ego）的状态。
+
+     但是，根据示例和schema，我们只能获取到自行车的静态属性（如位置、旋转、尺寸）和动态属性（速度 ）。此外，关系RELATES_TO中存储的是对象之间的空间关系（方位和距离级别）以及精确的距离和角度。      
+
+     然而，问题只问“自行车”的状态，没有特指哪一辆，也没有指定相对于谁（比如ego）的状态。因此，我们需要考虑：
+
+     1. 如果用户想知道所有自行车的状态（比如位置、速度等），那么我们可以返回所有自行车节点的相关属性。
+     2. 但是，问题中并没有提到任何参考对象（如ego），所以我们不能使用RELATES_TO关系（因为那是相对 于其他对象的）。
+
+     因此，我们只能查询自行车节点本身的属性。在schema中，自行车节点（type为'bicycle'）有：        
+       - unique_id
+       - translation: 位置
+       - rotation: 旋转
+       - size: 尺寸（长宽高）
+       - velocity: 速度向量（vx, vy, vz）
+
+     由于问题问的是“status”，我们可以理解为当前的状态，即位置、速度等。
+
+     所以，我们查询所有类型为'bicycle'的节点，并返回它们的唯一标识和状态信息（位置、速度等）。    
+
+     但是，请注意：ego节点没有velocity和size属性（根据schema，非ego对象才有size和velocity）。而自...(省略)
+--------------------------------------------------
+  📝 Cypher: MATCH (bicycle:Object) WHERE bicycle.type = 'bicycle' RETURN bicycle.unique_id, bicycle.translation, bicycle.rotation, bicycle.size, bicycle.velocity
+
+[Step 2] 执行Neo4j查询...
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `translation` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=89, offset=88>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 88, 'line': 1, 'column': 89}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (bicycle:Object) WHERE bicycle.type = 'bicycle' RETURN bicycle.unique_id, bicycle.translation, bicycle.rotation, bicycle.size, bicycle.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `rotation` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=110, offset=109>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 109, 'line': 1, 'column': 110}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (bicycle:Object) WHERE bicycle.type = 'bicycle' RETURN bicycle.unique_id, bicycle.translation, bicycle.rotation, bicycle.size, bicycle.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `size` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=128, offset=127>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 127, 'line': 1, 'column': 128}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (bicycle:Object) WHERE bicycle.type = 'bicycle' RETURN bicycle.unique_id, bicycle.translation, bicycle.rotation, bicycle.size, bicycle.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `velocity` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=1, column=142, offset=141>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 141, 'line': 1, 'column': 142}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (bicycle:Object) WHERE bicycle.type = 'bicycle' RETURN bicycle.unique_id, bicycle.translation, bicycle.rotation, bicycle.size, bicycle.velocity"
+  ⏱️ 耗时: 0.091秒
+  📊 结果数量: 1
+  📋 数据: [{"bicycle.unique_id": "bicycle1", "bicycle.translation": null, "bicycle.rotation": null, "bicycle.size": null, "bicycle.velocity": null}]
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 32.04秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是关于自行车状态的："What status is the bicycle?"。问题类型是"status"。       
+
+    查询结果是：{"success": true, "count": 1, "data": [{"bicycle.unique_id": "bicycle1", "bicycle.translation": null, "bicycle.rotation": null, "bicycle.size": null, "bicycle.velocity": null}]}   
+
+    我需要根据这个结果生成自然语言答案。答案格式要求是：只用一个状态词回答，比如"stopped", "moving", "with rider", "without rider"。
+
+    要求：
+    1. 严格按照格式要求回答。
+    2. 不要添加任何解释或额外信息。
+    3. 如果结果为空，对于exist/comparison问题回答"no"，其他问题回答"0"或"未找到"。但这里结果不是空的，count是1，所以不需要这个。
+
+    现在，查看查询结果中的data：
+    - 有"bicycle.unique_id": "bicycle1"，但状态相关的字段如"translation", "rotation", "size", "velocity"都是null。
+
+    问题类型是"status"，我需要推断自行车的状态。可能的选项是"stopped", "moving", "with rider", "without rider"。
+
+    在结果中，所有状态字段都是null。这意味着没有提供具体状态信息。但是，查询返回了count为1，表示有自行车存在，但状态未知。
+
+    答案格式要求只用一个状态词回答。我需要基于可用信息推断。
+
+    回想要求：如果结果为空，回答"no"或其他，但这里结果不是空的。
+
+    在data中，veloc...(省略)
+--------------------------------------------------
+  🔄 原始答案: stopped
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: stopped
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: with rider
+  实际: stopped
+
+----------------------------------------------------------------------
+问题 3/13
+失败原因: 复杂多跳关系+类型不匹配
+======================================================================
+============================================================
+问题: There is a trailer; is it the same status as the truck to the back right of the with rider bicycle?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: There is a trailer; is it the same status as the truck to the back right of the with rider bicycle?
+  规范化后: There is a truck; is it the same status as the truck to the back right of the with rider bicycle?
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 73.14秒
+  📝 Cypher:
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.001秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 8.98秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是： "There is a truck; is it the same status as the truck to the back right of the with rider bicycle?" 问题类型是 "comparison"。
+
+    查询结果是：{"success": false, "error": "Cannot run an empty query", "count": 0, "data": []}  
+
+    根据要求：
+    - 答案格式是只回答 "yes" 或 "no"。
+    - 如果结果为空，对于 "exist" 或 "comparison" 类型的问题回答 "no"，对于其他问题回答 "0" 或 "未 找到"。
+
+    问题类型是 "comparison"，所以对于空结果，我应该回答 "no"。
+
+    查询结果显示 "success": false, "error": "Cannot run an empty query", "count": 0, "data": []， 这表示查询失败，没有返回任何数据。
+
+    因此，由于这是一个比较问题，并且结果为空，我应该回答 "no"。
+
+    答案格式要求只回答 "yes" or "no"，不要添加任何解释或额外信息。
+
+    所以，我的响应应该只是 "no"。
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: yes
+  实际: no
+
+----------------------------------------------------------------------
+问题 4/13
+失败原因: 复杂多跳关系+类型不匹配
+======================================================================
+
+============================================================
+问题: Does the trailer have the same status as the truck to the back right of the bicycle?        
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: Does the trailer have the same status as the truck to the back right of the bicycle?  
+  规范化后: Does the truck have the same status as the truck to the back right of the bicycle?    
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 80.32秒
+  📝 Cypher:
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.000秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 10.01秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户要求我作为一个专业的问答助手，根据Neo4j查询结果生成自然语言答案。查询结果是：{"success": false, "error": "Cannot run an empty query", "count": 0, "data": []}
+
+    原始问题是："Does the truck have the same status as the truck to the back right of the bicycle?" 问题类型是"comparison"。
+
+    答案格式要求：只回答"yes"或"no"。不要添加任何解释或额外信息。
+
+    要求中还提到：如果结果为空，对于exist/comparison问题回答"no"，其他问题回答"0"或"未找到"。     
+
+    这里，查询结果显示了错误："Cannot run an empty query"，并且count为0，data为空数组。这意味着查 询失败了，没有返回任何数据。
+
+    问题类型是"comparison"，所以根据要求，如果结果为空，我应该回答"no"。
+
+    具体规则："如果结果为空，对于exist/comparison问题回答'no'"
+
+    所以，对于这个comparison问题，由于结果为空，我应该回答"no"。
+
+    答案格式严格是"yes"或"no" only，所以我只需要输出"no"。
+
+    不要添加任何解释，所以我不能说明为什么是"no"，只输出"no"。
+
+    最终答案应该只是"no"。
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: yes
+  实际: no
+
+----------------------------------------------------------------------
+问题 5/13
+失败原因: 类型不匹配+答案格式
+======================================================================
+
+============================================================
+问题: What number of other things are there of the same status as the trailer?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: What number of other things are there of the same status as the trailer?
+  规范化后: What number of other things are there of the same status as the truck?
+  问题类型: count
+  答案格式: Answer with a number only (e.g., "5").
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 23.61秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是："What number of other things are there of the same status as the truck?"  问题类型是count。
+
+    我需要理解问题："same status as the truck"。在数据库Schema中，节点有"type"属性，包括ego, car, pedestrian, truck, bus, bicycle。问题中的"status"可能指的是"type"，因为数据库中没有其他状态属性。 所以，"same status as the truck" 应该是指与卡车相同类型的对象，即其他卡车。
+
+    用户说"other things"，意思是除了自身之外的其他对象。所以，我需要查询所有类型为'truck'的对象， 但排除自己（如果有的话）。问题中指定了"the truck"，但没有指定是哪个卡车。可能是指所有卡车对象。   
+
+    在数据库中，每个对象都有unique_id，但问题没有指定特定的卡车。所以，我应该查询所有类型为'truck'的对象，并计数，但要排除"ego"，因为ego是自车。
+
+    问题说"other things"，暗示不包括查询的参考对象。但这里没有指定参考对象。问题说"the truck"，可 能意味着我们需要考虑一个特定的卡车，但用户没有指定unique_id。
+
+    回顾问题："What number of other things are there of the same status as the truck?" 这有点模糊 。可能的意思是：有多少其他对象与卡车具有相同的类型？即，有多少其他卡车。
+
+    在上下文中，"the truck" 可能是一个泛指，意思是所有卡车类型的对象。
+
+    为了计数，我需要返回类型为'truck'的对象数量，但要排除ego（如果ego是卡车），但ego类型是'ego...(省略)
+--------------------------------------------------
+  📝 Cypher: MATCH (n:Object) WHERE n.type = 'truck' RETURN count(n)
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.035秒
+  📊 结果数量: 1
+  📋 数据: [{"count(n)": 3}]
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 8.21秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户要求我根据Neo4j查询结果生成自然语言答案。查询结果是：{"success": true, "count": 1, "data": [{"count(n)": 3}]}。
+
+    原始问题是："What number of other things are there of the same status as the truck?"。这是一个计数问题（问题类型：count）。
+
+    答案格式要求：只回答一个数字（例如，"5"）。不要添加任何解释或额外信息。
+
+    从查询结果看，数据部分有"count(n)": 3，这表示计数结果是3。
+
+    查询结果的结构：
+    - "success": true，表示查询成功。
+    - "count": 1，这可能表示返回了一个结果集。
+    - "data": [{"count(n)": 3}]，这表示在数据中有一个对象，其中"count(n)"的值是3。
+
+    所以，计数结果是3。
+
+    要求中说：如果结果为空，对于存在/比较问题回答"no"，其他问题回答"0"或"未找到"。但这里查询成功，且数据不为空，计数是3。
+
+    因此，我应该只输出数字"3"。
+
+    答案格式："Answer with a number only (e.g., "5")."，所以我应该输出"3"。
+
+    不要添加任何解释或额外信息，只需数字。
+--------------------------------------------------
+  🔄 原始答案: 3
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: 3
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: 8
+  实际: 3
+
+----------------------------------------------------------------------
+问题 6/13
+失败原因: 答案格式不规范（冗长）
+======================================================================
+
+============================================================
+问题: There is a truck that is to the back of me; what is its status?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 10.42秒
+  💭 AI思维过程:
+--------------------------------------------------
+    我们正在查询一辆位于ego后方的卡车（truck）的状态。
+     状态可能包括其唯一标识符、类型、位置、旋转、尺寸、速度等信息。
+     根据问题，我们需要返回这辆卡车的状态信息。由于问题没有具体指定返回哪些属性，我们可以返回所有 可能的状态属性。
+     注意：ego节点没有size和velocity属性，但卡车有，所以我们可以返回这些属性。
+
+     步骤：
+     1. 匹配从ego节点到其他对象的关系，关系类型为RELATES_TO。
+     2. 关系中的predicates数组的第一个元素应该是'rear'（因为问题中说的是“back”，而我们的方位关系只有rear表示后方）。
+     3. 对象类型应该是'truck'。
+     4. 返回该卡车节点的所有状态属性：unique_id, type, translation, rotation, size, velocity。    
+
+     注意：由于问题中说的是“to the back of me”，所以关系方向是从ego指向卡车，即(ego)-[r:RELATES_TO]->(truck)表示卡车在ego的后方（根据关系定义，RELATES_TO关系是从参考对象指向目标对象，所以这里ego是参考对象，卡车是目标对象，关系表示从ego看卡车在后方）。
+
+     因此，Cypher查询如下：
+--------------------------------------------------
+  📝 Cypher: MATCH (ego:Object {unique_id:'ego'})-[r:RELATES_TO]->(truck:Object {type:'truck'})   
+WHERE r.predicates[0] = 'rear'
+RETURN truck.unique_id, truck.type, truck.translation, truck.rotation, truck.size, truck.velocity 
+
+[Step 2] 执行Neo4j查询...
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `translation` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=43, offset=158>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 158, 'line': 3, 'column': 43}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (ego:Object {unique_id:'ego'})-[r:RELATES_TO]->(truck:Object {type:'truck'}) \nWHERE r.predicates[0] = 'rear' \nRETURN truck.unique_id, truck.type, truck.translation, truck.rotation, truck.size, truck.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `rotation` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=62, offset=177>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 177, 'line': 3, 'column': 62}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (ego:Object {unique_id:'ego'})-[r:RELATES_TO]->(truck:Object {type:'truck'}) \nWHERE r.predicates[0] = 'rear' \nRETURN truck.unique_id, truck.type, truck.translation, truck.rotation, truck.size, truck.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `size` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=78, offset=193>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 193, 'line': 3, 'column': 78}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (ego:Object {unique_id:'ego'})-[r:RELATES_TO]->(truck:Object {type:'truck'}) \nWHERE r.predicates[0] = 'rear' \nRETURN truck.unique_id, truck.type, truck.translation, truck.rotation, truck.size, truck.velocity"
+Received notification from DBMS server: <GqlStatusObject gql_status='01N52', status_description='warn: property key does not exist. The property `velocity` does not exist in database `neo4j`. Verify that the spelling is correct.', position=<SummaryInputPosition line=3, column=90, offset=205>, raw_classification='UNRECOGNIZED', classification=<NotificationClassification.UNRECOGNIZED: 'UNRECOGNIZED'>, raw_severity='WARNING', severity=<NotificationSeverity.WARNING: 'WARNING'>, diagnostic_record={'_classification': 'UNRECOGNIZED', '_severity': 'WARNING', '_position': {'offset': 205, 'line': 3, 'column': 90}, 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: "MATCH (ego:Object {unique_id:'ego'})-[r:RELATES_TO]->(truck:Object {type:'truck'}) \nWHERE r.predicates[0] = 'rear' \nRETURN truck.unique_id, truck.type, truck.translation, truck.rotation, truck.size, truck.velocity"
+  ⏱️ 耗时: 0.289秒
+  📊 结果数量: 2
+  📋 数据: [{"truck.unique_id": "truck2", "truck.type": "truck", "truck.translation": null, "truck.rotation": null, "truck.size": null, "truck.velocity": null}, {"truck.unique_id": "truck3", "truck.type": "truck", "truck.translation": null, "truck.rotation": null, "truck.size": null, "truck.velocity": null}]
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 31.94秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是关于一辆卡车的状态："There is a truck that is to the back of me; what is its status?" 问题类型是 "status"。
+
+    查询结果提供了数据：有两个卡车对象，truck2 和 truck3。每个都有属性如 unique_id, type, translation, rotation, size, velocity。但所有属性值都是 null。
+
+    答案格式要求：只用一个状态词回答，比如 "stopped", "moving", "with rider", "without rider"。不 要添加任何解释或额外信息。
+
+    现在，我需要根据查询结果推断状态。状态词应该基于可用的数据。查询结果中，所有属性都是 null，包 括 velocity（速度）。velocity 为 null 可能表示没有速度信息，这通常意味着卡车是静止的或没有在移动。
+
+    在状态类型的问题中，常见的状态词包括 "stopped" 或 "moving"。既然 velocity 是 null，它可能表示 没有速度，因此卡车可能是停止的。
+
+    但是，查询结果有两个卡车对象，truck2 和 truck3。用户的问题是 "a truck"，单数，但结果有两个。我应该考虑所有卡车的状态吗？问题说 "its status"，可能指的是提到的卡车。
+
+    用户的问题是 "There is a truck that is to the back of me"，所以可能有一个或多个卡车在后面。但 状态查询可能需要一个总体的状态或针对每个。
+
+    答案格式要求只用一个状态词，所以我需要输出一个词。
+
+    如果结果为空，对于状态问题，我应该回答 "0" 或 "未找到"，但这里结果有数据，count 为 2。        
+
+    现在，属性都是 null。velocity 为 null 可...(省略)
+--------------------------------------------------
+  🔄 原始答案: stopped
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: stopped
+  ✅ 验证通过: 是
+
+✅ 成功且答案匹配 (之前失败，现在成功！)
+  预期: stopped
+  实际: stopped
+
+----------------------------------------------------------------------
+问题 7/13
+失败原因: Cypher语法错误
+======================================================================
+============================================================
+问题: What status is the truck to the back of the moving truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 71.99秒
+  💭 AI思维过程:
+--------------------------------------------------
+    我们正在查询一辆移动卡车后面的卡车的状态。
+     注意：问题中的“moving truck”可能指的是正在移动的卡车，但我们的数据库中没有直接存储“移动”状态 。
+     然而，我们可以通过速度向量（velocity）来判断是否在移动。如果速度不为零，我们可以认为它在移动 。
+
+     问题分解：
+     1. 首先找到一辆正在移动的卡车（truck）。移动的条件是速度向量不为零。由于速度是向量，我们可以 检查速度的模是否大于某个阈值（例如0.1米/秒）来避免浮点误差。
+     2. 然后，找到位于这辆移动卡车后方（rear）的其他卡车（注意：不能是它自己）。
+     3. 问题要求返回这个后方卡车的状态。但是，我们的数据库中没有直接存储“状态”字段。根据Schema，我们存储了位置（translation）、旋转（rotation）、尺寸（size）、速度（velocity）等信息。
+        因此，我们可以返回这些信息作为状态。但是，问题没有明确指定具体状态，所以我们可以返回所有属性（除了unique_id和type）？或者根据常见状态，我们可能返回速度、位置等。
+
+     然而，问题中只提到“status”，并没有具体说明。考虑到数据库中的信息，我们可以返回速度（velocity ）和位置（translation）等。但为了全面，我们返回除了唯一标识和类型之外的所有状态信息？但是，注意关 系中的信息（如距离和角度）并不是目标卡车的属性，而是相对于移动卡车的关系。
+
+     根据问题，我们只需要目标卡车（即后方卡车）自身的状态信息，不包括关系信息。因此，我们可以返回 目标卡车的translation, rotation, size, velocity。
+
+     但是，问题中并没有指定返回哪些状态。为了保险，我们可以返回目标卡车节点的所有属性（除了unique_id和type？但是type也是状态的一部分？）。然而，用户问的是“sta...(省略)
+--------------------------------------------------
+  📝 Cypher: MATCH (truck1:Object {type:'truck'})
+WHERE sqrt(truck1.velocity[0]^2 + truck1.velocity[1]^2 + truck1.velocity[2]^2) > 0.1
+MATCH (truck1)-[r:RELATES_TO]->(truck2:Object {type:'truck'})
+WHERE r.predicates[0] = 'rear' AND truck1 <> truck2
+RETURN truck2
+MATCH (truck1:Object {type:'truck'})
+WHERE sqrt(truck1.velocity[0]^2 + truck1.velocity[1]^2 + truck1.velocity[2]^2) > 0.1
+MATCH (truck1)-[r:RELATES_TO]->(truck2:Object {type:'truck'})
+WHERE r.predicates[0] = 'rear' AND truck1 <> truck2
+RETURN truck2
+RETURN truck2.unique_id, truck2.type, truck2.translation, truck2.rotation, truck2.size, truck2.velocity
+MATCH (truck1:Object {type:'truck'})
+WHERE sqrt(truck1.velocity[0]^2 + truck1.velocity[1]^2 + truck1.velocity[2]^2) > 0.1
+MATCH (truck1)-[r:RELATES_TO]->(truck2:Object {type:'truck'})
+WHERE r.predicates[0] = 'rear' AND truck1 <> truck2
+RETURN truck2.unique_id, truck2.translation, truck2.rotation, truck2.size, truck2.velocity        
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.064秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 29.99秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是：What status is the truck to the back of the moving truck? 问题类型是 status。
+
+    查询结果是：{"success": false, "error": "{neo4j_code: Neo.ClientError.Statement.SyntaxError} {message: RETURN can only be used at the end of the query. (line 5, column 1 (offset: 236))\r\n\"RETURN truck2\"\r\n ^} {gql_status: 42001} {gql_status_description: error: syntax error or access rule violation - invalid syntax}", "count": 0, "data": []}
+
+    这表明查询失败，因为有一个语法错误：RETURN 语句只能在查询的末尾使用，但在这个查询中，它出现在 错误的位置。结果中 success 是 false，count 是 0，data 是空数组。
+
+    现在，答案格式要求：Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+    要求：
+    1. 严格按照格式要求回答：只回答一个状态词。
+    2. 不要添加任何解释或额外信息。
+    3. 如果结果为空，对于 exist/comparison 问题回答 "no"，其他问题回答 "0" 或 "未找到"。
+
+    问题类型是 status，不是 exist 或 comparison。所以，对于其他问题，如果结果为空，我应该回答 "0" 或 "未找到...(省略)
+--------------------------------------------------
+  🔄 原始答案: 0
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: 0
+  ✅ 验证通过: 否
+  ⚠️  答案格式可能不符合要求
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: stopped
+  实际: 0
+
+----------------------------------------------------------------------
+问题 8/13
+失败原因: 极复杂多跳关系+类型不匹配
+======================================================================
+
+============================================================
+问题: Is the status of the bus to the back right of the not standing pedestrian the same as the bus that is to the front of the stopped trailer?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: Is the status of the bus to the back right of the not standing pedestrian the same as the bus that is to the front of the stopped trailer?
+  规范化后: Is the status of the bus to the back right of the not stopped pedestrian the same as the bus that is to the front of the stopped truck?
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 73.18秒
+  📝 Cypher:
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.000秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 9.44秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是关于Neo4j查询结果的。查询结果是：{"success": false, "error": "Cannot run an empty query", "count": 0, "data": []}。这意味着查询失败，没有数据返回。
+
+    问题类型是"comparison"。原始问题是："Is the status of the bus to the back right of the not stopped pedestrian the same as the bus that is to the front of the stopped truck?"。这是一个比较问题 ，询问两个状态是否相同。
+
+    根据要求：
+    - 答案格式要求：只回答"yes"或"no"。
+    - 要求1：严格按照格式要求回答。
+    - 要求2：不要添加任何解释或额外信息。
+    - 要求3：如果结果为空，对于exist/comparison问题回答"no"，其他问题回答"0"或"未找到"。
+
+    这里，查询结果为空（因为count=0，data=[]），并且问题类型是"comparison"。所以，根据要求3，我应 该回答"no"。
+
+    要求3具体说："如果结果为空，对于exist/comparison问题回答'no'，其他问题回答'0'或'未找到'"。是的，问题类型是comparison，所以对于空结果，回答"no"。
+
+    因此，我的答案应该是"no"。
+
+    现在，确保格式：只输出"yes"或"no"，没有任何其他东西。
+
+    最终答案："no"
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: yes
+  实际: no
+
+----------------------------------------------------------------------
+问题 9/13
+失败原因: 两个类型都不匹配（barrier+trailer）
+======================================================================
+
+============================================================
+问题: How many barriers are to the front of the trailer?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: How many barriers are to the front of the trailer?
+  规范化后: How many cars are to the front of the truck?
+  问题类型: count
+  答案格式: Answer with a number only (e.g., "5").
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 15.96秒
+  💭 AI思维过程:
+--------------------------------------------------
+    我们正在查询：在卡车前方的汽车数量
+     注意：问题中的对象是"truck"，我们需要找到所有在卡车前方的汽车（car）
+     步骤：
+     1. 找到标签为Object的卡车节点（truck），注意可能有多个卡车，所以不要固定unique_id
+     2. 卡车通过RELATES_TO关系指向其他对象（obj），并且关系的predicates数组的第一个元素（方位）为'front'
+     3. 同时，这些对象（obj）的类型应该是'car'
+     4. 然后统计这些汽车的数量
+
+     但是注意：问题中没有指定是哪个卡车，所以我们需要查询所有卡车前方的汽车数量？还是任意一辆卡车 ？
+     由于问题没有指定具体哪辆卡车，我们理解为：统计任意卡车前方的汽车数量（即所有卡车前方汽车的总 和）
+     然而，也有可能用户想知道每辆卡车前方有多少汽车？但问题问的是“how many cars”，没有说“per truck”，所以应该是总数。
+
+     因此，我们这样设计：
+     匹配所有卡车节点，然后匹配每个卡车节点前方的关系，并且目标节点是汽车，然后统计这些汽车的总数 。
+
+     注意：同一个汽车可能位于多辆卡车的前方，所以我们需要计算所有这样的关系（即每个卡车前方出现的 汽车都算一个）。
+
+     所以Cypher语句为：
+     MATCH (truck:Object {type:'truck'})-[r:RELATES_TO]->(car:Object)
+     WHERE r.predicates[0] = 'front' AND car.type = 'car'
+     RETURN count(car) AS car_count
+
+     但是，这里有一个问题：我们只关心卡车前方的汽车，所以关系方向是从卡车指向汽车，表示汽车在卡车 的前方。
+
+     然而，在示例中，ego是起点，指向其他对象，表示其他对象在ego的前方。同理，这里卡车作为起点，指 向汽车，表示汽车在...(省略)
+--------------------------------------------------
+  📝 Cypher: MATCH (truck:Object {type:'truck'})-[r:RELATES_TO]->(car:Object)
+WHERE r.predicates[0] = 'front' AND car.type = 'car'
+RETURN count(car)
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.066秒
+  📊 结果数量: 1
+  📋 数据: [{"count(car)": 19}]
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 7.30秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户查询是如何生成自然语言答案，基于Neo4j查询结果。原始问题是："How many cars are to the front of the truck?"，这是一个计数问题（count）。
+
+    查询结果是：{"success": true, "count": 1, "data": [{"count(car)": 19}]}。这表明查询成功，并且 计数结果是19。
+
+    答案格式要求是：只回答数字（例如，"5"）。不要添加任何解释或额外信息。
+
+    所以，我需要提取出计数结果。从查询结果中，"data": [{"count(car)": 19}]，这意味着计数是19。    
+
+    问题类型是"count"，所以对于计数问题，我应该直接输出数字。
+
+    要求中说："如果结果为空，对于exist/comparison问题回答'no'，其他问题回答'0'或'未找到'"。但这里 结果不为空，计数是19，所以不需要处理空结果。
+
+    因此，我应该只回答"19"。
+
+    确认格式："Answer with a number only (e.g., '5')."，所以输出应该是数字字符串。
+
+    最终答案：19
+--------------------------------------------------
+  🔄 原始答案: 19
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: 19
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: 5
+  实际: 19
+
+----------------------------------------------------------------------
+问题 10/13
+失败原因: 类型不匹配+答案格式
+======================================================================
+
+============================================================
+问题: Are there any stopped trailers to the front of the stopped trailer?
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: Are there any stopped trailers to the front of the stopped trailer?
+  规范化后: Are there any stopped trucks to the front of the stopped truck?
+  问题类型: exist
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 69.70秒
+  📝 Cypher: MATCH (truck1:Object {type:'truck'}), (truck2:Object {type:'truck'})
+WHERE truck1.unique_id <> truck2.unique_id
+MATCH (truck1)-[r:RELATES_TO]->(truck2)
+WHERE r.predicates[0] = 'front'
+RETURN count(r) > 0
+OPTIONAL MATCH (truck1:Object {type:'truck'}), (truck2:Object {type:'truck'})
+WHERE truck1.unique_id <> truck2.unique_id
+RETURN COUNT(truck1) > 0
+MATCH (truck1:Object {type:'truck'})
+WHERE all(component in truck1.velocity WHERE abs(component) < 0.5)
+WITH truck1
+MATCH (truck2:Object {type:'truck'})
+WHERE truck2 <> truck1
+RETURN count(*) > 0
+MATCH (truck1:Object {type:'truck'})
+WHERE truck1.velocity IS NOT NULL AND all(component in truck1.velocity WHERE abs(component) < 0.5)
+WITH truck1
+MATCH (truck2:Object {type:'truck'})
+WHERE truck2.velocity IS NOT NULL AND all(component in truck2.velocity WHERE abs(component) < 0.5)
+MATCH (truck1)-[r:RELATES_TO]->(truck2)
+WHERE r.predicates[0] = 'front'
+RETURN count(r) > 0
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.052秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 16.31秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户要求我作为一个专业的问答助手，根据Neo4j查询结果生成自然语言答案。
+
+    原始问题是："Are there any stopped trucks to the front of the stopped truck?" 这是一个存在性问题（exist），意思是查询是否有任何停止的卡车在指定的停止卡车前面。
+
+    问题类型是："exist"，这表示我需要检查是否存在这样的卡车。
+
+    查询结果是：{"success": false, "error": "{neo4j_code: Neo.ClientError.Statement.SyntaxError} {message: RETURN can only be used at the end of the query. (line 5, column 1 (offset: 184))\r\n\"RETURN count(r) > 0\"\r\n ^} {gql_status: 42001} {gql_status_description: error: syntax error or access rule violation - invalid syntax}", "count": 0, "data": []}
+
+    从这个结果看，查询失败了（success: false），并且有一个语法错误（Neo.ClientError.Statement.SyntaxError）。错误消息指出"RETURN can only be used at the end of the query"，意思是RETURN语句只能在查询的末尾使用，但在这个查询中，它在错误的位置被使用了。
+
+    结果中还显示"count": 0 和 "data": []，这表明没有返回任何数据。
+
+    现在，答案格式要求：回答时只使用"yes"或"no"，并且严格遵循格式。不...(省略)
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+✅ 成功且答案匹配 (之前失败，现在成功！)
+  预期: no
+  实际: no
+
+----------------------------------------------------------------------
+
+问题 11/13
+失败原因: 类型不匹配+复杂方位关系
+======================================================================
+
+============================================================
+问题: There is a stopped trailer; are there any with rider bicycles to the front left of it?      
+============================================================
+
+[Step 0] 规范化问题...
+  原始问题: There is a stopped trailer; are there any with rider bicycles to the front left of it?
+  规范化后: There is a stopped truck; are there any with rider bicycles to the front left of it?  
+  问题类型: general
+  答案格式: Answer concisely with the key information only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 74.04秒
+  📝 Cypher:
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.000秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 11.17秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是："There is a stopped truck; are there any with rider bicycles to the front left of it?" 这是一个存在性问题，询问是否有带骑手的自行车在停止的卡车的前左方。
+
+    问题类型是：general（一般问题）。
+
+    查询结果是：{"success": false, "error": "Cannot run an empty query", "count": 0, "data": []}。这表明查询失败，没有数据返回。
+
+    现在，根据指令：
+
+    - 答案格式要求：简洁地回答关键信息。
+
+    - 要求：
+
+      1. 严格按照格式要求回答。
+
+      2. 不要添加任何解释或额外信息。
+
+      3. 如果结果为空：
+
+         - 对于 exist/comparison 问题回答 "no"。
+
+         - 其他问题回答 "0" 或 "未找到"。
+
+    问题是："are there any..."，这是一个存在性问题（exist question），因为它询问是否存在某些东西。
+
+    查询结果为空（count: 0, data: []），所以对于存在性问题，我应该回答 "no"。
+
+    指令说："如果结果为空，对于exist/comparison问题回答'no'，其他问题回答'0'或'未找到'"。
+
+    这里是存在性问题，所以回答 "no"。
+
+    答案格式要求："Answer concisely with the key information only."，所以我只需要给出关键信息，不 要额外的东西。
+
+    所以，答案应该是 "no"。
+
+    最后，指令强调："不要添加任何解释或额外信息"，所以我不能添加任何东西，只输出答案。
+
+    因此，对于这个场景，输出应该是 "no"。
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: yes
+  实际: no
+
+----------------------------------------------------------------------
+问题 12/13
+失败原因: 复杂多跳关系
+======================================================================
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: exist
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 66.09秒
+  📝 Cypher: WHERE r.angle >= 22.5 AND r.angle < 67.5
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.247秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 15.52秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户的问题是："Is there another truck of the same status as the truck to the front left of the with rider thing?" 问题类型是"exist"，意思是这是一个存在性问题，询问是否存在某个东西。     
+
+    查询结果是：{"success": false, "error": "...", "count": 0, "data": []}。这表明查询失败，有语法错误。错误信息显示查询无效，具体是语法错误。
+
+    根据要求：
+    - 答案格式是只回答"yes"或"no"。
+    - 对于存在性问题（exist），如果结果为空，回答"no"。
+    - 不要添加任何解释或额外信息。
+
+    查询结果中，"success"是false，表示查询没有成功执行，而不是返回了空数据。错误信息是语法错误，所以数据库没有返回任何有效数据。
+
+    要求中说："如果结果为空，对于exist/comparison问题回答'no'，其他问题回答'0'或'未找到'"。       
+
+    这里的"结果为空"指的是查询执行后返回空数据。但在这种情况下，查询根本没有成功执行；它失败了。  
+
+    我需要检查查询结果的结构：
+    - "count": 0
+    - "data": []
+
+    这表示返回的数据计数为0，数据为空。尽管有错误，但结果字段显示数据为空。
+
+    错误信息是语法错误，但输出中"count"是0，"data"是空数组。
+
+    根据指令："如果结果为空"，意思是如果返回的数据为空（如count=0, data=[]），那么对于exist问题， 回答"no"。
+
+    所以，即使查询有错误，但结果明确显示数据为空，我应该回答"no"。
+
+    指令说："根据Neo4j查询结果，生成自然语言答案。" 查询结果包括错误，但count和data字段是存在的。 
+
+    具体到格式："Answer with ...(省略)
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+✅ 成功且答案匹配 (之前失败，现在成功！)
+  预期: no
+  实际: no
+
+----------------------------------------------------------------------
+问题 13/13
+失败原因: 复杂多跳关系
+======================================================================
+
+============================================================
+问题: Are there any other cars of the same status as the truck that is to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: exist
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+  ⏱️ 耗时: 71.50秒
+  📝 Cypher:
+
+[Step 2] 执行Neo4j查询...
+  ⏱️ 耗时: 0.000秒
+  📊 结果数量: 0
+
+[Step 3] 生成自然语言答案...
+  ⏱️ 耗时: 10.47秒
+  💭 AI思维过程:
+--------------------------------------------------
+    首先，用户要求我作为一个专业的问答助手，根据Neo4j查询结果生成自然语言答案。查询结果是：{"success": false, "error": "Cannot run an empty query", "count": 0, "data": []}
+
+    原始问题是："Are there any other cars of the same status as the truck that is to the front left of the with rider thing?" 问题类型是"exist"，意思是这是一个存在性问题。
+
+    答案格式要求是：只用"yes"或"no"回答。
+
+    要求：
+
+    1. 严格按照格式要求回答：只用"yes"或"no"。
+
+    2. 不要添加任何解释或额外信息。
+
+    3. 如果结果为空，对于exist/comparison问题回答"no"，其他问题回答"0"或"未找到"。
+
+    查询结果中，success是false，error是"Cannot run an empty query"，count是0，data是空数组。这表明查询没有返回任何数据，可能是因为查询是空的或有错误。
+
+    根据规则3：如果结果为空，对于exist/comparison问题回答"no"。这里问题类型是"exist"，所以当结果为空时，我应该回答"no"。
+
+    此外，查询结果本身表示错误，但数据为空，count为0，所以本质上结果为空。
+
+    因此，对于这个存在性问题，由于没有数据，答案应该是"no"。
+
+    最后，答案格式是只输出"yes"或"no"，所以我应该只输出"no"。
+
+    确认问题类型：是"exist"，所以适用规则。
+
+    所以，我的响应应该只是："no"
+--------------------------------------------------
+  🔄 原始答案: no
+
+[Step 3.5] 格式化和验证答案...
+  📝 格式化后: no
+  ✅ 验证通过: 是
+
+⚠️ 成功但答案不匹配 (仍然失败)
+  预期: yes
+  实际: no
+
+======================================================================
+  测试总结: scene-0553 帧8
+======================================================================
+  总问题数: 13
+  执行成功: 13 (100.0%)
+  答案匹配: 4 (30.8%)
+  改进效果: 4/13 (之前 0/13)
+  准确率提升: +30.8%
+
+按失败原因统计:
+  Cypher语法错误:
+    修复: 0/1 (0.0%)
+  Schema类型不匹配（trailer→truck）:
+    修复: 1/1 (100.0%)
+  两个类型都不匹配（barrier+trailer）:
+    修复: 0/1 (0.0%)
+  复杂多跳关系:
+    修复: 1/2 (50.0%)
+  复杂多跳关系+类型不匹配:
+    修复: 0/2 (0.0%)
+  极复杂多跳关系+类型不匹配:
+    修复: 0/1 (0.0%)
+  状态推断失败:
+    修复: 0/1 (0.0%)
+  答案格式不规范（冗长）:
+    修复: 1/1 (100.0%)
+  类型不匹配+复杂方位关系:
+    修复: 0/1 (0.0%)
+  类型不匹配+答案格式:
+    修复: 1/2 (50.0%)
+
+======================================================================
+  全局测试总结
+======================================================================
+  总失败案例数: 13
+  修复案例数: 4
+  修复率: 30.8%
+
+  之前准确率: 77.6% (45/58)
+  理论提升: +6.9%
+  预期准确率: 84.5%
+
+📊 结果已保存: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\vqa_results\failed_cases_retest_20260114_220735.json
+⏰ 结束时间: 2026-01-14 22:24:13
+
+✓ 日志已保存: E:\Project\ADVTEST\nuscenes_s3c_experiment\output\coverage_analysis\vqa_results\failed_cases_retest_20260114_220735.txt
+
+
+

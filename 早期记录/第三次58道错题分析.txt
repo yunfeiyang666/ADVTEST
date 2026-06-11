@@ -1,0 +1,1571 @@
+没提及的就是简单的单跳查询或是两种视角都对的，一些误对的我也找出来了
+
+
+scene-0103 帧38
+7/14
+只能用egoframe做不能用sourceframe做
+
+[4/14] Q: There is a thing that is to the back right of the without rider motorcycle and the front left of me; what is it?
+  预期: truck
+这题出了一个边界情况，角度很极限，处的很好。需要看一下坐标精确计算结果？
+
+[5/14] Q: There is a parked thing that is to the back right of the without rider motorcycle and the front left of me; what is it?
+  预期: truck
+和Q4是同一题，但是限制多一层
+
+
+[6/14] Q: Are there any other things that in the same status as the truck?
+  预期: yes
+这题做对了，这题是retry针对other thing这样不明确的题干的针对性解决成功案例，一开始以为有一个object名为other，第二次理解了other的语义，开始找所有对象
+
+
+[7/14] Q: There is a pedestrian to the back right of the truck; what is its status?
+  预期: moving
+所有行人都是moving，后右方也确实有，为什么会查不出来？
+
+
+
+[8/14] Q: What is the status of the bicycle to the front left of the truck?
+  预期: without rider
+前左方明显没有bicycle，题目出错
+
+
+
+[9/14] Q: How many other pedestrians are in the same status as the pedestrian to the back right of the truck?
+  预期: 7
+标答是对的，但是大模型一个都没查到？
+
+
+
+[10/14] Q: What number of other things in the same status as the pedestrian to the back right of the truck?
+  预期: 10
+标答是对的，但是大模型一个都没查到？
+
+
+[13/14] Q: Are there any parked cars to the back of the motorcycle?
+  预期: yes
+标答是对的，但是大模型一个都没查到？
+
+
+
+
+scene-0103 帧25
+9/11
+
+[8/11] Q: What status is the car to the back right of the not standing pedestrian?
+  预期: moving
+题目没问题，19（car12），方位锁定有点问题
+
+[9/11] Q: There is a car to the back right of the not standing pedestrian; what is its status?
+  预期: moving
+和Q8相同，问法不同
+
+
+
+
+scene-0553 帧8
+18/24
+
+[4/24] Q: There is a trailer; is it the same status as the truck to the back right of the with rider bicycle?
+  预期: yes
+这一帧大部分题做对了，但是只能用sourceframe做不能用egoframe做
+
+
+[6/24] Q: How many other things are there of the same status as the bicycle?
+  预期: 0
+这里cypher语法错误了，碰巧做对了0的答案，需要严肃关注。但是标答这里的other things似乎是以同为bicycle为范围
+Cypher: MATCH (ref:Object) WHERE
+MATCH (bicycle:Object) WHERE bicycle.type='bicycle'
+WITH bicycle.status AS refStatus, bicycle.unique_id AS refId LIMIT 1
+MATCH (other:Object)
+WHERE other.type IN ['ego','car','truck','bus','bicycle','motorcycle','trailer','pedestrian']
+RETURN count(other) AS count
+
+
+[7/24] Q: What number of other things are there of the same status as the trailer?
+  预期: 8
+这道题是老问题了，other things根本不明确，首先这里不可能是同类，而且没有任何方位限制，是一道错题
+
+
+
+[9/24] Q: What status is the truck to the back of the moving truck?
+  预期: stopped
+这题就只能靠egoframe，即这一帧有两套标准。但做的时候是sourceframe，所以做不对
+
+
+
+[10/24] Q: Is the status of the bus to the back right of the not standing pedestrian the same as the bus that is to the front of the stopped trailer?
+  预期: yes
+这题做对但是只能靠sourceframe，egoframe明显做不对
+
+
+[11/24] Q: There is a bus that is to the back right of the not standing pedestrian; is it the same status as the truck that is to the back right of the with rider thing?
+  预期: no
+这题做对但是只能靠sourceframe，egoframe明显做不对
+
+[13/24] Q: How many stopped things are to the front left of the trailer?
+  预期: 4
+单个方位标准不明确导致错误。我们的定位范围是否可以多元，类比0度标准
+
+[18/24] Q: There is a stopped trailer; are there any with rider bicycles to the front left of it?
+  预期: yes
+题目明显出错导致错误
+
+
+[20/24] Q: Are there any other cars of the same status as the truck that is to the front left of the with rider thing?
+  预期: yes
+同18  rider bicycles 的 the front left不存在
+
+
+[22/24] Q: The parked thing to the back of the bicycle is what?
+  预期: car
+egoframe能做对。但是source下也应该做对呀，怎么还是错。这个bicycle可能场景图里数据有问题
+
+
+[23/24] Q: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+  预期: barrier
+retry对了，纠正了语法
+
+
+
+
+
+
+scene-0916
+7/9
+
+[2/9] Q: What is the moving thing that is to the back right of me and the back right of the bus?
+  预期: pedestrian
+这题就只能靠egoframe，即这一帧有两套标准。但做的时候是sourceframe，所以做不对
+
+
+[4/9] Q: What status is the truck that is to the front left of the bus?
+  预期: parked
+这题有位问题，两种视角都作不对。作对是因为格式化出错了，强行把0判为stopped，碰巧作对了
+
+[5/9] Q: There is a truck that is to the front of the bus; what status is it?
+  预期: parked
+只能ego做对。但是retry时丢掉了方位限制所以做对了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[19/24] Q: Is there another truck of the same status as the truck to the front left of the with rider thing?
+  预期: no
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+E:\miniconda\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host '127.0.0.1'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(
+2026-01-29 15:50:21,895 - WARNING - Request timeout (attempt 1/3)
+2026-01-29 15:50:27,223 - WARNING - Request exception (attempt 2/3): ('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+2026-01-29 15:50:31,316 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:31,319 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:50:33,475 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:36,542 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:40,602 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:40,603 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:50:42,657 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:45,717 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:49,812 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:49,813 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:50:51,886 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:54,948 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:58,990 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:50:58,991 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: Is there another truck of the same status as the truck to the front left of the with rider thing?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: comparison
+  答案格式: Answer with "yes" or "no" only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:01,035 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:04,079 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:08,126 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:08,127 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: 类型不匹配: 期望yes/no，实际具体值
+
+[20/24] Q: Are there any other cars of the same status as the truck that is to the front left of the with rider thing?
+  预期: yes
+  ⏭️ 跳过: 该题目在已知错题列表中
+
+[21/24] Q: The moving thing that is to the front left of the not standing pedestrian is what?
+  预期: pedestrian
+
+============================================================
+问题: The moving thing that is to the front left of the not standing pedestrian is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:10,192 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:13,251 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CB90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:17,313 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:17,314 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The moving thing that is to the front left of the not standing pedestrian is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:19,372 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:22,436 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:26,489 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:26,489 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The moving thing that is to the front left of the not standing pedestrian is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:28,526 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:31,578 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:35,642 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:35,642 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The moving thing that is to the front left of the not standing pedestrian is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:37,684 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:40,753 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:44,813 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:44,815 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The moving thing that is to the front left of the not standing pedestrian is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:51:46,889 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:49,951 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:54,003 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:54,003 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:56,048 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:51:59,103 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CB90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:03,152 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:03,175 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[22/24] Q: The parked thing to the back of the bicycle is what?
+  预期: car
+
+============================================================
+问题: The parked thing to the back of the bicycle is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:52:05,250 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:08,303 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:12,354 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:12,355 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The parked thing to the back of the bicycle is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:52:14,416 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:17,468 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:21,511 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:21,512 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The parked thing to the back of the bicycle is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:52:23,596 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903D90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:26,633 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903ED0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:30,693 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:30,693 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The parked thing to the back of the bicycle is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:52:32,742 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:35,789 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:39,861 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:39,861 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: The parked thing to the back of the bicycle is what?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:52:41,896 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:44,951 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:48,997 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:48,998 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:51,057 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CB90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:54,110 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:58,167 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:52:58,167 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[23/24] Q: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+  预期: barrier
+
+============================================================
+问题: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:00,218 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:03,268 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D6D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:07,310 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:07,311 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:09,356 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:12,653 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E5D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:16,710 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903B10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:16,711 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903B10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903B10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903B10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:18,765 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903C50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:21,821 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:25,883 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:25,884 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:27,929 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D810>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:30,967 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:35,027 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:35,027 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:37,075 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:40,130 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:44,179 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:44,179 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:46,221 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C050>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:49,279 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:53,325 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:53,325 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[24/24] Q: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+  预期: barrier
+
+============================================================
+问题: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:53:55,368 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C7D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:53:58,420 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:02,465 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DD10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:02,466 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DD10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DD10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DD10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:54:04,527 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903C50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:07,579 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221D8903B10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:11,628 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:11,629 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:54:13,689 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C7D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:16,735 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:20,808 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:20,808 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:54:22,874 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C050>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:25,917 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:29,963 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:29,964 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:54:32,009 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:35,047 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:39,101 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:39,101 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:41,149 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D810>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:44,234 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:48,283 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:48,284 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:48,296 - INFO - ✓ 连接已关闭
+
+======================================================================
+  场景总结: scene-0553 帧8
+  跳过错题: 5题
+  答案正确: 12/19 (63.2%)
+======================================================================
+2026-01-29 15:54:48,313 - INFO - 💾 增量保存: output\coverage_analysis\vqa_results\enhanced_qa_test_20260129_145407.json
+2026-01-29 15:54:48,492 - INFO - ✓ 已连接到Neo4j: bolt://localhost:7600
+2026-01-29 15:54:48,492 - INFO - 清空数据库...
+2026-01-29 15:54:48,964 - INFO -   已删除 50 个节点
+2026-01-29 15:54:48,971 - INFO - ✓ 数据库已清空
+2026-01-29 15:54:48,971 - INFO - 创建数据库约束和索引...
+2026-01-29 15:54:48,985 - INFO -   ✓ 约束已创建
+2026-01-29 15:54:48,988 - INFO - Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE CONSTRAINT object_unique_id IF NOT EXISTS FOR (e:Object) REQUIRE (e.unique_id) IS UNIQUE' has no effect. The index or constraint specified by 'CONSTRAINT constraint_81f21685 FOR (e:Object) REQUIRE (e.unique_id) IS UNIQUE' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE CONSTRAINT object_unique_id IF NOT EXISTS FOR (obj:Object) REQUIRE obj.unique_id IS UNIQUE'
+2026-01-29 15:54:48,994 - INFO -   ✓ 索引已创建
+2026-01-29 15:54:48,995 - INFO - Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX object_type IF NOT EXISTS FOR (e:Object) ON (e.type)' has no effect. The index or constraint specified by 'RANGE INDEX object_type FOR (e:Object) ON (e.type)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX object_type IF NOT EXISTS FOR (obj:Object) ON (obj.type)'
+2026-01-29 15:54:48,999 - INFO -   ✓ 索引已创建
+2026-01-29 15:54:49,000 - INFO - Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX object_category IF NOT EXISTS FOR (e:Object) ON (e.category)' has no effect. The index or constraint specified by 'RANGE INDEX object_category FOR (e:Object) ON (e.category)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX object_category IF NOT EXISTS FOR (obj:Object) ON (obj.category)'
+2026-01-29 15:54:49,002 - INFO -   ✓ 索引已创建
+2026-01-29 15:54:49,003 - INFO - Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX object_is_ego IF NOT EXISTS FOR (e:Object) ON (e.is_ego)' has no effect. The index or constraint specified by 'RANGE INDEX object_is_ego FOR (e:Object) ON (e.is_ego)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX object_is_ego IF NOT EXISTS FOR (obj:Object) ON (obj.is_ego)'
+2026-01-29 15:54:49,008 - INFO -   ✓ 索引已创建
+2026-01-29 15:54:49,009 - INFO - Received notification from DBMS server: <GqlStatusObject gql_status='00NA0', status_description="note: successful completion - index or constraint already exists. The command 'CREATE RANGE INDEX relationship_distance IF NOT EXISTS FOR ()-[e:RELATES_TO]-() ON (e.distance)' has no effect. The index or constraint specified by 'RANGE INDEX relationship_distance FOR ()-[e:RELATES_TO]-() ON (e.distance)' already exists.", position=None, raw_classification='SCHEMA', classification=<NotificationClassification.SCHEMA: 'SCHEMA'>, raw_severity='INFORMATION', severity=<NotificationSeverity.INFORMATION: 'INFORMATION'>, diagnostic_record={'_classification': 'SCHEMA', '_severity': 'INFORMATION', 'OPERATION': '', 'OPERATION_CODE': '0', 'CURRENT_SCHEMA': '/'}> for query: 'CREATE INDEX relationship_distance IF NOT EXISTS FOR ()-[r:RELATES_TO]-() ON (r.distance)'
+2026-01-29 15:54:49,009 - INFO - 开始导入场景: scene-0916
+2026-01-29 15:54:49,009 - INFO - 验证场景图数据...
+2026-01-29 15:54:49,011 - INFO - ✓ 数据验证通过
+2026-01-29 15:54:49,011 - INFO - 创建 72 个对象节点...
+2026-01-29 15:54:49,044 - INFO -   已创建 72/72 个节点
+2026-01-29 15:54:49,096 - INFO - ✓ 已创建 72 个对象节点
+2026-01-29 15:54:49,097 - INFO - 创建 5112 条关系...
+2026-01-29 15:54:49,312 - INFO -   已创建 500/5112 条关系
+2026-01-29 15:54:49,434 - INFO -   已创建 1000/5112 条关系
+2026-01-29 15:54:49,539 - INFO -   已创建 1500/5112 条关系
+2026-01-29 15:54:49,660 - INFO -   已创建 2000/5112 条关系
+2026-01-29 15:54:49,772 - INFO -   已创建 2500/5112 条关系
+2026-01-29 15:54:49,886 - INFO -   已创建 3000/5112 条关系
+2026-01-29 15:54:49,994 - INFO -   已创建 3500/5112 条关系
+2026-01-29 15:54:50,135 - INFO -   已创建 4000/5112 条关系
+2026-01-29 15:54:50,231 - INFO -   已创建 4500/5112 条关系
+2026-01-29 15:54:50,327 - INFO -   已创建 5000/5112 条关系
+2026-01-29 15:54:50,368 - INFO -   已创建 5112/5112 条关系
+2026-01-29 15:54:50,380 - INFO - ✓ 已创建 5112 条关系
+2026-01-29 15:54:50,381 - INFO - ✓ 场景导入完成
+
+======================================================================
+  测试场景: scene-0916 帧8
+  问题数量: 9
+======================================================================
+
+[1/9] Q: What is the status of the bus?
+  预期: moving
+
+============================================================
+问题: What is the status of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:54:52,453 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:55,508 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:59,576 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:54:59,591 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the status of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:02,065 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:05,127 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:09,179 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:09,179 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the status of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:11,218 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:14,260 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:18,301 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:18,301 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the status of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:20,342 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:23,386 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CB90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:27,445 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:27,445 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the status of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: status
+  答案格式: Answer with a status word only (e.g., "stopped", "moving", "with rider", "without rider").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:29,496 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:32,566 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:36,636 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:36,638 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:38,685 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:41,723 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:45,775 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C690>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:45,775 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C690>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C690>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[2/9] Q: What is the moving thing that is to the back right of me and the back right of the bus?
+  预期: pedestrian
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:47,817 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E850>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:50,879 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EAD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:54,931 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:55:54,932 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:55:56,984 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E990>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:00,047 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E710>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:04,101 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:04,102 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:56:06,156 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:09,226 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C7D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:13,286 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:13,287 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:56:15,339 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:18,402 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C050>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:22,445 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:22,445 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:56:24,519 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:27,559 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:31,592 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:31,594 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:33,649 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E210>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:36,692 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D1D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:40,743 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:40,744 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CF50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[3/9] Q: What is the moving thing that is to the back right of me and the back right of the bus?
+  预期: pedestrian
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:56:42,798 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D090>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:45,855 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D310>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:49,910 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:49,910 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D450>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:56:51,956 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E350>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:55,008 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E0D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:59,069 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:56:59,070 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DE50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:01,117 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CB90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:04,183 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CA50>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:08,227 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:08,228 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C190>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:10,284 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C410>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:13,339 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CE10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:17,389 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:17,390 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D950>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 4] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: What is the moving thing that is to the back right of me and the back right of the bus?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: object
+  答案格式: Answer with the object type only (e.g., "car", "pedestrian", "bicycle").
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:19,431 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DBD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:22,480 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C690>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:26,529 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E850>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:26,530 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E850>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E850>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E850>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:28,573 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EAD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:31,617 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42EC10>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:35,683 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E990>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:35,683 - WARNING - LLM判定调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E990>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+  ❌ 错误: LLM调用失败: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E990>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[4/9] Q: What status is the truck that is to the front left of the bus?
+  预期: parked
+  ⏭️ 跳过: 该题目在已知错题列表中
+
+[5/9] Q: There is a truck that is to the front of the bus; what status is it?
+  预期: parked
+
+============================================================
+问题: There is a truck that is to the front of the bus; what status is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: general
+  答案格式: Answer concisely with the key information only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:37,765 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E710>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:40,812 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42E490>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:44,852 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:44,852 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DA90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 1] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a truck that is to the front of the bus; what status is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: general
+  答案格式: Answer concisely with the key information only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:46,911 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C7D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:49,976 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C550>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:54,016 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:54,017 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C2D0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 2] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a truck that is to the front of the bus; what status is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: general
+  答案格式: Answer concisely with the key information only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:57:56,071 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C050>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:57:59,118 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42C910>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:58:03,161 - WARNING - Request exception (attempt 3/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:58:03,161 - ERROR - Unexpected error processing question: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+Traceback (most recent call last):
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\pipeline.py", line 236, in process_question
+    cypher_query = self.llm.generate_cypher(
+        normalized_question,
+    ...<2 lines>...
+        scene_context=None,  # 不再传递场景数据
+    )
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 231, in generate_cypher
+    response = self.chat(messages, temperature=temp, max_tokens=max_tok)
+  File "E:\Project\ADVTEST\nuscenes_s3c_experiment\core_pipeline\vqa_pipeline\llm_client.py", line 136, in chat
+    raise Exception(f"API请求失败，已达到最大重试次数。最后错误: {last_error}")
+Exception: API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+[严重错误] API请求失败，已达到最大重试次数。最后错误: HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42CCD0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+
+  [Retry 3] 错误原因: Cypher执行报错或生成失败...
+
+============================================================
+问题: There is a truck that is to the front of the bus; what status is it?
+============================================================
+
+[Step 0] 规范化问题...
+  问题类型: general
+  答案格式: Answer concisely with the key information only.
+
+[Step 1] 生成Cypher查询...
+2026-01-29 15:58:05,217 - WARNING - Request exception (attempt 1/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42DF90>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))
+2026-01-29 15:58:08,264 - WARNING - Request exception (attempt 2/3): HTTPSConnectionPool(host='maas-api.ai-yuanjing.com', port=443): Max retries exceeded with url: /openapi/compatible-mode/v1/chat/completions (Caused by ProxyError('Unable to connect to proxy', NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x00000221DA42D590>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。')))

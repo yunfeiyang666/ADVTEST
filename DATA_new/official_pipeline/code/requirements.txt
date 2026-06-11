@@ -1,0 +1,5 @@
+# ADVTEST VQA Pipeline Dependencies
+neo4j>=5.0
+openpyxl>=3.1
+openai>=1.0
+httpx>=0.25

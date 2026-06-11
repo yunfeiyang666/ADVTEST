@@ -1,0 +1,953 @@
+{
+  "budget": 1000,
+  "frame_pool": [
+    "scene-0013_frame31",
+    "scene-0018_frame39",
+    "scene-0035_frame14",
+    "scene-0035_frame39",
+    "scene-0036_frame17",
+    "scene-0036_frame19",
+    "scene-0092_frame20",
+    "scene-0092_frame39",
+    "scene-0094_frame7",
+    "scene-0097_frame12",
+    "scene-0097_frame37",
+    "scene-0098_frame15",
+    "scene-0099_frame35",
+    "scene-0099_frame8",
+    "scene-0101_frame25",
+    "scene-0102_frame31",
+    "scene-0102_frame39",
+    "scene-0103_frame25",
+    "scene-0104_frame20",
+    "scene-0104_frame3",
+    "scene-0104_frame31",
+    "scene-0107_frame10",
+    "scene-0109_frame39",
+    "scene-0268_frame6",
+    "scene-0269_frame3",
+    "scene-0272_frame31",
+    "scene-0273_frame4",
+    "scene-0274_frame26",
+    "scene-0274_frame31",
+    "scene-0276_frame17"
+  ],
+  "frame_pool_size": 30,
+  "policy": {
+    "min_questions": 20,
+    "max_questions": 50,
+    "plateau_window": 10,
+    "gain_window": 20,
+    "relative_gain_threshold": 0.25
+  },
+  "methods": {
+    "advtest": {
+      "summary": {
+        "micro_l0": 0.6421895861148198,
+        "macro_l0": 0.6642916666666666,
+        "covered_l0": 481,
+        "total_l0": 749,
+        "micro_l1": 0.14338353091957706,
+        "macro_l1": 0.34427291003171584,
+        "covered_l1": 1790,
+        "total_l1": 12484,
+        "micro_l2": 0.0052044251509542686,
+        "macro_l2": 0.07495473594713506,
+        "covered_l2": 2809,
+        "total_l2": 539733,
+        "unique_l2_per_question": 2.809,
+        "suite_size": 1000,
+        "visited_frames": 20,
+        "switch_reason_counts": {
+          "frame_cap": 19,
+          "global_budget": 1
+        },
+        "auc_micro_l2": 0.0024816631556714157,
+        "auc_macro_l2": 0.047477127442982374
+      },
+      "frame_runs": [
+        {
+          "scene_frame": "scene-0013_frame31",
+          "questions": 50,
+          "covered_l2": 61,
+          "total_l2": 105,
+          "coverage_l2": 0.580952380952381,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.35,
+          "final_gain_mean": 1
+        },
+        {
+          "scene_frame": "scene-0018_frame39",
+          "questions": 50,
+          "covered_l2": 122,
+          "total_l2": 2907,
+          "coverage_l2": 0.04196766425868593,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.45,
+          "final_gain_mean": 2.1
+        },
+        {
+          "scene_frame": "scene-0035_frame14",
+          "questions": 50,
+          "covered_l2": 131,
+          "total_l2": 2040,
+          "coverage_l2": 0.0642156862745098,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.3,
+          "final_gain_mean": 3.3
+        },
+        {
+          "scene_frame": "scene-0035_frame39",
+          "questions": 50,
+          "covered_l2": 89,
+          "total_l2": 858,
+          "coverage_l2": 0.10372960372960373,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.75,
+          "final_gain_mean": 1.7
+        },
+        {
+          "scene_frame": "scene-0036_frame17",
+          "questions": 50,
+          "covered_l2": 174,
+          "total_l2": 14880,
+          "coverage_l2": 0.011693548387096775,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.6,
+          "final_gain_mean": 3.05
+        },
+        {
+          "scene_frame": "scene-0036_frame19",
+          "questions": 50,
+          "covered_l2": 136,
+          "total_l2": 4620,
+          "coverage_l2": 0.02943722943722944,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.45,
+          "final_gain_mean": 2.85
+        },
+        {
+          "scene_frame": "scene-0092_frame20",
+          "questions": 50,
+          "covered_l2": 139,
+          "total_l2": 858,
+          "coverage_l2": 0.16200466200466201,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.15,
+          "final_gain_mean": 2.8
+        },
+        {
+          "scene_frame": "scene-0092_frame39",
+          "questions": 50,
+          "covered_l2": 232,
+          "total_l2": 10962,
+          "coverage_l2": 0.021164021164021163,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 4.85,
+          "final_gain_mean": 4.2
+        },
+        {
+          "scene_frame": "scene-0094_frame7",
+          "questions": 50,
+          "covered_l2": 65,
+          "total_l2": 105,
+          "coverage_l2": 0.6190476190476191,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.55,
+          "final_gain_mean": 1.15
+        },
+        {
+          "scene_frame": "scene-0097_frame12",
+          "questions": 50,
+          "covered_l2": 185,
+          "total_l2": 12180,
+          "coverage_l2": 0.015188834154351396,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.55,
+          "final_gain_mean": 3.8
+        },
+        {
+          "scene_frame": "scene-0097_frame37",
+          "questions": 50,
+          "covered_l2": 115,
+          "total_l2": 1092,
+          "coverage_l2": 0.10531135531135531,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.65,
+          "final_gain_mean": 2.15
+        },
+        {
+          "scene_frame": "scene-0098_frame15",
+          "questions": 50,
+          "covered_l2": 125,
+          "total_l2": 1680,
+          "coverage_l2": 0.0744047619047619,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.55,
+          "final_gain_mean": 2.15
+        },
+        {
+          "scene_frame": "scene-0099_frame35",
+          "questions": 50,
+          "covered_l2": 181,
+          "total_l2": 48645,
+          "coverage_l2": 0.003720834618151917,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.55,
+          "final_gain_mean": 3.7
+        },
+        {
+          "scene_frame": "scene-0099_frame8",
+          "questions": 50,
+          "covered_l2": 176,
+          "total_l2": 14880,
+          "coverage_l2": 0.011827956989247311,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.55,
+          "final_gain_mean": 3.5
+        },
+        {
+          "scene_frame": "scene-0101_frame25",
+          "questions": 50,
+          "covered_l2": 222,
+          "total_l2": 202575,
+          "coverage_l2": 0.001095890410958904,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 5,
+          "final_gain_mean": 4
+        },
+        {
+          "scene_frame": "scene-0102_frame31",
+          "questions": 50,
+          "covered_l2": 115,
+          "total_l2": 1365,
+          "coverage_l2": 0.08424908424908426,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.4,
+          "final_gain_mean": 2.45
+        },
+        {
+          "scene_frame": "scene-0102_frame39",
+          "questions": 50,
+          "covered_l2": 99,
+          "total_l2": 360,
+          "coverage_l2": 0.275,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.3,
+          "final_gain_mean": 1.9
+        },
+        {
+          "scene_frame": "scene-0103_frame25",
+          "questions": 50,
+          "covered_l2": 167,
+          "total_l2": 17952,
+          "coverage_l2": 0.009302584670231729,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.05,
+          "final_gain_mean": 3.75
+        },
+        {
+          "scene_frame": "scene-0104_frame20",
+          "questions": 50,
+          "covered_l2": 128,
+          "total_l2": 9828,
+          "coverage_l2": 0.013024013024013023,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.05,
+          "final_gain_mean": 3
+        },
+        {
+          "scene_frame": "scene-0104_frame3",
+          "questions": 50,
+          "covered_l2": 147,
+          "total_l2": 6900,
+          "coverage_l2": 0.021304347826086957,
+          "switch_reason": "global_budget",
+          "initial_gain_mean": 3.4,
+          "final_gain_mean": 2.7
+        }
+      ]
+    },
+    "random": {
+      "summary": {
+        "micro_l0": 0.6435246995994659,
+        "macro_l0": 0.6653333333333333,
+        "covered_l0": 482,
+        "total_l0": 749,
+        "micro_l1": 0.14346363345081706,
+        "macro_l1": 0.3395968460982639,
+        "covered_l1": 1791,
+        "total_l1": 12484,
+        "micro_l2": 0.004522606548052463,
+        "macro_l2": 0.06271050530426263,
+        "covered_l2": 2441,
+        "total_l2": 539733,
+        "unique_l2_per_question": 2.441,
+        "suite_size": 1000,
+        "visited_frames": 20,
+        "switch_reason_counts": {
+          "frame_cap": 19,
+          "global_budget": 1
+        },
+        "auc_micro_l2": 0.0021050473104294158,
+        "auc_macro_l2": 0.04106787265264905
+      },
+      "frame_runs": [
+        {
+          "scene_frame": "scene-0013_frame31",
+          "questions": 50,
+          "covered_l2": 55,
+          "total_l2": 105,
+          "coverage_l2": 0.5238095238095238,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.2,
+          "final_gain_mean": 1
+        },
+        {
+          "scene_frame": "scene-0018_frame39",
+          "questions": 50,
+          "covered_l2": 81,
+          "total_l2": 2907,
+          "coverage_l2": 0.02786377708978328,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.8,
+          "final_gain_mean": 1.4
+        },
+        {
+          "scene_frame": "scene-0035_frame14",
+          "questions": 50,
+          "covered_l2": 97,
+          "total_l2": 2040,
+          "coverage_l2": 0.047549019607843135,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.05,
+          "final_gain_mean": 2
+        },
+        {
+          "scene_frame": "scene-0035_frame39",
+          "questions": 50,
+          "covered_l2": 80,
+          "total_l2": 858,
+          "coverage_l2": 0.09324009324009325,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.9,
+          "final_gain_mean": 1.4
+        },
+        {
+          "scene_frame": "scene-0036_frame17",
+          "questions": 50,
+          "covered_l2": 158,
+          "total_l2": 14880,
+          "coverage_l2": 0.010618279569892473,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.25,
+          "final_gain_mean": 2.75
+        },
+        {
+          "scene_frame": "scene-0036_frame19",
+          "questions": 50,
+          "covered_l2": 159,
+          "total_l2": 4620,
+          "coverage_l2": 0.03441558441558441,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.35,
+          "final_gain_mean": 3.4
+        },
+        {
+          "scene_frame": "scene-0092_frame20",
+          "questions": 50,
+          "covered_l2": 93,
+          "total_l2": 858,
+          "coverage_l2": 0.10839160839160839,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.05,
+          "final_gain_mean": 1.6
+        },
+        {
+          "scene_frame": "scene-0092_frame39",
+          "questions": 50,
+          "covered_l2": 185,
+          "total_l2": 10962,
+          "coverage_l2": 0.016876482393723774,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.95,
+          "final_gain_mean": 3.9
+        },
+        {
+          "scene_frame": "scene-0094_frame7",
+          "questions": 50,
+          "covered_l2": 65,
+          "total_l2": 105,
+          "coverage_l2": 0.6190476190476191,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.2,
+          "final_gain_mean": 1.25
+        },
+        {
+          "scene_frame": "scene-0097_frame12",
+          "questions": 50,
+          "covered_l2": 196,
+          "total_l2": 12180,
+          "coverage_l2": 0.016091954022988506,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.9,
+          "final_gain_mean": 4.05
+        },
+        {
+          "scene_frame": "scene-0097_frame37",
+          "questions": 50,
+          "covered_l2": 58,
+          "total_l2": 1092,
+          "coverage_l2": 0.05311355311355311,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.1,
+          "final_gain_mean": 1.2
+        },
+        {
+          "scene_frame": "scene-0098_frame15",
+          "questions": 50,
+          "covered_l2": 77,
+          "total_l2": 1680,
+          "coverage_l2": 0.04583333333333333,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.85,
+          "final_gain_mean": 1.4
+        },
+        {
+          "scene_frame": "scene-0099_frame35",
+          "questions": 50,
+          "covered_l2": 177,
+          "total_l2": 48645,
+          "coverage_l2": 0.0036386062288004933,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.1,
+          "final_gain_mean": 3.65
+        },
+        {
+          "scene_frame": "scene-0099_frame8",
+          "questions": 50,
+          "covered_l2": 156,
+          "total_l2": 14880,
+          "coverage_l2": 0.010483870967741936,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.6,
+          "final_gain_mean": 3.35
+        },
+        {
+          "scene_frame": "scene-0101_frame25",
+          "questions": 50,
+          "covered_l2": 223,
+          "total_l2": 202575,
+          "coverage_l2": 0.0011008268542515118,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 4.3,
+          "final_gain_mean": 4.1
+        },
+        {
+          "scene_frame": "scene-0102_frame31",
+          "questions": 50,
+          "covered_l2": 75,
+          "total_l2": 1365,
+          "coverage_l2": 0.054945054945054944,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.55,
+          "final_gain_mean": 1.6
+        },
+        {
+          "scene_frame": "scene-0102_frame39",
+          "questions": 50,
+          "covered_l2": 61,
+          "total_l2": 360,
+          "coverage_l2": 0.16944444444444445,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.45,
+          "final_gain_mean": 1.1
+        },
+        {
+          "scene_frame": "scene-0103_frame25",
+          "questions": 50,
+          "covered_l2": 164,
+          "total_l2": 17952,
+          "coverage_l2": 0.009135472370766489,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.35,
+          "final_gain_mean": 3.85
+        },
+        {
+          "scene_frame": "scene-0104_frame20",
+          "questions": 50,
+          "covered_l2": 116,
+          "total_l2": 9828,
+          "coverage_l2": 0.011803011803011803,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.55,
+          "final_gain_mean": 1.65
+        },
+        {
+          "scene_frame": "scene-0104_frame3",
+          "questions": 50,
+          "covered_l2": 165,
+          "total_l2": 6900,
+          "coverage_l2": 0.02391304347826087,
+          "switch_reason": "global_budget",
+          "initial_gain_mean": 3.55,
+          "final_gain_mean": 2.8
+        }
+      ]
+    },
+    "qatest": {
+      "summary": {
+        "micro_l0": 0.6395193591455274,
+        "macro_l0": 0.6637352245862884,
+        "covered_l0": 479,
+        "total_l0": 749,
+        "micro_l1": 0.14033963473245756,
+        "macro_l1": 0.3311124358285259,
+        "covered_l1": 1752,
+        "total_l1": 12484,
+        "micro_l2": 0.00448925672508444,
+        "macro_l2": 0.05995831540180521,
+        "covered_l2": 2423,
+        "total_l2": 539733,
+        "unique_l2_per_question": 2.423,
+        "suite_size": 1000,
+        "visited_frames": 20,
+        "switch_reason_counts": {
+          "frame_cap": 19,
+          "global_budget": 1
+        },
+        "auc_micro_l2": 0.0020362280979669576,
+        "auc_macro_l2": 0.03880556358055126
+      },
+      "frame_runs": [
+        {
+          "scene_frame": "scene-0013_frame31",
+          "questions": 50,
+          "covered_l2": 56,
+          "total_l2": 105,
+          "coverage_l2": 0.5333333333333333,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.1,
+          "final_gain_mean": 1.2
+        },
+        {
+          "scene_frame": "scene-0018_frame39",
+          "questions": 50,
+          "covered_l2": 78,
+          "total_l2": 2907,
+          "coverage_l2": 0.026831785345717233,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.05,
+          "final_gain_mean": 1.1
+        },
+        {
+          "scene_frame": "scene-0035_frame14",
+          "questions": 50,
+          "covered_l2": 72,
+          "total_l2": 2040,
+          "coverage_l2": 0.03529411764705882,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.3,
+          "final_gain_mean": 1.35
+        },
+        {
+          "scene_frame": "scene-0035_frame39",
+          "questions": 50,
+          "covered_l2": 56,
+          "total_l2": 858,
+          "coverage_l2": 0.06526806526806526,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.1,
+          "final_gain_mean": 1.2
+        },
+        {
+          "scene_frame": "scene-0036_frame17",
+          "questions": 50,
+          "covered_l2": 140,
+          "total_l2": 14880,
+          "coverage_l2": 0.009408602150537635,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.8,
+          "final_gain_mean": 2.75
+        },
+        {
+          "scene_frame": "scene-0036_frame19",
+          "questions": 50,
+          "covered_l2": 147,
+          "total_l2": 4620,
+          "coverage_l2": 0.031818181818181815,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.8,
+          "final_gain_mean": 3.15
+        },
+        {
+          "scene_frame": "scene-0092_frame20",
+          "questions": 50,
+          "covered_l2": 93,
+          "total_l2": 858,
+          "coverage_l2": 0.10839160839160839,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.05,
+          "final_gain_mean": 1.6
+        },
+        {
+          "scene_frame": "scene-0092_frame39",
+          "questions": 50,
+          "covered_l2": 208,
+          "total_l2": 10962,
+          "coverage_l2": 0.018974639664294836,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 4.1,
+          "final_gain_mean": 4.15
+        },
+        {
+          "scene_frame": "scene-0094_frame7",
+          "questions": 50,
+          "covered_l2": 57,
+          "total_l2": 105,
+          "coverage_l2": 0.5428571428571428,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.25,
+          "final_gain_mean": 1.1
+        },
+        {
+          "scene_frame": "scene-0097_frame12",
+          "questions": 50,
+          "covered_l2": 209,
+          "total_l2": 12180,
+          "coverage_l2": 0.01715927750410509,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 4.45,
+          "final_gain_mean": 3.65
+        },
+        {
+          "scene_frame": "scene-0097_frame37",
+          "questions": 50,
+          "covered_l2": 54,
+          "total_l2": 1092,
+          "coverage_l2": 0.04945054945054945,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1,
+          "final_gain_mean": 1
+        },
+        {
+          "scene_frame": "scene-0098_frame15",
+          "questions": 50,
+          "covered_l2": 74,
+          "total_l2": 1680,
+          "coverage_l2": 0.04404761904761905,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.2,
+          "final_gain_mean": 1.65
+        },
+        {
+          "scene_frame": "scene-0099_frame35",
+          "questions": 50,
+          "covered_l2": 217,
+          "total_l2": 48645,
+          "coverage_l2": 0.004460890122314729,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.95,
+          "final_gain_mean": 4.75
+        },
+        {
+          "scene_frame": "scene-0099_frame8",
+          "questions": 50,
+          "covered_l2": 158,
+          "total_l2": 14880,
+          "coverage_l2": 0.010618279569892473,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.3,
+          "final_gain_mean": 3
+        },
+        {
+          "scene_frame": "scene-0101_frame25",
+          "questions": 50,
+          "covered_l2": 215,
+          "total_l2": 202575,
+          "coverage_l2": 0.0010613353079106504,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.8,
+          "final_gain_mean": 4.45
+        },
+        {
+          "scene_frame": "scene-0102_frame31",
+          "questions": 50,
+          "covered_l2": 68,
+          "total_l2": 1365,
+          "coverage_l2": 0.04981684981684982,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.5,
+          "final_gain_mean": 1.3
+        },
+        {
+          "scene_frame": "scene-0102_frame39",
+          "questions": 50,
+          "covered_l2": 74,
+          "total_l2": 360,
+          "coverage_l2": 0.20555555555555555,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.8,
+          "final_gain_mean": 1.4
+        },
+        {
+          "scene_frame": "scene-0103_frame25",
+          "questions": 50,
+          "covered_l2": 166,
+          "total_l2": 17952,
+          "coverage_l2": 0.009246880570409982,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.8,
+          "final_gain_mean": 2.9
+        },
+        {
+          "scene_frame": "scene-0104_frame20",
+          "questions": 50,
+          "covered_l2": 129,
+          "total_l2": 9828,
+          "coverage_l2": 0.013125763125763126,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 3.05,
+          "final_gain_mean": 1.9
+        },
+        {
+          "scene_frame": "scene-0104_frame3",
+          "questions": 50,
+          "covered_l2": 152,
+          "total_l2": 6900,
+          "coverage_l2": 0.022028985507246378,
+          "switch_reason": "global_budget",
+          "initial_gain_mean": 3.85,
+          "final_gain_mean": 2.6
+        }
+      ]
+    },
+    "qaasker": {
+      "summary": {
+        "micro_l0": 0.6074766355140186,
+        "macro_l0": 0.6464539530289983,
+        "covered_l0": 455,
+        "total_l0": 749,
+        "micro_l1": 0.08450817045818648,
+        "macro_l1": 0.23895752090186148,
+        "covered_l1": 1055,
+        "total_l1": 12484,
+        "micro_l2": 0.0023437514474749553,
+        "macro_l2": 0.03410854041802409,
+        "covered_l2": 1265,
+        "total_l2": 539733,
+        "unique_l2_per_question": 1.265,
+        "suite_size": 1000,
+        "visited_frames": 20,
+        "switch_reason_counts": {
+          "frame_cap": 19,
+          "global_budget": 1
+        },
+        "auc_micro_l2": 0.0011057495094796872,
+        "auc_macro_l2": 0.022451360171750204
+      },
+      "frame_runs": [
+        {
+          "scene_frame": "scene-0013_frame31",
+          "questions": 50,
+          "covered_l2": 32,
+          "total_l2": 105,
+          "coverage_l2": 0.3047619047619048,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.7,
+          "final_gain_mean": 0.6
+        },
+        {
+          "scene_frame": "scene-0018_frame39",
+          "questions": 50,
+          "covered_l2": 39,
+          "total_l2": 2907,
+          "coverage_l2": 0.013415892672858616,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.7,
+          "final_gain_mean": 0.8
+        },
+        {
+          "scene_frame": "scene-0035_frame14",
+          "questions": 50,
+          "covered_l2": 59,
+          "total_l2": 2040,
+          "coverage_l2": 0.02892156862745098,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.2,
+          "final_gain_mean": 1.4
+        },
+        {
+          "scene_frame": "scene-0035_frame39",
+          "questions": 50,
+          "covered_l2": 38,
+          "total_l2": 858,
+          "coverage_l2": 0.04428904428904429,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.7,
+          "final_gain_mean": 0.85
+        },
+        {
+          "scene_frame": "scene-0036_frame17",
+          "questions": 50,
+          "covered_l2": 94,
+          "total_l2": 14880,
+          "coverage_l2": 0.006317204301075269,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.7,
+          "final_gain_mean": 1.8
+        },
+        {
+          "scene_frame": "scene-0036_frame19",
+          "questions": 50,
+          "covered_l2": 68,
+          "total_l2": 4620,
+          "coverage_l2": 0.01471861471861472,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.15,
+          "final_gain_mean": 1.5
+        },
+        {
+          "scene_frame": "scene-0092_frame20",
+          "questions": 50,
+          "covered_l2": 47,
+          "total_l2": 858,
+          "coverage_l2": 0.054778554778554776,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.05,
+          "final_gain_mean": 0.8
+        },
+        {
+          "scene_frame": "scene-0092_frame39",
+          "questions": 50,
+          "covered_l2": 97,
+          "total_l2": 10962,
+          "coverage_l2": 0.008848750228060573,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.9,
+          "final_gain_mean": 2.2
+        },
+        {
+          "scene_frame": "scene-0094_frame7",
+          "questions": 50,
+          "covered_l2": 34,
+          "total_l2": 105,
+          "coverage_l2": 0.3238095238095238,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.65,
+          "final_gain_mean": 0.8
+        },
+        {
+          "scene_frame": "scene-0097_frame12",
+          "questions": 50,
+          "covered_l2": 107,
+          "total_l2": 12180,
+          "coverage_l2": 0.008784893267651889,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.2,
+          "final_gain_mean": 1.95
+        },
+        {
+          "scene_frame": "scene-0097_frame37",
+          "questions": 50,
+          "covered_l2": 34,
+          "total_l2": 1092,
+          "coverage_l2": 0.031135531135531136,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.6,
+          "final_gain_mean": 0.65
+        },
+        {
+          "scene_frame": "scene-0098_frame15",
+          "questions": 50,
+          "covered_l2": 43,
+          "total_l2": 1680,
+          "coverage_l2": 0.025595238095238095,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.05,
+          "final_gain_mean": 0.85
+        },
+        {
+          "scene_frame": "scene-0099_frame35",
+          "questions": 50,
+          "covered_l2": 84,
+          "total_l2": 48645,
+          "coverage_l2": 0.0017267961763798951,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.7,
+          "final_gain_mean": 1.5
+        },
+        {
+          "scene_frame": "scene-0099_frame8",
+          "questions": 50,
+          "covered_l2": 76,
+          "total_l2": 14880,
+          "coverage_l2": 0.00510752688172043,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.5,
+          "final_gain_mean": 1.5
+        },
+        {
+          "scene_frame": "scene-0101_frame25",
+          "questions": 50,
+          "covered_l2": 124,
+          "total_l2": 202575,
+          "coverage_l2": 0.0006121189682833519,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 2.35,
+          "final_gain_mean": 2.3
+        },
+        {
+          "scene_frame": "scene-0102_frame31",
+          "questions": 50,
+          "covered_l2": 39,
+          "total_l2": 1365,
+          "coverage_l2": 0.02857142857142857,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.6,
+          "final_gain_mean": 1.1
+        },
+        {
+          "scene_frame": "scene-0102_frame39",
+          "questions": 50,
+          "covered_l2": 36,
+          "total_l2": 360,
+          "coverage_l2": 0.1,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 0.75,
+          "final_gain_mean": 0.8
+        },
+        {
+          "scene_frame": "scene-0103_frame25",
+          "questions": 50,
+          "covered_l2": 75,
+          "total_l2": 17952,
+          "coverage_l2": 0.004177807486631016,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.7,
+          "final_gain_mean": 1.25
+        },
+        {
+          "scene_frame": "scene-0104_frame20",
+          "questions": 50,
+          "covered_l2": 57,
+          "total_l2": 9828,
+          "coverage_l2": 0.0057997557997558,
+          "switch_reason": "frame_cap",
+          "initial_gain_mean": 1.35,
+          "final_gain_mean": 0.95
+        },
+        {
+          "scene_frame": "scene-0104_frame3",
+          "questions": 50,
+          "covered_l2": 82,
+          "total_l2": 6900,
+          "coverage_l2": 0.011884057971014493,
+          "switch_reason": "global_budget",
+          "initial_gain_mean": 1.4,
+          "final_gain_mean": 1.75
+        }
+      ]
+    }
+  }
+}

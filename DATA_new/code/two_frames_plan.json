@@ -1,0 +1,14 @@
+{
+  "frames": [
+    {
+      "scene_id": "scene-0916",
+      "frame_id": 8,
+      "sg_filename": "scene-0916_frame8_scene_graph.json"
+    },
+    {
+      "scene_id": "scene-0916",
+      "frame_id": 10,
+      "sg_filename": "scene-0916_frame10_scene_graph.json"
+    }
+  ]
+}

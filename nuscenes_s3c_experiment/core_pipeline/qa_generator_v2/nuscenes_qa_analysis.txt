@@ -1,0 +1,238 @@
+﻿================================================================================
+NuScenesQA 问题分析
+================================================================================
+
+总问题数: 83337
+
+================================================================================
+1. 问题类型 × 跳数分布
+================================================================================
+
+comparison:
+  0-hop:   1150
+  1-hop:  11659
+
+count:
+  0-hop:   8119
+  1-hop:   8352
+
+exist:
+  0-hop:  11337
+  1-hop:  13297
+
+object:
+  0-hop:   2568
+  1-hop:  14878
+
+status:
+  0-hop:   4070
+  1-hop:   7907
+
+================================================================================
+2. 常见问题开头（前20个）
+================================================================================
+ 2585x  What is the status of the
+ 2018x  There is a thing that is
+ 1432x  What is the thing that is
+ 1254x  What number of other things are
+ 1119x  How many other things are in
+ 1018x  The thing that is to the
+ 1006x  There is a car to the
+  956x  What is the moving thing that
+  940x  There is a car that is
+  924x  There is a moving thing that
+  862x  Are there any things to the
+  743x  There is a thing to the
+  700x  The moving thing that is to
+  682x  There is a truck to the
+  658x  There is a truck that is
+  656x  There is a pedestrian to the
+  649x  There is a pedestrian that is
+  643x  How many other things are there
+  623x  There is a parked thing that
+  616x  The thing that is both to
+
+================================================================================
+3. 问题模式分析（替换具体词为占位符）
+================================================================================
+
+按类型分组的模式（前10个）:
+
+
+EXIST 类型:
+  2455x  Are there any {STATUS} {TYPE}?
+  2293x  Are any {STATUS} {TYPE} visible?
+  1347x  Are any {TYPE} visible?
+  1299x  Are there any {TYPE}?
+  1183x  There is a {STATUS} {TYPE}; are there any {STATUS} {TYPE} to the {DIR} of it?
+  1166x  Are there any {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+   965x  Are there any {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+   956x  Are there any {STATUS} {TYPE} to the {DIR} of me?
+   920x  There is a {STATUS} {TYPE}; are there any {TYPE} to the {DIR} of it?
+   860x  Is there another {TYPE} that has the same status as the {TYPE}?
+
+COUNT 类型:
+  1610x  How many {STATUS} {TYPE} are there?
+  1587x  What number of {STATUS} {TYPE} are there?
+  1168x  How many {TYPE} are there?
+  1127x  What number of {TYPE} are there?
+   645x  What number of other {TYPE} are there of the same status as the {TYPE}?
+   643x  How many other {TYPE} are there of the same status as the {TYPE}?
+   620x  How many other {TYPE} are in the same status as the {TYPE}?
+   609x  What number of other {TYPE} are in the same status as the {TYPE}?
+   461x  There is a {STATUS} {TYPE}; what number of {TYPE} are to the {DIR} of it?
+   440x  What number of {TYPE} are to the {DIR} of the {STATUS} {TYPE}?
+
+STATUS 类型:
+  1047x  There is a {TYPE}; what status is it?
+  1018x  What status is the {TYPE}?
+  1012x  The {TYPE} is in what status?
+   993x  What is the status of the {TYPE}?
+   374x  What status is the {TYPE} to the {DIR} of the {STATUS} {TYPE}?
+   367x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; what status is it?
+   366x  The {TYPE} that is to the {DIR} of the {STATUS} {TYPE} is in what status?
+   344x  There is a {TYPE} that is to the {DIR} of the {STATUS} {TYPE}; what status is it?
+   344x  What status is the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+   340x  What is the status of the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+
+OBJECT 类型:
+   863x  The {STATUS} {TYPE} is what?
+   855x  There is a {STATUS} {TYPE}; what is it?
+   850x  What is the {STATUS} {TYPE}?
+   473x  The {STATUS} {TYPE} that is to the {DIR} of me is what?
+   471x  The {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE} is what?
+   465x  There is a {STATUS} {TYPE} that is to the {DIR} of me; what is it?
+   465x  What is the {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+   461x  There is a {STATUS} {TYPE} to the {DIR} of the {STATUS} {TYPE}; what is it?
+   453x  The {STATUS} {TYPE} that is to the {DIR} of the {STATUS} {TYPE} is what?
+   451x  What is the {STATUS} {TYPE} to the {DIR} of me?
+
+COMPARISON 类型:
+   452x  Do the {TYPE} and the {TYPE} have the same status?
+   249x  Does the {TYPE} have the same status as the {TYPE}?
+   234x  Is the status of the {TYPE} the same as the {TYPE}?
+   232x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; is it the same status as the {TYPE}?
+   230x  Do the {TYPE} that is to the {DIR} of the {STATUS} {TYPE} and the {TYPE} have the same status?
+   226x  Is the status of the {TYPE} the same as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+   223x  Do the {TYPE} to the {DIR} of the {STATUS} {TYPE} and the {TYPE} have the same status?
+   222x  Does the {TYPE} have the same status as the {TYPE} that is to the {DIR} of the {STATUS} {TYPE}?
+   219x  There is a {TYPE} to the {DIR} of the {STATUS} {TYPE}; does it have the same status as the {TYPE}?
+   219x  Is the status of the {TYPE} to the {DIR} of the {STATUS} {TYPE} the same as the {TYPE}?
+
+================================================================================
+4. 关键短语分析
+================================================================================
+
+'to the X of' 模式:
+  15364x  to the front left of
+  15140x  to the back right of
+  13708x  to the front of
+  13648x  to the back of
+   1134x  to the front right of
+   1051x  to the back left of
+
+特殊句式:
+  20991x  There is a...
+  13329x  Are there any...
+   7745x  How many...
+   6657x  What number of...
+   8311x  What is...
+   2265x  Does...
+   4213x  Is there...
+   3856x  Are any...
+
+================================================================================
+5. 实际问题示例
+================================================================================
+
+EXIST:
+
+  0-hop 示例:
+    Q: Are any moving bicycles visible?
+    A: no
+    Q: Are any moving pedestrians visible?
+    A: yes
+    Q: Are there any things?
+    A: yes
+
+  1-hop 示例:
+    Q: Are there any traffic cones to the back of me?
+    A: no
+    Q: Are there any moving cars to the back of me?
+    A: yes
+    Q: Are there any traffic cones to the front of me?
+    A: yes
+
+COUNT:
+
+  0-hop 示例:
+    Q: What number of traffic cones are there?
+    A: 3
+    Q: What number of moving cars are there?
+    A: 5
+    Q: How many with rider motorcycles are there?
+    A: 0
+
+  1-hop 示例:
+    Q: How many cars are to the back right of me?
+    A: 10
+    Q: What number of moving things are to the back right of the stopped thing?
+    A: 3
+    Q: What number of things are to the back right of the stopped car?
+    A: 10
+
+STATUS:
+
+  0-hop 示例:
+    Q: The bicycle is in what status?
+    A: without rider
+    Q: What status is the pedestrian?
+    A: standing
+    Q: The car is in what status?
+    A: parked
+
+  1-hop 示例:
+    Q: There is a pedestrian to the back of me; what is its status?
+    A: moving
+    Q: What is the status of the car that is to the front of me?
+    A: parked
+    Q: What status is the car that is to the front of me?
+    A: parked
+
+OBJECT:
+
+  0-hop 示例:
+    Q: What is the stopped thing?
+    A: car
+    Q: What is the standing pedestrian?
+    A: pedestrian
+    Q: What is the standing pedestrian?
+    A: pedestrian
+
+  1-hop 示例:
+    Q: There is a parked thing to the front of me; what is it?
+    A: car
+    Q: There is a thing that is both to the back right of the stopped car and the back of me; what is it?
+    A: car
+    Q: There is a thing that is both to the front left of the stopped thing and the front left of me; what is it?
+    A: pedestrian
+
+COMPARISON:
+
+  0-hop 示例:
+    Q: Is the pedestrian the same status as the car?
+    A: no
+    Q: Is the status of the motorcycle the same as the bicycle?
+    A: yes
+    Q: Do the motorcycle and the bus have the same status?
+    A: no
+
+  1-hop 示例:
+    Q: There is a car that is to the front left of the standing pedestrian; is its status the same as the car that is to the front of the standing pedestrian?
+    A: yes
+    Q: There is a car that is to the front left of the standing pedestrian; is its status the same as the thing to the front of the standing pedestrian?
+    A: yes
+    Q: Do the thing to the front left of the bus and the thing to the front of the bus have the same status?
+    A: yes
+
+================================================================================

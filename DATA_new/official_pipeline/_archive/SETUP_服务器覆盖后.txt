@@ -1,0 +1,31 @@
+覆盖 code 到服务器后，在 Ubuntu 上做一次（路径按你用户改 yunyang）：
+
+1) 生成 advtest_runtime.env（勿把 Windows 版直接 scp 覆盖）
+   cd ~/ADVTEST/DATA_new/code/official_pipeline
+   cp -n advtest_runtime.env.linux.example advtest_runtime.env
+   nano advtest_runtime.env
+   填写 NEO4J_PASSWORD、VQA_API_KEY；确认 NEO4J_URI 端口与真实 Neo4j 一致（多为 7687）。
+
+2) 准备 Excel
+   将 RQ 模板复制为：
+   ~/ADVTEST/DATA_new/data/RQ_nuscenesqa_val_full.xlsx
+   （或改 .env 里 ADVTEST_EXCEL_PATH 指向已有文件）
+
+3) 生成全量帧表（未生成过时）
+   export ADVTEST_ROOT=/home/yunyang/ADVTEST/DATA_new
+   cd ~/ADVTEST/DATA_new/code/official_pipeline
+   conda activate advtest
+   python build_frame_plan_from_test6019_bundle.py \
+     --bundle-dir "$ADVTEST_ROOT/data/test6019_bundle" \
+     --out "$ADVTEST_ROOT/code/deploy/nuscenesqa_val_plan_full.json"
+
+4) 跑 V17（避免 cwd 失效：先 cd 再 nohup）
+   export ADVTEST_ROOT=/home/yunyang/ADVTEST/DATA_new
+   unset PYTHONHOME PYTHONPATH NEO4J_URI NUSCENES_DATAROOT VQA_QA_JSON
+   export PYTHONUNBUFFERED=1
+   cd ~/ADVTEST/DATA_new/code/official_pipeline
+   conda activate advtest
+   nohup python run_v17_production.py > "$ADVTEST_ROOT/v17_run.log" 2>&1 &
+   tail -f "$ADVTEST_ROOT/v17_run.log"
+
+预检应出现：现场构图模式、Neo4j 可达、Excel 可写、Trainval 目录存在。

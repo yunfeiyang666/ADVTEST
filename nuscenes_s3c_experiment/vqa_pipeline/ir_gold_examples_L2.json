@@ -1,0 +1,314 @@
+[
+  {
+    "id": "scene-0553_frame8_q11",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 11,
+    "L": 2,
+    "question_type": "comparison",
+    "question": "There is a bus that is to the back right of the not standing pedestrian; is it the same status as the truck that is to the back right of the with rider bicycle?",
+    "expected_answer": "yes",
+    "query_plan": {
+      "question_type": "comparison",
+      "answer_property": "boolean",
+      "target": null,
+      "comparison": {
+        "property": "status",
+        "lhs": {
+          "type": "bus",
+          "status": null,
+          "alias": "bus1",
+          "constraints": [],
+          "relations": [
+            {
+              "direction": "back_right",
+              "ref": {
+                "type": "pedestrian",
+                "status": "not_standing",
+                "alias": "ped1",
+                "constraints": [],
+                "relations": []
+              }
+            }
+          ]
+        },
+        "rhs": {
+          "type": "truck",
+          "status": null,
+          "alias": "truck1",
+          "constraints": [],
+          "relations": [
+            {
+              "direction": "back_right",
+              "ref": {
+                "type": "bicycle",
+                "status": "with_rider",
+                "alias": "bike1",
+                "constraints": [],
+                "relations": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q23",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 23,
+    "L": 2,
+    "question_type": "object",
+    "question": "What is the thing that is both to the back right of the stopped trailer and the back of the stopped truck?",
+    "expected_answer": "barrier",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": null,
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "trailer",
+              "status": "stopped",
+              "alias": "trailer1",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "back",
+            "ref": {
+              "type": "truck",
+              "status": "stopped",
+              "alias": "truck1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0553_frame8_q24",
+    "scene": "scene-0553",
+    "frame_idx": 8,
+    "question_index": 24,
+    "L": 2,
+    "question_type": "object",
+    "question": "There is a thing that is to the back right of the stopped trailer and the back of the stopped truck; what is it?",
+    "expected_answer": "barrier",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": null,
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "trailer",
+              "status": "stopped",
+              "alias": "trailer1",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "back",
+            "ref": {
+              "type": "truck",
+              "status": "stopped",
+              "alias": "truck1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0103_frame38_q04",
+    "scene": "scene-0103",
+    "frame_idx": 38,
+    "question_index": 4,
+    "L": 2,
+    "question_type": "object",
+    "question": "There is a thing that is to the back right of the without rider motorcycle and the front left of me; what is it?",
+    "expected_answer": "truck",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": null,
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "motorcycle",
+              "status": "without_rider",
+              "alias": "moto1",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "front_left",
+            "ref": {
+              "type": "ego",
+              "status": null,
+              "alias": "ego",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0103_frame38_q05",
+    "scene": "scene-0103",
+    "frame_idx": 38,
+    "question_index": 5,
+    "L": 2,
+    "question_type": "object",
+    "question": "There is a parked thing that is to the back right of the without rider motorcycle and the front left of me; what is it?",
+    "expected_answer": "truck",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": "parked",
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "motorcycle",
+              "status": "without_rider",
+              "alias": "moto1",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "front_left",
+            "ref": {
+              "type": "ego",
+              "status": null,
+              "alias": "ego",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0916_frame8_q02",
+    "scene": "scene-0916",
+    "frame_idx": 8,
+    "question_index": 2,
+    "L": 2,
+    "question_type": "object",
+    "question": "What is the moving thing that is to the back right of me and the back right of the bus?",
+    "expected_answer": "pedestrian",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": "moving",
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "ego",
+              "status": null,
+              "alias": "ego",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "bus",
+              "status": null,
+              "alias": "bus1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  },
+  {
+    "id": "scene-0916_frame8_q03",
+    "scene": "scene-0916",
+    "frame_idx": 8,
+    "question_index": 3,
+    "L": 2,
+    "question_type": "object",
+    "question": "What is the moving thing that is to the back right of me and the back right of the bus?",
+    "expected_answer": "pedestrian",
+    "query_plan": {
+      "question_type": "object",
+      "answer_property": "type",
+      "target": {
+        "type": "thing",
+        "status": "moving",
+        "alias": "obj1",
+        "constraints": [],
+        "relations": [
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "ego",
+              "status": null,
+              "alias": "ego",
+              "constraints": [],
+              "relations": []
+            }
+          },
+          {
+            "direction": "back_right",
+            "ref": {
+              "type": "bus",
+              "status": null,
+              "alias": "bus1",
+              "constraints": [],
+              "relations": []
+            }
+          }
+        ]
+      },
+      "comparison": null
+    }
+  }
+]

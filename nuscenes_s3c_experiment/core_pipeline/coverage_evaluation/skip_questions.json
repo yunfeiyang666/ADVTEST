@@ -1,0 +1,61 @@
+{
+  "_description": "经5层retry验证的错题黑名单（原始NuScenesQA中答案有误或题目歧义的题目）",
+  "_format": "每条记录: [scene_name, frame_idx, question_index_1based, reason]",
+  "_updated": "2026-03-09",
+  "skip_list": [
+    [
+      "scene-0103",
+      38,
+      8,
+      "bicycle to front-left of truck, 数据返回with_rider而非without_rider"
+    ],
+    [
+      "scene-0553",
+      8,
+      7,
+      "other things same status as trailer, 期望8实际28"
+    ],
+    [
+      "scene-0553",
+      8,
+      12,
+      "barriers to front of trailer, 期望5实际11"
+    ],
+    [
+      "scene-0553",
+      8,
+      18,
+      "with rider bicycles to front-left of trailer, 数据为空"
+    ],
+    [
+      "scene-0916",
+      8,
+      2,
+      "moving thing to back-right of me AND bus, 数据交集为空"
+    ],
+    [
+      "scene-0916",
+      8,
+      3,
+      "同Q2"
+    ],
+    [
+      "scene-0916",
+      8,
+      4,
+      "truck to front-left of bus, 数据中没有对应truck"
+    ],
+    [
+      "demo-scene",
+      0,
+      1,
+      "5层retry全部失败: What is the status of the car to the front of me?... 期望stopped实际处理失败: 答案不匹配: got 'unknown', expected 'stopped'"
+    ],
+    [
+      "demo-scene",
+      0,
+      2,
+      "5层retry全部失败: What is the thing that is both to the back right of the stop... 期望barrier实际处理失败: 答案不匹配: got 'no', expected 'barrier'"
+    ]
+  ]
+}

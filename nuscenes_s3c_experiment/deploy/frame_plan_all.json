@@ -1,0 +1,19 @@
+{
+  "description": "当前仓库 filtered_scene_graphs 下全部帧（与文件名一致）",
+  "frames": [
+    {"scene_id": "scene-0103", "frame_id": 0, "sg_filename": "scene-0103_frame0_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 1, "sg_filename": "scene-0103_frame1_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 3, "sg_filename": "scene-0103_frame3_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 15, "sg_filename": "scene-0103_frame15_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 25, "sg_filename": "scene-0103_frame25_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 28, "sg_filename": "scene-0103_frame28_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 31, "sg_filename": "scene-0103_frame31_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 33, "sg_filename": "scene-0103_frame33_scene_graph.json"},
+    {"scene_id": "scene-0103", "frame_id": 38, "sg_filename": "scene-0103_frame38_scene_graph.json"},
+    {"scene_id": "scene-0553", "frame_id": 8, "sg_filename": "scene-0553_frame8_scene_graph.json"},
+    {"scene_id": "scene-0757", "frame_id": 26, "sg_filename": "scene-0757_frame26_scene_graph.json"},
+    {"scene_id": "scene-0916", "frame_id": 8, "sg_filename": "scene-0916_frame8_scene_graph.json"},
+    {"scene_id": "scene-0926", "frame_id": 20, "sg_filename": "scene-0926_frame20_scene_graph.json"},
+    {"scene_id": "scene-1077", "frame_id": 19, "sg_filename": "scene-1077_frame19_scene_graph.json"}
+  ]
+}
