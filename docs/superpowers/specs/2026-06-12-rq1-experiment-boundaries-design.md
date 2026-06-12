@@ -156,5 +156,5 @@ The first implementation increment will:
 3. prevent non-adaptive methods from using coverage-based frame switches;
 4. add provenance fields and leakage validation;
 5. add an official NuScenes-QA loader and independent QATest suite builder;
-6. reserve QAAskeR as a stateful two-call adapter rather than approximating it
-   with an offline selector.
+6. run original QAAskeR MR2 Q2S/S2G modules in an isolated persistent process,
+   with one primary and one follow-up VLM call per complete pair.

@@ -1,9 +1,84 @@
-from typing import Callable, Mapping, Optional
+import json
+import subprocess
+from pathlib import Path
+from typing import Callable, Mapping, Optional, Sequence
 
 from experiment_protocol import EXTERNAL_LAYER, annotate_provenance
 
 
 FollowupGenerator = Callable[[str, str], Mapping]
+
+
+class QAAskeRMR2Process:
+    """Persistent bridge to the original QAAskeR NLP environment."""
+
+    def __init__(
+        self,
+        python_executable: Path,
+        worker_path: Optional[Path] = None,
+        command: Optional[Sequence[str]] = None,
+    ) -> None:
+        if command is None:
+            worker = worker_path or Path(__file__).with_name("qaasker_mr2_worker.py")
+            command = [str(python_executable), "-u", str(worker)]
+        self._command = list(command)
+        self._process: Optional[subprocess.Popen] = None
+
+    def start(self) -> "QAAskeRMR2Process":
+        if self._process is not None:
+            return self
+        self._process = subprocess.Popen(
+            self._command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            bufsize=1,
+        )
+        return self
+
+    def generate(self, question: str, primary_answer: str) -> Mapping:
+        self.start()
+        assert self._process is not None
+        assert self._process.stdin is not None
+        assert self._process.stdout is not None
+        request = {"question": question, "primary_answer": primary_answer}
+        self._process.stdin.write(json.dumps(request, ensure_ascii=False) + "\n")
+        self._process.stdin.flush()
+        response_line = self._process.stdout.readline()
+        if not response_line:
+            stderr = ""
+            if self._process.stderr is not None:
+                stderr = self._process.stderr.read()
+            raise RuntimeError(
+                "QAAskeR MR2 worker terminated without a response"
+                + (f": {stderr.strip()}" if stderr.strip() else "")
+            )
+        response = json.loads(response_line)
+        if not response.get("ok"):
+            raise RuntimeError(
+                f"QAAskeR MR2 generation failed: {response.get('error', 'unknown')}"
+            )
+        return response["followup"]
+
+    def close(self) -> None:
+        if self._process is None:
+            return
+        if self._process.stdin is not None:
+            self._process.stdin.close()
+        try:
+            self._process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self._process.terminate()
+            self._process.wait(timeout=5)
+        self._process = None
+
+    def __enter__(self) -> "QAAskeRMR2Process":
+        return self.start()
+
+    def __exit__(self, exc_type, exc, traceback) -> None:
+        self.close()
 
 
 class QAAskeRAdapter:

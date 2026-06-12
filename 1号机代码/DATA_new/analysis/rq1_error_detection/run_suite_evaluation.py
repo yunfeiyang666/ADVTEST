@@ -47,6 +47,32 @@ def l2_items(question: dict) -> set:
     return set(map(str, footprint.get("l2") or []))
 
 
+def question_family(question: dict) -> str:
+    return str(
+        question.get("l2_family")
+        or question.get("template_id")
+        or question.get("template_type")
+        or question.get("mutation_operator")
+        or "unknown"
+    )
+
+
+def failure_signature(question: dict, predicted: str) -> str:
+    source = str(question.get("question_source") or "")
+    source_id = str(question.get("source_question_id") or "")
+    if source == "nuscenes_qa" and source_id:
+        return f"nuscenes_qa|{source_id}"
+
+    items = sorted(l2_items(question))
+    if items:
+        return "l2|" + "|".join(items)
+
+    scene_frame = get_scene_frame(question)
+    family = question_family(question)
+    answer = evaluator.normalize_answer(str(question.get("answer") or ""))
+    return f"semantic|{scene_frame}|{family}|{answer}"
+
+
 
 def resolve_image_path(
     question: dict, outputs_root: Path, image_cache_dir: Path, dataroot: Path
@@ -107,6 +133,7 @@ def evaluate_suite(
     outputs_root: Path,
     dataroot: Path,
     limit: int = 0,
+    vlm_call_budget: int = 0,
     write_raw: bool = True,
 ) -> dict:
     start = time.time()
@@ -118,6 +145,9 @@ def evaluate_suite(
     frames = Counter()
     failure_by_family = Counter()
     failure_rows = []
+    unique_failure_keys = set()
+    vlm_calls = 0
+    budget_stop_reason = None
     cache: Dict[Tuple[str, str], Tuple[str, bool, Optional[str]]] = {}
     raw_path = output_dir / f"{path.stem}_raw_results.jsonl"
     image_cache_dir = output_dir / "mosaics"
@@ -130,8 +160,16 @@ def evaluate_suite(
     try:
         for question in iter_jsonl(path):
             if limit and total >= limit:
+                budget_stop_reason = "question_limit"
+                break
+            call_cost = int(question.get("vlm_call_cost") or 1)
+            if call_cost < 1:
+                raise ValueError("vlm_call_cost must be a positive integer")
+            if vlm_call_budget and vlm_calls + call_cost > vlm_call_budget:
+                budget_stop_reason = "next_record_exceeds_budget"
                 break
             total += 1
+            vlm_calls += call_cost
             scene_frame = get_scene_frame(question)
             frames[scene_frame] += 1
             question_l2 = l2_items(question)
@@ -147,7 +185,7 @@ def evaluate_suite(
                 image_path_text = str(image_path) if image_path else None
                 predicted, is_correct = evaluate_question(vlm, question, mode, image_path)
                 cache[cache_key] = (predicted, is_correct, image_path_text)
-            family = str(question.get("l2_family") or question.get("template_id") or "unknown")
+            family = question_family(question)
             if raw_handle is not None:
                 raw_handle.write(
                     json.dumps(
@@ -161,6 +199,13 @@ def evaluate_suite(
                             "answer": question.get("answer", ""),
                             "predicted": predicted,
                             "is_correct": is_correct,
+                            "experiment_layer": question.get("experiment_layer", ""),
+                            "question_source": question.get("question_source", ""),
+                            "source_question_id": question.get(
+                                "source_question_id", ""
+                            ),
+                            "vlm_call_cost": call_cost,
+                            "cumulative_vlm_calls": vlm_calls,
                             "image_path": image_path_text,
                             "l2_items": sorted(question_l2),
                         },
@@ -174,6 +219,8 @@ def evaluate_suite(
             wrong += 1
             failed_l2.update(question_l2)
             failure_by_family[family] += 1
+            signature = failure_signature(question, predicted)
+            unique_failure_keys.add(signature)
             if len(failure_rows) < 200:
                 failure_rows.append(
                     {
@@ -183,6 +230,7 @@ def evaluate_suite(
                         "question": q_text,
                         "answer": question.get("answer", ""),
                         "predicted": predicted,
+                        "failure_signature": signature,
                         "image_path": image_path_text,
                         "l2_items": sorted(question_l2),
                     }
@@ -192,15 +240,30 @@ def evaluate_suite(
             raw_handle.close()
 
     elapsed = time.time() - start
+    unique_failures = len(unique_failure_keys)
     return {
         "suite": path.name,
         "method": path.name.replace("_suite.jsonl", ""),
         "mode": mode,
         "limit": limit or None,
         "questions": total,
+        "vlm_calls": vlm_calls,
+        "vlm_call_budget": vlm_call_budget or None,
+        "budget_stop_reason": budget_stop_reason,
         "correct": correct,
         "wrong": wrong,
         "failure_rate": wrong / total if total else 0.0,
+        "unique_failures": unique_failures,
+        "unique_failures_per_100_calls": (
+            unique_failures / vlm_calls * 100 if vlm_calls else 0.0
+        ),
+        "calls_per_unique_failure": (
+            vlm_calls / unique_failures if unique_failures else None
+        ),
+        "duplicate_failure_rate": (
+            (wrong - unique_failures) / wrong if wrong else 0.0
+        ),
+        "failure_category_count": len(failure_by_family),
         "unique_l2": len(unique_l2),
         "failed_unique_l2": len(failed_l2),
         "failed_l2_per_question": len(failed_l2) / total if total else 0.0,
@@ -223,8 +286,14 @@ def write_report(results: list, output_dir: Path) -> None:
             fieldnames=[
                 "method",
                 "questions",
+                "vlm_calls",
                 "wrong",
                 "failure_rate",
+                "unique_failures",
+                "unique_failures_per_100_calls",
+                "calls_per_unique_failure",
+                "duplicate_failure_rate",
+                "failure_category_count",
                 "unique_l2",
                 "failed_unique_l2",
                 "failed_l2_per_question",
@@ -236,14 +305,20 @@ def write_report(results: list, output_dir: Path) -> None:
         for result in results:
             writer.writerow({key: result[key] for key in writer.fieldnames})
 
-    md_lines = ["# Suite Evaluation Smoke Report", ""]
-    md_lines.append("| Method | Q | Wrong | Fail Rate | Failed L2 | Failed L2/Q | Frames |")
-    md_lines.append("|---|---:|---:|---:|---:|---:|---:|")
+    md_lines = ["# Budgeted Suite Evaluation Report", ""]
+    md_lines.append(
+        "| Method | Q | Calls | Wrong | Unique Failures | UF/100 Calls | "
+        "Duplicate Rate | Failure Types | Failed L2 | Frames |"
+    )
+    md_lines.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
     for result in results:
         md_lines.append(
-            f"| {result['method']} | {result['questions']} | {result['wrong']} | "
-            f"{result['failure_rate']:.3f} | {result['failed_unique_l2']} | "
-            f"{result['failed_l2_per_question']:.3f} | {result['visited_frames']} |"
+            f"| {result['method']} | {result['questions']} | {result['vlm_calls']} | "
+            f"{result['wrong']} | {result['unique_failures']} | "
+            f"{result['unique_failures_per_100_calls']:.2f} | "
+            f"{result['duplicate_failure_rate']:.3f} | "
+            f"{result['failure_category_count']} | "
+            f"{result['failed_unique_l2']} | {result['visited_frames']} |"
         )
     (output_dir / "suite_eval_report.md").write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 
@@ -270,6 +345,12 @@ def main():
     parser.add_argument(
         "--limit", type=int, default=0, help="Optional per-suite question cap for smoke runs."
     )
+    parser.add_argument(
+        "--vlm-call-budget",
+        type=int,
+        default=0,
+        help="Maximum logical VLM calls per suite. Records never partially consume budget.",
+    )
     args = parser.parse_args()
 
     suites = sorted(args.suite_dir.glob("*_suite.jsonl"))
@@ -294,11 +375,13 @@ def main():
             args.outputs_root,
             args.dataroot,
             args.limit,
+            vlm_call_budget=args.vlm_call_budget,
             write_raw=not args.no_raw,
         )
         print(
             f"[suite-eval]   wrong={result['wrong']}/{result['questions']} "
-            f"failed_l2={result['failed_unique_l2']}",
+            f"unique_failures={result['unique_failures']} "
+            f"calls={result['vlm_calls']} failed_l2={result['failed_unique_l2']}",
             flush=True,
         )
         results.append(result)
@@ -308,4 +391,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -49,7 +49,7 @@
 - [ ] Emit provenance and VLM call cost for every record.
 - [ ] Run the focused tests and verify they pass.
 
-### Task 4: Document QAAskeR's stateful adapter boundary
+### Task 4: Integrate QAAskeR's stateful MR2 boundary
 
 **Files:**
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/qaasker_adapter.py`
@@ -58,8 +58,8 @@
 - [ ] Write a test showing a QAAskeR case requires a primary SUT answer before
   follow-up generation and costs two VLM calls.
 - [ ] Run the test and verify it fails.
-- [ ] Implement the state contract and fail-fast behavior without inventing an
-  offline selector.
+- [ ] Implement the state contract and run original Q2S/S2G modules in an
+  isolated persistent process without inventing an offline selector.
 - [ ] Run the test and verify it passes.
 
 ### Task 5: Verification and history

@@ -52,9 +52,20 @@ from QATest-style textual transformations. It is intentionally not labeled as
 an exact run of the original Python 3.6 environment.
 
 QAAskeR is exposed through `qaasker_adapter.py`. It requires a primary SUT
-answer before follow-up generation and fails when no real follow-up backend is
-configured. The previous offline selector must not be used as an external
-QAAskeR result.
+answer before follow-up generation. The original QAAskeR Q2S/S2G MR2 modules
+run in the isolated `.venv310` environment through a persistent subprocess:
+
+```powershell
+python 1号机代码/DATA_new/analysis/rq1_error_detection/run_qaasker_evaluation.py `
+  --mode MPLUG `
+  --vlm-call-budget 1000 `
+  --frame-pool-size 100 `
+  --output-dir 1号机代码/DATA_new/analysis/qaasker_results/mplug_1000
+```
+
+The runner reserves two calls per complete pair: one primary question and one
+follow-up derived from the SUT's primary answer. It does not use the old
+offline selector approximation.
 
 Cross-paradigm methods are compared using:
 
@@ -87,8 +98,13 @@ question pairs, as the common budget when QAAskeR is included.
 python 1号机代码/DATA_new/analysis/rq1_error_detection/run_suite_evaluation.py `
   --suite-dir 1号机代码/DATA_new/analysis/fixed_budget_results/v2_structural `
   --mode MPLUG `
+  --vlm-call-budget 1000 `
   --output-dir 1号机代码/DATA_new/analysis/suite_eval_results/v2_structural_mplug
 ```
+
+The report separates wrong question count from independent failures. Multiple
+QATest mutations of the same official seed count as one independent failure,
+and the primary cross-paradigm metric is `unique_failures_per_100_calls`.
 
 ## Tests
 
