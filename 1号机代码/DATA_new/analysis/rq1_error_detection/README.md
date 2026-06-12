@@ -1,90 +1,103 @@
-# RQ1 Error Detection & VLM SFT Dataset Export Pipeline (Phases 2 & 3)
+# RQ1 Error Detection Experiments
 
-This directory contains the complete pipeline, baselines, plotting scripts, and dataset exporters for **Phase 2 (RQ1: Error Detection Baselines)** and **Phase 3 (VLM Fine-tuning Dataset Exporter)**.
+This directory contains the RQ1 structural-coverage experiments, independent
+official-QA baselines, VLM evaluation, and SFT export utilities.
 
----
+## Experiment Boundary
 
-## Directory Overview
+The experiment is split into separate layers. Do not combine their rankings.
 
-```
-1号机代码/DATA_new/analysis/rq1_error_detection/
-├── frame_sampler.py         # Frame sampling utility (selects 100 representative frames)
-├── selectors_qatest.py      # Metamorphic fuzzing typos generator (QATest baseline)
-├── selectors_qaasker.py     # Yes/No recursive metamorphic follow-up fuzzer (QAAskeR baseline)
-├── selectors.py             # Adapter registering baseline selectors to the main framework
-├── evaluator.py             # VLM evaluator interface (Mock, API, Qwen2-VL, and mPLUG-Owl2)
-├── run_experiment.py        # Experiment orchestrator runner across all methods
-├── plot_results.py          # Results aggregator and plotter
-├── export_sft_dataset.py    # LLaVA SFT json dataset compiler and 2x3 labeled grid mosaic renderer
-└── deploy_sft_pipeline.sh   # [NEW] Server deployment and execution automation script
-```
+### Structural Coverage Layer
 
----
+All methods receive the same frame order and complete programmatically
+generatable question space:
 
-## Phase 2: Running Error Detection Experiment & Plotting
+- `advtest`: existing coverage-prioritized order with adaptive frame switching.
+- `random`: complete random sampling with no gap or coverage feedback.
+- `template_balanced`: balanced sampling across template families.
+- `object_balanced`: balanced sampling across involved objects.
+- `greedy_l0`: object-coverage-only greedy baseline.
+- `greedy_l1`: one-hop-relation-only greedy baseline.
 
-To run the full simulation/evaluator baselines (QATest, QAAskeR, Ours, Random) and generate plots:
+Run:
 
-1. **Activate local virtual environment**:
-   ```bash
-   .venv310\Scripts\activate
-   ```
-
-2. **Execute the experiment runner**:
-   ```bash
-   python 1号机代码/DATA_new/analysis/rq1_error_detection/run_experiment.py
-   ```
-   *(Results will compileDet to `data_cache/rq1_results.json`)*
-
-3. **Plot the failures detected and object involvement**:
-   ```bash
-   python 1号机代码/DATA_new/analysis/rq1_error_detection/plot_results.py
-   ```
-   *(Plots will save to `figures/rq1_failures_detected.png` and `figures/rq1_object_involvement.png`)*
-
----
-
-## Phase 3: Compiling LLaVA SFT Dataset
-
-The exporter (`export_sft_dataset.py`) parses offline scene graphs, compiles VQA pairs, and pre-renders stitched 2x3 labeled grids into standard LLaVA visual instruction tuning JSON format.
-
-### Local Verification (on NuScenes-mini)
-Since the local host machine might only have `v1.0-mini` / `v1.0-test` splits, the script will gracefully compile the JSON and save camera mosaics only for frames present locally:
-```bash
-python 1号机代码/DATA_new/analysis/rq1_error_detection/export_sft_dataset.py \
-       --mini_only \
-       --limit 10 \
-       --out_dir 1号机代码/DATA_new/sft_dataset_test
+```powershell
+python 1号机代码/DATA_new/analysis/rq1_error_detection/fixed_budget_experiment.py `
+  --budget 1000 `
+  --frame-pool-size 100 `
+  --max-questions 100 `
+  --output-dir 1号机代码/DATA_new/analysis/fixed_budget_results/v2_structural
 ```
 
-### Server Execution (on Full NuScenes-trainval)
-On the GPU server containing the full trainval images and metadata, the exporter will physically stitch all camera feeds and label all targets:
-```bash
-python 1号机代码/DATA_new/analysis/rq1_error_detection/export_sft_dataset.py \
-       --out_dir 1号机代码/DATA_new/sft_dataset
+Only this layer compares L0/L1/L2 coverage curves directly.
+
+### Cross-Paradigm Layer
+
+Official QA and QATest use only official NuScenes-QA records matched by
+`sample_token`. They cannot read ADVTEST-generated questions, uncovered gaps,
+coverage footprints, or ADVTEST scores.
+
+Run:
+
+```powershell
+python 1号机代码/DATA_new/analysis/rq1_error_detection/official_qa_experiment.py `
+  --methods official_qa qatest `
+  --budget 1000 `
+  --frame-pool-size 100 `
+  --output-dir 1号机代码/DATA_new/analysis/official_qa_results/v1
 ```
 
----
+`qatest` currently uses the dependency-light `qatest_local_adapter`, derived
+from QATest-style textual transformations. It is intentionally not labeled as
+an exact run of the original Python 3.6 environment.
 
-## GPU Server Deployment Guide
+QAAskeR is exposed through `qaasker_adapter.py`. It requires a primary SUT
+answer before follow-up generation and fails when no real follow-up backend is
+configured. The previous offline selector must not be used as an external
+QAAskeR result.
 
-To deploy the entire codebase to the remote server and run VLM inference / SFT export:
+Cross-paradigm methods are compared using:
 
-1. **Edit the server configuration** at the top of `deploy_sft_pipeline.sh`:
-   ```bash
-   SERVER_IP="your_server_ip"
-   SERVER_USER="your_username"
-   SERVER_ROOT="/home/yunyang/ADVTEST"
-   ```
+- unique verified failures per VLM call;
+- calls per new failure;
+- failure category diversity;
+- duplicate failure rate;
+- failure distribution across frames and scene concepts.
 
-2. **Run deployment script**:
-   ```bash
-   bash 1号机代码/DATA_new/analysis/rq1_error_detection/deploy_sft_pipeline.sh
-   ```
-   This will:
-   - Sync all local files, ignores, code modifications, and scripts to the server.
-   - Activate the remote environment automatically.
-   - Run the full VLM SFT dataset exporter on all trainval scene graphs.
+Their structural coverage can be reported as a diagnostic, but it is not a
+cross-method ranking metric.
 
-### VLM Evaluator Setup (mPLUG-Owl2)
-On the server, `evaluator.py` automatically injects the mPLUG-Owl2 codebase into its import path. Ensure you have mPLUG repository checked out under `baselines/mPLUG-Owl` and the weights placed under `models/mplug-owl2-llama2-7b`. The evaluator will automatically switch from Mock mode to GPU inference.
+## Leakage Enforcement
+
+`experiment_protocol.py` records provenance and rejects ADVTEST-private fields
+from external-baseline records. Every emitted question records its layer,
+method, source, adapter, sample token, coverage-feedback usage, and VLM-call
+cost.
+
+The complete protocol is documented in:
+
+`docs/superpowers/specs/2026-06-12-rq1-experiment-boundaries-design.md`
+
+## VLM Evaluation
+
+Evaluate generated suites with `run_suite_evaluation.py`. Use VLM calls, not
+question pairs, as the common budget when QAAskeR is included.
+
+```powershell
+python 1号机代码/DATA_new/analysis/rq1_error_detection/run_suite_evaluation.py `
+  --suite-dir 1号机代码/DATA_new/analysis/fixed_budget_results/v2_structural `
+  --mode MPLUG `
+  --output-dir 1号机代码/DATA_new/analysis/suite_eval_results/v2_structural_mplug
+```
+
+## Tests
+
+```powershell
+cd 1号机代码/DATA_new/analysis/rq1_error_detection
+python -m unittest discover -p "test_*.py" -v
+```
+
+## SFT Export
+
+`export_sft_dataset.py` remains responsible for compiling VQA pairs and camera
+mosaics for fine-tuning. It is independent of the RQ1 baseline boundary.

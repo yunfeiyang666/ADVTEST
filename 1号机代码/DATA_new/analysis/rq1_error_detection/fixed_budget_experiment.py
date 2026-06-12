@@ -3,7 +3,7 @@ import csv
 import json
 import random
 import sys
-from collections import Counter
+from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence
@@ -18,7 +18,7 @@ WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
 MODULE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE_DIR))
 
-import rq1_selectors
+from experiment_protocol import STRUCTURAL_LAYER, annotate_provenance
 
 
 DEFAULT_FRAME_CACHE = (
@@ -38,7 +38,16 @@ DEFAULT_RESULT_DIR = (
     / "fixed_budget_results"
 )
 
-METHODS = ("advtest", "random", "qatest", "qaasker")
+METHODS = (
+    "advtest",
+    "random",
+    "template_balanced",
+    "object_balanced",
+    "greedy_l0",
+    "greedy_l1",
+)
+
+COVERAGE_FEEDBACK_METHODS = frozenset({"advtest", "greedy_l0", "greedy_l1"})
 
 
 @dataclass(frozen=True)
@@ -198,20 +207,124 @@ def build_method_stream(
     seed: int,
 ) -> List[dict]:
     if method == "advtest":
-        return [dict(question) for question in questions[:max_questions]]
+        return _select_advtest(questions, max_questions)
     if method == "random":
         stream = [dict(question) for question in questions]
         random.Random(seed).shuffle(stream)
         return stream[:max_questions]
-    if method == "qatest":
-        return rq1_selectors.select_qatest(
-            list(questions), min(max_questions, len(questions)), seed=seed
-        )
-    if method == "qaasker":
-        return rq1_selectors.select_recursive_asking(
-            list(questions), min(max_questions, len(questions)), seed=seed
-        )
+    if method == "template_balanced":
+        return _select_template_balanced(questions, max_questions, seed)
+    if method == "object_balanced":
+        return _select_object_balanced(questions, max_questions, seed)
+    if method == "greedy_l0":
+        return _select_greedy_coverage(questions, max_questions, "l0", seed)
+    if method == "greedy_l1":
+        return _select_greedy_coverage(questions, max_questions, "l1", seed)
     raise ValueError(f"Unknown method: {method}")
+
+
+def _stable_shuffled(questions: Sequence[dict], seed: int) -> List[dict]:
+    shuffled = [dict(question) for question in questions]
+    random.Random(seed).shuffle(shuffled)
+    return shuffled
+
+
+def _select_advtest(
+    questions: Sequence[dict], max_questions: int
+) -> List[dict]:
+    remaining = [dict(question) for question in questions]
+    selected = []
+    covered = {"l0": set(), "l1": set(), "l2": set()}
+    while remaining and len(selected) < max_questions:
+        best_index = max(
+            range(len(remaining)),
+            key=lambda index: (
+                len(_footprint(remaining[index], "l2") - covered["l2"]),
+                len(_footprint(remaining[index], "l1") - covered["l1"]),
+                len(_footprint(remaining[index], "l0") - covered["l0"]),
+                -index,
+            ),
+        )
+        question = remaining.pop(best_index)
+        selected.append(question)
+        for level in ("l0", "l1", "l2"):
+            covered[level].update(_footprint(question, level))
+    return selected
+
+
+def _select_template_balanced(
+    questions: Sequence[dict], max_questions: int, seed: int
+) -> List[dict]:
+    groups = defaultdict(list)
+    for question in _stable_shuffled(questions, seed):
+        family = str(
+            question.get("l2_family")
+            or question.get("template_id")
+            or "general"
+        )
+        groups[family].append(question)
+    family_names = sorted(groups)
+    random.Random(seed).shuffle(family_names)
+    queues = {family: deque(groups[family]) for family in family_names}
+    selected = []
+    while len(selected) < max_questions:
+        made_progress = False
+        for family in family_names:
+            if queues[family]:
+                selected.append(queues[family].popleft())
+                made_progress = True
+                if len(selected) >= max_questions:
+                    break
+        if not made_progress:
+            break
+    return selected
+
+
+def _question_nodes(question: dict) -> set:
+    values = question.get("footprint_nodes") or _footprint(question, "l0")
+    return {str(value) for value in values if str(value) != "ego"}
+
+
+def _select_object_balanced(
+    questions: Sequence[dict], max_questions: int, seed: int
+) -> List[dict]:
+    remaining = _stable_shuffled(questions, seed)
+    selected = []
+    counts = Counter()
+    while remaining and len(selected) < max_questions:
+        best_index = max(
+            range(len(remaining)),
+            key=lambda index: (
+                sum(1.0 / (1 + counts[node]) for node in _question_nodes(remaining[index])),
+                len(_question_nodes(remaining[index])),
+                -index,
+            ),
+        )
+        question = remaining.pop(best_index)
+        selected.append(question)
+        counts.update(_question_nodes(question))
+    return selected
+
+
+def _select_greedy_coverage(
+    questions: Sequence[dict], max_questions: int, level: str, seed: int
+) -> List[dict]:
+    remaining = _stable_shuffled(questions, seed)
+    selected = []
+    covered = set()
+    while remaining and len(selected) < max_questions:
+        best_index = max(
+            range(len(remaining)),
+            key=lambda index: (
+                len(_footprint(remaining[index], level) - covered),
+                len(_footprint(remaining[index], level)),
+                -index,
+            ),
+        )
+        question = remaining.pop(best_index)
+        selected.append(question)
+        covered.update(_footprint(question, level))
+    return selected
 
 
 def _footprint(question: dict, level: str) -> set:
@@ -278,29 +391,44 @@ def run_method(
         for local_index, question in enumerate(stream, start=1):
             deltas = _apply_question(frame_state, question)
             gains.append(deltas["delta_l2"])
-            record = dict(question)
-            record.update(
-                {
-                    "experiment_method": method,
-                    "global_budget_index": len(suite) + 1,
-                    "scene_frame": frame_input.scene_frame,
-                    "frame_budget_index": local_index,
-                    **deltas,
-                }
+            record = annotate_provenance(
+                question,
+                layer=STRUCTURAL_LAYER,
+                method=method,
+                question_source="programmatic_candidate_space",
+                source_question_id=str(
+                    question.get("question_id") or question.get("id") or local_index
+                ),
+                source_sample_token=str(question.get("sample_token") or ""),
+                generation_adapter=str(
+                    question.get("generation_backend") or "programmatic"
+                ),
+                uses_coverage_feedback=method in COVERAGE_FEEDBACK_METHODS,
+                vlm_call_cost=1,
+                scene_frame=frame_input.scene_frame,
+                global_budget_index=len(suite) + 1,
             )
+            record.update({"frame_budget_index": local_index, **deltas})
             suite.append(record)
             curve.append(
                 _metric_snapshot(frame_states, len(suite), frame_index + 1)
             )
 
             exhausted = local_index == len(stream)
-            reason = choose_switch_reason(
-                gains,
-                covered_l2=len(frame_state.covered_l2),
-                total_l2=frame_state.total_l2,
-                candidates_exhausted=exhausted,
-                policy=policy,
-            )
+            if method == "advtest":
+                reason = choose_switch_reason(
+                    gains,
+                    covered_l2=len(frame_state.covered_l2),
+                    total_l2=frame_state.total_l2,
+                    candidates_exhausted=exhausted,
+                    policy=policy,
+                )
+            elif local_index >= policy.max_questions:
+                reason = "frame_cap"
+            elif exhausted:
+                reason = "candidate_exhausted"
+            else:
+                reason = None
             if reason or len(suite) >= budget:
                 if len(suite) >= budget:
                     reason = "global_budget"
