@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Dict, Iterable, Optional, Tuple
 
-WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
+WORKSPACE_ROOT = Path(__file__).absolute().parents[4]
 sys.path.insert(0, str(Path(__file__).parent))
 
 import evaluator

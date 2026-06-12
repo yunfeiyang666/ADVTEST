@@ -17,7 +17,16 @@ os.environ["HF_HOME"] = "E:\\hf_cache"
 import ssl
 import mmap
 
-import urllib3
+# urllib3 is only needed to silence SSL warnings for the remote API mode.
+# Importing it on Windows has proven flaky (slow DLL/file reads that can be
+# interrupted), so it is opt-in via ADVTEST_ENABLE_URLLIB3=1 and never blocks
+# local/offline evaluator startup.
+urllib3 = None
+if os.environ.get("ADVTEST_ENABLE_URLLIB3") == "1":
+    try:
+        import urllib3
+    except Exception:
+        urllib3 = None
 
 # Global patch to force TLS 1.2 and bypass SSL checks
 original_init = ssl.SSLContext.__init__
@@ -34,7 +43,8 @@ def patched_ssl_context_init(self, *args, **kwargs):
     self.verify_mode = ssl.CERT_NONE
 
 ssl.SSLContext.__init__ = patched_ssl_context_init
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+if urllib3 is not None:
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 import re
 import json
@@ -44,8 +54,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from typing import Dict, Any, List, Tuple, Optional
 
-# Workspace root
-WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
+# Workspace root. Use absolute() instead of resolve() to avoid slow Windows
+# final-path resolution on large/synced workspaces.
+WORKSPACE_ROOT = Path(__file__).absolute().parents[4]
 
 # --- PIL Mosaic Rendering Setup (derived from render_mosaic_from_sg.py) ---
 CAM_ORDER = [
@@ -157,7 +168,7 @@ def _find_metadata_file(dataroot: Path, filename: str) -> Optional[Path]:
 
 
 def _sample_images_index_cache_path(dataroot: Path) -> Path:
-    safe_name = str(dataroot.resolve()).replace(":", "").replace("\\", "_").replace("/", "_")
+    safe_name = str(dataroot.absolute()).replace(":", "").replace("\\", "_").replace("/", "_")
     return WORKSPACE_ROOT / "1号机代码" / "DATA_new" / "analysis" / "data_cache" / f"sample_images_{safe_name}.json"
 
 
