@@ -34,7 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
     )
-    parser.add_argument("--cwd", type=Path, default=WORKSPACE_ROOT)
+    parser.add_argument("--cwd", type=Path, default=Path.cwd())
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("command", nargs=argparse.REMAINDER)
     return parser

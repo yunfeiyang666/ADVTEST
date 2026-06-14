@@ -9,6 +9,7 @@ from experiment_tracking import (
     run_recorded_experiment,
     sha256_file,
 )
+from run_recorded_experiment import build_parser
 
 
 class ExperimentManifestTests(unittest.TestCase):
@@ -44,6 +45,23 @@ class ExperimentManifestTests(unittest.TestCase):
 
 
 class RecordedExperimentTests(unittest.TestCase):
+    def test_cli_defaults_subprocess_cwd_to_callers_directory(self):
+        args = build_parser().parse_args(
+            [
+                "--run-id",
+                "cwd-check",
+                "--purpose",
+                "Check cwd",
+                "--run-root",
+                "runs",
+                "--",
+                "python",
+                "script.py",
+            ]
+        )
+
+        self.assertEqual(args.cwd, Path.cwd())
+
     def test_successful_command_records_logs_and_completion(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             workspace = Path(temp_dir)
