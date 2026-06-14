@@ -63,12 +63,12 @@
 - Create: `experiments/rq1_qatest_adapted/run_index.json`
 - Create: `experiments/rq1_qatest_adapted/suite_audit.json`
 
-- [ ] Generate `qatest_style` and `qatest_adapted` from the fixed 100-frame
+- [x] Generate `qatest_style` and `qatest_adapted` from the fixed 100-frame
   cache with `generation_budget=1000` through `run_recorded_experiment.py`.
-- [ ] Verify both suites contain 1000 unique normalized questions.
-- [ ] Verify source IDs, sample tokens, provenance, answer preservation, and
+- [x] Verify both suites contain 1000 unique normalized questions.
+- [x] Verify source IDs, sample tokens, provenance, answer preservation, and
   absence of ADVTEST-private fields.
-- [ ] Compare elapsed time, attempted candidates, operator distribution, source
+- [x] Compare elapsed time, attempted candidates, operator distribution, source
   diversity, and duplicate rejection.
-- [ ] Run complete regression and `git diff --check`.
-- [ ] Commit as `exp(rq1): audit QATest-adapted generation`.
+- [x] Run complete regression and `git diff --check`.
+- [x] Commit as `exp(rq1): audit QATest-adapted generation`.

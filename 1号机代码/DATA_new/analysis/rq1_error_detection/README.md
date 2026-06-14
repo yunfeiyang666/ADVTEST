@@ -164,6 +164,12 @@ The QATest implementation-fidelity audit and the recommended
 
 `experiments/rq1_qatest_fidelity_audit/README.md`
 
+The formal 1000-question QATest-style versus QATest-adapted generation audit,
+including integrity checks, timings, operator distributions, and run IDs, is
+recorded in:
+
+`experiments/rq1_qatest_adapted/README.md`
+
 ## SFT Export
 
 `export_sft_dataset.py` remains responsible for compiling VQA pairs and camera

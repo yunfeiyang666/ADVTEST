@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "input_frame_cache_sha256": "6a76177b6d3bbb9c52159933680527caf03862dd78b3f237176dda54e0a0c797",
+  "generation_commit": "980817f3fe4f78c46ce5e731e3d4678000d0c105",
+  "branch": "codex/rq1-experiment-boundaries",
+  "vlm_calls": 0,
+  "runs": [
+    {
+      "run_id": "qatest-adapted-smoke20",
+      "purpose": "Initial 20-question integration smoke",
+      "status": "completed_with_audit_finding",
+      "duration_seconds": 0.7069041000,
+      "finding": "Inapplicable operator fallback caused misleading attribution."
+    },
+    {
+      "run_id": "qatest-adapted-smoke20-retry1",
+      "purpose": "Smoke after operator-attribution fix",
+      "status": "completed",
+      "duration_seconds": 0.7085704000,
+      "commit": "980817f3fe4f78c46ce5e731e3d4678000d0c105"
+    },
+    {
+      "run_id": "qatest-style-vs-adapted-1000",
+      "purpose": "Formal equal-budget generation and integrity audit",
+      "status": "completed",
+      "duration_seconds": 20.2534455000,
+      "generation_budget_per_method": 1000,
+      "frame_pool_size": 100,
+      "seed": 42
+    },
+    {
+      "run_id": "qatest-style-1000-timing",
+      "purpose": "Isolated QATest-style timing",
+      "status": "completed",
+      "duration_seconds": 1.3622225000,
+      "generation_budget": 1000
+    },
+    {
+      "run_id": "qatest-adapted-1000-timing",
+      "purpose": "Isolated QATest-adapted timing",
+      "status": "completed",
+      "duration_seconds": 18.6520121000,
+      "generation_budget": 1000
+    }
+  ]
+}

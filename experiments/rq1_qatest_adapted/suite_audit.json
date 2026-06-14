@@ -1,0 +1,47 @@
+{
+  "qatest_style": {
+    "questions": 1000,
+    "unique_normalized_questions": 1000,
+    "duplicate_questions": 0,
+    "source_question_count": 1000,
+    "sample_count": 99,
+    "frame_count": 99,
+    "answer_mismatches": 0,
+    "missing_sources": 0,
+    "boundary_violations": 0,
+    "operator_counts": {
+      "double_question_mark": 1000
+    },
+    "method_counts": {
+      "qatest_style": 1000
+    },
+    "adapter_counts": {
+      "qatest_local_adapter": 1000
+    }
+  },
+  "qatest_adapted": {
+    "questions": 1000,
+    "unique_normalized_questions": 1000,
+    "duplicate_questions": 0,
+    "source_question_count": 723,
+    "sample_count": 100,
+    "frame_count": 100,
+    "answer_mismatches": 0,
+    "missing_sources": 0,
+    "boundary_violations": 0,
+    "operator_counts": {
+      "double_question_mark": 188,
+      "keyboard_substitution": 234,
+      "ocr_substitution": 201,
+      "spelling_deletion": 232,
+      "synonym_replacement": 120,
+      "wh_contraction": 25
+    },
+    "method_counts": {
+      "qatest_adapted": 1000
+    },
+    "adapter_counts": {
+      "qatest_adapted_portable": 1000
+    }
+  }
+}
