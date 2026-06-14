@@ -31,14 +31,14 @@
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/qatest_adapted.py`
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/test_qatest_adapted.py`
 
-- [ ] Write failing tests for weighted deterministic seed selection, ten-attempt
+- [x] Write failing tests for weighted deterministic seed selection, ten-attempt
   quality filtering, duplicate rejection, feedback seed insertion, provenance
   source preservation, and strict generation-budget termination.
-- [ ] Run focused tests and verify they fail for missing generator behavior.
-- [ ] Implement `QATestSeed`, `QATestCoverageModel`, `QATestGenerator`, and a
+- [x] Run focused tests and verify they fail for missing generator behavior.
+- [x] Implement `QATestSeed`, `QATestCoverageModel`, `QATestGenerator`, and a
   generation-result object with records and statistics.
-- [ ] Run focused and complete RQ1 tests.
-- [ ] Commit as `feat(rq1): implement iterative QATest adaptation`.
+- [x] Run focused and complete RQ1 tests.
+- [x] Commit as `feat(rq1): implement iterative QATest adaptation`.
 
 ### Task 3: Official-QA integration
 

@@ -1,6 +1,7 @@
 import random
 import re
 from collections import Counter, defaultdict
+from dataclasses import dataclass, replace
 from typing import Iterable, Mapping, Sequence
 
 
@@ -277,3 +278,219 @@ class PortableMutationOperators:
         if not text.endswith("?"):
             return text + "??"
         return text
+
+
+@dataclass(frozen=True)
+class QATestSeed:
+    source_question_id: str
+    source_sample_token: str
+    scene_frame: str
+    question: str
+    answer: str
+    template_type: str = ""
+    num_hop: int = 0
+    root_question: str = ""
+    iteration: int = 0
+    generation_count: int = 0
+
+    def __post_init__(self):
+        if not self.root_question:
+            object.__setattr__(self, "root_question", self.question)
+
+
+@dataclass(frozen=True)
+class QATestGenerationResult:
+    records: list
+    statistics: dict
+
+
+class QATestCoverageModel:
+    def __init__(self, questions: Iterable[str] = ()):
+        self.sequences = []
+        self.covered_grams = set()
+        for question in questions:
+            self.observe(question)
+
+    def observe(self, question: str) -> None:
+        self.sequences.append(coarse_pos_sequence(question))
+        self.covered_grams.update(ngram_set(question))
+
+    def score(self, question: str) -> tuple:
+        model = transition_model(self.sequences)
+        probability = sentence_probability(coarse_pos_sequence(question), model)
+        gain = grammar_gain(ngram_set(question), self.covered_grams)
+        return probability, gain
+
+
+class QATestGenerator:
+    def __init__(
+        self,
+        *,
+        seed: int,
+        operators=None,
+        batch_size: int = 5,
+        max_attempts: int = 10,
+        max_iterations: int = 3000,
+        rouge_threshold: float = 0.5,
+    ):
+        self.seed = int(seed)
+        self.operators = operators or PortableMutationOperators()
+        self.batch_size = int(batch_size)
+        self.max_attempts = int(max_attempts)
+        self.max_iterations = int(max_iterations)
+        self.rouge_threshold = float(rouge_threshold)
+
+    def _select_batch(
+        self,
+        pool: Sequence[QATestSeed],
+        root_counts: Mapping[str, int],
+        iteration: int,
+    ) -> list:
+        rng = random.Random(self.seed + iteration * 104729)
+        ranked = []
+        for index, item in enumerate(pool):
+            weight = 1.0 / max(1, root_counts[item.source_question_id])
+            key = rng.random() ** (1.0 / weight)
+            ranked.append((key, index, item))
+        ranked.sort(reverse=True, key=lambda entry: (entry[0], -entry[1]))
+        return [entry[2] for entry in ranked[: self.batch_size]]
+
+    def _operator_order(self, item: QATestSeed, iteration: int) -> list:
+        names = list(self.operators.names)
+        stable = sum(
+            (index + 1) * ord(char)
+            for index, char in enumerate(item.source_question_id)
+        )
+        random.Random(self.seed + iteration * 1009 + stable).shuffle(names)
+        return names
+
+    def generate(
+        self,
+        seeds: Sequence[QATestSeed],
+        *,
+        generation_budget: int,
+    ) -> QATestGenerationResult:
+        active_pool = list(seeds)
+        coverage = QATestCoverageModel(item.question for item in seeds)
+        root_counts = Counter(item.source_question_id for item in active_pool)
+        emitted_normalized = {
+            normalize_text(item.question) for item in active_pool
+        }
+        per_root_questions = defaultdict(set)
+        for item in active_pool:
+            per_root_questions[item.source_question_id].add(
+                normalize_text(item.question)
+            )
+
+        records = []
+        statistics = {
+            "accepted_questions": 0,
+            "attempted_candidates": 0,
+            "rejected_quality": 0,
+            "rejected_duplicate": 0,
+            "feedback_insertions": 0,
+            "iterations": 0,
+            "operator_attempts": Counter(),
+            "operator_acceptances": Counter(),
+        }
+
+        for iteration in range(self.max_iterations):
+            if len(records) >= generation_budget or not active_pool:
+                break
+            statistics["iterations"] = iteration + 1
+            batch = self._select_batch(active_pool, root_counts, iteration)
+            accepted_this_iteration = []
+
+            for item in batch:
+                if len(records) >= generation_budget:
+                    break
+                order = self._operator_order(item, iteration)
+                accepted = None
+                for attempt in range(min(self.max_attempts, len(order))):
+                    operator = order[attempt]
+                    statistics["attempted_candidates"] += 1
+                    statistics["operator_attempts"][operator] += 1
+                    mutation_seed = (
+                        self.seed
+                        + iteration * 100003
+                        + attempt * 997
+                        + sum(ord(char) for char in item.question)
+                    )
+                    candidate = self.operators.apply(
+                        operator,
+                        item.question,
+                        seed=mutation_seed,
+                    )
+                    normalized = normalize_text(candidate)
+                    if (
+                        normalized == normalize_text(item.question)
+                        or normalized in emitted_normalized
+                        or normalized
+                        in per_root_questions[item.source_question_id]
+                    ):
+                        statistics["rejected_duplicate"] += 1
+                        continue
+                    rouge = rouge1_scores(candidate, item.question)
+                    if rouge["f1"] <= self.rouge_threshold:
+                        statistics["rejected_quality"] += 1
+                        continue
+                    probability, gain = coverage.score(candidate)
+                    accepted = {
+                        "question": candidate,
+                        "answer": item.answer,
+                        "template_type": item.template_type,
+                        "num_hop": item.num_hop,
+                        "source_question_id": item.source_question_id,
+                        "source_sample_token": item.source_sample_token,
+                        "scene_frame": item.scene_frame,
+                        "original_question": item.root_question,
+                        "qatest_parent_question": item.question,
+                        "qatest_iteration": iteration,
+                        "qatest_mutated": True,
+                        "mutation_operator": operator,
+                        "qatest_rouge1_f1": rouge["f1"],
+                        "qatest_gram_gain": gain,
+                        "qatest_sentence_probability": probability,
+                    }
+                    statistics["operator_acceptances"][operator] += 1
+                    emitted_normalized.add(normalized)
+                    per_root_questions[item.source_question_id].add(normalized)
+                    coverage.observe(candidate)
+                    records.append(accepted)
+                    accepted_this_iteration.append((accepted, item))
+                    break
+
+            if not accepted_this_iteration:
+                break
+
+            min_probability = min(
+                accepted_this_iteration,
+                key=lambda pair: pair[0]["qatest_sentence_probability"],
+            )
+            max_gain = max(
+                accepted_this_iteration,
+                key=lambda pair: pair[0]["qatest_gram_gain"],
+            )
+            selected_feedback = []
+            for pair in (min_probability, max_gain):
+                if pair not in selected_feedback:
+                    selected_feedback.append(pair)
+            for accepted, parent in selected_feedback:
+                feedback_seed = replace(
+                    parent,
+                    question=accepted["question"],
+                    iteration=iteration + 1,
+                    generation_count=parent.generation_count + 1,
+                )
+                active_pool.append(feedback_seed)
+                root_counts[parent.source_question_id] += 1
+                statistics["feedback_insertions"] += 1
+
+        statistics["accepted_questions"] = len(records)
+        statistics["operator_attempts"] = dict(
+            sorted(statistics["operator_attempts"].items())
+        )
+        statistics["operator_acceptances"] = dict(
+            sorted(statistics["operator_acceptances"].items())
+        )
+        return QATestGenerationResult(records=records, statistics=statistics)
