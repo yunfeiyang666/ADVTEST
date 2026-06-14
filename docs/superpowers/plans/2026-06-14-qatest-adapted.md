@@ -16,14 +16,14 @@
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/qatest_adapted.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_qatest_adapted.py`
 
-- [ ] Write failing tests for local Rouge-1, normalized duplicate detection,
+- [x] Write failing tests for local Rouge-1, normalized duplicate detection,
   deterministic operators, POS transitions, n-grams, sentence probability, and
   grammar gain.
-- [ ] Run `python -m unittest test_qatest_adapted.py -v` and verify failure
+- [x] Run `python -m unittest test_qatest_adapted.py -v` and verify failure
   because the module does not exist.
-- [ ] Implement only the metric and operator functions required by the tests.
-- [ ] Run focused tests and verify all pass.
-- [ ] Commit as `feat(rq1): add portable QATest language metrics`.
+- [x] Implement only the metric and operator functions required by the tests.
+- [x] Run focused tests and verify all pass.
+- [x] Commit as `feat(rq1): add portable QATest language metrics`.
 
 ### Task 2: Iterative QATest generator
 
