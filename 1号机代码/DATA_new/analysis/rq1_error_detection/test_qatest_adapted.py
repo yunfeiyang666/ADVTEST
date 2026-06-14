@@ -102,6 +102,18 @@ class PortableMutationOperatorTests(unittest.TestCase):
         self.assertEqual(set(outputs), set(operators.names))
         self.assertTrue(all(isinstance(value, str) for value in outputs.values()))
 
+    def test_inapplicable_operator_does_not_masquerade_as_another_operator(self):
+        operators = PortableMutationOperators()
+        question = "What is unknown?"
+
+        mutated = operators.apply(
+            "synonym_replacement",
+            question,
+            seed=23,
+        )
+
+        self.assertEqual(mutated, question)
+
 
 class StubOperators:
     def __init__(self, outputs):

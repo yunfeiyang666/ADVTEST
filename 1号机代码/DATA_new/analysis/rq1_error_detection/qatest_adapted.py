@@ -205,7 +205,7 @@ class PortableMutationOperators:
             if char.lower() in replacements
         ]
         if not candidates:
-            return self._spelling_deletion(text, rng)
+            return text
         index, char = rng.choice(candidates)
         replacement = replacements[char.lower()]
         if char.isupper():
@@ -235,7 +235,7 @@ class PortableMutationOperators:
             if match.group().lower() in self._synonyms
         ]
         if not matches:
-            return self._wh_contraction(text, rng)
+            return text
         match = rng.choice(matches)
         replacement = self._synonyms[match.group().lower()]
         if match.group()[0].isupper():
