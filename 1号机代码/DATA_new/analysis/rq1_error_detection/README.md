@@ -142,6 +142,16 @@ cd 1号机代码/DATA_new/analysis/rq1_error_detection
 python -m unittest discover -p "test_*.py" -v
 ```
 
+## Formal Exploration Ledger
+
+The 100-frame generation-cap sensitivity experiment, exact commands, run IDs,
+failure history, input hash, and conclusions are recorded in:
+
+`experiments/rq1_formal_exploration/README.md`
+
+Raw manifests and logs are stored under
+`scratch/rq1_formal_exploration/runs/` and are intentionally not committed.
+
 ## SFT Export
 
 `export_sft_dataset.py` remains responsible for compiling VQA pairs and camera

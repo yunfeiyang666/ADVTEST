@@ -194,7 +194,7 @@ feat(rq1): aggregate structural sensitivity evidence
 - Create: `experiments/rq1_formal_exploration/README.md`
 - Create: `experiments/rq1_formal_exploration/run_index.json`
 
-- [ ] **Step 1: Record the exact matrix**
+- [x] **Step 1: Record the exact matrix**
 
 Structural runs:
 
@@ -219,16 +219,16 @@ official-capacity1000
 
 It builds `official_qa` and `qatest` on the same 100-frame order.
 
-- [ ] **Step 2: Run all commands through the recorded runner**
+- [x] **Step 2: Run all commands through the recorded runner**
 
 Every run must finish with manifest status `completed`.
 
-- [ ] **Step 3: Generate the sensitivity summary**
+- [x] **Step 3: Generate the sensitivity summary**
 
 Run `structural_sensitivity.py` over the run directories and write compact
 artifacts to `experiments/rq1_formal_exploration/`.
 
-- [ ] **Step 4: Verify results**
+- [x] **Step 4: Verify results**
 
 Check:
 
@@ -238,7 +238,7 @@ Check:
 - frame-cache hashes are identical across runs;
 - no run manifest records secrets.
 
-- [ ] **Step 5: Commit evidence and operation notes**
+- [x] **Step 5: Commit evidence and operation notes**
 
 Commit:
 
@@ -252,12 +252,12 @@ exp(rq1): record 100-frame structural sensitivity
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/README.md`
 - Modify: `experiments/rq1_formal_exploration/README.md`
 
-- [ ] **Step 1: Document reproduction commands**
+- [x] **Step 1: Document reproduction commands**
 
 Include exact commands, expected run IDs, output locations, and interpretation
 rules.
 
-- [ ] **Step 2: Run verification**
+- [x] **Step 2: Run verification**
 
 Run:
 
@@ -267,12 +267,12 @@ python -m py_compile experiment_tracking.py run_recorded_experiment.py structura
 git diff --check
 ```
 
-- [ ] **Step 3: Review Git scope**
+- [x] **Step 3: Review Git scope**
 
 Confirm only code, tests, plans, tracked summaries, and operation notes are
 staged.
 
-- [ ] **Step 4: Commit the handoff**
+- [x] **Step 4: Commit the handoff**
 
 Commit:
 

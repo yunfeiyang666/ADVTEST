@@ -1,0 +1,438 @@
+{
+  "structural_runs": [
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "advtest",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.23073240785064625,
+      "macro_l0": 0.19943921568627448,
+      "micro_l1": 0.07564995276251793,
+      "macro_l1": 0.11856466001863054,
+      "micro_l2": 0.004382575083680158,
+      "macro_l2": 0.027832880264924573,
+      "unique_l2_per_question": 4.508,
+      "auc_micro_l2": 0.0020643143865707323,
+      "auc_macro_l2": 0.017336565043762162,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "greedy_l0",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.23216850167544278,
+      "macro_l0": 0.2,
+      "micro_l1": 0.06515273452535078,
+      "macro_l1": 0.10177808299891748,
+      "micro_l2": 0.004147308186996351,
+      "macro_l2": 0.026662164364694006,
+      "unique_l2_per_question": 4.266,
+      "auc_micro_l2": 0.0019324113204208751,
+      "auc_macro_l2": 0.016580127463912603,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "greedy_l1",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.22977501196744854,
+      "macro_l0": 0.1991744680851064,
+      "micro_l1": 0.0832429406207355,
+      "macro_l1": 0.1287753413470274,
+      "micro_l2": 0.003928568303715953,
+      "macro_l2": 0.02606561396908867,
+      "unique_l2_per_question": 4.041,
+      "auc_micro_l2": 0.0018425787390666515,
+      "auc_macro_l2": 0.016288403425344072,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "object_balanced",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.2312111057922451,
+      "macro_l0": 0.19822660098522168,
+      "micro_l1": 0.06319325378774625,
+      "macro_l1": 0.09653459745154286,
+      "micro_l2": 0.0027658443019232585,
+      "macro_l2": 0.021212466535670712,
+      "unique_l2_per_question": 2.845,
+      "auc_micro_l2": 0.0013266277406892154,
+      "auc_macro_l2": 0.013466104630067649,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "random",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.22881761608425083,
+      "macro_l0": 0.19882836879432625,
+      "micro_l1": 0.06277336505825956,
+      "macro_l1": 0.10121033792924587,
+      "micro_l2": 0.0027395955159296103,
+      "macro_l2": 0.020836849209589933,
+      "unique_l2_per_question": 2.818,
+      "auc_micro_l2": 0.0013122176432673323,
+      "auc_macro_l2": 0.013412582396066346,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed43-retry1",
+      "method": "random",
+      "seed": 43,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.22786022020105315,
+      "macro_l0": 0.1987205673758865,
+      "micro_l1": 0.06389306833689072,
+      "macro_l1": 0.10421934964208904,
+      "micro_l2": 0.002800842683248122,
+      "macro_l2": 0.021387562357509785,
+      "unique_l2_per_question": 2.881,
+      "auc_micro_l2": 0.0013483685407327689,
+      "auc_macro_l2": 0.013694203976329858,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed44-retry1",
+      "method": "random",
+      "seed": 44,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.2302537099090474,
+      "macro_l0": 0.19946666666666665,
+      "micro_l1": 0.06256342069351621,
+      "macro_l1": 0.10227388242587111,
+      "micro_l2": 0.0027366789841525383,
+      "macro_l2": 0.021256199243318955,
+      "unique_l2_per_question": 2.815,
+      "auc_micro_l2": 0.0013170022136476188,
+      "auc_macro_l2": 0.013558685398270166,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "method": "template_balanced",
+      "seed": 42,
+      "max_questions": 50,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 20,
+      "micro_l0": 0.22881761608425083,
+      "macro_l0": 0.19882836879432625,
+      "micro_l1": 0.06245844851114455,
+      "macro_l1": 0.100354416073324,
+      "micro_l2": 0.002659876980689643,
+      "macro_l2": 0.019217024589765312,
+      "unique_l2_per_question": 2.736,
+      "auc_micro_l2": 0.0012662501859289008,
+      "auc_macro_l2": 0.01251833123056518,
+      "switch_reason_counts": {
+        "frame_cap": 19,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "advtest",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.04968683298925785,
+      "macro_l1": 0.08961355388696482,
+      "micro_l2": 0.003311235744235718,
+      "macro_l2": 0.03159964986546767,
+      "unique_l2_per_question": 3.406,
+      "auc_micro_l2": 0.001521254225325412,
+      "auc_macro_l2": 0.01738307357263573,
+      "switch_reason_counts": {
+        "full_coverage": 2,
+        "frame_cap": 7,
+        "relative_gain_drop": 1,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "greedy_l0",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.043458483501872,
+      "macro_l1": 0.07977368827993535,
+      "micro_l2": 0.0031517986737557833,
+      "macro_l2": 0.030675340357546158,
+      "unique_l2_per_question": 3.242,
+      "auc_micro_l2": 0.0014225111533036042,
+      "auc_macro_l2": 0.01685638162132591,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "greedy_l1",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.05224115609363519,
+      "macro_l1": 0.09002512086435485,
+      "micro_l2": 0.0029923616032758484,
+      "macro_l2": 0.03045166903108303,
+      "unique_l2_per_question": 3.078,
+      "auc_micro_l2": 0.0013721650095905287,
+      "auc_macro_l2": 0.016762807187395062,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "object_balanced",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09669698420296793,
+      "macro_l0": 0.10928571428571429,
+      "micro_l1": 0.04230378949578362,
+      "macro_l1": 0.07701622663604286,
+      "micro_l2": 0.002572381027377484,
+      "macro_l2": 0.02886288952259548,
+      "unique_l2_per_question": 2.646,
+      "auc_micro_l2": 0.001173431562123585,
+      "auc_macro_l2": 0.01581186840926677,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "random",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.04289863186255642,
+      "macro_l1": 0.07909223843757442,
+      "micro_l2": 0.0025101616827999484,
+      "macro_l2": 0.028622585457807218,
+      "unique_l2_per_question": 2.582,
+      "auc_micro_l2": 0.0011491456020159068,
+      "auc_macro_l2": 0.015701401021380873,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed43",
+      "method": "random",
+      "seed": 43,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.04251373386052696,
+      "macro_l1": 0.07913097926477429,
+      "micro_l2": 0.0025014120874687325,
+      "macro_l2": 0.028528634884819257,
+      "unique_l2_per_question": 2.573,
+      "auc_micro_l2": 0.0011406142604793417,
+      "auc_macro_l2": 0.015659875004428028,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed44",
+      "method": "random",
+      "seed": 44,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09717568214456677,
+      "macro_l0": 0.11,
+      "micro_l1": 0.04240876167815529,
+      "macro_l1": 0.07857099172630921,
+      "micro_l2": 0.0024965512011736126,
+      "macro_l2": 0.028498269042536065,
+      "unique_l2_per_question": 2.568,
+      "auc_micro_l2": 0.0011416413657535005,
+      "auc_macro_l2": 0.015596122536690016,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "method": "template_balanced",
+      "seed": 42,
+      "max_questions": 100,
+      "generation_budget": 1000,
+      "frame_pool_size": 100,
+      "suite_size": 1000,
+      "visited_frames": 11,
+      "micro_l0": 0.09621828626136908,
+      "macro_l0": 0.10857142857142858,
+      "micro_l1": 0.04240876167815529,
+      "macro_l1": 0.07749883184416782,
+      "micro_l2": 0.002467385883402893,
+      "macro_l2": 0.028137237472459234,
+      "unique_l2_per_question": 2.538,
+      "auc_micro_l2": 0.0011357101122961952,
+      "auc_macro_l2": 0.01550591142764128,
+      "switch_reason_counts": {
+        "candidate_exhausted": 2,
+        "frame_cap": 8,
+        "global_generation_budget": 1
+      }
+    }
+  ],
+  "random_statistics": [
+    {
+      "max_questions": 50,
+      "seed_count": 3,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "micro_l2_mean": 0.0027590390611100905,
+      "micro_l2_std": 2.9583595198422393e-05,
+      "micro_l2_min": 0.0027366789841525383,
+      "micro_l2_max": 0.002800842683248122,
+      "auc_micro_l2_mean": 0.0013258627992159067,
+      "auc_micro_l2_std": 1.6033388690455527e-05,
+      "auc_micro_l2_min": 0.0013122176432673323,
+      "auc_micro_l2_max": 0.0013483685407327689
+    },
+    {
+      "max_questions": 100,
+      "seed_count": 3,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "micro_l2_mean": 0.0025027083238140977,
+      "micro_l2_std": 5.631546502959386e-06,
+      "micro_l2_min": 0.0024965512011736126,
+      "micro_l2_max": 0.0025101616827999484,
+      "auc_micro_l2_mean": 0.0011438004094162498,
+      "auc_micro_l2_std": 3.802810299118553e-06,
+      "auc_micro_l2_min": 0.0011406142604793417,
+      "auc_micro_l2_max": 0.0011491456020159068
+    }
+  ],
+  "frame_cap_decision": {
+    "recommended_max_questions": 50,
+    "negligible_threshold": 0.005,
+    "micro_l2_delta": -0.0010713393394444401,
+    "auc_micro_l2_delta": -0.0005430601612453202,
+    "reason": "cap100 gains are negligible"
+  },
+  "external_capacity": [
+    {
+      "method": "official_qa",
+      "requested_generation_budget": 1000,
+      "actual_questions": 1000,
+      "run_id": "official-capacity1000"
+    },
+    {
+      "method": "qatest",
+      "requested_generation_budget": 1000,
+      "actual_questions": 1000,
+      "run_id": "official-capacity1000"
+    }
+  ]
+}

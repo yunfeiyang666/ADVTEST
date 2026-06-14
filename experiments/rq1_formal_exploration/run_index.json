@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "frame_cache_sha256": "6a76177b6d3bbb9c52159933680527caf03862dd78b3f237176dda54e0a0c797",
+  "runs": [
+    {
+      "run_id": "structural-cap50-seed42",
+      "status": "failed",
+      "exit_code": 2,
+      "commit": "a127e848f2d993ee605aef57ee07b28d50d32219",
+      "duration_seconds": 0.074,
+      "superseded_by": "structural-cap50-seed42-retry1"
+    },
+    {
+      "run_id": "structural-cap50-seed43",
+      "status": "failed",
+      "exit_code": 2,
+      "commit": "a127e848f2d993ee605aef57ee07b28d50d32219",
+      "duration_seconds": 0.074,
+      "superseded_by": "structural-cap50-seed43-retry1"
+    },
+    {
+      "run_id": "structural-cap50-seed44",
+      "status": "failed",
+      "exit_code": 2,
+      "commit": "a127e848f2d993ee605aef57ee07b28d50d32219",
+      "duration_seconds": 0.096,
+      "superseded_by": "structural-cap50-seed44-retry1"
+    },
+    {
+      "run_id": "structural-cap50-seed42-retry1",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 9.777
+    },
+    {
+      "run_id": "structural-cap50-seed43-retry1",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 9.770
+    },
+    {
+      "run_id": "structural-cap50-seed44-retry1",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 9.669
+    },
+    {
+      "run_id": "structural-cap100-seed42",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 5.701
+    },
+    {
+      "run_id": "structural-cap100-seed43",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 5.730
+    },
+    {
+      "run_id": "structural-cap100-seed44",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 5.670
+    },
+    {
+      "run_id": "official-capacity1000",
+      "status": "completed",
+      "exit_code": 0,
+      "commit": "7f4d69fd5637ccf497b403318398f49a05e4b2c1",
+      "duration_seconds": 4.798
+    }
+  ]
+}
