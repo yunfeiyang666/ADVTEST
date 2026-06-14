@@ -16,7 +16,7 @@
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/experiment_tracking.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_experiment_tracking.py`
 
-- [ ] **Step 1: Write failing manifest tests**
+- [x] **Step 1: Write failing manifest tests**
 
 Add tests that require:
 
@@ -41,7 +41,7 @@ self.assertEqual(len(manifest["inputs"][0]["sha256"]), 64)
 self.assertNotIn("environment", manifest)
 ```
 
-- [ ] **Step 2: Run tests and verify RED**
+- [x] **Step 2: Run tests and verify RED**
 
 Run:
 
@@ -51,7 +51,7 @@ python -m unittest test_experiment_tracking.py -v
 
 Expected: import failure because `experiment_tracking.py` does not exist.
 
-- [ ] **Step 3: Implement the minimal manifest functions**
+- [x] **Step 3: Implement the minimal manifest functions**
 
 Implement:
 
@@ -72,11 +72,11 @@ def build_manifest(
 The Git state contains branch, commit, and dirty status only. Do not record
 environment variables.
 
-- [ ] **Step 4: Run tests and verify GREEN**
+- [x] **Step 4: Run tests and verify GREEN**
 
 Run the focused test command and expect all tests to pass.
 
-- [ ] **Step 5: Commit the manifest model**
+- [x] **Step 5: Commit the manifest model**
 
 Commit:
 
@@ -91,7 +91,7 @@ feat(rq1): add reproducible experiment manifests
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/test_experiment_tracking.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/run_recorded_experiment.py`
 
-- [ ] **Step 1: Write failing runner tests**
+- [x] **Step 1: Write failing runner tests**
 
 Use temporary directories and `sys.executable -c` commands to verify:
 
@@ -108,11 +108,11 @@ Require `manifest.json`, `stdout.log`, and `stderr.log`; require status
 `completed`, exit code `0`, and non-negative duration. Add a failing-command
 test requiring status `failed` and preserved stderr.
 
-- [ ] **Step 2: Run tests and verify RED**
+- [x] **Step 2: Run tests and verify RED**
 
 Expected: failure because `run_recorded_experiment` is missing.
 
-- [ ] **Step 3: Implement subprocess recording and CLI**
+- [x] **Step 3: Implement subprocess recording and CLI**
 
 The runner writes the prepared manifest before launch, redirects stdout and
 stderr, and updates the manifest in a `finally` block. Existing run directories
@@ -131,11 +131,11 @@ python run_recorded_experiment.py `
   -- python fixed_budget_experiment.py ...
 ```
 
-- [ ] **Step 4: Run focused and complete RQ1 tests**
+- [x] **Step 4: Run focused and complete RQ1 tests**
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Commit the recorded runner**
+- [x] **Step 5: Commit the recorded runner**
 
 Commit:
 
