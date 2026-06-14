@@ -15,6 +15,7 @@ sys.path.insert(0, str(MODULE_DIR))
 
 from evaluator import get_sample_token
 from experiment_protocol import EXTERNAL_LAYER, annotate_provenance
+from qatest_adapted import QATestGenerator, QATestSeed
 
 
 DEFAULT_QUESTIONS_PATH = (
@@ -33,7 +34,7 @@ DEFAULT_DATAROOT = WORKSPACE_ROOT / "1号机代码" / "DATA_new" / "data"
 DEFAULT_OUTPUT_DIR = (
     WORKSPACE_ROOT / "1号机代码" / "DATA_new" / "analysis" / "official_qa_results"
 )
-METHODS = ("official_qa", "qatest")
+METHODS = ("official_qa", "qatest", "qatest_style", "qatest_adapted")
 
 
 def load_official_questions(path: Path) -> List[dict]:
@@ -199,11 +200,87 @@ def build_official_suite(
     generation_budget: int,
     seed: int,
 ) -> List[dict]:
+    suite, _ = build_official_suite_with_stats(
+        method=method,
+        frame_samples=frame_samples,
+        questions_by_sample=questions_by_sample,
+        generation_budget=generation_budget,
+        seed=seed,
+    )
+    return suite
+
+
+def build_official_suite_with_stats(
+    *,
+    method: str,
+    frame_samples: Sequence[Tuple[str, str]],
+    questions_by_sample: Mapping[str, Sequence[dict]],
+    generation_budget: int,
+    seed: int,
+) -> Tuple[List[dict], dict]:
     if method not in METHODS:
         raise ValueError(f"Unknown official-QA method: {method}")
     seeds = _ordered_seeds(frame_samples, questions_by_sample)
     if not seeds or generation_budget <= 0:
-        return []
+        return [], {"accepted_questions": 0}
+    normalized_method = "qatest_style" if method == "qatest" else method
+
+    if normalized_method == "qatest_adapted":
+        adapted_seeds = [
+            QATestSeed(
+                source_question_id=source["official_question_id"],
+                source_sample_token=source["sample_token"],
+                scene_frame=scene_frame,
+                question=source["question"],
+                answer=str(source.get("answer") or ""),
+                template_type=str(source.get("template_type") or ""),
+                num_hop=int(source.get("num_hop") or 0),
+            )
+            for scene_frame, source in seeds
+        ]
+        generated = QATestGenerator(seed=seed).generate(
+            adapted_seeds,
+            generation_budget=generation_budget,
+        )
+        suite = []
+        for generated_question in generated.records:
+            question = {
+                key: generated_question[key]
+                for key in (
+                    "question",
+                    "answer",
+                    "template_type",
+                    "num_hop",
+                    "original_question",
+                    "qatest_parent_question",
+                    "qatest_iteration",
+                    "qatest_mutated",
+                    "mutation_operator",
+                    "qatest_rouge1_f1",
+                    "qatest_gram_gain",
+                    "qatest_sentence_probability",
+                )
+            }
+            suite.append(
+                annotate_provenance(
+                    question,
+                    layer=EXTERNAL_LAYER,
+                    method="qatest_adapted",
+                    question_source="nuscenes_qa",
+                    source_question_id=generated_question[
+                        "source_question_id"
+                    ],
+                    source_sample_token=generated_question[
+                        "source_sample_token"
+                    ],
+                    generation_adapter="qatest_adapted_portable",
+                    uses_coverage_feedback=False,
+                    vlm_call_cost=1,
+                    scene_frame=generated_question["scene_frame"],
+                    global_budget_index=len(suite) + 1,
+                )
+            )
+        return suite, generated.statistics
 
     suite = []
     seen_question_text = set()
@@ -214,7 +291,7 @@ def build_official_suite(
         and stalled_cycles < len(seeds) + 10
     ):
         cycle_seeds = list(seeds)
-        if method == "qatest":
+        if normalized_method == "qatest_style":
             random.Random(seed + cycle).shuffle(cycle_seeds)
         before_cycle = len(suite)
         for scene_frame, source in cycle_seeds:
@@ -233,7 +310,7 @@ def build_official_suite(
                 if key in source
             }
             adapter = "official_nuscenes_qa"
-            if method == "qatest":
+            if normalized_method == "qatest_style":
                 original_text = question["question"]
                 mutated_text, operator = mutate_qatest_question(
                     original_text, seed, cycle
@@ -253,7 +330,7 @@ def build_official_suite(
             record = annotate_provenance(
                 question,
                 layer=EXTERNAL_LAYER,
-                method=method,
+                method=normalized_method,
                 question_source="nuscenes_qa",
                 source_question_id=source["official_question_id"],
                 source_sample_token=source["sample_token"],
@@ -265,14 +342,21 @@ def build_official_suite(
             )
             suite.append(record)
             seen_question_text.add(question["question"])
-        if method == "official_qa":
+        if normalized_method == "official_qa":
             break
         if len(suite) == before_cycle:
             stalled_cycles += 1
         else:
             stalled_cycles = 0
         cycle += 1
-    return suite
+    return suite, {
+        "accepted_questions": len(suite),
+        "generation_adapter": (
+            "official_nuscenes_qa"
+            if normalized_method == "official_qa"
+            else "qatest_local_adapter"
+        ),
+    }
 
 
 def resolve_frame_samples(
@@ -338,7 +422,7 @@ def main() -> None:
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for method in args.methods:
-        suite = build_official_suite(
+        suite, statistics = build_official_suite_with_stats(
             method=method,
             frame_samples=frame_samples,
             questions_by_sample=questions_by_sample,
@@ -347,6 +431,10 @@ def main() -> None:
         )
         output_path = args.output_dir / f"{method}_suite.jsonl"
         _write_jsonl(output_path, suite)
+        (args.output_dir / f"{method}_generation_stats.json").write_text(
+            json.dumps(statistics, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
         print(f"[official-qa] {method}: {len(suite)} questions -> {output_path}")
         if len(suite) < args.generation_budget:
             print(

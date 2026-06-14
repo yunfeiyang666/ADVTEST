@@ -47,14 +47,14 @@
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/test_official_qa_experiment.py`
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/README.md`
 
-- [ ] Write failing tests requiring `qatest_style`, `qatest_adapted`, and the
+- [x] Write failing tests requiring `qatest_style`, `qatest_adapted`, and the
   compatibility alias `qatest`.
-- [ ] Require alias output to use `experiment_method=qatest_style`.
-- [ ] Require adapted output to preserve official source IDs, use
+- [x] Require alias output to use `experiment_method=qatest_style`.
+- [x] Require adapted output to preserve official source IDs, use
   `qatest_adapted_portable`, and contain no ADVTEST-private fields.
-- [ ] Implement the method dispatch and write an adapted statistics JSON file.
-- [ ] Run all RQ1 tests and compile changed scripts.
-- [ ] Commit as `feat(rq1): integrate QATest-adapted baseline`.
+- [x] Implement the method dispatch and write an adapted statistics JSON file.
+- [x] Run all RQ1 tests and compile changed scripts.
+- [x] Commit as `feat(rq1): integrate QATest-adapted baseline`.
 
 ### Task 4: Recorded 1000-question audit
 

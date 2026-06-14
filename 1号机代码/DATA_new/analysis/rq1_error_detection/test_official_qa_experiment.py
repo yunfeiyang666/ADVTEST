@@ -66,7 +66,7 @@ class OfficialQAExperimentTests(unittest.TestCase):
             "sample-a:0",
         )
 
-    def test_qatest_uses_only_official_seed_and_preserves_source_identity(self):
+    def test_qatest_alias_emits_qatest_style_provenance(self):
         suite = build_official_suite(
             method="qatest",
             frame_samples=[("scene-1_frame2", "sample-a")],
@@ -80,9 +80,51 @@ class OfficialQAExperimentTests(unittest.TestCase):
             self.assertEqual(question["question_source"], "nuscenes_qa")
             self.assertEqual(question["source_sample_token"], "sample-a")
             self.assertTrue(question["source_question_id"].startswith("sample-a:"))
-            self.assertEqual(question["experiment_method"], "qatest")
+            self.assertEqual(question["experiment_method"], "qatest_style")
+            self.assertEqual(
+                question["generation_adapter"],
+                "qatest_local_adapter",
+            )
             self.assertNotIn("coverage_footprint", question)
             self.assertNotIn("path_pattern", question)
+
+    def test_qatest_adapted_preserves_official_boundary(self):
+        suite = build_official_suite(
+            method="qatest_adapted",
+            frame_samples=[("scene-1_frame2", "sample-a")],
+            questions_by_sample=index_official_questions(self.questions),
+            generation_budget=3,
+            seed=11,
+        )
+
+        self.assertEqual(len(suite), 3)
+        for question in suite:
+            self.assertEqual(question["experiment_method"], "qatest_adapted")
+            self.assertEqual(
+                question["generation_adapter"],
+                "qatest_adapted_portable",
+            )
+            self.assertEqual(question["question_source"], "nuscenes_qa")
+            self.assertTrue(question["source_question_id"].startswith("sample-a:"))
+            self.assertIn("qatest_gram_gain", question)
+            self.assertIn("qatest_sentence_probability", question)
+            self.assertFalse(question["uses_coverage_feedback"])
+            self.assertNotIn("coverage_footprint", question)
+            self.assertNotIn("path_pattern", question)
+
+    def test_explicit_qatest_style_method_is_available(self):
+        suite = build_official_suite(
+            method="qatest_style",
+            frame_samples=[("scene-1_frame2", "sample-a")],
+            questions_by_sample=index_official_questions(self.questions),
+            generation_budget=2,
+            seed=11,
+        )
+
+        self.assertEqual(len(suite), 2)
+        self.assertTrue(
+            all(item["experiment_method"] == "qatest_style" for item in suite)
+        )
 
     def test_qatest_avoids_duplicate_mutated_text_with_repeated_seed_cycles(self):
         suite = build_official_suite(

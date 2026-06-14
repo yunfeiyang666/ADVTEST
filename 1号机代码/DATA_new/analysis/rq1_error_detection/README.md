@@ -41,15 +41,22 @@ Run:
 
 ```powershell
 python 1号机代码/DATA_new/analysis/rq1_error_detection/official_qa_experiment.py `
-  --methods official_qa qatest `
+  --methods official_qa qatest_style qatest_adapted `
   --generation-budget 1000 `
   --frame-pool-size 100 `
   --output-dir 1号机代码/DATA_new/analysis/official_qa_results/v1
 ```
 
-`qatest` currently uses the dependency-light `qatest_local_adapter`, derived
-from QATest-style textual transformations. It is intentionally not labeled as
-an exact run of the original Python 3.6 environment.
+`qatest_style` is the dependency-light seven-operator text-perturbation
+ablation. The legacy CLI name `qatest` aliases this method, but its provenance
+is recorded as `qatest_style`.
+
+`qatest_adapted` is the primary QATest comparison. It preserves the iterative
+seed pool, local Rouge-1 quality filter, POS-transition probability, 1-to-4
+gram coverage feedback, duplicate rejection, and candidate retry behavior. It
+uses seven offline operators and intentionally disables the original
+credential- or model-path-dependent operators. Generation statistics are
+written beside each suite as `<method>_generation_stats.json`.
 
 QAAskeR is exposed through `qaasker_adapter.py`. It requires a primary SUT
 answer before follow-up generation. The original QAAskeR Q2S/S2G MR2 modules
