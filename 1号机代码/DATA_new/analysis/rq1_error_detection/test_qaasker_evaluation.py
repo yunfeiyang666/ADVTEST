@@ -58,7 +58,10 @@ class QAAskeREvaluationTests(unittest.TestCase):
         self.assertEqual(result["vlm_calls"], 2)
         self.assertEqual(result["pairs"], 1)
         self.assertEqual(result["violations"], 1)
-        self.assertEqual(result["budget_stop_reason"], "global_budget")
+        self.assertEqual(
+            result["budget_stop_reason"],
+            "global_vlm_call_budget",
+        )
         self.assertEqual(result["records"][1]["primary_sut_answer"], "truck")
         self.assertIn("truck", result["records"][1]["question"])
 

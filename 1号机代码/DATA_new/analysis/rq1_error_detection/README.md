@@ -23,7 +23,7 @@ Run:
 
 ```powershell
 python 1号机代码/DATA_new/analysis/rq1_error_detection/fixed_budget_experiment.py `
-  --budget 1000 `
+  --generation-budget 1000 `
   --frame-pool-size 100 `
   --max-questions 100 `
   --output-dir 1号机代码/DATA_new/analysis/fixed_budget_results/v2_structural
@@ -42,7 +42,7 @@ Run:
 ```powershell
 python 1号机代码/DATA_new/analysis/rq1_error_detection/official_qa_experiment.py `
   --methods official_qa qatest `
-  --budget 1000 `
+  --generation-budget 1000 `
   --frame-pool-size 100 `
   --output-dir 1号机代码/DATA_new/analysis/official_qa_results/v1
 ```
@@ -78,6 +78,24 @@ Cross-paradigm methods are compared using:
 Their structural coverage can be reported as a diagnostic, but it is not a
 cross-method ranking metric.
 
+## Budget Contract
+
+The experiment uses two explicit, non-interchangeable budgets:
+
+- `generation_budget`: number of questions emitted while building a suite.
+  It is used for structural coverage and generation-capacity comparisons.
+- `vlm_call_budget`: number of tested-model inference calls. It is used for
+  cross-paradigm error-detection comparisons. QAAskeR consumes two calls per
+  complete primary/follow-up pair; deterministic generators consume no calls
+  until their emitted questions are evaluated.
+
+The final report contains three separate tables:
+
+- Table A: structural coverage at an equal generation budget.
+- Table B: error detection at the same actual VLM-call count for every method.
+- Table C: capacity under a requested VLM-call ceiling, showing actual calls
+  when a method exhausts its suite before reaching that ceiling.
+
 ## Leakage Enforcement
 
 `experiment_protocol.py` records provenance and rejects ADVTEST-private fields
@@ -105,6 +123,17 @@ python 1号机代码/DATA_new/analysis/rq1_error_detection/run_suite_evaluation.
 The report separates wrong question count from independent failures. Multiple
 QATest mutations of the same official seed count as one independent failure,
 and the primary cross-paradigm metric is `unique_failures_per_100_calls`.
+
+Build the three tables after generation and evaluation:
+
+```powershell
+python 1号机代码/DATA_new/analysis/rq1_error_detection/experiment_tables.py `
+  --structural-summary <fixed_budget_summary.json> `
+  --common-results <equal_call_suite_summary.json> <qaasker_summary.json> `
+  --capacity-results <capacity_suite_summary.json> `
+  --requested-vlm-call-budget 1000 `
+  --output-dir <table_output_dir>
+```
 
 ## Tests
 

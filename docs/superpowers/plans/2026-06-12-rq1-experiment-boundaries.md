@@ -74,3 +74,19 @@
 - [ ] Review the diff for unrelated changes.
 - [ ] Create a local Git commit containing only the protocol, implementation,
   tests, and documentation.
+
+### Task 6: Separate generation and VLM-call budgets
+
+**Files:**
+- Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/fixed_budget_experiment.py`
+- Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/official_qa_experiment.py`
+- Create: `1号机代码/DATA_new/analysis/rq1_error_detection/experiment_tables.py`
+- Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_experiment_tables.py`
+
+- [x] Replace ambiguous generation CLI flags with `--generation-budget`.
+- [x] Preserve `--vlm-call-budget` for tested-model inference only.
+- [x] Add Table A for equal-generation-budget structural coverage.
+- [x] Add Table B and reject methods with unequal actual VLM calls.
+- [x] Add Table C with requested and actual VLM-call counts.
+- [x] Run a 1000-question structural smoke build and MOCK evaluations.
+- [x] Run the full RQ1 regression suite.

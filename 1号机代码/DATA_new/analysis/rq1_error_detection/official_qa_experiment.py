@@ -196,26 +196,29 @@ def build_official_suite(
     method: str,
     frame_samples: Sequence[Tuple[str, str]],
     questions_by_sample: Mapping[str, Sequence[dict]],
-    budget: int,
+    generation_budget: int,
     seed: int,
 ) -> List[dict]:
     if method not in METHODS:
         raise ValueError(f"Unknown official-QA method: {method}")
     seeds = _ordered_seeds(frame_samples, questions_by_sample)
-    if not seeds or budget <= 0:
+    if not seeds or generation_budget <= 0:
         return []
 
     suite = []
     seen_question_text = set()
     cycle = 0
     stalled_cycles = 0
-    while len(suite) < budget and stalled_cycles < len(seeds) + 10:
+    while (
+        len(suite) < generation_budget
+        and stalled_cycles < len(seeds) + 10
+    ):
         cycle_seeds = list(seeds)
         if method == "qatest":
             random.Random(seed + cycle).shuffle(cycle_seeds)
         before_cycle = len(suite)
         for scene_frame, source in cycle_seeds:
-            if len(suite) >= budget:
+            if len(suite) >= generation_budget:
                 break
             question = {
                 key: source[key]
@@ -305,12 +308,12 @@ def _write_jsonl(path: Path, rows: Iterable[dict]) -> None:
             handle.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-def main() -> None:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Build independent official NuScenes-QA and QATest suites."
     )
     parser.add_argument("--methods", nargs="+", choices=METHODS, default=list(METHODS))
-    parser.add_argument("--budget", type=int, default=1000)
+    parser.add_argument("--generation-budget", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--frame-pool-size", type=int, default=100)
     parser.add_argument("--questions-path", type=Path, default=DEFAULT_QUESTIONS_PATH)
@@ -318,7 +321,11 @@ def main() -> None:
     parser.add_argument("--outputs-root", type=Path, default=DEFAULT_OUTPUTS_ROOT)
     parser.add_argument("--dataroot", type=Path, default=DEFAULT_DATAROOT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
-    args = parser.parse_args()
+    return parser
+
+
+def main() -> None:
+    args = build_parser().parse_args()
 
     questions_by_sample = index_official_questions(
         load_official_questions(args.questions_path)
@@ -335,16 +342,17 @@ def main() -> None:
             method=method,
             frame_samples=frame_samples,
             questions_by_sample=questions_by_sample,
-            budget=args.budget,
+            generation_budget=args.generation_budget,
             seed=args.seed,
         )
         output_path = args.output_dir / f"{method}_suite.jsonl"
         _write_jsonl(output_path, suite)
         print(f"[official-qa] {method}: {len(suite)} questions -> {output_path}")
-        if len(suite) < args.budget:
+        if len(suite) < args.generation_budget:
             print(
                 f"[official-qa] WARNING: {method} produced {len(suite)} unique "
-                f"questions for requested budget {args.budget}."
+                "questions for requested generation budget "
+                f"{args.generation_budget}."
             )
 
 

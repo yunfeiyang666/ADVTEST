@@ -10,6 +10,7 @@ from fixed_budget_experiment import (
     FrameCoverage,
     FrameInput,
     SwitchPolicy,
+    build_parser,
     build_method_stream,
     choose_switch_reason,
     compute_aggregate_metrics,
@@ -278,7 +279,7 @@ class FixedBudgetRunnerTests(unittest.TestCase):
         result = run_method(
             "random",
             [frame],
-            budget=30,
+            generation_budget=30,
             seed=42,
             policy=SwitchPolicy(
                 min_questions=1,
@@ -289,7 +290,10 @@ class FixedBudgetRunnerTests(unittest.TestCase):
         )
 
         self.assertEqual(result["summary"]["suite_size"], 30)
-        self.assertEqual(result["frame_runs"][0]["switch_reason"], "global_budget")
+        self.assertEqual(
+            result["frame_runs"][0]["switch_reason"],
+            "global_generation_budget",
+        )
 
     def test_custom_frame_cap_controls_number_of_questions_per_frame(self):
         questions = [
@@ -312,7 +316,7 @@ class FixedBudgetRunnerTests(unittest.TestCase):
         result = run_method(
             "advtest",
             [frame],
-            budget=1000,
+            generation_budget=1000,
             seed=42,
             policy=SwitchPolicy(
                 min_questions=1,
@@ -327,6 +331,12 @@ class FixedBudgetRunnerTests(unittest.TestCase):
         self.assertEqual(
             result["summary"]["switch_reason_counts"], {"frame_cap": 1}
         )
+
+    def test_cli_uses_explicit_generation_budget_name(self):
+        args = build_parser().parse_args(["--generation-budget", "17"])
+
+        self.assertEqual(args.generation_budget, 17)
+        self.assertFalse(hasattr(args, "budget"))
 
 if __name__ == "__main__":
     unittest.main()

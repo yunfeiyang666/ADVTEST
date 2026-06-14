@@ -9,6 +9,7 @@ MODULE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE_DIR))
 
 from official_qa_experiment import (
+    build_parser,
     build_official_suite,
     index_official_questions,
     load_official_questions,
@@ -70,7 +71,7 @@ class OfficialQAExperimentTests(unittest.TestCase):
             method="qatest",
             frame_samples=[("scene-1_frame2", "sample-a")],
             questions_by_sample=index_official_questions(self.questions),
-            budget=2,
+            generation_budget=2,
             seed=11,
         )
 
@@ -88,7 +89,7 @@ class OfficialQAExperimentTests(unittest.TestCase):
             method="qatest",
             frame_samples=[("scene-1_frame2", "sample-a")],
             questions_by_sample=index_official_questions(self.questions),
-            budget=12,
+            generation_budget=12,
             seed=11,
         )
 
@@ -100,7 +101,7 @@ class OfficialQAExperimentTests(unittest.TestCase):
             method="official_qa",
             frame_samples=[("scene-1_frame2", "sample-a")],
             questions_by_sample=index_official_questions(self.questions),
-            budget=2,
+            generation_budget=2,
             seed=7,
         )
 
@@ -118,9 +119,15 @@ class OfficialQAExperimentTests(unittest.TestCase):
                 method="advtest",
                 frame_samples=[("scene-1_frame2", "sample-a")],
                 questions_by_sample=index_official_questions(self.questions),
-                budget=1,
+                generation_budget=1,
                 seed=1,
             )
+
+    def test_cli_uses_explicit_generation_budget_name(self):
+        args = build_parser().parse_args(["--generation-budget", "23"])
+
+        self.assertEqual(args.generation_budget, 23)
+        self.assertFalse(hasattr(args, "budget"))
 
 
 if __name__ == "__main__":

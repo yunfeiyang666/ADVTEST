@@ -357,7 +357,7 @@ def _metric_snapshot(
 def run_method(
     method: str,
     frames: Sequence[FrameInput],
-    budget: int,
+    generation_budget: int,
     seed: int,
     policy: SwitchPolicy,
 ) -> dict:
@@ -375,13 +375,13 @@ def run_method(
     switch_counts = Counter()
 
     for frame_index, frame_input in enumerate(frames):
-        if len(suite) >= budget:
+        if len(suite) >= generation_budget:
             break
         frame_seed = seed + frame_index * 1009
         stream = build_method_stream(
             method,
             frame_input.questions,
-            min(policy.max_questions, budget - len(suite)),
+            min(policy.max_questions, generation_budget - len(suite)),
             frame_seed,
         )
         gains = []
@@ -429,9 +429,9 @@ def run_method(
                 reason = "candidate_exhausted"
             else:
                 reason = None
-            if reason or len(suite) >= budget:
-                if len(suite) >= budget:
-                    reason = "global_budget"
+            if reason or len(suite) >= generation_budget:
+                if len(suite) >= generation_budget:
+                    reason = "global_generation_budget"
                 break
 
         switch_counts[reason] += 1
@@ -457,7 +457,7 @@ def run_method(
         )
 
     if curve:
-        while len(curve) <= budget:
+        while len(curve) <= generation_budget:
             padded = dict(curve[-1])
             padded["question_count"] = len(curve)
             curve.append(padded)
@@ -467,27 +467,29 @@ def run_method(
     final_metrics["visited_frames"] = len(frame_runs)
     final_metrics["switch_reason_counts"] = dict(switch_counts)
     final_metrics["auc_micro_l2"] = _normalized_auc(
-        [point["micro_l2"] for point in curve[: budget + 1]], budget
+        [point["micro_l2"] for point in curve[: generation_budget + 1]],
+        generation_budget,
     )
     final_metrics["auc_macro_l2"] = _normalized_auc(
-        [point["macro_l2"] for point in curve[: budget + 1]], budget
+        [point["macro_l2"] for point in curve[: generation_budget + 1]],
+        generation_budget,
     )
     return {
         "method": method,
         "summary": final_metrics,
         "frame_runs": frame_runs,
-        "curve": curve[: budget + 1],
+        "curve": curve[: generation_budget + 1],
         "suite": suite,
     }
 
 
-def _normalized_auc(values: Sequence[float], budget: int) -> float:
-    if budget <= 0 or len(values) < 2:
+def _normalized_auc(values: Sequence[float], generation_budget: int) -> float:
+    if generation_budget <= 0 or len(values) < 2:
         return 0.0
     area = sum((left + right) / 2 for left, right in zip(values, values[1:]))
-    if len(values) - 1 < budget:
-        area += values[-1] * (budget - (len(values) - 1))
-    return area / budget
+    if len(values) - 1 < generation_budget:
+        area += values[-1] * (generation_budget - (len(values) - 1))
+    return area / generation_budget
 
 
 def _write_jsonl(path: Path, rows: Iterable[dict]) -> None:
@@ -499,13 +501,14 @@ def _write_jsonl(path: Path, rows: Iterable[dict]) -> None:
 def write_results(
     output_dir: Path,
     frame_names: Sequence[str],
-    budget: int,
+    generation_budget: int,
     policy: SwitchPolicy,
     method_results: Sequence[dict],
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     summary = {
-        "budget": budget,
+        "generation_budget": generation_budget,
+        "budget_unit": "generated_questions",
         "frame_pool": list(frame_names),
         "frame_pool_size": len(frame_names),
         "policy": {
@@ -528,7 +531,7 @@ def write_results(
     ) as handle:
         json.dump(summary, handle, indent=2, ensure_ascii=False)
 
-    checkpoints = set(range(0, budget + 1, 100))
+    checkpoints = set(range(0, generation_budget + 1, 100))
     with (output_dir / "fixed_budget_curves.csv").open(
         "w", encoding="utf-8", newline=""
     ) as handle:
@@ -561,10 +564,10 @@ def write_results(
         )
 
     report_lines = [
-        "# Fixed-Budget RQ1 Trial",
+        "# Generation-Budget Structural Coverage Trial",
         "",
         f"- Shared frame pool: {len(frame_names)} frames",
-        f"- Question budget: {budget} per method",
+        f"- Generation budget: {generation_budget} questions per method",
         f"- Per-frame range: {policy.min_questions}-{policy.max_questions}",
         "",
         "| Method | Suite | Frames | Micro L2 | Macro L2 | L2/Q | AUC Micro L2 |",
@@ -588,9 +591,11 @@ def write_results(
     )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Fixed-question-budget RQ1 trial")
-    parser.add_argument("--budget", type=int, default=1000)
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Generated-question-budget RQ1 structural coverage trial"
+    )
+    parser.add_argument("--generation-budget", type=int, default=1000)
     parser.add_argument("--frame-pool-size", type=int, default=30)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-questions", type=int, default=100)
@@ -603,7 +608,11 @@ def main() -> None:
     parser.add_argument("--frame-cache", type=Path, default=DEFAULT_FRAME_CACHE)
     parser.add_argument("--outputs-root", type=Path, default=DEFAULT_OUTPUTS_ROOT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_RESULT_DIR)
-    args = parser.parse_args()
+    return parser
+
+
+def main() -> None:
+    args = build_parser().parse_args()
 
     policy = SwitchPolicy(max_questions=args.max_questions)
     frames = load_frame_pool(
@@ -615,7 +624,9 @@ def main() -> None:
     results = []
     for method in METHODS:
         print(f"[fixed-budget] Running {method}...", flush=True)
-        result = run_method(method, frames, args.budget, args.seed, policy)
+        result = run_method(
+            method, frames, args.generation_budget, args.seed, policy
+        )
         results.append(result)
         print(
             f"  suite={result['summary']['suite_size']} "
@@ -626,7 +637,7 @@ def main() -> None:
     write_results(
         args.output_dir,
         [frame.scene_frame for frame in frames],
-        args.budget,
+        args.generation_budget,
         policy,
         results,
     )

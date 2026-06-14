@@ -110,7 +110,11 @@ frame metadata, and scene graph. It must not copy ADVTEST-private annotations.
 
 ## Budget Rules
 
-- The primary cross-paradigm budget is the number of VLM calls.
+- `generation_budget` is the number of emitted questions. It is the common
+  budget for structural coverage and suite-generation comparisons.
+- `vlm_call_budget` is the number of tested-model inference calls. It is the
+  common budget for cross-paradigm error detection.
+- The two budgets must never share a CLI flag, output field, or table column.
 - Official seed initialization is charged whenever the method queries the VLM.
 - A QATest mutation costs one VLM call.
 - A QAAskeR primary question and follow-up cost two VLM calls.
@@ -118,6 +122,17 @@ frame metadata, and scene graph. It must not copy ADVTEST-private annotations.
   wall-clock time is logged separately.
 - Layer 1 uses a generated-question budget for coverage curves and additionally
   reports VLM-call-budget results when suites are evaluated.
+
+## Result Tables
+
+- Table A reports L0/L1/L2 coverage and coverage AUC at an equal
+  `generation_budget`.
+- Table B reports unique failures, calls per unique failure, category diversity,
+  and duplicate rate. Every row must have the same actual `vlm_calls`; mixed
+  call counts are rejected.
+- Table C reports capacity at a requested `vlm_call_budget`. It includes both
+  the requested ceiling and actual calls so suite exhaustion remains visible
+  instead of being mistaken for equal-budget performance.
 
 ## Frame Scheduling
 

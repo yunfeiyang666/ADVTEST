@@ -60,7 +60,7 @@ def evaluate_qaasker_seeds(
 
     for scene_frame, seed in seeds:
         if vlm_calls >= vlm_call_budget:
-            stop_reason = "global_budget"
+            stop_reason = "global_vlm_call_budget"
             break
         if vlm_calls + 2 > vlm_call_budget:
             stop_reason = "insufficient_budget_for_pair"
@@ -115,7 +115,7 @@ def evaluate_qaasker_seeds(
             unique_violation_sources.add(str(seed["official_question_id"]))
 
     if stop_reason is None and vlm_calls >= vlm_call_budget:
-        stop_reason = "global_budget"
+        stop_reason = "global_vlm_call_budget"
 
     return {
         "method": "qaasker_mr2",
