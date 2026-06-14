@@ -152,6 +152,11 @@ failure history, input hash, and conclusions are recorded in:
 Raw manifests and logs are stored under
 `scratch/rq1_formal_exploration/runs/` and are intentionally not committed.
 
+The QATest implementation-fidelity audit and the recommended
+`QATest-adapted` boundary are recorded in:
+
+`experiments/rq1_qatest_fidelity_audit/README.md`
+
 ## SFT Export
 
 `export_sft_dataset.py` remains responsible for compiling VQA pairs and camera
