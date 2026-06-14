@@ -149,7 +149,7 @@ feat(rq1): record experiment commands and outcomes
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/structural_sensitivity.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_structural_sensitivity.py`
 
-- [ ] **Step 1: Write failing aggregation tests**
+- [x] **Step 1: Write failing aggregation tests**
 
 Create small in-memory fixed-budget summaries for cap 50 and cap 100. Require:
 
@@ -163,11 +163,11 @@ Tests require mean, population standard deviation, min, and max for Random;
 deterministic methods retain one row per cap; and ADVTEST chooses cap 50 when
 both Micro-L2 and AUC improvements are below `0.005`.
 
-- [ ] **Step 2: Run tests and verify RED**
+- [x] **Step 2: Run tests and verify RED**
 
 Expected: import failure because the module does not exist.
 
-- [ ] **Step 3: Implement aggregation and report writing**
+- [x] **Step 3: Implement aggregation and report writing**
 
 Implement JSON/CSV/Markdown outputs containing:
 
@@ -176,11 +176,11 @@ Implement JSON/CSV/Markdown outputs containing:
 - cap recommendation and measured deltas;
 - Official QA and QATest actual capacity.
 
-- [ ] **Step 4: Run focused tests and verify GREEN**
+- [x] **Step 4: Run focused tests and verify GREEN**
 
 Expected: all aggregation tests pass.
 
-- [ ] **Step 5: Commit aggregation**
+- [x] **Step 5: Commit aggregation**
 
 Commit:
 
