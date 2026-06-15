@@ -95,8 +95,10 @@ presented as a difficulty-controlled head-to-head accuracy comparison.
 
 ## Limitations
 
-- The checkpoint loader again reported newly initialized visual-abstractor q/k
-  positional embedding weights.
+- The checkpoint loader reported missing visual-abstractor q/k positional
+  embeddings. The compatibility audit confirmed that they are deterministic
+  sinusoidal buffers, not trainable weights; this warning does not invalidate
+  the run.
 - Correctness uses normalized answer containment rather than semantic judging.
 - This is one deterministic frozen-prefix run; Random variance and repeated-run
   confidence intervals are not yet available.

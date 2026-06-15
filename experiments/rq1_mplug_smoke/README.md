@@ -92,9 +92,11 @@ Every raw record has `mode=MPLUG`, a non-empty `raw_model_output`,
 
 ## Limitations
 
-The checkpoint loader warned that several visual-abstractor q/k positional
-embedding weights were newly initialized. The model completed real inference,
-but the warning must remain visible when interpreting accuracy.
+The checkpoint loader described visual-abstractor q/k positional embeddings as
+newly initialized. A later compatibility audit confirmed that these are
+deterministic sinusoidal buffers, not trainable weights, and are intentionally
+absent from the converted checkpoint. See
+`experiments/rq1_mplug_model_audit/README.md`.
 
 Correctness currently uses normalized answer containment. This is deterministic
 and consistent across methods, but it is not a semantic judge.

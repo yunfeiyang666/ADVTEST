@@ -82,7 +82,7 @@
     "advtest_relative_failed_l2_gain": 0.3964497041
   },
   "warnings": [
-    "Several visual-abstractor q/k positional embedding weights were newly initialized by the checkpoint loader.",
+    "The loader reported absent q/k positional embeddings; a compatibility audit confirmed they are deterministic non-trainable buffers intentionally omitted from the checkpoint.",
     "Cross-paradigm suites have different frame distributions and ground-truth granularities.",
     "Correctness uses normalized answer containment rather than a semantic judge.",
     "The 100-call results are one deterministic frozen-prefix run and do not provide variance estimates."

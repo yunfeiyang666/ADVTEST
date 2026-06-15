@@ -1,0 +1,29 @@
+{
+  "python": "3.10.11",
+  "torch": "2.3.1+cu121",
+  "transformers": "4.45.2",
+  "accelerate": "0.34.2",
+  "bitsandbytes": "0.49.2",
+  "mplug_repository_commit": "0f3068fdb47b77aedc71fc39f5735cd7aa35e8f9",
+  "mplug_local_diff_hash": "2fe335b0f89f12a4e78a70cd5d1bd9f89343a882",
+  "model_config_sha256": "36426f5b5a9bfd44326128284b7660d81a5233b9abb7c15611f0d96fea92c176",
+  "checkpoint_index_sha256": "f48d5bb04d4c0543c985281e84c15f7b88cf6a1f232bc601caf736acc6e6572a",
+  "positional_buffer_audit": {
+    "expected_keys": 12,
+    "keys_present_in_checkpoint": 0,
+    "trainable_parameters": 0,
+    "buffers_per_layer": 2,
+    "layers": 6,
+    "q_pos_embed_shape": [
+      64,
+      1024
+    ],
+    "k_pos_embed_shape": [
+      1025,
+      1024
+    ],
+    "requires_grad": false,
+    "construction": "deterministic sinusoidal formula",
+    "verdict": "compatible_deterministic_buffers"
+  }
+}

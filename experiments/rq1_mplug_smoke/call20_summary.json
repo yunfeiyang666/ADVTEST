@@ -76,7 +76,7 @@
     }
   ],
   "warnings": [
-    "Several visual-abstractor q/k positional embedding weights were newly initialized by the checkpoint loader.",
+    "The loader reported absent q/k positional embeddings; a compatibility audit confirmed they are deterministic non-trainable buffers intentionally omitted from the checkpoint.",
     "The four prefixes are not frame-balanced.",
     "Official QA and ADVTEST use different ground-truth granularities.",
     "Correctness uses normalized answer containment rather than a semantic judge."
