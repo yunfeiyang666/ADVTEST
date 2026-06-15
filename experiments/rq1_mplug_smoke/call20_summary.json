@@ -1,0 +1,85 @@
+{
+  "run_id": "mplug-four-methods-call20",
+  "status": "completed",
+  "exit_code": 0,
+  "duration_seconds": 634.8035641,
+  "model_mode": "MPLUG",
+  "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+  "actual_real_inference_records": 80,
+  "mock_fallback_records": 0,
+  "raw_audit": {
+    "records_with_wrong_mode": 0,
+    "records_with_empty_output": 0,
+    "records_with_error": 0,
+    "records_with_nonpositive_duration": 0
+  },
+  "results": [
+    {
+      "method": "advtest",
+      "questions": 20,
+      "vlm_calls": 20,
+      "wrong": 19,
+      "failure_rate": 0.95,
+      "unique_failures": 19,
+      "unique_failures_per_100_calls": 95.0,
+      "calls_per_unique_failure": 1.0526315789,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 2,
+      "failed_unique_l2": 31,
+      "visited_frames": 1,
+      "average_inference_seconds": 5.427
+    },
+    {
+      "method": "official_qa",
+      "questions": 20,
+      "vlm_calls": 20,
+      "wrong": 14,
+      "failure_rate": 0.7,
+      "unique_failures": 14,
+      "unique_failures_per_100_calls": 70.0,
+      "calls_per_unique_failure": 1.4285714286,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 3,
+      "failed_unique_l2": 0,
+      "visited_frames": 2,
+      "average_inference_seconds": 7.146
+    },
+    {
+      "method": "qatest_adapted",
+      "questions": 20,
+      "vlm_calls": 20,
+      "wrong": 15,
+      "failure_rate": 0.75,
+      "unique_failures": 14,
+      "unique_failures_per_100_calls": 70.0,
+      "calls_per_unique_failure": 1.4285714286,
+      "duplicate_failure_rate": 0.0666666667,
+      "failure_category_count": 5,
+      "failed_unique_l2": 0,
+      "visited_frames": 18,
+      "average_inference_seconds": 6.898
+    },
+    {
+      "method": "random",
+      "questions": 20,
+      "vlm_calls": 20,
+      "wrong": 12,
+      "failure_rate": 0.6,
+      "unique_failures": 12,
+      "unique_failures_per_100_calls": 60.0,
+      "calls_per_unique_failure": 1.6666666667,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 3,
+      "failed_unique_l2": 16,
+      "visited_frames": 1,
+      "average_inference_seconds": 8.21
+    }
+  ],
+  "warnings": [
+    "Several visual-abstractor q/k positional embedding weights were newly initialized by the checkpoint loader.",
+    "The four prefixes are not frame-balanced.",
+    "Official QA and ADVTEST use different ground-truth granularities.",
+    "Correctness uses normalized answer containment rather than a semantic judge."
+  ],
+  "eligible_for_recorded_call100": true
+}

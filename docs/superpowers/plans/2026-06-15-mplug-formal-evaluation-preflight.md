@@ -16,10 +16,10 @@
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/mplug_preflight.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_mplug_preflight.py`
 
-- [ ] Write failing tests for a valid prefix and rejection of insufficient call
+- [x] Write failing tests for a valid prefix and rejection of insufficient call
   capacity, missing question/answer/provenance, duplicate normalized questions,
   missing official source IDs, unresolved scene graphs, and unresolved mosaics.
-- [ ] Run:
+- [x] Run:
 
 ```powershell
 cd E:\Project\ADVTEST\1号机代码\DATA_new\analysis\rq1_error_detection
@@ -27,7 +27,7 @@ python -m unittest test_mplug_preflight.py -v
 ```
 
   Expected: import failure because `mplug_preflight.py` does not exist.
-- [ ] Implement:
+- [x] Implement:
 
 ```python
 @dataclass(frozen=True)
@@ -48,8 +48,8 @@ def run_preflight(suites: Sequence[Path], config: PreflightConfig) -> dict:
   `validate_provenance()`, `validate_question_boundary()`, and
   `resolve_image_path()`. Collect all failures before returning, but CLI exit
   non-zero if any failure exists.
-- [ ] Run focused tests and confirm all pass.
-- [ ] Commit:
+- [x] Run focused tests and confirm all pass.
+- [x] Commit:
 
 ```powershell
 git add -- 1号机代码/DATA_new/analysis/rq1_error_detection/mplug_preflight.py 1号机代码/DATA_new/analysis/rq1_error_detection/test_mplug_preflight.py
@@ -62,7 +62,7 @@ git commit -m "feat(rq1): add strict mPLUG suite preflight"
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/run_suite_evaluation.py`
 - Modify: `1号机代码/DATA_new/analysis/rq1_error_detection/test_run_suite_evaluation.py`
 
-- [ ] Write failing tests proving:
+- [x] Write failing tests proving:
 
 ```python
 with self.assertRaisesRegex(FileNotFoundError, "real mosaic"):
@@ -71,21 +71,21 @@ with self.assertRaisesRegex(FileNotFoundError, "real mosaic"):
 
   and that a real evaluator result writes `prompt`, `mode`,
   `inference_elapsed_seconds`, `raw_model_output`, and `error`.
-- [ ] Run the focused test and verify the current MPLUG path incorrectly calls
+- [x] Run the focused test and verify the current MPLUG path incorrectly calls
   `MockVLMEvaluator` when `image_path` is `None`.
-- [ ] Change `evaluate_question()` so only `MOCK` may run without an image.
+- [x] Change `evaluate_question()` so only `MOCK` may run without an image.
   MPLUG must raise on missing images and propagate evaluator exceptions.
-- [ ] Time each uncached evaluation and write the evidence fields to raw JSONL.
+- [x] Time each uncached evaluation and write the evidence fields to raw JSONL.
   Use the exact question text as `prompt`; use the returned prediction as
   `raw_model_output`; write `error=null` for successful records.
-- [ ] Run:
+- [x] Run:
 
 ```powershell
 python -m unittest test_run_suite_evaluation.py test_evaluator_fail_fast.py -v
 python -m unittest discover -p "test_*.py" -v
 ```
 
-- [ ] Commit:
+- [x] Commit:
 
 ```powershell
 git add -- 1号机代码/DATA_new/analysis/rq1_error_detection/run_suite_evaluation.py 1号机代码/DATA_new/analysis/rq1_error_detection/test_run_suite_evaluation.py
@@ -98,15 +98,15 @@ git commit -m "fix(rq1): forbid mock fallback in mPLUG evaluation"
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/assemble_mplug_smoke.py`
 - Create: `1号机代码/DATA_new/analysis/rq1_error_detection/test_assemble_mplug_smoke.py`
 
-- [ ] Write failing tests requiring the assembler to:
+- [x] Write failing tests requiring the assembler to:
   copy the first call-budget prefix without modifying records, name outputs
   `advtest_suite.jsonl`, `random_suite.jsonl`, `official_qa_suite.jsonl`, and
   `qatest_adapted_suite.jsonl`, and record source/output SHA-256 hashes.
-- [ ] Run the focused test and verify module import failure.
-- [ ] Implement an atomic assembler that refuses to overwrite a non-empty
+- [x] Run the focused test and verify module import failure.
+- [x] Implement an atomic assembler that refuses to overwrite a non-empty
   output directory and writes `assembly_manifest.json`.
-- [ ] Run focused and full tests.
-- [ ] Commit:
+- [x] Run focused and full tests.
+- [x] Commit:
 
 ```powershell
 git add -- 1号机代码/DATA_new/analysis/rq1_error_detection/assemble_mplug_smoke.py 1号机代码/DATA_new/analysis/rq1_error_detection/test_assemble_mplug_smoke.py
@@ -121,7 +121,7 @@ git commit -m "feat(rq1): assemble audited mPLUG smoke suites"
 - Create: `experiments/rq1_mplug_smoke/preflight_summary.json`
 - Create: `experiments/rq1_mplug_smoke/run_index.json`
 
-- [ ] Assemble from these exact inputs:
+- [x] Assemble from these exact inputs:
 
 ```text
 ADVTEST:
@@ -137,14 +137,14 @@ QATest-adapted:
 scratch/rq1_qatest_adapted/runs/qatest-style-vs-adapted-1000/results/qatest_adapted_suite.jsonl
 ```
 
-- [ ] Run the assembler with `--call-budget 20`.
-- [ ] Run `mplug_preflight.py` against all four output suites with the real
+- [x] Run the assembler with `--call-budget 20`.
+- [x] Run `mplug_preflight.py` against all four output suites with the real
   outputs root and NuScenes dataroot.
-- [ ] If preflight fails, stop. Record the failing frames and causes; do not
+- [x] If preflight fails, stop. Record the failing frames and causes; do not
   launch mPLUG.
-- [ ] If preflight succeeds, copy the compact preflight report and input hashes
+- [x] If preflight succeeds, copy the compact preflight report and input hashes
   into `experiments/rq1_mplug_smoke/`.
-- [ ] Commit the preflight evidence without committing mosaics or suite files:
+- [x] Commit the preflight evidence without committing mosaics or suite files:
 
 ```powershell
 git add -- experiments/rq1_mplug_smoke
@@ -158,25 +158,25 @@ git commit -m "exp(rq1): preflight mPLUG smoke inputs"
 - Create: `experiments/rq1_mplug_smoke/README.md`
 - Modify: `experiments/rq1_mplug_smoke/run_index.json`
 
-- [ ] Verify before launch:
+- [x] Verify before launch:
 
 ```powershell
 E:\Project\ADVTEST\.venv310\Scripts\python.exe -c "import torch; assert torch.cuda.is_available(); print(torch.cuda.get_device_name(0))"
 ```
 
   Expected: `NVIDIA GeForce RTX 3070 Laptop GPU`.
-- [ ] Run through `run_recorded_experiment.py` using `.venv310`, mode `MPLUG`,
+- [x] Run through `run_recorded_experiment.py` using `.venv310`, mode `MPLUG`,
   the assembled suite directory, methods `advtest random official_qa
   qatest_adapted`, and `--vlm-call-budget 20`.
-- [ ] Stop on model-load failure, missing real image, inference exception, CUDA
+- [x] Stop on model-load failure, missing real image, inference exception, CUDA
   OOM, or any suite reporting fewer/more than 20 actual calls.
-- [ ] Audit raw JSONL files: every row must have `mode=MPLUG`, a non-empty
+- [x] Audit raw JSONL files: every row must have `mode=MPLUG`, a non-empty
   `raw_model_output`, `error=null`, and positive inference duration.
-- [ ] Record metrics, exact command, commit, hashes, elapsed time, failures, and
+- [x] Record metrics, exact command, commit, hashes, elapsed time, failures, and
   limitations in `experiments/rq1_mplug_smoke/README.md` and `run_index.json`.
-- [ ] Run full regression, JSON parsing, `git diff --check`, and inspect the
+- [x] Run full regression, JSON parsing, `git diff --check`, and inspect the
   recorded manifest.
-- [ ] Commit:
+- [x] Commit:
 
 ```powershell
 git add -- experiments/rq1_mplug_smoke
@@ -188,9 +188,9 @@ git commit -m "exp(rq1): record strict mPLUG call20 smoke"
 **Files:**
 - Modify: `experiments/rq1_mplug_smoke/README.md`
 
-- [ ] Mark the 100-call run eligible only if all four suites completed 20 real
+- [x] Mark the 100-call run eligible only if all four suites completed 20 real
   calls with no fallback, no missing images, and valid raw evidence.
-- [ ] If eligible, document the exact 100-call command but do not run it in this
+- [x] If eligible, document the exact 100-call command but do not run it in this
   plan without a separate recorded-run checkpoint.
-- [ ] Run `git status --short` and confirm only unrelated pre-existing
+- [x] Run `git status --short` and confirm only unrelated pre-existing
   untracked artifacts remain.

@@ -36,5 +36,17 @@
       "failure_count": 0
     }
   ],
-  "real_vlm_run": null
+  "real_vlm_run": {
+    "run_id": "mplug-four-methods-call20",
+    "status": "completed",
+    "commit": "8206207600257d7b92d453aa3eb78ecab4ab5fd3",
+    "duration_seconds": 634.8035641,
+    "exit_code": 0,
+    "actual_calls_per_method": 20,
+    "actual_real_inference_records": 80,
+    "mock_fallback_records": 0,
+    "raw_evidence_passed": true,
+    "checkpoint_warning": "Visual-abstractor q/k positional embedding weights were newly initialized.",
+    "eligible_for_recorded_call100": true
+  }
 }
