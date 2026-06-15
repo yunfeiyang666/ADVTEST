@@ -98,7 +98,11 @@ class MPLUGPreflightTests(unittest.TestCase):
 
     def test_rejects_invalid_content_provenance_and_duplicate_text(self):
         first = question(0, answer="")
-        second = question(1, question="  WHAT IS VISIBLE 0?  ")
+        second = question(
+            1,
+            question="  WHAT IS VISIBLE 0?  ",
+            scene_frame=first["scene_frame"],
+        )
         del second["generation_adapter"]
         self.add_scene_graphs(first, second)
         suite = self.write_suite([first, second])
@@ -113,6 +117,20 @@ class MPLUGPreflightTests(unittest.TestCase):
         self.assertIn("missing_answer", result["failure_codes"])
         self.assertIn("missing_provenance", result["failure_codes"])
         self.assertIn("duplicate_normalized_question", result["failure_codes"])
+
+    def test_allows_same_normalized_question_on_different_frames(self):
+        first = question(0)
+        second = question(1, question="  WHAT IS VISIBLE 0?  ")
+        self.add_scene_graphs(first, second)
+        suite = self.write_suite([first, second])
+
+        result = audit_suite(
+            suite,
+            self.config,
+            image_resolver=lambda *args: self.real_mosaic,
+        )
+
+        self.assertTrue(result["passed"])
 
     def test_rejects_official_record_without_source_id(self):
         first = question(0, source_question_id="")

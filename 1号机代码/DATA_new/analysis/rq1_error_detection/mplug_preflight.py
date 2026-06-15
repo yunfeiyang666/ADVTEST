@@ -123,16 +123,18 @@ def audit_suite(
             failures.append(_failure("boundary_violation", str(exc), index))
 
         normalized = normalize_text(question)
-        if normalized in normalized_seen:
+        duplicate_key = (get_scene_frame(record), normalized)
+        if duplicate_key in normalized_seen:
             failures.append(
                 _failure(
                     "duplicate_normalized_question",
-                    f"Duplicates question {normalized_seen[normalized]}.",
+                    f"Duplicates question {normalized_seen[duplicate_key]} "
+                    f"on {duplicate_key[0]}.",
                     index,
                 )
             )
         elif normalized:
-            normalized_seen[normalized] = index
+            normalized_seen[duplicate_key] = index
 
         if (
             record.get("question_source") == "nuscenes_qa"
