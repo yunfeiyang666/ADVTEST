@@ -1,0 +1,83 @@
+{
+  "call_budget_per_method": 100,
+  "selection_policy": "frozen_suite_prefix",
+  "decision": "Preserve each method's emitted order. Do not frame-balance or reorder questions after generation.",
+  "roles": {
+    "advtest": "proposed_method",
+    "random": "internal_ablation",
+    "official_qa": "neutral_reference",
+    "qatest_adapted": "external_comparison"
+  },
+  "distributions": [
+    {
+      "method": "advtest",
+      "questions": 100,
+      "unique_frames": 2,
+      "maximum_questions_per_frame": 50,
+      "answer_types": {
+        "string": 96,
+        "boolean": 4
+      },
+      "top_families": {
+        "converge": 88,
+        "distance_chain": 5,
+        "direction_chain": 4,
+        "viewpoint_transfer": 3
+      }
+    },
+    {
+      "method": "random",
+      "questions": 100,
+      "unique_frames": 2,
+      "maximum_questions_per_frame": 50,
+      "answer_types": {
+        "string": 87,
+        "boolean": 13
+      },
+      "top_families": {
+        "converge": 66,
+        "direction_chain": 13,
+        "distance_chain": 13,
+        "viewpoint_transfer": 8
+      }
+    },
+    {
+      "method": "official_qa",
+      "questions": 100,
+      "unique_frames": 6,
+      "maximum_questions_per_frame": 24,
+      "answer_types": {
+        "string": 100
+      },
+      "top_families": {
+        "object": 25,
+        "count": 24,
+        "status": 18,
+        "exist": 17,
+        "comparison": 16
+      }
+    },
+    {
+      "method": "qatest_adapted",
+      "questions": 100,
+      "unique_frames": 53,
+      "maximum_questions_per_frame": 5,
+      "answer_types": {
+        "string": 100
+      },
+      "top_families": {
+        "object": 26,
+        "exist": 26,
+        "comparison": 16,
+        "status": 16,
+        "count": 16
+      }
+    }
+  ],
+  "interpretation_boundary": [
+    "ADVTEST versus Random is an internal ablation over the same two frames and the same 50-question frame cap.",
+    "Cross-paradigm rows retain their natural frame distributions and must report visited frames.",
+    "Failure rate is diagnostic because ground-truth granularity differs across paradigms.",
+    "Unique failures per VLM call remains the primary testing-efficiency metric."
+  ]
+}
