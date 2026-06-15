@@ -403,22 +403,28 @@ def check_correctness(predicted: str, ground_truth: str) -> bool:
     pred_norm = normalize_answer(predicted)
     gt_norm = normalize_answer(ground_truth)
 
-    if not gt_norm:
+    if not gt_norm or not pred_norm:
         return False
 
     # Boolean comparison
     if gt_norm in ('true', 'yes'):
-        return any(x in pred_norm for x in ('true', 'yes', 'correct'))
+        return bool(re.search(r"\b(?:true|yes)\b", pred_norm))
     if gt_norm in ('false', 'no'):
-        return any(x in pred_norm for x in ('false', 'no', 'incorrect'))
+        return bool(re.search(r"\b(?:false|no)\b", pred_norm))
 
     # Number comparison
     if gt_norm.isdigit():
         numbers = re.findall(r'\b\d+\b', pred_norm)
         return gt_norm in numbers
 
-    # Keyword comparison (e.g. left, right, car2, truck4)
-    return gt_norm in pred_norm or pred_norm in gt_norm
+    # Keyword or phrase comparison (e.g. left, right, car2, truck4).
+    # Match the complete normalized answer, not a substring of another token.
+    return bool(
+        re.search(
+            rf"(?<!\w){re.escape(gt_norm)}(?!\w)",
+            pred_norm,
+        )
+    )
 
 
 # --- Evaluator Classes ---
