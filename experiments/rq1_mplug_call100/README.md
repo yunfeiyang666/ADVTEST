@@ -32,3 +32,14 @@ end-to-end testing-efficiency comparison, with GT granularity and frame
 distribution disclosed as limitations.
 
 The exact machine-readable audit is in `input_distribution.json`.
+
+## Preflight
+
+The strict preflight passed all four 100-call suites. It resolved 55 unique
+real mosaics and found no missing GT, provenance, scene graph, or camera input.
+
+The first attempt exposed a validator defect: identical official question text
+on different frames was treated as a duplicate. Those records have different
+visual inputs and are valid independent tests. Commit `eea1870` changed the
+duplicate key to `(scene_frame, normalized_question)` and added a regression
+test. The second attempt passed.

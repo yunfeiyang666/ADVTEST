@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "call_budget": 100,
+  "real_mosaic_count": 55,
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "finding": "Official QA repeated normalized question text on different frames; the initial validator incorrectly treated cross-frame text reuse as a duplicate."
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "fix_commit": "eea1870"
+    }
+  ],
+  "suites": [
+    {
+      "method": "advtest",
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 2,
+      "suite_sha256": "9f53b51a10b476c13a5330409054b3f7dcb5866ecf0d8d371e664d20dec792b7",
+      "passed": true
+    },
+    {
+      "method": "random",
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 2,
+      "suite_sha256": "9010816090ee0c151123fd030ba2b99f4ef203e277b9e08ec0fd060ff68a951b",
+      "passed": true
+    },
+    {
+      "method": "official_qa",
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 6,
+      "suite_sha256": "cefa0be65669374c77336d19954efb17a6e9ae253e51fffed4a4ad7509a3d358",
+      "passed": true
+    },
+    {
+      "method": "qatest_adapted",
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 53,
+      "suite_sha256": "e07a15f41511e5cc2c64e8d92bdeb2254018f2f509e867cbcc6719e061cefd60",
+      "passed": true
+    }
+  ]
+}
