@@ -87,6 +87,6 @@
     "Cross-paradigm suites have different frame distributions and ground-truth granularities.",
     "Headline metrics use token-boundary lexical scoring rather than a semantic judge.",
     "The frozen raw outputs were rescored offline; two Official QA and two QATest-adapted records changed from correct to wrong, with no repeated VLM inference.",
-    "The 100-call results are one deterministic frozen-prefix run and do not provide variance estimates."
+    "A separate three-seed Random robustness check is recorded under experiments/rq1_mplug_random_variance; it is not a population confidence interval."
   ]
 }

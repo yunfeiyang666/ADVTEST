@@ -1,0 +1,182 @@
+{
+  "scoring": "token_boundary_v2",
+  "call_budget": 100,
+  "advtest": {
+    "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\advtest_suite_raw_results.jsonl",
+    "method": "advtest",
+    "questions": 100,
+    "vlm_calls": 100,
+    "correct": 8,
+    "wrong": 92,
+    "failure_rate": 0.92,
+    "unique_failures": 92,
+    "failed_unique_l2": 236,
+    "unique_failures_per_100_calls": 92.0,
+    "calls_per_unique_failure": 1.0869565217391304,
+    "duplicate_failure_rate": 0.0,
+    "failure_category_count": 4,
+    "top_failure_families": [
+      [
+        "converge",
+        84
+      ],
+      [
+        "distance_chain",
+        4
+      ],
+      [
+        "direction_chain",
+        3
+      ],
+      [
+        "viewpoint_transfer",
+        1
+      ]
+    ],
+    "changed_correct_to_wrong": 0,
+    "changed_wrong_to_correct": 0,
+    "changed_rows": []
+  },
+  "random_runs": [
+    {
+      "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\random_suite_raw_results.jsonl",
+      "method": "random",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 14,
+      "wrong": 86,
+      "failure_rate": 0.86,
+      "unique_failures": 86,
+      "failed_unique_l2": 169,
+      "unique_failures_per_100_calls": 86.0,
+      "calls_per_unique_failure": 1.1627906976744187,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "top_failure_families": [
+        [
+          "converge",
+          63
+        ],
+        [
+          "direction_chain",
+          11
+        ],
+        [
+          "distance_chain",
+          8
+        ],
+        [
+          "viewpoint_transfer",
+          4
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [],
+      "seed": 42
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_random_variance\\runs\\mplug-random-seed43-call100\\results\\random_suite_raw_results.jsonl",
+      "method": "random",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 12,
+      "wrong": 88,
+      "failure_rate": 0.88,
+      "unique_failures": 88,
+      "failed_unique_l2": 180,
+      "unique_failures_per_100_calls": 88.0,
+      "calls_per_unique_failure": 1.1363636363636365,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "top_failure_families": [
+        [
+          "converge",
+          68
+        ],
+        [
+          "distance_chain",
+          7
+        ],
+        [
+          "viewpoint_transfer",
+          7
+        ],
+        [
+          "direction_chain",
+          6
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [],
+      "seed": 43
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_random_variance\\runs\\mplug-random-seed44-call100\\results\\random_suite_raw_results.jsonl",
+      "method": "random",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 10,
+      "wrong": 90,
+      "failure_rate": 0.9,
+      "unique_failures": 90,
+      "failed_unique_l2": 183,
+      "unique_failures_per_100_calls": 90.0,
+      "calls_per_unique_failure": 1.1111111111111112,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "top_failure_families": [
+        [
+          "converge",
+          67
+        ],
+        [
+          "direction_chain",
+          10
+        ],
+        [
+          "viewpoint_transfer",
+          7
+        ],
+        [
+          "distance_chain",
+          6
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [],
+      "seed": 44
+    }
+  ],
+  "random": {
+    "seed_count": 3,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "wrong_mean": 88.0,
+    "wrong_population_std": 1.632993161855452,
+    "wrong_min": 86,
+    "wrong_max": 90,
+    "unique_failures_mean": 88.0,
+    "unique_failures_population_std": 1.632993161855452,
+    "unique_failures_min": 86,
+    "unique_failures_max": 90,
+    "failed_unique_l2_mean": 177.33333333333334,
+    "failed_unique_l2_population_std": 6.018490028422596,
+    "failed_unique_l2_min": 169,
+    "failed_unique_l2_max": 183
+  },
+  "advtest_vs_random": {
+    "absolute_gain_over_mean": 4.0,
+    "relative_gain_over_mean": 0.045454545454545456,
+    "seeds_advtest_exceeds": 3,
+    "failed_unique_l2_gain_over_mean": 58.66666666666666,
+    "failed_unique_l2_relative_gain_over_mean": 0.33082706766917286,
+    "seeds_advtest_exceeds_failed_unique_l2": 3,
+    "seed_count": 3
+  }
+}

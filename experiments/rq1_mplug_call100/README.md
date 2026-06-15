@@ -108,8 +108,9 @@ presented as a difficulty-controlled head-to-head accuracy comparison.
   the run.
 - Correctness uses deterministic token-boundary lexical matching rather than
   semantic judging.
-- This is one deterministic frozen-prefix run; Random variance and repeated-run
-  confidence intervals are not yet available.
+- A separate three-seed Random robustness check is available in
+  `experiments/rq1_mplug_random_variance/`. It is still too small to support a
+  population confidence interval.
 - QATest-adapted generated 62 wrong answers but only 58 independent failures,
   confirming that mutations of the same official seed can duplicate a failure.
 

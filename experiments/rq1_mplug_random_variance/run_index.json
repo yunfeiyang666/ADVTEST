@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "run_id": "mplug-random-seed43-call100",
+      "seed": 43,
+      "status": "completed",
+      "exit_code": 0,
+      "duration_seconds": 852.1869999999999,
+      "generation_evaluation_commit": "0496b4f4328827b86580260300f5f7da7006a398",
+      "input_sha256": "beb2aae05ee0dbc59aefc20d34db155fa1b1e46431a12f10e3874c33fa6097fe",
+      "raw_output_path": "scratch\\rq1_mplug_random_variance\\runs\\mplug-random-seed43-call100\\results\\random_suite_raw_results.jsonl",
+      "raw_output_sha256": "a506f3eea8cf2ccde78094b72d9bfea405c75bbff734651af13cd9be5a4daa40",
+      "records": 100,
+      "wrong_mode_records": 0,
+      "empty_output_records": 0,
+      "error_records": 0,
+      "nonpositive_duration_records": 0
+    },
+    {
+      "run_id": "mplug-random-seed44-call100",
+      "seed": 44,
+      "status": "completed",
+      "exit_code": 0,
+      "duration_seconds": 774.25,
+      "generation_evaluation_commit": "0496b4f4328827b86580260300f5f7da7006a398",
+      "input_sha256": "d1ccf8ee3d0341e5dbb2d0079d9f6c04f4247dd9618a7fd94df7efb4ad22f4e2",
+      "raw_output_path": "scratch\\rq1_mplug_random_variance\\runs\\mplug-random-seed44-call100\\results\\random_suite_raw_results.jsonl",
+      "raw_output_sha256": "3ba5a86b5a74b0f00905fe5452ac2c4d942682510c0b1011f796dfb82b08bc15",
+      "records": 100,
+      "wrong_mode_records": 0,
+      "empty_output_records": 0,
+      "error_records": 0,
+      "nonpositive_duration_records": 0
+    }
+  ],
+  "total_new_real_calls": 200
+}

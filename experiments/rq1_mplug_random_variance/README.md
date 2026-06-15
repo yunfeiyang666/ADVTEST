@@ -66,3 +66,47 @@ The final report will combine Random seeds 42, 43, and 44 and publish:
 
 The result is a three-seed robustness check, not a confidence interval over the
 full Random population.
+
+## Recorded Runs
+
+Both additional runs completed with real mPLUG-Owl2 inference:
+
+| Seed | Run ID | Calls | Duration | Mock/error/empty |
+|---:|---|---:|---:|---:|
+| 43 | `mplug-random-seed43-call100` | 100 | 852.19 s | 0 |
+| 44 | `mplug-random-seed44-call100` | 100 | 774.25 s | 0 |
+
+The two runs added 200 real VLM calls. Their manifests, logs, mosaics, and raw
+per-question outputs remain under `scratch/rq1_mplug_random_variance/runs/`.
+`run_index.json` records input/output hashes and raw-output audit counts.
+
+## Results
+
+All rows use `token_boundary_v2` scoring over frozen raw model outputs:
+
+| Method | Seed | Calls | Wrong | Independent failures | Failed unique L2 |
+|---|---:|---:|---:|---:|---:|
+| ADVTEST | fixed | 100 | 92 | 92 | 236 |
+| Random | 42 | 100 | 86 | 86 | 169 |
+| Random | 43 | 100 | 88 | 88 | 180 |
+| Random | 44 | 100 | 90 | 90 | 183 |
+
+Random statistics across seeds 42, 43, and 44:
+
+| Metric | Mean | Population std | Min | Max |
+|---|---:|---:|---:|---:|
+| Independent failures | 88.00 | 1.63 | 86 | 90 |
+| Failed unique L2 | 177.33 | 6.02 | 169 | 183 |
+
+Compared with the Random mean, ADVTEST found:
+
+- 4.00 more independent failures, a relative gain of 4.55%;
+- 58.67 more failed unique L2 items, a relative gain of 33.08%.
+
+ADVTEST exceeded Random on both metrics for all three tested seeds. The
+failure-count margin is modest relative to the three-seed range, while the
+failed-L2 margin is substantially larger. The evidence therefore supports the
+coverage-guidance claim most strongly on structural failure diversity.
+
+The complete machine-readable result, including row-level scoring-change
+audits, is in `random_variance_summary.json`.
