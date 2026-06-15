@@ -1,0 +1,191 @@
+{
+  "scoring": "token_boundary_v2",
+  "results": [
+    {
+      "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\advtest_suite_raw_results.jsonl",
+      "method": "advtest",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 8,
+      "wrong": 92,
+      "failure_rate": 0.92,
+      "unique_failures": 92,
+      "unique_failures_per_100_calls": 92.0,
+      "calls_per_unique_failure": 1.0869565217391304,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "top_failure_families": [
+        [
+          "converge",
+          84
+        ],
+        [
+          "distance_chain",
+          4
+        ],
+        [
+          "direction_chain",
+          3
+        ],
+        [
+          "viewpoint_transfer",
+          1
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": []
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\official_qa_suite_raw_results.jsonl",
+      "method": "official_qa",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 33,
+      "wrong": 67,
+      "failure_rate": 0.67,
+      "unique_failures": 67,
+      "unique_failures_per_100_calls": 67.0,
+      "calls_per_unique_failure": 1.492537313432836,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 5,
+      "top_failure_families": [
+        [
+          "count",
+          24
+        ],
+        [
+          "object",
+          18
+        ],
+        [
+          "status",
+          13
+        ],
+        [
+          "comparison",
+          8
+        ],
+        [
+          "exist",
+          4
+        ]
+      ],
+      "changed_correct_to_wrong": 2,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [
+        {
+          "question_index": 81,
+          "scene_frame": "scene-0036_frame17",
+          "question": "Is there another traffic cone that has the same status as the car?",
+          "answer": "no",
+          "raw_model_output": "Yes, there is another traffic cone that has the same status as the car in the image. Both the car and the traffic cone are stopped at a construction site, waiting for the road to be cleared.",
+          "old_is_correct": true,
+          "rescored_is_correct": false
+        },
+        {
+          "question_index": 86,
+          "scene_frame": "scene-0036_frame19",
+          "question": "There is a thing that is to the front of the not standing pedestrian; is it the same status as the truck?",
+          "answer": "no",
+          "raw_model_output": "Yes, the truck is also not standing, and it is located in front of the not standing pedestrian.",
+          "old_is_correct": true,
+          "rescored_is_correct": false
+        }
+      ]
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\qatest_adapted_suite_raw_results.jsonl",
+      "method": "qatest_adapted",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 38,
+      "wrong": 62,
+      "failure_rate": 0.62,
+      "unique_failures": 58,
+      "unique_failures_per_100_calls": 57.99999999999999,
+      "calls_per_unique_failure": 1.7241379310344827,
+      "duplicate_failure_rate": 0.06451612903225806,
+      "failure_category_count": 5,
+      "top_failure_families": [
+        [
+          "object",
+          19
+        ],
+        [
+          "count",
+          16
+        ],
+        [
+          "status",
+          11
+        ],
+        [
+          "comparison",
+          9
+        ],
+        [
+          "exist",
+          7
+        ]
+      ],
+      "changed_correct_to_wrong": 2,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [
+        {
+          "question_index": 5,
+          "scene_frame": "scene-0103_frame25",
+          "question": "There is a stopped thing to the back of me; what is it??",
+          "answer": "car",
+          "raw_model_output": "The image shows a city street with a tunnel in the background. The tunnel is located between two buildings, and it appears to be a covered passageway. The street is busy with cars and pedestrians, and there are traffic lights present to",
+          "old_is_correct": true,
+          "rescored_is_correct": false
+        },
+        {
+          "question_index": 29,
+          "scene_frame": "scene-0097_frame37",
+          "question": "There is a car to the back of the barrier; does it have the same status as the construction vehicle??",
+          "answer": "no",
+          "raw_model_output": "Yes, the car is parked behind the barrier, and it appears to be a regular car, not a construction vehicle.",
+          "old_is_correct": true,
+          "rescored_is_correct": false
+        }
+      ]
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\random_suite_raw_results.jsonl",
+      "method": "random",
+      "questions": 100,
+      "vlm_calls": 100,
+      "correct": 14,
+      "wrong": 86,
+      "failure_rate": 0.86,
+      "unique_failures": 86,
+      "unique_failures_per_100_calls": 86.0,
+      "calls_per_unique_failure": 1.1627906976744187,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "top_failure_families": [
+        [
+          "converge",
+          63
+        ],
+        [
+          "direction_chain",
+          11
+        ],
+        [
+          "distance_chain",
+          8
+        ],
+        [
+          "viewpoint_transfer",
+          4
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": []
+    }
+  ]
+}

@@ -4,6 +4,7 @@
   "exit_code": 0,
   "duration_seconds": 634.8035641,
   "model_mode": "MPLUG",
+  "scoring": "token_boundary_v2",
   "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
   "actual_real_inference_records": 80,
   "mock_fallback_records": 0,
@@ -48,12 +49,12 @@
       "method": "qatest_adapted",
       "questions": 20,
       "vlm_calls": 20,
-      "wrong": 15,
-      "failure_rate": 0.75,
-      "unique_failures": 14,
-      "unique_failures_per_100_calls": 70.0,
-      "calls_per_unique_failure": 1.4285714286,
-      "duplicate_failure_rate": 0.0666666667,
+      "wrong": 16,
+      "failure_rate": 0.8,
+      "unique_failures": 15,
+      "unique_failures_per_100_calls": 75.0,
+      "calls_per_unique_failure": 1.3333333333,
+      "duplicate_failure_rate": 0.0625,
       "failure_category_count": 5,
       "failed_unique_l2": 0,
       "visited_frames": 18,
@@ -79,7 +80,8 @@
     "The loader reported absent q/k positional embeddings; a compatibility audit confirmed they are deterministic non-trainable buffers intentionally omitted from the checkpoint.",
     "The four prefixes are not frame-balanced.",
     "Official QA and ADVTEST use different ground-truth granularities.",
-    "Correctness uses normalized answer containment rather than a semantic judge."
+    "Headline metrics use token-boundary lexical scoring rather than a semantic judge.",
+    "The frozen raw outputs were rescored offline; one QATest-adapted record changed from correct to wrong and no VLM inference was repeated."
   ],
   "eligible_for_recorded_call100": true
 }

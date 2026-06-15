@@ -63,8 +63,8 @@ a positive inference duration.
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | `advtest` | proposed | 100 | 92 | 92 | 92 | 1.087 | 0.000 | 236 | 2 |
 | `random` | internal ablation | 100 | 86 | 86 | 86 | 1.163 | 0.000 | 169 | 2 |
-| `official_qa` | neutral reference | 100 | 65 | 65 | 65 | 1.538 | 0.000 | N/A | 6 |
-| `qatest_adapted` | external comparison | 100 | 60 | 56 | 56 | 1.786 | 0.067 | N/A | 53 |
+| `official_qa` | neutral reference | 100 | 67 | 67 | 67 | 1.493 | 0.000 | N/A | 6 |
+| `qatest_adapted` | external comparison | 100 | 62 | 58 | 58 | 1.724 | 0.065 | N/A | 53 |
 
 Average real inference time per question:
 
@@ -88,6 +88,13 @@ frames and equal 100-call budget:
 This supports the claim that coverage-guided ordering improves failure
 discovery over random ordering within the shared generated-question space.
 
+These headline metrics use `token_boundary_v2` scoring. The frozen raw outputs
+were rescored after an audit found unsafe substring matches in the original
+scorer. ADVTEST and Random were unchanged. Two Official QA records and two
+QATest-adapted records changed from correct to wrong, producing 67 and 58
+independent failures respectively. No VLM inference was repeated; the complete
+row-level audit is in `call100_rescored_v2.json`.
+
 The cross-paradigm rows are descriptive. Official QA and QATest-adapted use
 category-level GT and different natural frame distributions, while ADVTEST
 uses instance-level and relational GT. Their raw failure rates must not be
@@ -99,10 +106,11 @@ presented as a difficulty-controlled head-to-head accuracy comparison.
   embeddings. The compatibility audit confirmed that they are deterministic
   sinusoidal buffers, not trainable weights; this warning does not invalidate
   the run.
-- Correctness uses normalized answer containment rather than semantic judging.
+- Correctness uses deterministic token-boundary lexical matching rather than
+  semantic judging.
 - This is one deterministic frozen-prefix run; Random variance and repeated-run
   confidence intervals are not yet available.
-- QATest-adapted generated 60 wrong answers but only 56 independent failures,
+- QATest-adapted generated 62 wrong answers but only 58 independent failures,
   confirming that mutations of the same official seed can duplicate a failure.
 
 Raw logs, mosaics, suites, manifests, and per-question outputs remain under

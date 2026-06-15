@@ -1,0 +1,143 @@
+{
+  "scoring": "token_boundary_v2",
+  "results": [
+    {
+      "raw_path": "scratch\\rq1_mplug_smoke\\runs\\mplug-four-methods-call20\\results\\advtest_suite_raw_results.jsonl",
+      "method": "advtest",
+      "questions": 20,
+      "vlm_calls": 20,
+      "correct": 1,
+      "wrong": 19,
+      "failure_rate": 0.95,
+      "unique_failures": 19,
+      "unique_failures_per_100_calls": 95.0,
+      "calls_per_unique_failure": 1.0526315789473684,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 2,
+      "top_failure_families": [
+        [
+          "converge",
+          18
+        ],
+        [
+          "distance_chain",
+          1
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": []
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_smoke\\runs\\mplug-four-methods-call20\\results\\official_qa_suite_raw_results.jsonl",
+      "method": "official_qa",
+      "questions": 20,
+      "vlm_calls": 20,
+      "correct": 6,
+      "wrong": 14,
+      "failure_rate": 0.7,
+      "unique_failures": 14,
+      "unique_failures_per_100_calls": 70.0,
+      "calls_per_unique_failure": 1.4285714285714286,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 3,
+      "top_failure_families": [
+        [
+          "count",
+          6
+        ],
+        [
+          "object",
+          4
+        ],
+        [
+          "status",
+          4
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": []
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_smoke\\runs\\mplug-four-methods-call20\\results\\qatest_adapted_suite_raw_results.jsonl",
+      "method": "qatest_adapted",
+      "questions": 20,
+      "vlm_calls": 20,
+      "correct": 4,
+      "wrong": 16,
+      "failure_rate": 0.8,
+      "unique_failures": 15,
+      "unique_failures_per_100_calls": 75.0,
+      "calls_per_unique_failure": 1.3333333333333333,
+      "duplicate_failure_rate": 0.0625,
+      "failure_category_count": 5,
+      "top_failure_families": [
+        [
+          "object",
+          5
+        ],
+        [
+          "count",
+          5
+        ],
+        [
+          "exist",
+          2
+        ],
+        [
+          "status",
+          2
+        ],
+        [
+          "comparison",
+          2
+        ]
+      ],
+      "changed_correct_to_wrong": 1,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": [
+        {
+          "question_index": 5,
+          "scene_frame": "scene-0103_frame25",
+          "question": "There is a stopped thing to the back of me; what is it??",
+          "answer": "car",
+          "raw_model_output": "The image shows a city street with a tunnel in the background. The tunnel is located between two buildings, and it appears to be a covered passageway. The street is busy with cars and pedestrians, and there are traffic lights present to",
+          "old_is_correct": true,
+          "rescored_is_correct": false
+        }
+      ]
+    },
+    {
+      "raw_path": "scratch\\rq1_mplug_smoke\\runs\\mplug-four-methods-call20\\results\\random_suite_raw_results.jsonl",
+      "method": "random",
+      "questions": 20,
+      "vlm_calls": 20,
+      "correct": 8,
+      "wrong": 12,
+      "failure_rate": 0.6,
+      "unique_failures": 12,
+      "unique_failures_per_100_calls": 60.0,
+      "calls_per_unique_failure": 1.6666666666666667,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 3,
+      "top_failure_families": [
+        [
+          "converge",
+          6
+        ],
+        [
+          "direction_chain",
+          3
+        ],
+        [
+          "distance_chain",
+          3
+        ]
+      ],
+      "changed_correct_to_wrong": 0,
+      "changed_wrong_to_correct": 0,
+      "changed_rows": []
+    }
+  ]
+}
