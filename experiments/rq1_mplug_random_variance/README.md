@@ -42,6 +42,18 @@ Before inference, both prefixes must pass the strict mPLUG preflight:
 The run must fail rather than use Mock fallback when the model or image input is
 unavailable.
 
+## Preflight Result
+
+Both 100-call prefixes passed the strict preflight:
+
+| Seed | Questions | Calls | Frames | Suite SHA-256 |
+|---:|---:|---:|---:|---|
+| 43 | 100 | 100 | 2 | `beb2aae05ee0dbc59aefc20d34db155fa1b1e46431a12f10e3874c33fa6097fe` |
+| 44 | 100 | 100 | 2 | `d1ccf8ee3d0341e5dbb2d0079d9f6c04f4247dd9618a7fd94df7efb4ad22f4e2` |
+
+No missing GT, provenance, scene graph, or real mosaic was reported. The
+machine-readable audit is in `preflight_summary.json`.
+
 ## Reporting
 
 The final report will combine Random seeds 42, 43, and 44 and publish:

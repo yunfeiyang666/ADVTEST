@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "call_budget": 100,
+  "suites": [
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_formal_exploration\\runs\\structural-cap50-seed43-retry1\\results\\random_suite.jsonl",
+      "suite_sha256": "beb2aae05ee0dbc59aefc20d34db155fa1b1e46431a12f10e3874c33fa6097fe",
+      "requested_calls": 100,
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 2,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    },
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_formal_exploration\\runs\\structural-cap50-seed44-retry1\\results\\random_suite.jsonl",
+      "suite_sha256": "d1ccf8ee3d0341e5dbb2d0079d9f6c04f4247dd9618a7fd94df7efb4ad22f4e2",
+      "requested_calls": 100,
+      "evaluated_questions": 100,
+      "evaluated_calls": 100,
+      "unique_frames": 2,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    }
+  ]
+}
