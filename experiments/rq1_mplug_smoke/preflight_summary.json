@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "call_budget": 20,
+  "suites": [
+    {
+      "method": "advtest",
+      "suite_sha256": "4a46e92f42f037e23a79cf5c994d78fb3820f0e6e47c087edc52d7038b909010",
+      "evaluated_questions": 20,
+      "evaluated_calls": 20,
+      "unique_frames": 1,
+      "passed": true,
+      "failure_codes": []
+    },
+    {
+      "method": "random",
+      "suite_sha256": "e0ff32d2ce02f4500d032d08fdc2a0ad2e61d01533c5448c47892a3a21c5817e",
+      "evaluated_questions": 20,
+      "evaluated_calls": 20,
+      "unique_frames": 1,
+      "passed": true,
+      "failure_codes": []
+    },
+    {
+      "method": "official_qa",
+      "suite_sha256": "d79489bd35167e7373716d3cccb302038493c2e4272895ebdfe3731d8d46862e",
+      "evaluated_questions": 20,
+      "evaluated_calls": 20,
+      "unique_frames": 2,
+      "passed": true,
+      "failure_codes": []
+    },
+    {
+      "method": "qatest_adapted",
+      "suite_sha256": "1be8192e51338a569d3355af5964241df01744cde15ce1ef9356b75245673510",
+      "evaluated_questions": 20,
+      "evaluated_calls": 20,
+      "unique_frames": 18,
+      "passed": true,
+      "failure_codes": []
+    }
+  ]
+}

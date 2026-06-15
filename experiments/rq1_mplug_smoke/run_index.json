@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "branch": "codex/rq1-experiment-boundaries",
+  "call_budget_per_method": 20,
+  "model_mode": "MPLUG",
+  "assembly": {
+    "advtest": {
+      "source_sha256": "84f2792c9c9b41affe8b3ad4cb4a948611f6b37d77d74d4d52f373f09f9a758a",
+      "suite_sha256": "4a46e92f42f037e23a79cf5c994d78fb3820f0e6e47c087edc52d7038b909010"
+    },
+    "random": {
+      "source_sha256": "a26a8d7c6fa1436a2f5de11a7b91a7febb0c3d3bfffe0a2c6d7beb195a77b6f5",
+      "suite_sha256": "e0ff32d2ce02f4500d032d08fdc2a0ad2e61d01533c5448c47892a3a21c5817e"
+    },
+    "official_qa": {
+      "source_sha256": "409095a46f277a9ffe78bc11677f2aa986e8652fa6a4b8f51378591e6e2b1292",
+      "suite_sha256": "d79489bd35167e7373716d3cccb302038493c2e4272895ebdfe3731d8d46862e"
+    },
+    "qatest_adapted": {
+      "source_sha256": "08394c840c966a2b86a962c5710ce319828a5dfaae81efc028c2a1ebb9307ae5",
+      "suite_sha256": "1be8192e51338a569d3355af5964241df01744cde15ce1ef9356b75245673510"
+    }
+  },
+  "preflight_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "finding": "Three valid integer-zero Random answers were incorrectly classified as empty by the new preflight."
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "commit": "c8b14bd",
+      "suite_count": 4,
+      "real_mosaic_count": 20,
+      "failure_count": 0
+    }
+  ],
+  "real_vlm_run": null
+}
