@@ -84,6 +84,7 @@ class RescoreSuiteResultsTests(unittest.TestCase):
 
         self.assertEqual(result["wrong"], 2)
         self.assertEqual(result["unique_failures"], 1)
+        self.assertEqual(result["failed_unique_l2"], 1)
         self.assertEqual(result["duplicate_failure_rate"], 0.5)
 
 

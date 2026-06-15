@@ -23,6 +23,7 @@ def rescore_raw(path: Path) -> dict:
     changed_correct_to_wrong = 0
     changed_wrong_to_correct = 0
     unique_failure_keys = set()
+    failed_unique_l2 = set()
     failure_families = Counter()
     changed_rows = []
 
@@ -53,6 +54,9 @@ def rescore_raw(path: Path) -> dict:
                 "coverage_l2_items": row.get("l2_items") or [],
             }
             unique_failure_keys.add(failure_signature(question, predicted))
+            failed_unique_l2.update(
+                str(item) for item in question["coverage_l2_items"]
+            )
             failure_families[str(row.get("family") or "unknown")] += 1
 
         if old_correct and not rescored_correct:
@@ -83,6 +87,7 @@ def rescore_raw(path: Path) -> dict:
         "wrong": wrong,
         "failure_rate": wrong / len(rows) if rows else 0.0,
         "unique_failures": unique_failures,
+        "failed_unique_l2": len(failed_unique_l2),
         "unique_failures_per_100_calls": (
             unique_failures / vlm_calls * 100 if vlm_calls else 0.0
         ),
