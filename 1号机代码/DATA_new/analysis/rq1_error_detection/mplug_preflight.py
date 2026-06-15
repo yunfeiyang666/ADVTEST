@@ -105,7 +105,8 @@ def audit_suite(
     frames_with_valid_graphs = set()
     for index, record in enumerate(prefix, start=1):
         question = str(record.get("question") or "").strip()
-        answer = str(record.get("answer") or "").strip()
+        answer_value = record.get("answer")
+        answer = "" if answer_value is None else str(answer_value).strip()
         if not question:
             failures.append(_failure("missing_question", "Question is empty.", index))
         if not answer:

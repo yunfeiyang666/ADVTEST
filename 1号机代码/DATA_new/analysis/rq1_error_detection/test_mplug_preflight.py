@@ -66,7 +66,7 @@ class MPLUGPreflightTests(unittest.TestCase):
             path.write_text("{}", encoding="utf-8")
 
     def test_valid_prefix_consumes_exact_budget_and_resolves_images(self):
-        records = [question(0), question(1), question(2)]
+        records = [question(0, answer=0), question(1), question(2)]
         self.add_scene_graphs(*records[:2])
         suite = self.write_suite(records)
 
