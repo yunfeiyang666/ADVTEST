@@ -43,3 +43,65 @@ on different frames was treated as a duplicate. Those records have different
 visual inputs and are valid independent tests. Commit `eea1870` changed the
 duplicate key to `(scene_frame, normalized_question)` and added a regression
 test. The second attempt passed.
+
+## Recorded Run
+
+- Run ID: `mplug-four-methods-call100`
+- Status: completed
+- Exit code: 0
+- Generation/evaluation commit: `36a4591919866671e13af290925d33e416e05cc0`
+- Total wall time: 2985.934 seconds, approximately 49.8 minutes
+- Actual real inference records: 400
+- Mock fallback records: 0
+
+Every raw record has `mode=MPLUG`, a non-empty model output, `error=null`, and
+a positive inference duration.
+
+## Results
+
+| Method | Role | Calls | Wrong | Unique failures | UF/100 | Calls/UF | Duplicate rate | Failed L2 | Frames |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `advtest` | proposed | 100 | 92 | 92 | 92 | 1.087 | 0.000 | 236 | 2 |
+| `random` | internal ablation | 100 | 86 | 86 | 86 | 1.163 | 0.000 | 169 | 2 |
+| `official_qa` | neutral reference | 100 | 65 | 65 | 65 | 1.538 | 0.000 | N/A | 6 |
+| `qatest_adapted` | external comparison | 100 | 60 | 56 | 56 | 1.786 | 0.067 | N/A | 53 |
+
+Average real inference time per question:
+
+| Method | Average | Minimum | Maximum |
+|---|---:|---:|---:|
+| `advtest` | 8.896 s | 1.986 s | 17.326 s |
+| `random` | 6.363 s | 2.847 s | 12.622 s |
+| `official_qa` | 7.396 s | 2.908 s | 25.991 s |
+| `qatest_adapted` | 5.743 s | 2.759 s | 12.800 s |
+
+## Interpretation
+
+The controlled internal ablation compares ADVTEST and Random on the same two
+frames and equal 100-call budget:
+
+- ADVTEST found 92 independent failures versus Random's 86, a gain of 6
+  failures or 6.98% relative to Random.
+- ADVTEST exposed 236 failed L2 items versus Random's 169, a gain of 67 items
+  or 39.64% relative to Random.
+
+This supports the claim that coverage-guided ordering improves failure
+discovery over random ordering within the shared generated-question space.
+
+The cross-paradigm rows are descriptive. Official QA and QATest-adapted use
+category-level GT and different natural frame distributions, while ADVTEST
+uses instance-level and relational GT. Their raw failure rates must not be
+presented as a difficulty-controlled head-to-head accuracy comparison.
+
+## Limitations
+
+- The checkpoint loader again reported newly initialized visual-abstractor q/k
+  positional embedding weights.
+- Correctness uses normalized answer containment rather than semantic judging.
+- This is one deterministic frozen-prefix run; Random variance and repeated-run
+  confidence intervals are not yet available.
+- QATest-adapted generated 60 wrong answers but only 56 independent failures,
+  confirming that mutations of the same official seed can duplicate a failure.
+
+Raw logs, mosaics, suites, manifests, and per-question outputs remain under
+`scratch/rq1_mplug_call100/`.

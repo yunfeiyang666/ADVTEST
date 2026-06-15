@@ -1,0 +1,90 @@
+{
+  "run_id": "mplug-four-methods-call100",
+  "status": "completed",
+  "exit_code": 0,
+  "duration_seconds": 2985.9340447,
+  "generation_commit": "36a4591919866671e13af290925d33e416e05cc0",
+  "model_mode": "MPLUG",
+  "actual_real_inference_records": 400,
+  "mock_fallback_records": 0,
+  "raw_audit": {
+    "records_with_wrong_mode": 0,
+    "records_with_empty_output": 0,
+    "records_with_error": 0,
+    "records_with_nonpositive_duration": 0
+  },
+  "results": [
+    {
+      "method": "advtest",
+      "role": "proposed_method",
+      "vlm_calls": 100,
+      "wrong": 92,
+      "failure_rate": 0.92,
+      "unique_failures": 92,
+      "unique_failures_per_100_calls": 92.0,
+      "calls_per_unique_failure": 1.0869565217,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "failed_unique_l2": 236,
+      "visited_frames": 2,
+      "average_inference_seconds": 8.896
+    },
+    {
+      "method": "random",
+      "role": "internal_ablation",
+      "vlm_calls": 100,
+      "wrong": 86,
+      "failure_rate": 0.86,
+      "unique_failures": 86,
+      "unique_failures_per_100_calls": 86.0,
+      "calls_per_unique_failure": 1.1627906977,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 4,
+      "failed_unique_l2": 169,
+      "visited_frames": 2,
+      "average_inference_seconds": 6.363
+    },
+    {
+      "method": "official_qa",
+      "role": "neutral_reference",
+      "vlm_calls": 100,
+      "wrong": 65,
+      "failure_rate": 0.65,
+      "unique_failures": 65,
+      "unique_failures_per_100_calls": 65.0,
+      "calls_per_unique_failure": 1.5384615385,
+      "duplicate_failure_rate": 0.0,
+      "failure_category_count": 5,
+      "failed_unique_l2": 0,
+      "visited_frames": 6,
+      "average_inference_seconds": 7.396
+    },
+    {
+      "method": "qatest_adapted",
+      "role": "external_comparison",
+      "vlm_calls": 100,
+      "wrong": 60,
+      "failure_rate": 0.6,
+      "unique_failures": 56,
+      "unique_failures_per_100_calls": 56.0,
+      "calls_per_unique_failure": 1.7857142857,
+      "duplicate_failure_rate": 0.0666666667,
+      "failure_category_count": 5,
+      "failed_unique_l2": 0,
+      "visited_frames": 53,
+      "average_inference_seconds": 5.743
+    }
+  ],
+  "internal_ablation": {
+    "advtest_minus_random_unique_failures": 6,
+    "advtest_relative_unique_failure_gain": 0.0697674419,
+    "advtest_minus_random_failed_unique_l2": 67,
+    "advtest_relative_failed_l2_gain": 0.3964497041
+  },
+  "warnings": [
+    "Several visual-abstractor q/k positional embedding weights were newly initialized by the checkpoint loader.",
+    "Cross-paradigm suites have different frame distributions and ground-truth granularities.",
+    "Correctness uses normalized answer containment rather than a semantic judge.",
+    "The 100-call results are one deterministic frozen-prefix run and do not provide variance estimates."
+  ]
+}

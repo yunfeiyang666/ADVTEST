@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "branch": "codex/rq1-experiment-boundaries",
+  "input_policy_commit": "64a6ba0",
+  "preflight_commit": "36a4591",
+  "preflight_fix_commit": "eea1870",
+  "run": {
+    "run_id": "mplug-four-methods-call100",
+    "status": "completed",
+    "exit_code": 0,
+    "generation_commit": "36a4591919866671e13af290925d33e416e05cc0",
+    "duration_seconds": 2985.9340447,
+    "model_mode": "MPLUG",
+    "call_budget_per_method": 100,
+    "method_count": 4,
+    "actual_real_inference_records": 400,
+    "mock_fallback_records": 0,
+    "raw_evidence_passed": true
+  },
+  "suite_hashes": {
+    "advtest": "9f53b51a10b476c13a5330409054b3f7dcb5866ecf0d8d371e664d20dec792b7",
+    "random": "9010816090ee0c151123fd030ba2b99f4ef203e277b9e08ec0fd060ff68a951b",
+    "official_qa": "cefa0be65669374c77336d19954efb17a6e9ae253e51fffed4a4ad7509a3d358",
+    "qatest_adapted": "e07a15f41511e5cc2c64e8d92bdeb2254018f2f509e867cbcc6719e061cefd60"
+  }
+}
