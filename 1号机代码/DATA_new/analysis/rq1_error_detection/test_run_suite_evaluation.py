@@ -3,12 +3,13 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 MODULE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE_DIR))
 
-from run_suite_evaluation import evaluate_suite, failure_signature
+from run_suite_evaluation import evaluate_question, evaluate_suite, failure_signature
 
 
 class AlwaysWrongEvaluator:
@@ -16,7 +17,105 @@ class AlwaysWrongEvaluator:
         return "wrong", False
 
 
+class RealStyleEvaluator:
+    def __init__(self):
+        self.calls = 0
+
+    def evaluate(self, question, image_path):
+        self.calls += 1
+        return "car", True
+
+
 class SuiteEvaluationMetricsTests(unittest.TestCase):
+    def test_mplug_missing_image_raises_instead_of_using_mock(self):
+        with self.assertRaisesRegex(FileNotFoundError, "real mosaic"):
+            evaluate_question(
+                RealStyleEvaluator(),
+                {"question": "What is visible?", "answer": "car"},
+                "MPLUG",
+                None,
+            )
+
+    def test_raw_mplug_result_records_inference_evidence(self):
+        question = {
+            "experiment_layer": "cross_paradigm",
+            "experiment_method": "official_qa",
+            "question_source": "nuscenes_qa",
+            "source_question_id": "sample-a:0",
+            "source_sample_token": "sample-a",
+            "scene_frame": "scene-1_frame2",
+            "question": "What is visible?",
+            "answer": "car",
+            "vlm_call_cost": 1,
+        }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            suite_path = root / "official_qa_suite.jsonl"
+            suite_path.write_text(json.dumps(question) + "\n", encoding="utf-8")
+            image_path = root / "real.jpg"
+            image_path.write_bytes(b"real image")
+            with patch(
+                "run_suite_evaluation.resolve_image_path",
+                return_value=image_path,
+            ):
+                evaluate_suite(
+                    suite_path,
+                    RealStyleEvaluator(),
+                    "MPLUG",
+                    root / "eval",
+                    root / "outputs",
+                    root / "data",
+                )
+            raw_path = root / "eval" / "official_qa_suite_raw_results.jsonl"
+            raw = json.loads(raw_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(raw["prompt"], "What is visible?")
+        self.assertEqual(raw["mode"], "MPLUG")
+        self.assertEqual(raw["raw_model_output"], "car")
+        self.assertIsNone(raw["error"])
+        self.assertGreaterEqual(raw["inference_elapsed_seconds"], 0.0)
+
+    def test_mplug_does_not_reuse_cached_predictions_as_real_calls(self):
+        question = {
+            "experiment_layer": "cross_paradigm",
+            "experiment_method": "official_qa",
+            "question_source": "nuscenes_qa",
+            "source_question_id": "sample-a:0",
+            "source_sample_token": "sample-a",
+            "scene_frame": "scene-1_frame2",
+            "question": "What is visible?",
+            "answer": "car",
+            "vlm_call_cost": 1,
+        }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            suite_path = root / "official_qa_suite.jsonl"
+            suite_path.write_text(
+                json.dumps(question) + "\n" + json.dumps(question) + "\n",
+                encoding="utf-8",
+            )
+            image_path = root / "real.jpg"
+            image_path.write_bytes(b"real image")
+            vlm = RealStyleEvaluator()
+            with patch(
+                "run_suite_evaluation.resolve_image_path",
+                return_value=image_path,
+            ):
+                result = evaluate_suite(
+                    suite_path,
+                    vlm,
+                    "MPLUG",
+                    root / "eval",
+                    root / "outputs",
+                    root / "data",
+                    write_raw=False,
+                )
+
+        self.assertEqual(result["vlm_calls"], 2)
+        self.assertEqual(vlm.calls, 2)
+
     def test_qatest_mutations_of_same_seed_count_as_one_independent_failure(self):
         first = {
             "experiment_layer": "cross_paradigm",

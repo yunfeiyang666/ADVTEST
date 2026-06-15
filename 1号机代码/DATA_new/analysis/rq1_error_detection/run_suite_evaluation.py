@@ -121,7 +121,10 @@ def evaluate_question(
     if mode == "MOCK":
         return vlm.evaluate(question)
     if image_path is None:
-        return evaluator.MockVLMEvaluator().evaluate(question)
+        raise FileNotFoundError(
+            f"A real mosaic is required for {mode} evaluation: "
+            f"{get_scene_frame(question)}"
+        )
     return vlm.evaluate(question, image_path)
 
 
@@ -148,7 +151,10 @@ def evaluate_suite(
     unique_failure_keys = set()
     vlm_calls = 0
     budget_stop_reason = None
-    cache: Dict[Tuple[str, str], Tuple[str, bool, Optional[str]]] = {}
+    cache: Dict[
+        Tuple[str, str],
+        Tuple[str, bool, Optional[str], float],
+    ] = {}
     raw_path = output_dir / f"{path.stem}_raw_results.jsonl"
     image_cache_dir = output_dir / "mosaics"
     if write_raw:
@@ -176,15 +182,26 @@ def evaluate_suite(
             unique_l2.update(question_l2)
             q_text = str(question.get("question", ""))
             cache_key = (scene_frame, q_text)
-            if cache_key in cache:
-                predicted, is_correct, image_path_text = cache[cache_key]
+            use_cache = mode == "MOCK"
+            if use_cache and cache_key in cache:
+                predicted, is_correct, image_path_text, inference_elapsed = cache[
+                    cache_key
+                ]
             else:
                 image_path = resolve_image_path(
                     question, outputs_root, image_cache_dir, dataroot
                 )
                 image_path_text = str(image_path) if image_path else None
+                inference_start = time.perf_counter()
                 predicted, is_correct = evaluate_question(vlm, question, mode, image_path)
-                cache[cache_key] = (predicted, is_correct, image_path_text)
+                inference_elapsed = time.perf_counter() - inference_start
+                if use_cache:
+                    cache[cache_key] = (
+                        predicted,
+                        is_correct,
+                        image_path_text,
+                        inference_elapsed,
+                    )
             family = question_family(question)
             if raw_handle is not None:
                 raw_handle.write(
@@ -196,9 +213,14 @@ def evaluate_suite(
                             "question_id": question.get("question_id", ""),
                             "family": family,
                             "question": q_text,
+                            "prompt": q_text,
                             "answer": question.get("answer", ""),
                             "predicted": predicted,
+                            "raw_model_output": predicted,
                             "is_correct": is_correct,
+                            "mode": mode,
+                            "inference_elapsed_seconds": inference_elapsed,
+                            "error": None,
                             "experiment_layer": question.get("experiment_layer", ""),
                             "question_source": question.get("question_source", ""),
                             "source_question_id": question.get(
