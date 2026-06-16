@@ -1,0 +1,5 @@
+method,method_label,role,vlm_calls,wrong,failure_rate,unique_failures,unique_failures_per_100_calls,duplicate_failure_rate,failed_unique_l2,visited_frames,gt_granularity,coverage_comparable,covered_l2,unique_l2_per_question
+advtest,ADVTEST,proposed_method,1000,981,0.981,981,98.1,0.0,4488,20,instance_or_relation,True,4508,4.508
+random,Random,internal_ablation,1000,912,0.912,912,91.2,0.0,2727,20,instance_or_relation,True,2818,2.818
+official_qa,Official NuScenes-QA,neutral_reference,1000,650,0.65,650,65.0,0.0,0,67,category_level_official,False,,
+qatest_adapted,QATest-adapted,external_comparison,1000,637,0.637,468,46.800000000000004,0.2653061224489796,0,100,category_level_official,False,,

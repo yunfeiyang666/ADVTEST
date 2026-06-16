@@ -1,0 +1,4 @@
+run,call_budget,unique_failure_delta,unique_failure_relative_gain,failed_unique_l2_delta,failed_unique_l2_relative_gain,input_covered_l2_delta,input_covered_l2_relative_gain
+call20,20,7,0.5833333333333334,15,0.9375,,
+call100,100,6,0.06976744186046512,67,0.39644970414201186,,
+call1000,1000,69,0.0756578947368421,1761,0.6457645764576457,1690,0.5997161107168204

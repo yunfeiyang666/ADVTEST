@@ -1,0 +1,5 @@
+method,seed,call_budget,unique_failures,failed_unique_l2
+advtest,fixed,100,92,236
+random,42,100,86,169
+random,43,100,88,180
+random,44,100,90,183
