@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "ok",
+  "large_audit": {
+    "rows": 400,
+    "label_counts": {
+      "no": 64,
+      "uncertain": 25,
+      "yes": 311
+    },
+    "bucket_counts": {
+      "advtest_only_l2": 100,
+      "random_only_l2": 100,
+      "shared_l2_advtest": 100,
+      "shared_l2_random": 100
+    }
+  },
+  "human_adjudication": {
+    "rows": 100,
+    "reviewed_rows": 0,
+    "pending_rows": 100,
+    "bucket_counts": {
+      "advtest_only_l2": 25,
+      "random_only_l2": 25,
+      "shared_l2_advtest": 25,
+      "shared_l2_random": 25
+    },
+    "assisted_label_counts": {
+      "no": 32,
+      "uncertain": 25,
+      "yes": 43
+    },
+    "selection_reason_counts": {
+      "all_uncertain": 25,
+      "stratified_assisted_no": 32,
+      "stratified_assisted_yes": 43
+    }
+  },
+  "checked_files": {
+    "large_csv": "experiments\\rq1_failure_audit_large\\large_manual_review_samples.csv",
+    "assisted_summary_json": "experiments\\rq1_failure_audit_large\\large_assisted_review_summary.json",
+    "human_pack_csv": "experiments\\rq1_failure_audit_large\\human_adjudication_pack.csv",
+    "human_manifest_json": "experiments\\rq1_failure_audit_large\\human_adjudication_manifest.json",
+    "human_summary_json": "experiments\\rq1_failure_audit_large\\human_adjudication_summary.json"
+  }
+}

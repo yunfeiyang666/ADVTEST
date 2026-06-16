@@ -79,6 +79,13 @@ python '1号机代码\DATA_new\analysis\rq1_error_detection\summarize_rq1_human_
 
 Omit `--require-complete` to produce a progress report while the pack is still partially or fully pending.
 
+To validate that the CSV, manifest, and summary artifacts are still mutually consistent:
+
+```powershell
+$codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
+python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\validate_rq1_failure_audit_artifacts.py')
+```
+
 ## Files
 
 - `large_sampling_manifest.json`: universe counts, selected counts, family and scene distributions.
@@ -93,3 +100,5 @@ Omit `--require-complete` to produce a progress report while the pack is still p
 - `human_adjudication_pack.md`: human-readable sampling and annotation instructions.
 - `human_adjudication_summary.json`: current human-adjudication progress and calibrated estimates once labels are filled.
 - `human_adjudication_summary.md`: human-readable human-adjudication progress summary.
+- `artifact_validation_summary.json`: latest consistency check across the large audit and human-adjudication artifacts.
+- `artifact_validation_summary.md`: human-readable consistency check summary.
