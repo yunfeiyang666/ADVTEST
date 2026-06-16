@@ -48,6 +48,29 @@ python '1号机代码\DATA_new\analysis\rq1_error_detection\summarize_rq1_large_
 
 Use `--overwrite` only when intentionally replacing existing `manual_*` fields from the auto-prefill columns.
 
+## Human Adjudication Calibration Pack
+
+`human_adjudication_pack.csv` is a 100-row calibration subset for checking how reliable the assisted labels are:
+
+- Seed: `20260616`
+- Rows: `100`
+- Bucket balance: `25` rows per bucket
+- Assisted labels included: `25` uncertain, `32` no, `43` yes
+- Selection policy: include all assisted-uncertain rows, then sample up to `8` assisted-no rows per bucket and fill the remaining slots with assisted-yes rows.
+
+Human reviewers should fill only the blank `human_*` columns:
+
+- `human_valid_failure`: `yes`, `no`, or `uncertain`
+- `human_issue_type`: same taxonomy as `manual_issue_type`
+- `human_agrees_with_assisted`: whether the human label matches `manual_valid_failure`
+- `human_notes`: short rationale, especially for disagreements
+
+To regenerate the calibration pack:
+
+```powershell
+python '1号机代码\DATA_new\analysis\rq1_error_detection\build_rq1_human_adjudication_pack.py'
+```
+
 ## Files
 
 - `large_sampling_manifest.json`: universe counts, selected counts, family and scene distributions.
@@ -57,3 +80,6 @@ Use `--overwrite` only when intentionally replacing existing `manual_*` fields f
 - `large_review_summary.md`: human-readable generation summary.
 - `large_assisted_review_summary.json`: machine-readable assisted-review summary and Wilson intervals.
 - `large_assisted_review_summary.md`: human-readable assisted-review summary.
+- `human_adjudication_pack.csv`: 100-row human calibration subset with blank `human_*` review columns.
+- `human_adjudication_manifest.json`: machine-readable sampling policy and selected distributions.
+- `human_adjudication_pack.md`: human-readable sampling and annotation instructions.

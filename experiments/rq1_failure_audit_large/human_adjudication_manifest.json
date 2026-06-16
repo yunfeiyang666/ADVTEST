@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "seed": 20260616,
+  "source_csv": "experiments\\rq1_failure_audit_large\\large_manual_review_samples.csv",
+  "output_csv": "experiments\\rq1_failure_audit_large\\human_adjudication_pack.csv",
+  "sampling_policy": {
+    "target_total": 100,
+    "bucket_targets": {
+      "advtest_only_l2": 25,
+      "random_only_l2": 25,
+      "shared_l2_advtest": 25,
+      "shared_l2_random": 25
+    },
+    "include_all_uncertain": true,
+    "max_no_per_bucket": 8,
+    "max_per_scene_per_bucket_after_uncertain": 4,
+    "source_label_field": "manual_valid_failure",
+    "source_issue_field": "manual_issue_type"
+  },
+  "source_counts": {
+    "rows": 400,
+    "by_bucket_label_confidence": {
+      "advtest_only_l2 | no | medium": 24,
+      "advtest_only_l2 | uncertain | low": 6,
+      "advtest_only_l2 | yes | high": 3,
+      "advtest_only_l2 | yes | medium": 67,
+      "random_only_l2 | no | medium": 10,
+      "random_only_l2 | uncertain | low": 3,
+      "random_only_l2 | yes | high": 26,
+      "random_only_l2 | yes | medium": 61,
+      "shared_l2_advtest | no | medium": 15,
+      "shared_l2_advtest | uncertain | low": 8,
+      "shared_l2_advtest | yes | high": 4,
+      "shared_l2_advtest | yes | medium": 73,
+      "shared_l2_random | no | medium": 15,
+      "shared_l2_random | uncertain | low": 8,
+      "shared_l2_random | yes | high": 4,
+      "shared_l2_random | yes | medium": 73
+    }
+  },
+  "selected_counts": {
+    "rows": 100,
+    "by_bucket": {
+      "advtest_only_l2": 25,
+      "random_only_l2": 25,
+      "shared_l2_advtest": 25,
+      "shared_l2_random": 25
+    },
+    "by_label": {
+      "no": 32,
+      "uncertain": 25,
+      "yes": 43
+    },
+    "by_bucket_label": {
+      "advtest_only_l2 | no": 8,
+      "advtest_only_l2 | uncertain": 6,
+      "advtest_only_l2 | yes": 11,
+      "random_only_l2 | no": 8,
+      "random_only_l2 | uncertain": 3,
+      "random_only_l2 | yes": 14,
+      "shared_l2_advtest | no": 8,
+      "shared_l2_advtest | uncertain": 8,
+      "shared_l2_advtest | yes": 9,
+      "shared_l2_random | no": 8,
+      "shared_l2_random | uncertain": 8,
+      "shared_l2_random | yes": 9
+    },
+    "by_bucket_label_confidence": {
+      "advtest_only_l2 | no | medium": 8,
+      "advtest_only_l2 | uncertain | low": 6,
+      "advtest_only_l2 | yes | high": 1,
+      "advtest_only_l2 | yes | medium": 10,
+      "random_only_l2 | no | medium": 8,
+      "random_only_l2 | uncertain | low": 3,
+      "random_only_l2 | yes | high": 3,
+      "random_only_l2 | yes | medium": 11,
+      "shared_l2_advtest | no | medium": 8,
+      "shared_l2_advtest | uncertain | low": 8,
+      "shared_l2_advtest | yes | high": 1,
+      "shared_l2_advtest | yes | medium": 8,
+      "shared_l2_random | no | medium": 8,
+      "shared_l2_random | uncertain | low": 8,
+      "shared_l2_random | yes | medium": 9
+    },
+    "by_selection_reason": {
+      "all_uncertain": 25,
+      "stratified_assisted_no": 32,
+      "stratified_assisted_yes": 43
+    }
+  },
+  "review_columns": {
+    "human_valid_failure": "Fill with yes/no/uncertain after human review.",
+    "human_issue_type": "Use the same issue taxonomy as manual_issue_type.",
+    "human_agrees_with_assisted": "Fill yes/no after comparing with manual_valid_failure.",
+    "human_notes": "Brief adjudication rationale."
+  }
+}
