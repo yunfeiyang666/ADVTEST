@@ -71,6 +71,14 @@ To regenerate the calibration pack:
 python '1号机代码\DATA_new\analysis\rq1_error_detection\build_rq1_human_adjudication_pack.py'
 ```
 
+After human reviewers fill the `human_*` columns, summarize agreement and calibrated estimates with:
+
+```powershell
+python '1号机代码\DATA_new\analysis\rq1_error_detection\summarize_rq1_human_adjudication.py' --require-complete
+```
+
+Omit `--require-complete` to produce a progress report while the pack is still partially or fully pending.
+
 ## Files
 
 - `large_sampling_manifest.json`: universe counts, selected counts, family and scene distributions.
@@ -83,3 +91,5 @@ python '1号机代码\DATA_new\analysis\rq1_error_detection\build_rq1_human_adju
 - `human_adjudication_pack.csv`: 100-row human calibration subset with blank `human_*` review columns.
 - `human_adjudication_manifest.json`: machine-readable sampling policy and selected distributions.
 - `human_adjudication_pack.md`: human-readable sampling and annotation instructions.
+- `human_adjudication_summary.json`: current human-adjudication progress and calibrated estimates once labels are filled.
+- `human_adjudication_summary.md`: human-readable human-adjudication progress summary.

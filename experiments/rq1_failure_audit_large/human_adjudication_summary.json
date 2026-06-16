@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "label_source": "human_adjudication_calibration",
+  "status": "pending_human_review",
+  "total_rows": 100,
+  "reviewed_rows": 0,
+  "pending_rows": 100,
+  "overall": {
+    "reviewed_rows": 0,
+    "agreement_yes": 0,
+    "agreement_no": 0,
+    "agreement_rate": null,
+    "human_label_counts": {},
+    "assisted_label_counts": {},
+    "human_issue_type_counts": {}
+  },
+  "by_bucket": {},
+  "by_assisted_label": {},
+  "selected_distribution": {
+    "by_bucket": {
+      "advtest_only_l2": 25,
+      "random_only_l2": 25,
+      "shared_l2_advtest": 25,
+      "shared_l2_random": 25
+    },
+    "by_assisted_label": {
+      "no": 32,
+      "uncertain": 25,
+      "yes": 43
+    },
+    "by_selection_reason": {
+      "all_uncertain": 25,
+      "stratified_assisted_no": 32,
+      "stratified_assisted_yes": 43
+    }
+  },
+  "calibrated_estimates": {
+    "status": "not_available_until_human_rows_are_reviewed"
+  }
+}
