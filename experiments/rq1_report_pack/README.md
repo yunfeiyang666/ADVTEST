@@ -7,6 +7,7 @@ This directory is generated from recorded RQ1 mPLUG summaries. It is intended as
 - ADVTEST finds +69 unique failures over Random (7.57%).
 - Failed unique L2 increases by +1761 (64.58%), while input covered L2 increases by +1690 (59.97%).
 - At 100 calls, ADVTEST exceeds all 3 Random seeds on unique failures and failed unique L2.
+- Manual audit shows Random-only samples have a slightly higher sampled validity rate, but ADVTEST's larger exclusive L2 space yields an estimated 2047 valid ADVTEST-only failed L2 items versus 982 for Random-only. Interpret the advantage as coverage breadth, not higher per-sample validity.
 
 ## Main Call1000 Table
 
@@ -40,6 +41,8 @@ This directory is generated from recorded RQ1 mPLUG summaries. It is intended as
 - `table_adv_vs_random_gains.csv`: ADVTEST-vs-Random deltas.
 - `table_random_variance.csv`: call100 random-seed robustness rows.
 - `paper_claims.md`: claim-to-evidence mapping and caveats.
+- `rq1_results_narrative.md`: paper-ready explanation of the main result, manual audit caveat, adjusted effective-failure estimate, and limitations.
+- `rq1_results_narrative.json`: structured narrative payload.
 
 ## Reproduction
 
@@ -48,6 +51,14 @@ Run from repository root:
 ```powershell
 $codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
 $script = Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\build_rq1_report_pack.py'
+python $script
+```
+
+After the manual failure audit is available, regenerate the narrative:
+
+```powershell
+$codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
+$script = Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\build_rq1_results_narrative.py'
 python $script
 ```
 

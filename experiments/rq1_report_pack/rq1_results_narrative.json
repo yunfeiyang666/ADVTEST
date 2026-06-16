@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "main_finding": {
+    "advtest_failed_unique_l2": 4488,
+    "random_failed_unique_l2": 2727,
+    "failed_unique_l2_delta": 1761,
+    "failed_unique_l2_relative_gain": 0.6457645764576457,
+    "advtest_unique_failures": 981,
+    "random_unique_failures": 912,
+    "unique_failure_delta": 69,
+    "unique_failure_relative_gain": 0.0756578947368421,
+    "input_covered_l2_delta": 1690,
+    "input_covered_l2_relative_gain": 0.5997161107168204
+  },
+  "failure_overlap": {
+    "advtest": {
+      "failed_questions": 981,
+      "unique_failure_signatures": 981,
+      "failed_unique_l2": 4488,
+      "family_counts": {
+        "converge": 969,
+        "distance_chain": 5,
+        "direction_chain": 5,
+        "viewpoint_transfer": 2
+      }
+    },
+    "random": {
+      "failed_questions": 912,
+      "unique_failure_signatures": 912,
+      "failed_unique_l2": 2727,
+      "family_counts": {
+        "direction_chain": 31,
+        "converge": 849,
+        "distance_chain": 19,
+        "viewpoint_transfer": 13
+      }
+    },
+    "signature_overlap": {
+      "advtest_only": 704,
+      "random_only": 635,
+      "shared": 277
+    },
+    "failed_l2_overlap": {
+      "advtest_only": 3070,
+      "random_only": 1309,
+      "shared": 1418
+    }
+  },
+  "manual_audit": {
+    "total_rows": 48,
+    "overall_valid_rate": 0.6875,
+    "overall_valid_yes": 33,
+    "overall_invalid_or_uncertain": 15,
+    "advtest_only_valid_rate": 0.6666666666666666,
+    "random_only_valid_rate": 0.75,
+    "answer_granularity_mismatch": 15
+  },
+  "adjusted_effective_failure_estimate": {
+    "basis": "qualitative audit extrapolation from 12 sampled L2 rows per exclusive bucket and 12 shared L2 pairs",
+    "advtest_only_failed_l2": 3070,
+    "random_only_failed_l2": 1309,
+    "shared_failed_l2": 1418,
+    "advtest_only_valid_rate": 0.6666666666666666,
+    "random_only_valid_rate": 0.75,
+    "shared_valid_rate_mean": 0.6666666666666666,
+    "estimated_valid_advtest_only_l2": 2046.6666666666665,
+    "estimated_valid_random_only_l2": 981.75,
+    "estimated_valid_shared_l2": 945.3333333333333,
+    "estimated_advtest_only_minus_random_only_valid_l2": 1064.9166666666665,
+    "estimated_advtest_only_vs_random_only_ratio": 2.084712672947967,
+    "caveat": "This is a qualitative audit estimate, not a statistical significance claim. It should be reported as supporting evidence for the structural coverage interpretation."
+  },
+  "recommended_claim": "Under an equal 1000-question / 1000-VLM-call budget, ADVTEST finds a broader structural error space than random candidate selection. Manual inspection indicates that both methods produce valid structural failures and answer-format boundary cases; ADVTEST's advantage is a coverage-breadth effect from substantially larger structural coverage, not from higher per-sample validity."
+}

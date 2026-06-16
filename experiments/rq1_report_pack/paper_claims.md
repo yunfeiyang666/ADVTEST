@@ -24,6 +24,12 @@ Claim: The ADVTEST-vs-Random trend is not explained by one lucky Random seed in 
 
 Evidence: At 100 calls, ADVTEST exceeds all 3 Random seeds on unique failures and failed unique L2.
 
+### supported_by_manual_audit_with_caveat
+
+Claim: ADVTEST's advantage should be interpreted as coverage breadth, not higher per-sample validity.
+
+Evidence: In the 48-row manual audit, Random-only samples have a slightly higher sampled validity rate than ADVTEST-only samples (75.0% vs. 66.7%). However, ADVTEST has a much larger exclusive failed-L2 space (3070 vs. 1309). A qualitative extrapolation estimates about 2047 valid ADVTEST-only failed L2 items versus about 982 for Random-only.
+
 ### boundary_condition
 
 Claim: Official NuScenes-QA and QATest-adapted should be described as external references, not coverage-comparable head-to-head baselines.
@@ -35,3 +41,4 @@ Evidence: Both use category-level official ground truth and do not expose ADVTES
 - Official NuScenes-QA and QATest-adapted are external references, not the main coverage-comparable baselines.
 - Correctness is currently deterministic token-boundary lexical scoring, not semantic judging.
 - Structural L2 metrics are frame-qualified; this is intentional to avoid merging same-named objects across frames.
+- Manual audit estimates are qualitative and small-sample; use them to explain result interpretation, not as a statistical significance claim.
