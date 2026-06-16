@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "call_budget": 1000,
+  "suites": {
+    "advtest": {
+      "source_path": "E:\\Project\\ADVTEST\\scratch\\rq1_formal_exploration\\runs\\structural-cap50-seed42-retry1\\results\\advtest_suite.jsonl",
+      "source_sha256": "84f2792c9c9b41affe8b3ad4cb4a948611f6b37d77d74d4d52f373f09f9a758a",
+      "output_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\advtest_suite.jsonl",
+      "output_sha256": "28f4fea0e77014f35264620f9a08d73261e1c0a47ae8180716e6aa0fab127ba3",
+      "questions": 1000,
+      "calls": 1000
+    },
+    "random": {
+      "source_path": "E:\\Project\\ADVTEST\\scratch\\rq1_formal_exploration\\runs\\structural-cap50-seed42-retry1\\results\\random_suite.jsonl",
+      "source_sha256": "a26a8d7c6fa1436a2f5de11a7b91a7febb0c3d3bfffe0a2c6d7beb195a77b6f5",
+      "output_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\random_suite.jsonl",
+      "output_sha256": "bd23a981ce5ce025d93ddd11902243410e0daeca1a32759658c61c51d9bf1afb",
+      "questions": 1000,
+      "calls": 1000
+    },
+    "official_qa": {
+      "source_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\runs\\official-capacity1100-for-call1000\\results\\official_qa_suite.jsonl",
+      "source_sha256": "8f6fec9418c1400496c26e10cd7a9169e78c980be755d875b8c1336ecfa91ca7",
+      "output_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\official_qa_suite.jsonl",
+      "output_sha256": "66cf75f705304c51262741d049bb218751eba7e48696fff0365818cc2e99235c",
+      "questions": 1000,
+      "calls": 1000,
+      "same_frame_dedupe": {
+        "input_records_consumed": 1006,
+        "skipped_duplicate_questions": 6,
+        "sanitizer_manifest": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\official_qa_sanitize_manifest.json"
+      }
+    },
+    "qatest_adapted": {
+      "source_path": "E:\\Project\\ADVTEST\\scratch\\rq1_qatest_adapted\\runs\\qatest-style-vs-adapted-1000\\results\\qatest_adapted_suite.jsonl",
+      "source_sha256": "08394c840c966a2b86a962c5710ce319828a5dfaae81efc028c2a1ebb9307ae5",
+      "output_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\qatest_adapted_suite.jsonl",
+      "output_sha256": "7bfc85467007cac939eb9a1ec5c1bc1aca8f039b4d9cdaf1c026063255a22be6",
+      "questions": 1000,
+      "calls": 1000
+    }
+  }
+}

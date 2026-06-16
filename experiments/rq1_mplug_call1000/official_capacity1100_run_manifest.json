@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "official-capacity1100-for-call1000",
+  "purpose": "Extend Official QA source so same-frame deduped call1000 suite can reach exact budget",
+  "status": "completed",
+  "command": [
+    "E:\\Project\\ADVTEST\\.venv310\\Scripts\\python.exe",
+    "official_qa_experiment.py",
+    "--methods",
+    "official_qa",
+    "--generation-budget",
+    "1100",
+    "--frame-pool-size",
+    "100",
+    "--seed",
+    "42",
+    "--output-dir",
+    "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\runs\\official-capacity1100-for-call1000\\results"
+  ],
+  "workspace_root": "E:\\Project\\ADVTEST",
+  "parameters": {
+    "generation_budget": 1100,
+    "seed": 42,
+    "frame_pool_size": 100,
+    "method": "official_qa"
+  },
+  "inputs": [
+    {
+      "path": "E:\\Project\\ADVTEST\\1号机代码\\DATA_new\\analysis\\data_cache\\rq1_100_eval_frames.json",
+      "sha256": "6a76177b6d3bbb9c52159933680527caf03862dd78b3f237176dda54e0a0c797",
+      "size_bytes": 10341
+    }
+  ],
+  "git": {
+    "commit": "1f0c58baf6be0952375c79234b41c92432eed5e7",
+    "branch": "codex/rq1-experiment-boundaries",
+    "dirty": true
+  },
+  "prepared_at": "2026-06-16T04:30:17.775073+00:00",
+  "started_at": "2026-06-16T04:30:17.776505+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-06-16T04:30:19.772498+00:00",
+  "duration_seconds": 2.0,
+  "stdout_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\runs\\official-capacity1100-for-call1000\\stdout.log",
+  "stderr_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\runs\\official-capacity1100-for-call1000\\stderr.log"
+}

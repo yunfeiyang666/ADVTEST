@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "source_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\runs\\official-capacity1100-for-call1000\\results\\official_qa_suite.jsonl",
+  "source_sha256": "8f6fec9418c1400496c26e10cd7a9169e78c980be755d875b8c1336ecfa91ca7",
+  "output_path": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\official_qa_suite.jsonl",
+  "output_sha256": "66cf75f705304c51262741d049bb218751eba7e48696fff0365818cc2e99235c",
+  "call_budget": 1000,
+  "questions": 1000,
+  "calls": 1000,
+  "input_records_consumed": 1006,
+  "skipped_duplicate_questions": 6
+}

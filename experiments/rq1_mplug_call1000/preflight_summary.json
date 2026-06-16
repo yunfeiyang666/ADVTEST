@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "call_budget": 1000,
+  "suites": [
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\advtest_suite.jsonl",
+      "suite_sha256": "28f4fea0e77014f35264620f9a08d73261e1c0a47ae8180716e6aa0fab127ba3",
+      "requested_calls": 1000,
+      "evaluated_questions": 1000,
+      "evaluated_calls": 1000,
+      "unique_frames": 20,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    },
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\random_suite.jsonl",
+      "suite_sha256": "bd23a981ce5ce025d93ddd11902243410e0daeca1a32759658c61c51d9bf1afb",
+      "requested_calls": 1000,
+      "evaluated_questions": 1000,
+      "evaluated_calls": 1000,
+      "unique_frames": 20,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    },
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\official_qa_suite.jsonl",
+      "suite_sha256": "66cf75f705304c51262741d049bb218751eba7e48696fff0365818cc2e99235c",
+      "requested_calls": 1000,
+      "evaluated_questions": 1000,
+      "evaluated_calls": 1000,
+      "unique_frames": 67,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    },
+    {
+      "suite": "E:\\Project\\ADVTEST\\scratch\\rq1_mplug_call1000\\suites\\qatest_adapted_suite.jsonl",
+      "suite_sha256": "7bfc85467007cac939eb9a1ec5c1bc1aca8f039b4d9cdaf1c026063255a22be6",
+      "requested_calls": 1000,
+      "evaluated_questions": 1000,
+      "evaluated_calls": 1000,
+      "unique_frames": 100,
+      "passed": true,
+      "failure_codes": [],
+      "failures": []
+    }
+  ]
+}

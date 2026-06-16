@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "call_budget_per_method": 1000,
+  "budget_unit": "actual_vlm_calls",
+  "selection_policy": "frozen_suite_prefix",
+  "methods": {
+    "advtest": {
+      "method": "advtest",
+      "questions": 1000,
+      "vlm_calls": 1000,
+      "unique_frames": 20,
+      "maximum_questions_per_frame": 50,
+      "top_frames": [
+        [
+          "scene-0013_frame31",
+          50
+        ],
+        [
+          "scene-0018_frame39",
+          50
+        ],
+        [
+          "scene-0035_frame14",
+          50
+        ],
+        [
+          "scene-0035_frame39",
+          50
+        ],
+        [
+          "scene-0036_frame17",
+          50
+        ],
+        [
+          "scene-0036_frame19",
+          50
+        ],
+        [
+          "scene-0092_frame20",
+          50
+        ],
+        [
+          "scene-0092_frame39",
+          50
+        ],
+        [
+          "scene-0094_frame7",
+          50
+        ],
+        [
+          "scene-0097_frame12",
+          50
+        ]
+      ],
+      "answer_types": {
+        "boolean": 7,
+        "string": 993
+      },
+      "top_families": {
+        "converge": 981,
+        "distance_chain": 7,
+        "direction_chain": 7,
+        "viewpoint_transfer": 5
+      },
+      "question_sources": {
+        "programmatic_candidate_space": 1000
+      },
+      "coverage_comparable": true,
+      "coverage_status": "available",
+      "gt_granularity": "instance_or_relation",
+      "covered_l0": 482,
+      "total_l0": 2089,
+      "micro_l0": 0.23073240785064625,
+      "covered_l1": 2162,
+      "total_l1": 28579,
+      "micro_l1": 0.07564995276251793,
+      "covered_l2": 4508,
+      "total_l2": 1028619,
+      "micro_l2": 0.004382575083680158,
+      "unique_l2_per_question": 4.508
+    },
+    "random": {
+      "method": "random",
+      "questions": 1000,
+      "vlm_calls": 1000,
+      "unique_frames": 20,
+      "maximum_questions_per_frame": 50,
+      "top_frames": [
+        [
+          "scene-0013_frame31",
+          50
+        ],
+        [
+          "scene-0018_frame39",
+          50
+        ],
+        [
+          "scene-0035_frame14",
+          50
+        ],
+        [
+          "scene-0035_frame39",
+          50
+        ],
+        [
+          "scene-0036_frame17",
+          50
+        ],
+        [
+          "scene-0036_frame19",
+          50
+        ],
+        [
+          "scene-0092_frame20",
+          50
+        ],
+        [
+          "scene-0092_frame39",
+          50
+        ],
+        [
+          "scene-0094_frame7",
+          50
+        ],
+        [
+          "scene-0097_frame12",
+          50
+        ]
+      ],
+      "answer_types": {
+        "boolean": 38,
+        "string": 962
+      },
+      "top_families": {
+        "converge": 896,
+        "direction_chain": 38,
+        "distance_chain": 34,
+        "viewpoint_transfer": 32
+      },
+      "question_sources": {
+        "programmatic_candidate_space": 1000
+      },
+      "coverage_comparable": true,
+      "coverage_status": "available",
+      "gt_granularity": "instance_or_relation",
+      "covered_l0": 478,
+      "total_l0": 2089,
+      "micro_l0": 0.22881761608425083,
+      "covered_l1": 1794,
+      "total_l1": 28579,
+      "micro_l1": 0.06277336505825956,
+      "covered_l2": 2818,
+      "total_l2": 1028619,
+      "micro_l2": 0.0027395955159296103,
+      "unique_l2_per_question": 2.818
+    },
+    "official_qa": {
+      "method": "official_qa",
+      "questions": 1000,
+      "vlm_calls": 1000,
+      "unique_frames": 67,
+      "maximum_questions_per_frame": 28,
+      "top_frames": [
+        [
+          "scene-0519_frame4",
+          28
+        ],
+        [
+          "scene-0522_frame27",
+          27
+        ],
+        [
+          "scene-0035_frame39",
+          24
+        ],
+        [
+          "scene-0099_frame35",
+          24
+        ],
+        [
+          "scene-0269_frame3",
+          24
+        ],
+        [
+          "scene-0555_frame8",
+          24
+        ],
+        [
+          "scene-0036_frame19",
+          23
+        ],
+        [
+          "scene-0268_frame6",
+          22
+        ],
+        [
+          "scene-0552_frame2",
+          22
+        ],
+        [
+          "scene-0556_frame23",
+          22
+        ]
+      ],
+      "answer_types": {
+        "string": 1000
+      },
+      "top_families": {
+        "exist": 279,
+        "object": 222,
+        "count": 180,
+        "status": 171,
+        "comparison": 148
+      },
+      "question_sources": {
+        "nuscenes_qa": 1000
+      },
+      "coverage_comparable": false,
+      "coverage_status": "not_available_by_design",
+      "gt_granularity": "category_level_official",
+      "coverage_boundary_reason": "NuScenes-QA-derived suites intentionally do not carry ADVTEST-private coverage footprints."
+    },
+    "qatest_adapted": {
+      "method": "qatest_adapted",
+      "questions": 1000,
+      "vlm_calls": 1000,
+      "unique_frames": 100,
+      "maximum_questions_per_frame": 29,
+      "top_frames": [
+        [
+          "scene-0905_frame31",
+          29
+        ],
+        [
+          "scene-0780_frame17",
+          27
+        ],
+        [
+          "scene-0035_frame39",
+          21
+        ],
+        [
+          "scene-0555_frame8",
+          19
+        ],
+        [
+          "scene-0269_frame3",
+          19
+        ],
+        [
+          "scene-0099_frame8",
+          18
+        ],
+        [
+          "scene-0519_frame4",
+          18
+        ],
+        [
+          "scene-0633_frame33",
+          18
+        ],
+        [
+          "scene-0557_frame0",
+          17
+        ],
+        [
+          "scene-0036_frame19",
+          17
+        ]
+      ],
+      "answer_types": {
+        "string": 1000
+      },
+      "top_families": {
+        "exist": 276,
+        "object": 230,
+        "count": 183,
+        "comparison": 156,
+        "status": 155
+      },
+      "question_sources": {
+        "nuscenes_qa": 1000
+      },
+      "coverage_comparable": false,
+      "coverage_status": "not_available_by_design",
+      "gt_granularity": "category_level_official",
+      "coverage_boundary_reason": "NuScenes-QA-derived suites intentionally do not carry ADVTEST-private coverage footprints."
+    }
+  },
+  "comparison_boundaries": [
+    "ADVTEST versus Random is the structurally comparable internal ablation.",
+    "Official QA and QATest-adapted are cross-paradigm references; they do not expose structural L2 coverage.",
+    "Cross-paradigm failure rates must report GT granularity and frame distribution."
+  ],
+  "internal_ablation": {
+    "advtest_minus_random_covered_l2": 1690,
+    "advtest_relative_l2_coverage_gain": 0.5997161107168207,
+    "advtest_minus_random_unique_l2_per_question": 1.69
+  }
+}
