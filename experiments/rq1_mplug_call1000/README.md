@@ -89,6 +89,39 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe run_recorded_experiment.py `
     --vlm-call-budget 1000
 ```
 
-Do not interpret this gate as a completed VLM result. It only proves that the
-formal 1000-call inputs are assembled, deduplicated, coverage-audited, and
-ready to run.
+## Recorded mPLUG Run
+
+The formal four-method run completed after the input gate:
+
+- Run ID: `mplug-four-methods-call1000`
+- Exit code: 0
+- Duration: 32921.27 seconds, approximately 9.14 hours
+- Real inference records: 4000
+- Mock fallback records: 0
+- Raw audit: no wrong mode, empty output, error, or nonpositive-duration record
+
+All headline metrics use `token_boundary_v2_frame_qualified_l2` scoring over
+the frozen raw outputs:
+
+| Method | Role | Calls | Wrong | Independent failures | UF/100 | Duplicate rate | Failed unique L2 | Frames |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| `advtest` | proposed | 1000 | 981 | 981 | 98.1 | 0.000 | 4488 | 20 |
+| `random` | internal ablation | 1000 | 912 | 912 | 91.2 | 0.000 | 2727 | 20 |
+| `official_qa` | neutral reference | 1000 | 650 | 650 | 65.0 | 0.000 | N/A | 67 |
+| `qatest_adapted` | external comparison | 1000 | 637 | 468 | 46.8 | 0.265 | N/A | 100 |
+
+The controlled internal ablation supports the coverage-guidance claim:
+
+- ADVTEST covers 1690 more unique L2 items in its generated input than Random,
+  a 59.97% relative micro-L2 gain.
+- ADVTEST finds 69 more independent mPLUG failures than Random, a 7.57%
+  relative gain.
+- ADVTEST exposes 1761 more failed unique L2 items than Random, a 64.58%
+  relative gain.
+
+The cross-paradigm rows remain descriptive because Official QA and
+QATest-adapted use category-level NuScenes-QA ground truth and do not carry
+structural L2 coverage fields.
+
+The machine-readable summaries are `call1000_summary.json` and
+`call1000_rescored_v2.json`.

@@ -1,5 +1,5 @@
 {
-  "scoring": "token_boundary_v2",
+  "scoring": "token_boundary_v2_frame_qualified_l2",
   "call_budget": 100,
   "advtest": {
     "raw_path": "scratch\\rq1_mplug_call100\\runs\\mplug-four-methods-call100\\results\\advtest_suite_raw_results.jsonl",

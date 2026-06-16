@@ -88,12 +88,14 @@ frames and equal 100-call budget:
 This supports the claim that coverage-guided ordering improves failure
 discovery over random ordering within the shared generated-question space.
 
-These headline metrics use `token_boundary_v2` scoring. The frozen raw outputs
-were rescored after an audit found unsafe substring matches in the original
-scorer. ADVTEST and Random were unchanged. Two Official QA records and two
-QATest-adapted records changed from correct to wrong, producing 67 and 58
-independent failures respectively. No VLM inference was repeated; the complete
-row-level audit is in `call100_rescored_v2.json`.
+These headline metrics use `token_boundary_v2_frame_qualified_l2` scoring. The
+frozen raw outputs were rescored after an audit found unsafe substring matches
+in the original scorer. ADVTEST and Random were unchanged. Two Official QA
+records and two QATest-adapted records changed from correct to wrong, producing
+67 and 58 independent failures respectively. Structural L2 metrics are
+frame-qualified so same-named objects or relations in different frames are not
+merged. No VLM inference was repeated; the complete row-level audit is in
+`call100_rescored_v2.json`.
 
 The cross-paradigm rows are descriptive. Official QA and QATest-adapted use
 category-level GT and different natural frame distributions, while ADVTEST

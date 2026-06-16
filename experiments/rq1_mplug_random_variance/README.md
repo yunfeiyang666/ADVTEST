@@ -82,7 +82,8 @@ per-question outputs remain under `scratch/rq1_mplug_random_variance/runs/`.
 
 ## Results
 
-All rows use `token_boundary_v2` scoring over frozen raw model outputs:
+All rows use `token_boundary_v2_frame_qualified_l2` scoring over frozen raw
+model outputs:
 
 | Method | Seed | Calls | Wrong | Independent failures | Failed unique L2 |
 |---|---:|---:|---:|---:|---:|

@@ -98,13 +98,15 @@ deterministic sinusoidal buffers, not trainable weights, and are intentionally
 absent from the converted checkpoint. See
 `experiments/rq1_mplug_model_audit/README.md`.
 
-The committed headline metrics use `token_boundary_v2` scoring. A post-run
+The committed headline metrics use `token_boundary_v2_frame_qualified_l2`
+scoring. A post-run
 audit found that the original normalized-substring scorer could match `no`
 inside `cannot`, `car` inside `cart`, and empty predictions. The frozen raw
 model outputs were rescored without another VLM run. One QATest-adapted record
 changed from correct to wrong; ADVTEST, Random, and Official QA were unchanged.
 The exact audit is in `call20_rescored_v2.json`. This deterministic lexical
-scorer is still not a semantic judge.
+scorer is still not a semantic judge. Structural L2 metrics are frame-qualified
+so same-named objects or relations in different frames are not merged.
 
 The 20-call prefixes are not frame-balanced. ADVTEST and Random each remain in
 one frame because their generator uses a 50-question per-frame cap, while

@@ -5,7 +5,7 @@
   "duration_seconds": 2985.9340447,
   "generation_commit": "36a4591919866671e13af290925d33e416e05cc0",
   "model_mode": "MPLUG",
-  "scoring": "token_boundary_v2",
+  "scoring": "token_boundary_v2_frame_qualified_l2",
   "actual_real_inference_records": 400,
   "mock_fallback_records": 0,
   "raw_audit": {
@@ -87,6 +87,7 @@
     "Cross-paradigm suites have different frame distributions and ground-truth granularities.",
     "Headline metrics use token-boundary lexical scoring rather than a semantic judge.",
     "The frozen raw outputs were rescored offline; two Official QA and two QATest-adapted records changed from correct to wrong, with no repeated VLM inference.",
-    "A separate three-seed Random robustness check is recorded under experiments/rq1_mplug_random_variance; it is not a population confidence interval."
+    "A separate three-seed Random robustness check is recorded under experiments/rq1_mplug_random_variance; it is not a population confidence interval.",
+    "Structural L2 coverage and failed-L2 metrics are frame-qualified to avoid merging same-named objects across frames."
   ]
 }

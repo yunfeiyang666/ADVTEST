@@ -4,7 +4,7 @@
   "exit_code": 0,
   "duration_seconds": 634.8035641,
   "model_mode": "MPLUG",
-  "scoring": "token_boundary_v2",
+  "scoring": "token_boundary_v2_frame_qualified_l2",
   "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
   "actual_real_inference_records": 80,
   "mock_fallback_records": 0,
@@ -81,7 +81,8 @@
     "The four prefixes are not frame-balanced.",
     "Official QA and ADVTEST use different ground-truth granularities.",
     "Headline metrics use token-boundary lexical scoring rather than a semantic judge.",
-    "The frozen raw outputs were rescored offline; one QATest-adapted record changed from correct to wrong and no VLM inference was repeated."
+    "The frozen raw outputs were rescored offline; one QATest-adapted record changed from correct to wrong and no VLM inference was repeated.",
+    "Structural L2 coverage and failed-L2 metrics are frame-qualified to avoid merging same-named objects across frames."
   ],
   "eligible_for_recorded_call100": true
 }
