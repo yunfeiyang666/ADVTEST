@@ -212,6 +212,46 @@ class SuiteEvaluationMetricsTests(unittest.TestCase):
         self.assertEqual(result["duplicate_failure_rate"], 0.5)
         self.assertEqual(result["unique_failures_per_100_calls"], 50.0)
 
+    def test_structural_l2_identity_is_frame_qualified(self):
+        questions = [
+            {
+                "experiment_layer": "structural_coverage",
+                "experiment_method": "advtest",
+                "question_source": "programmatic_candidate_space",
+                "source_question_id": f"source-{index}",
+                "source_sample_token": "",
+                "scene_frame": f"scene-1_frame{index}",
+                "template_id": "converge",
+                "question": f"q{index}",
+                "answer": "car",
+                "coverage_l2": ["item-a"],
+                "vlm_call_cost": 1,
+            }
+            for index in range(2)
+        ]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            suite_path = root / "advtest_suite.jsonl"
+            suite_path.write_text(
+                "".join(json.dumps(row) + "\n" for row in questions),
+                encoding="utf-8",
+            )
+            result = evaluate_suite(
+                suite_path,
+                AlwaysWrongEvaluator(),
+                "MOCK",
+                root / "eval",
+                root / "outputs",
+                root / "data",
+                write_raw=False,
+            )
+
+        self.assertEqual(result["wrong"], 2)
+        self.assertEqual(result["unique_l2"], 2)
+        self.assertEqual(result["failed_unique_l2"], 2)
+        self.assertEqual(result["unique_failures"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

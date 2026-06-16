@@ -44,7 +44,12 @@ def l2_items(question: dict) -> set:
     if question.get("coverage_l2_items"):
         return set(map(str, question["coverage_l2_items"]))
     footprint = question.get("coverage_footprint") or {}
-    return set(map(str, footprint.get("l2") or []))
+    return set(map(str, footprint.get("l2") or question.get("coverage_l2") or []))
+
+
+def frame_qualified_l2_items(question: dict) -> set:
+    scene_frame = get_scene_frame(question)
+    return {f"{scene_frame}::{item}" for item in l2_items(question)}
 
 
 def question_family(question: dict) -> str:
@@ -63,7 +68,7 @@ def failure_signature(question: dict, predicted: str) -> str:
     if source == "nuscenes_qa" and source_id:
         return f"nuscenes_qa|{source_id}"
 
-    items = sorted(l2_items(question))
+    items = sorted(frame_qualified_l2_items(question))
     if items:
         return "l2|" + "|".join(items)
 
@@ -179,7 +184,8 @@ def evaluate_suite(
             scene_frame = get_scene_frame(question)
             frames[scene_frame] += 1
             question_l2 = l2_items(question)
-            unique_l2.update(question_l2)
+            qualified_question_l2 = frame_qualified_l2_items(question)
+            unique_l2.update(qualified_question_l2)
             q_text = str(question.get("question", ""))
             cache_key = (scene_frame, q_text)
             use_cache = mode == "MOCK"
@@ -239,7 +245,7 @@ def evaluate_suite(
                 correct += 1
                 continue
             wrong += 1
-            failed_l2.update(question_l2)
+            failed_l2.update(qualified_question_l2)
             failure_by_family[family] += 1
             signature = failure_signature(question, predicted)
             unique_failure_keys.add(signature)

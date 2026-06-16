@@ -102,7 +102,7 @@ def main() -> None:
         random_results.append(result)
 
     payload = {
-        "scoring": "token_boundary_v2",
+        "scoring": "token_boundary_v2_frame_qualified_l2",
         **summarize_results(advtest, random_results),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -87,6 +87,37 @@ class RescoreSuiteResultsTests(unittest.TestCase):
         self.assertEqual(result["failed_unique_l2"], 1)
         self.assertEqual(result["duplicate_failure_rate"], 0.5)
 
+    def test_rescore_keeps_same_l2_items_on_different_frames_separate(self):
+        rows = [
+            {
+                "method": "advtest",
+                "scene_frame": f"scene-1_frame{index}",
+                "family": "converge",
+                "question": f"Question {index}",
+                "answer": "car",
+                "predicted": "truck",
+                "raw_model_output": "truck",
+                "is_correct": False,
+                "question_source": "scene_graph",
+                "source_question_id": f"source-{index}",
+                "l2_items": ["item-a"],
+                "vlm_call_cost": 1,
+            }
+            for index in range(2)
+        ]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "advtest_suite_raw_results.jsonl"
+            path.write_text(
+                "".join(json.dumps(row) + "\n" for row in rows),
+                encoding="utf-8",
+            )
+            result = rescore_raw(path)
+
+        self.assertEqual(result["wrong"], 2)
+        self.assertEqual(result["unique_failures"], 2)
+        self.assertEqual(result["failed_unique_l2"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

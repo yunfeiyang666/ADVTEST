@@ -15,6 +15,14 @@ def iter_jsonl(path: Path) -> Iterable[dict]:
                 yield json.loads(line)
 
 
+def frame_qualified_l2_items(row: dict) -> set[str]:
+    scene_frame = str(row.get("scene_frame") or "unknown")
+    return {
+        f"{scene_frame}::{item}"
+        for item in (row.get("l2_items") or [])
+    }
+
+
 def rescore_raw(path: Path) -> dict:
     rows = list(iter_jsonl(path))
     correct = 0
@@ -54,9 +62,7 @@ def rescore_raw(path: Path) -> dict:
                 "coverage_l2_items": row.get("l2_items") or [],
             }
             unique_failure_keys.add(failure_signature(question, predicted))
-            failed_unique_l2.update(
-                str(item) for item in question["coverage_l2_items"]
-            )
+            failed_unique_l2.update(frame_qualified_l2_items(row))
             failure_families[str(row.get("family") or "unknown")] += 1
 
         if old_correct and not rescored_correct:
@@ -114,7 +120,7 @@ def main() -> None:
     args = parser.parse_args()
 
     payload = {
-        "scoring": "token_boundary_v2",
+        "scoring": "token_boundary_v2_frame_qualified_l2",
         "results": [rescore_raw(path) for path in args.raw],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
