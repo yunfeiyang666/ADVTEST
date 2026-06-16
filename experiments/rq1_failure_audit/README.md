@@ -23,11 +23,25 @@ Open `manual_review_samples.csv` and fill:
 - `manual_issue_type`: one of `valid_visual_or_structural_error`, `answer_granularity_mismatch`, `ambiguous_question`, `mosaic_or_label_artifact`, `lexical_scoring_artifact`, `other`
 - `manual_notes`: short evidence from the image and text
 
+## Completed Manual Review
+
+The current `manual_review_samples.csv` has been filled. See:
+
+- `manual_review_summary.md` for a human-readable summary.
+- `manual_review_summary.json` for structured counts.
+
+The review is scene-graph-assisted because the rendered mosaics show the
+camera views but not object-instance labels. Rows marked
+`answer_granularity_mismatch` should be treated as answer-format / scoring
+boundary cases rather than strong visual-model failures.
+
 ## Generated Files
 
 - `failure_audit.json`: complete structured audit payload.
 - `failure_overlap_summary.csv`: overlap counts.
 - `manual_review_samples.csv`: deterministic samples for human review.
+- `manual_review_summary.json`: structured summary after manual annotation.
+- `manual_review_summary.md`: paper-oriented manual audit summary.
 
 ## Reproduction
 
@@ -36,5 +50,13 @@ Run from repository root:
 ```powershell
 $codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
 $script = Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\build_rq1_failure_audit.py'
+python $script
+```
+
+After editing `manual_review_samples.csv`, regenerate the manual summary:
+
+```powershell
+$codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
+$script = Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\summarize_rq1_manual_failure_audit.py'
 python $script
 ```
