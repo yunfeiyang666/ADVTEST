@@ -86,6 +86,17 @@ $codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Ob
 python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\validate_rq1_failure_audit_artifacts.py')
 ```
 
+Before reporting the human-calibrated result as final, run the strict completion check:
+
+```powershell
+$codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
+python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\summarize_rq1_human_adjudication.py') --require-complete
+python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\validate_rq1_failure_audit_artifacts.py') --require-human-complete
+```
+
+Both commands must pass before changing the paper/report language from
+`pending human review` to `human-calibrated`.
+
 ## Files
 
 - `large_sampling_manifest.json`: universe counts, selected counts, family and scene distributions.

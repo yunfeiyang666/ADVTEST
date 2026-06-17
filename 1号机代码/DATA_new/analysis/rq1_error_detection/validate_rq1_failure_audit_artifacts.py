@@ -211,22 +211,29 @@ def validate_artifacts(
     human_pack_csv: Path,
     human_manifest_json: Path,
     human_summary_json: Path,
+    require_human_complete: bool = False,
 ) -> dict:
     large_rows = load_csv(large_csv)
     assisted_summary = load_json(assisted_summary_json)
     human_rows = load_csv(human_pack_csv)
     human_manifest = load_json(human_manifest_json)
     human_summary = load_json(human_summary_json)
+    human_payload = validate_human_pack(
+        human_rows,
+        human_manifest,
+        human_summary,
+    )
+    if require_human_complete and human_payload["pending_rows"]:
+        raise ValueError(
+            "human adjudication is incomplete: "
+            f"pending_rows={human_payload['pending_rows']}"
+        )
 
     return {
         "schema_version": 1,
         "status": "ok",
         "large_audit": validate_large_audit(large_rows, assisted_summary),
-        "human_adjudication": validate_human_pack(
-            human_rows,
-            human_manifest,
-            human_summary,
-        ),
+        "human_adjudication": human_payload,
         "checked_files": {
             "large_csv": str(large_csv),
             "assisted_summary_json": str(assisted_summary_json),
@@ -287,6 +294,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=base / "artifact_validation_summary.md",
     )
+    parser.add_argument(
+        "--require-human-complete",
+        action="store_true",
+        help="Fail if any row in human_adjudication_pack.csv is still pending.",
+    )
     return parser
 
 
@@ -298,6 +310,7 @@ def main() -> None:
         human_pack_csv=args.human_pack_csv,
         human_manifest_json=args.human_manifest_json,
         human_summary_json=args.human_summary_json,
+        require_human_complete=args.require_human_complete,
     )
     args.output_json.write_text(
         json.dumps(summary, indent=2, ensure_ascii=False) + "\n",

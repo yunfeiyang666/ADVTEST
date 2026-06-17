@@ -25,3 +25,15 @@ Fill only the `human_*` columns. Treat the existing `manual_*` columns as assist
 - `human_issue_type`: reuse the existing issue taxonomy.
 - `human_agrees_with_assisted`: `yes` if the human label matches `manual_valid_failure`, otherwise `no`.
 - `human_notes`: short reason, especially for disagreements.
+
+## Completion Gate
+
+After annotation, regenerate and validate the human-calibrated artifacts:
+
+```powershell
+$codeRoot = (Get-ChildItem -Directory | Where-Object Name -Like '1*' | Select-Object -First 1).FullName
+python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\summarize_rq1_human_adjudication.py') --require-complete
+python (Join-Path $codeRoot 'DATA_new\analysis\rq1_error_detection\validate_rq1_failure_audit_artifacts.py') --require-human-complete
+```
+
+If either command fails, keep the audit language as `pending human review` and fix the reported row before using calibrated estimates.
