@@ -305,3 +305,30 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe `
 - Automation ID：`rq1-overnight-continuation`
 - 间隔：45 分钟
 - 任务：检查 seed 筛选、抽 seed bank、推进三条线启动预检和后续实验；不 push，不假装人工检测已完成。
+
+## 14. 过夜心跳进展（2026-06-17 21:56）
+
+统一 seed bank 已完成：
+
+- Run ID：`seed-filter-mplug-f30-q454-v5`
+- 候选官方 QA：454 道。
+- mPLUG 答对并进入 seed bank：158 道。
+- mPLUG 答错或被剔除：296 道。
+- 覆盖帧数：29 个帧。
+- 输出：
+  - `E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\seed-filter-mplug-f30-q454-v5\results\correct_seed_bank.jsonl`
+  - `E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\seed-filter-mplug-f30-q454-v5\results\correct_seed_bank_summary.json`
+
+三条线启动 smoke 均已通过：
+
+| 方法线 | 启动检查 | 结果 | 说明 |
+|---|---|---:|---|
+| ADVTEST | `fixed_budget_experiment.py` 小预算结构生成 | 通过 | 生成链路可跑；当前 smoke 只验证结构生成，不代表最终 seeded 主实验设置 |
+| QATest 原始代码 | `scratch/test_original_qatest.py` | 通过 | 成功调用原始 QATest 变异函数；后续 seed-bank glue 需要处理当前 `nlpaug` 返回 list 而原始代码期望 str 的兼容问题 |
+| QAAskeR 原始代码 | `scratch/test_original_qaasker.py` | 通过 | 成功调用原始 Q2S/S2G；部分 NuScenes 句式会得到 `None`，这应计入生成 rejected/self-check 数据 |
+
+守夜 orchestrator 状态：
+
+- 状态文件：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\overnight_orchestrator\status.json`
+- 当前状态：`start_checks_completed`
+- 下一步：不要直接把 smoke 当主实验结果；应先补 seed-bank-driven QATest/QAAskeR glue，再启动三条 1000 新题主实验。
