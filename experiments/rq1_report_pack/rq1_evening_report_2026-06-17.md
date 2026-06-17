@@ -226,6 +226,81 @@ QATest-adapted 的 1000 题生成审计结果：
 - ADVTEST vs Random 是严格可比的内部消融。
 - Official-QA 和 QATest-adapted 只能作为跨范式参考，不能拿 structural L2 覆盖和 ADVTEST 直接排位。
 
+### 4.1 做题速度怎么算
+
+这里也要把“做题速度”讲清楚。我们现在有两个速度口径：
+
+- 离线出题速度：生成测试题本身花多久，不调用被测 VLM。
+- VLM 测试速度：把题喂给 mPLUG-Owl2 后，平均每道题推理多久。
+
+这张表说明每种方法在出题阶段是否需要 VLM，以及目前已有的计时结果。
+
+表头含义：
+
+- `方法`：参与比较的方法。
+- `出题阶段是否调用 VLM`：生成题目时是否要问被测视觉模型。
+- `已有出题计时`：目前脚本记录到的离线生成耗时。
+- `说明`：为什么这个速度不能直接和另一个速度混在一起比。
+
+| 方法 | 出题阶段是否调用 VLM | 已有出题计时 | 说明 |
+|---|---|---:|---|
+| ADVTEST | 否 | 结构化六方法联合生成约 9.78 秒 | 当前未拆成单方法精确计时，但离线生成不是主耗时 |
+| Random | 否 | 同上 | 与 ADVTEST 使用同一结构化候选空间，差别是随机选题 |
+| Official-QA | 否 | 约 2.00 秒生成 1100 条候选，去重后取 1000 call | 本质是从官方 QA 中取题，不做结构搜索 |
+| QATest-adapted | 否 | 18.65 秒生成 1000 题 | 需要做语言覆盖评分、候选重试和 seed pool 更新，所以比简单取题慢 |
+| QAAskeR | 是 | 本轮未并入主表 | 完整流程依赖 VLM primary answer 再追问，预算口径是 two-call protocol |
+
+这张表说明真实测试阶段的速度。这里的速度不是公平性指标，只是告诉我们一轮实验大概会跑多久。公平性仍然看 `vlm_call_budget` 是否一致。
+
+表头含义：
+
+- `方法`：参与 1000-call 主实验的方法。
+- `Calls`：真实 VLM 调用次数。
+- `平均推理秒/题`：每道题调用 mPLUG-Owl2 的平均耗时。
+- `约合 1000 题耗时`：按该平均速度估算，1000 题需要多久。
+
+| 方法 | Calls | 平均推理秒/题 | 约合 1000 题耗时 |
+|---|---:|---:|---:|
+| ADVTEST | 1000 | 12.80 | 3.56 小时 |
+| Random | 1000 | 7.86 | 2.18 小时 |
+| Official-QA | 1000 | 7.21 | 2.00 小时 |
+| QATest-adapted | 1000 | 4.82 | 1.34 小时 |
+
+整轮 4000 条真实推理总耗时 32921.27 秒，约 9.14 小时。ADVTEST 单题推理更慢，主要可能和题目文本、目标关系复杂度、输出长度和机器负载有关；所以今晚不要把“跑得慢”讲成方法劣势，只讲成工程成本和后续并行化需求。
+
+### 4.2 换帧条件和预算设置
+
+预算设置现在采用“题数/调用数”而不是“帧数”。原因是我们的目标不是证明某个方法在固定帧数里做得更满，而是比较在相同测试成本下，谁能发现更多错误、覆盖更多失败结构。
+
+目前已经明确的规则：
+
+- 主实验统一 `vlm_call_budget = 1000`，也就是每个方法最多真实测试 1000 道题。
+- ADVTEST 和 Random 使用同一个 100-frame pool、同一个帧顺序、同一个结构化候选空间。
+- 当前主实验对 ADVTEST/Random 使用 `Max/frame = 50`，所以 1000 题正好访问 20 个帧。
+- Official-QA 和 QATest-adapted 不按 structural L2 排位，只作为跨范式参考。
+- QAAskeR 因为一组测试至少涉及 primary + follow-up 两次 VLM 调用，后面要单独按 two-call protocol 做。
+
+我们前面调研和试过的换帧条件包括：
+
+| 条件 | 含义 | 当前状态 |
+|---|---|---|
+| full coverage | 当前帧的 L2 gap 已覆盖满就换帧 | 适合作为 ADVTEST 的自适应策略 |
+| zero-gain plateau | 连续若干题不增加新 L2，就换帧 | 候选条件是连续 10 题无增益 |
+| marginal-gain decline | 后 20 题平均增益低于前 20 题的一定比例 | 候选系数是 25%，但还没定稿 |
+| hard cap | 当前帧最多出多少题 | 主实验实际用 50 题/帧 |
+| candidate exhausted | 当前帧候选耗尽 | 保留为自然停止条件 |
+
+这里最关键的边界是：coverage-based 换帧只能算 ADVTEST 方法的一部分，不能给 Random、Official-QA、QATest-adapted 使用。否则 baseline 也间接用了我们的 coverage footprint，实验又会变得不干净。
+
+当前主实验的实际情况是，ADVTEST 和 Random 都主要被 `Max/frame = 50` 控制：前 19 个帧达到 frame cap，最后在全局 1000-call 预算处停止。这说明本轮主结果主要回答的是“相同 1000 次 VLM 调用、相同 50 题/帧上限下，ADVTEST 的 selection 是否优于 Random”，还不能最终回答“最佳换帧条件是什么”。
+
+所以今晚要把不确定性说清楚：
+
+- `50 题/帧` 是当前主实验设置，不一定是最终最优设置。
+- `100 题/帧` 是早期方案里讨论过的 hard cap，但可能让单帧消耗过多预算，需要做敏感性分析。
+- `连续 10 题无增益` 和 `后 20 题增益低于前 20 题 25%` 是候选规则，不能在看完 VLM 结果后再调参。
+- 下一步应该固定一组不看 VLM 结果的换帧规则，至少比较 `cap=50` 和 `cap=100`，再报告覆盖收益和故障检测收益是否稳定。
+
 ## 5. 实验一：1000-call 主实验
 
 ### 5.1 设置
@@ -507,6 +582,8 @@ ADVTEST-only vs Random-only：
 6. Failure audit 显示，Random-only 单样本有效率略高，但 ADVTEST 覆盖的 exclusive failed L2 空间更大，估计有效结构失败总量仍更高。
 7. Official-QA 和 QATest-adapted 是跨范式参考，不能作为 structural L2 head-to-head baseline。
 8. QAAskeR 由于 two-call protocol，本轮不进入主表，后续单独做。
+9. 做题速度要分清离线出题和 VLM 推理；本轮公平性按 1000 次真实 VLM call 控制，不按 wall-clock 控制。
+10. 换帧条件目前还不是最终定稿，`cap=50` 是当前主实验设置，后续需要做 `cap=50/100` 和 plateau/gain 阈值敏感性分析。
 
 ## 9. 今晚建议怎么讲
 
@@ -516,10 +593,12 @@ ADVTEST-only vs Random-only：
 2. 再说为什么要拆 baseline：不能让对照组复用 ADVTEST 能力。
 3. 然后讲方法流程：ADVTEST 完整版，Random 只改 selection，Official-QA 直接用官方题，QATest-adapted 从官方题变异，QAAskeR 暂缓。
 4. 接着讲 seed 和预算：seed 来源不同，预算统一用 VLM call。
-5. 讲主结果：ADVTEST vs Random，重点讲 failed unique L2。
-6. 讲 Random seed 检查：不是 seed 42 偶然。
-7. 讲 failure audit：承认边界问题，但总量优势仍在。
-8. 最后讲下一步：完成 100 行 human adjudication，把 assisted audit 校准成 human-calibrated estimate。
+5. 单独补一句速度：出题阶段大多不调用 VLM，真正耗时在 4000 次 mPLUG-Owl2 推理，整轮约 9.14 小时。
+6. 再补一句换帧：本轮用 `Max/frame=50` 固定上限，换帧阈值还要做敏感性分析，不能现在拍死。
+7. 讲主结果：ADVTEST vs Random，重点讲 failed unique L2。
+8. 讲 Random seed 检查：不是 seed 42 偶然。
+9. 讲 failure audit：承认边界问题，但总量优势仍在。
+10. 最后讲下一步：完成 100 行 human adjudication，把 assisted audit 校准成 human-calibrated estimate；同时补 `cap=50/100` 换帧敏感性分析。
 
 ## 10. 一句话总结
 
