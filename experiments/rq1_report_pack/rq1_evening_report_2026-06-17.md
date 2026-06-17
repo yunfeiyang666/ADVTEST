@@ -97,6 +97,42 @@ QATest-adapted 是外部方法参考，不是逐字节复现原版 QATest。
 - synonym replacement
 - wh contraction
 
+QATest-adapted 的修改程度要这样理解：
+
+| 修改项 | 是否修改 | 具体含义 |
+|---|---|---|
+| 图像/帧 | 否 | 仍使用官方 NuScenes-QA 对应的原始 frame，不换图、不合成新图 |
+| GT 答案 | 否 | 继承官方答案，因此仍是 category-level 或 yes/no/数量级答案 |
+| 目标对象/结构关系 | 否 | 不新增 instance-level 或 relation-level ground truth，也不构造我们的 L2 footprint |
+| 问题文本 | 是 | 对官方原题做轻量文本变异，例如拼写删除、键盘邻近替换、OCR 混淆、同义词替换、疑问词缩写、重复问号 |
+| 候选选择 | 是 | 不直接收下所有变异题，而是用 Rouge-1 保持语义贴近原题，再用 POS-transition 和 1-4 gram coverage feedback 选更有语言变化的候选 |
+| 去重 | 是 | 归一化文本去重，避免同一变异题重复进入测试集 |
+| ADVTEST 私有信息 | 否 | 不读取我们的候选池、gap、coverage score、coverage footprint |
+
+这意味着 QATest-adapted 的“改”主要发生在语言表面和候选选择上，不是视觉场景改造，也不是结构标签改造。它适合回答“官方 QA 经过 QATest 风格文本变异后，会不会更容易测出 VLM 错误”；但它不适合直接回答“谁覆盖了更多结构 L2”。
+
+本轮 1000 题里，QATest-adapted 的生成行为是：
+
+- 最终接受 1000 题。
+- 实际尝试 1478 个候选。
+- duplicate rejection 478 次。
+- quality rejection 0 次，说明 Rouge-1 阈值在本轮没有真正挡掉候选。
+- feedback insertion 357 次，说明确实启用了语言覆盖反馈。
+- 1000 题来自 723 道官方 source，覆盖 100 个帧。
+
+接受下来的变异算子分布：
+
+| 变异算子 | 接受题数 |
+|---|---:|
+| keyboard_substitution | 234 |
+| spelling_deletion | 232 |
+| OCR substitution | 201 |
+| double question mark | 188 |
+| synonym replacement | 120 |
+| wh contraction | 25 |
+
+这里也要诚实说明：`adverbial_preposition` 在尝试中没有成功接受样本，Rouge 质量过滤也没有实际触发。所以今晚汇报时不要说“完整复现了 QATest 的所有机制”，要说“保留 QATest 的文本变异和反馈选择思路，做成一个可复现、边界干净的 adapted baseline”。
+
 关键特点：
 
 - 独立于 ADVTEST。
@@ -173,6 +209,8 @@ QATest-adapted 的 1000 题生成审计结果：
 | 方法 | 题数 | 唯一问题数 | 官方 source 数 | 覆盖帧数 | answer mismatch | boundary violation |
 |---|---:|---:|---:|---:|---:|---:|
 | qatest_adapted | 1000 | 1000 | 723 | 100 | 0 | 0 |
+
+解释一下 723 个官方 source：这不是说只用了 723 道题，而是 1000 道变异题里，有些来自同一道官方原题的不同文本变体。因为它不改官方答案和图像，所以这类重复 source 会在后面的 independent failure 去重里体现出来。
 
 ## 4. 预算怎么算
 
