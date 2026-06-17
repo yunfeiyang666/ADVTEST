@@ -52,24 +52,17 @@ seed bank 至少要保存：
 | `is_seed_correct` | 是否答对，只有 true 进入 seed bank |
 | `source_dataset` | NuScenes-QA |
 
-## 3. 一个必须提前说清的边界：官方 seed 没有对象 id
+## 3. 初始覆盖怎么算
 
-NuScenes-QA 原题通常没有具体 instance id 或 relation id。它给的是类别级答案，例如 car、pedestrian、数量、yes/no。ADVTEST 的 gap/coverage 是 instance/relation-level，例如具体某辆车、某个行人、某条结构关系。
+初始覆盖不再复杂展开。按我们之前那套 initial coverage 计算方法来做：把统一 seed bank 放到选定帧集合里，直接算这些 seed 对全局 gap universe 的初始覆盖。
 
-所以官方 seed 不能天然变成 ADVTEST 的 L2 初始覆盖。要落地“我们的方法把 seed 当作初始覆盖率”，必须加一个映射层：
+因为这轮选的帧不会太多，初始覆盖一次性算完即可，不把它做成新的研究问题。
 
-| seed 类型 | 是否能计入 ADVTEST 初始覆盖 | 处理方式 |
-|---|---:|---|
-| 能自动映射到具体 instance/relation/gap 的官方题 | 是 | 计入 initial covered gaps |
-| 只能得到 category-level 答案，不能唯一定位对象的官方题 | 否 | 只作为中立 seed，不计入 L2 初始覆盖 |
-| 多个对象都可能匹配的 ambiguous 题 | 否 | 标记 ambiguous，不能硬配 |
+报告里只需要写清楚三项：
 
-最小实验里建议这样做：
-
-- seed bank 对三种方法共享。
-- ADVTEST 的初始覆盖只使用“可自动映射”的 seed。
-- 报告 seed-to-gap 映射率：`mapped_seed_count / correct_seed_count`。
-- 映射不上的 seed 不要硬塞进 L2 coverage，否则 coverage 指标会变成假的。
+- `total_gap_count`：选定帧集合里的总 gap 数。
+- `initial_covered_gap_count`：统一 seed bank 带来的初始覆盖。
+- `initial_coverage`：`initial_covered_gap_count / total_gap_count`。
 
 ## 4. ADVTEST 新流程
 
@@ -78,7 +71,7 @@ NuScenes-QA 原题通常没有具体 instance id 或 relation id。它给的是�
 ADVTEST 流程：
 
 1. 输入统一 seed bank。
-2. 对能映射到 gap 的 seed，作为 initial coverage。
+2. 按旧方法从 seed bank 直接得到 initial coverage state。
 3. 构建所选帧集合内的所有可生成候选。
 4. 每轮随机选一个帧，随机过程固定 seed，保证可复现。
 5. 在这个帧内，根据该帧当前覆盖状态选择 coverage gain 最大或综合得分最高的问题。
@@ -110,6 +103,7 @@ QATest 的评测口径：
 - 每道题调用 VLM 一次。
 - 用对应答案或变异继承答案做自动判错。
 - 报告 fail rate。
+- QATest 没有可靠自检机制，所以不提前人工剔除坏题；生成失败、重复、明显空题等作为单独质量数据记录，后面人工检测阶段再统一处理。
 
 ## 6. QAAskeR 新流程和预算口径
 
@@ -126,14 +120,16 @@ primary question + primary answer -> follow-up question + target answer
 
 但是本轮已经有统一 seed 筛选阶段：官方原题已经被同一个 VLM 跑过，并且只有答对的原题进入 seed bank。因此 QAAskeR 可以直接使用 seed bank 里的 `vlm_primary_answer` 作为 primary answer，再生成 follow-up。
 
-建议本轮采用两个口径同时记录：
+本轮统一要求：**每种方法都凑 1000 道新题**。对 QAAskeR 来说，新题就是 follow-up question。
+
+建议 QAAskeR 采用两个口径同时记录：
 
 | 口径 | QAAskeR 怎么算 | 用途 |
 |---|---|---|
-| post-seed test budget | 生成 1000 个 follow-up，也就是 1000 个 pair | 和 ADVTEST/QATest 一样，比较 seed 之后新生成测试的检错率 |
+| post-seed test budget | 生成 1000 道 self-check passed follow-up question，也就是 1000 个可评测 pair | 和 ADVTEST/QATest 一样，比较 seed 之后新生成测试的检错率 |
 | full VLM call cost | 1000 个 pair = 1000 次 seed primary call + 1000 次 follow-up call | 如老师追问真实总调用成本，用这个解释 |
 
-也就是说，本轮为了先跑出最小结果，建议让 QAAskeR 凑 **1000 个 pair / 1000 个 follow-up question**，不是 500 个 pair。
+也就是说，本轮为了先跑出最小结果，让 QAAskeR 凑 **1000 道通过它自身质量检查的 follow-up 新题**，不是 500 个 pair。
 
 但统计时不要把一个 pair 当成两条独立样本。正确口径是：
 
@@ -143,7 +139,36 @@ primary question + primary answer -> follow-up question + target answer
 
 如果之后老师坚持“预算必须按完整 VLM call 从零计算”，那 QAAskeR 在 `vlm_call_budget=1000` 下只能跑 500 个 pair。这个可以作为附录敏感性口径，但不作为本轮最小实验主口径。
 
-## 7. 预算
+QAAskeR 有自检/过滤机制，所以要求它一直生成，直到拿到 1000 道通过自检的 follow-up。中间被它自己过滤掉的候选不要丢，记录成生成质量数据：
+
+- attempted follow-up candidates。
+- self-check rejected count。
+- self-check passed count。
+- 最终是否凑满 1000 道可评测 follow-up。
+
+这部分不做人工裁判，只当作生成质量指标。后期人工检测时再统一看这些题到底是否真的有效。
+
+## 7. 生成失败怎么处理
+
+ADVTEST 是程序化结构题生成，正常情况下不会出现“生成失败”；如果候选耗尽或字段缺失，按工程异常记录。
+
+QATest 和 QAAskeR 要把生成质量也作为考察数据：
+
+| 方法 | 生成失败处理 | 本轮是否人工剔除 |
+|---|---|---:|
+| ADVTEST | 默认生成成功；异常才记录 | 否 |
+| QATest | 原始代码生成什么就先接什么；空题、重复、格式坏、答案缺失都记录为 generation quality issue | 否 |
+| QAAskeR | 使用它自己的 self-check，直到凑满 1000 道通过自检的 follow-up；被过滤的候选计入 rejected | 否 |
+
+最小结果表除了 fail rate，还要加生成质量列：
+
+- `attempted_generated`
+- `accepted_for_eval`
+- `generation_rejected`
+- `generation_rejection_rate`
+- `self_check_pass_rate`，没有自检的 QATest 写 N/A
+
+## 8. 预算
 
 本轮先定：
 
@@ -152,19 +177,19 @@ primary question + primary answer -> follow-up question + target answer
 | seed 筛选 | 约 400-500 道官方 NuScenes-QA 原题，具体由帧集合决定 |
 | ADVTEST | seed 后新生成/测试 1000 道题 |
 | QATest | seed 后新生成/测试 1000 道题 |
-| QAAskeR | seed 后生成/测试 1000 个 follow-up，即 1000 个 pair |
+| QAAskeR | seed 后生成/测试 1000 道通过自检的 follow-up，即 1000 个 pair |
 
 seed 筛选是所有方法共享的中立前置步骤，不混进三种方法的主检错率里；但报告中要单独列 seed 筛选消耗了多少 VLM call。
 
-## 8. 最小结果表
+## 9. 最小结果表
 
 第一轮只做这个表：
 
-| 方法 | correct seed 数 | 生成测试数 | VLM follow-up/new-test calls | full VLM call cost | failures/violations | fail/violation rate |
-|---|---:|---:|---:|---:|---:|---:|
-| ADVTEST | 待跑 | 1000 | 1000 | seed calls + 1000 | 待跑 | 待跑 |
-| QATest | 待跑 | 1000 | 1000 | seed calls + 1000 | 待跑 | 待跑 |
-| QAAskeR | 待跑 | 1000 pairs | 1000 | seed calls + 1000 | 待跑 | 待跑 |
+| 方法 | correct seed 数 | attempted generated | accepted for eval | VLM new-test calls | full VLM call cost | failures/violations | fail/violation rate | generation rejection rate |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| ADVTEST | 待跑 | 1000 | 1000 | 1000 | seed calls + 1000 | 待跑 | 待跑 | 0 |
+| QATest | 待跑 | 待跑 | 1000 | 1000 | seed calls + 1000 | 待跑 | 待跑 | 待跑 |
+| QAAskeR | 待跑 | 待跑 | 1000 follow-up | 1000 | seed calls + 1000 | 待跑 | 待跑 | 待跑 |
 
 ADVTEST 额外加一张覆盖表：
 
@@ -176,18 +201,18 @@ ADVTEST 额外加一张覆盖表：
 | coverage gain | 待跑 |
 | final global coverage | 待跑 |
 
-## 9. 立即执行顺序
+## 10. 立即执行顺序
 
 1. 固定帧集合。
 2. 抽取这些帧里的所有 NuScenes-QA 官方题。
 3. 跑 VLM，得到 correct seed bank。
-4. 做 seed-to-gap 自动映射，报告 mapped / ambiguous / unmatched。
+4. 按旧方法直接计算 seed bank 的 initial coverage。
 5. 跑 ADVTEST 1000 新题。
-6. 跑原始 QATest 1000 新题。
-7. 跑原始 QAAskeR 1000 follow-up / 1000 pair。
-8. 只汇总基础检错率和 ADVTEST 覆盖率。
+6. 跑原始 QATest，拿到 1000 道新题，同时记录生成质量问题。
+7. 跑原始 QAAskeR，凑满 1000 道 self-check passed follow-up，同时记录 self-check rejected。
+8. 只汇总基础检错率、生成质量和 ADVTEST 覆盖率。
 
-## 10. 当前不做
+## 11. 当前不做
 
 - 不做 Random。
 - 不做人工检测。
@@ -195,4 +220,3 @@ ADVTEST 额外加一张覆盖表：
 - 不做多 seed 稳定性。
 - 不调 QATest / QAAskeR 参数。
 - 不把 official category-level QA 强行硬配成 instance-level GT。
-
