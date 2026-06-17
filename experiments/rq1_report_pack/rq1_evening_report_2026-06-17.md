@@ -158,16 +158,33 @@ QATest-adapted 的 seed 也是官方 NuScenes-QA。
 
 QATest-adapted 的 1000 题生成审计结果：
 
+这张表是在检查 QATest-adapted 生成题集本身是否干净。它不是 VLM 评测结果，而是题集构造审计：看 1000 道变异题是否重复、是否保留官方答案边界、是否误用了 ADVTEST 私有信息。
+
+表头含义：
+
+- `方法`：被审计的题集生成方法。
+- `题数`：最终生成并保留下来的问题数量。
+- `唯一问题数`：按归一化文本去重后的问题数量，用来检查是否大量重复。
+- `官方 source 数`：这些变异题来自多少道官方 NuScenes-QA 原题。
+- `覆盖帧数`：这些题覆盖了多少个不同帧。
+- `answer mismatch`：变异题是否出现答案和官方 source 不一致的问题，0 表示没有发现。
+- `boundary violation`：是否误用 ADVTEST 私有候选池、gap、coverage 或 footprint，0 表示没有边界违规。
+
 | 方法 | 题数 | 唯一问题数 | 官方 source 数 | 覆盖帧数 | answer mismatch | boundary violation |
 |---|---:|---:|---:|---:|---:|---:|
-| qatest_style | 1000 | 1000 | 1000 | 99 | 0 | 0 |
 | qatest_adapted | 1000 | 1000 | 723 | 100 | 0 | 0 |
-
-正式汇报里建议只讲 QATest-adapted。qatest_style 只是早期 legacy ablation，不作为主要外部参考。
 
 ## 4. 预算怎么算
 
 我们现在明确区分两个预算。
+
+这张表是在说明本实验里“预算”到底限制什么。这里必须拆开，因为离线生成题目和真实调用 VLM 是两件事。
+
+表头含义：
+
+- `预算`：预算名称。
+- `含义`：这个预算实际限制的对象。
+- `用途`：这个预算用于回答哪类实验问题。
 
 | 预算 | 含义 | 用途 |
 |---|---|---|
@@ -185,6 +202,17 @@ QATest-adapted 的 1000 题生成审计结果：
 - 评分方式为 `token_boundary_v2_frame_qualified_l2`。
 
 输入侧约束：
+
+这张表是在说明四种方法进入 1000-call 主实验前的输入条件。它主要用来说明哪些方法可以直接比较结构覆盖，哪些只能作为跨范式参考。
+
+表头含义：
+
+- `方法`：参与评测的方法。
+- `Calls`：该方法实际消耗的 VLM 调用次数。
+- `Frames`：该方法的 1000 道题覆盖了多少个不同帧。
+- `Max/frame`：单个帧里最多包含多少道题。
+- `GT 粒度`：答案标注粒度，`instance_or_relation` 表示具体实例或结构关系级，`category_level_official` 表示官方类别级。
+- `结构覆盖可比`：是否能和 ADVTEST/Random 直接比较 structural L2 覆盖。
 
 | 方法 | Calls | Frames | Max/frame | GT 粒度 | 结构覆盖可比 |
 |---|---:|---:|---:|---|---:|
@@ -225,6 +253,20 @@ QATest-adapted 的 1000 题生成审计结果：
 
 ### 5.2 结果
 
+这张表是 1000-call 主实验的总结果。它在相同 VLM 调用预算下比较四种方法发现错误的情况。注意这里四种方法都能比较“错误发现效率”，但只有 ADVTEST 和 Random 能严格比较 structural L2 覆盖。
+
+表头含义：
+
+- `方法`：被评测的方法。
+- `角色`：该方法在实验里的定位，例如 proposed、internal ablation、neutral reference 或 external reference。
+- `Calls`：实际 VLM 调用次数。
+- `Wrong`：自动评分判定模型答错的题数。
+- `Independent failures`：去重后的独立错误数。对 QATest-adapted 来说，多道变异题可能对应同一个官方 seed，所以 wrong 和 independent failures 不一定相等。
+- `UF/100`：每 100 次 VLM 调用发现多少独立错误。
+- `Duplicate rate`：错误中被去重掉的比例。
+- `Failed unique L2`：这些错误触发了多少个不同的 frame-qualified L2 结构项。只有 ADVTEST 和 Random 有这个指标。
+- `Frames`：实际覆盖的帧数。
+
 | 方法 | 角色 | Calls | Wrong | Independent failures | UF/100 | Duplicate rate | Failed unique L2 | Frames |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | ADVTEST | proposed | 1000 | 981 | 981 | 98.1 | 0.000 | 4488 | 20 |
@@ -233,6 +275,15 @@ QATest-adapted 的 1000 题生成审计结果：
 | QATest-adapted | external reference | 1000 | 637 | 468 | 46.8 | 0.265 | N/A | 100 |
 
 严格可比的主结论只看 ADVTEST vs Random：
+
+这张表只保留 ADVTEST 和 Random 的可比指标。它们使用同一个结构化候选空间、同样的帧、同样的单帧上限，区别只在 selection strategy，所以这张表才是本轮最核心的公平比较。
+
+表头含义：
+
+- `指标`：比较的实验指标。
+- `ADVTEST`：ADVTEST 在该指标上的结果。
+- `Random`：Random 在该指标上的结果。
+- `差值`：ADVTEST 减 Random，正数表示 ADVTEST 更高。
 
 | 指标 | ADVTEST | Random | 差值 |
 |---|---:|---:|---:|
@@ -275,6 +326,16 @@ QATest-adapted 的 wrong 是 637，但 independent failures 是 468，duplicate 
 - 仍使用 frame-qualified L2 scoring。
 
 ### 6.2 结果
+
+这张表是在检查 Random 的结果是否受单个随机种子影响。我们固定 ADVTEST 的 100-call 结果，再把 Random 换成 3 个 seed 来跑，观察 ADVTEST 是否只是碰巧赢了 seed 42。
+
+表头含义：
+
+- `方法`：ADVTEST 或 Random。
+- `Seed`：Random 的随机种子；ADVTEST 是固定策略，所以写 fixed。
+- `Calls`：本次稳定性检查中实际调用 VLM 的次数。
+- `Independent failures`：100 次调用里发现的独立错误数。
+- `Failed unique L2`：这些错误覆盖到的不同 L2 结构项数量。
 
 | 方法 | Seed | Calls | Independent failures | Failed unique L2 |
 |---|---:|---:|---:|---:|
@@ -321,6 +382,15 @@ VLM 答错不一定都是真实视觉或结构错误，也可能是：
 
 结果：
 
+这张表是在做 48 行人工 sanity audit。它不是重新跑 VLM，而是人工检查一小批自动判错样本里有多少是真实视觉或结构失败。
+
+表头含义：
+
+- `bucket`：样本来源类别。`advtest_only_l2` 表示只被 ADVTEST 触发的 L2，`random_only_l2` 表示只被 Random 触发的 L2，`shared_l2_*` 表示两边都触发过的共享 L2。
+- `rows`：该类别人工检查了多少行。
+- `valid yes`：人工认为是真实视觉或结构失败的行数。
+- `valid rate`：`valid yes / rows`。
+
 | bucket | rows | valid yes | valid rate |
 |---|---:|---:|---:|
 | advtest_only_l2 | 12 | 8 | 66.7% |
@@ -357,6 +427,17 @@ VLM 答错不一定都是真实视觉或结构错误，也可能是：
 当前是 deterministic assisted review，不是最终人工审定。
 
 结果：
+
+这张表是在做 400 行 deterministic assisted audit。它扩大了 48 行人工检查的规模，用确定性 assisted label 先估计各类失败的有效比例。注意它还不是最终人工审定。
+
+表头含义：
+
+- `bucket`：样本来源类别，含义和 48 行 audit 相同。
+- `sample rows`：该类别抽样检查的行数。
+- `valid yes`：assisted review 认为是真实视觉或结构失败的行数。
+- `uncertain`：assisted review 不能确定、需要人工再审的行数。
+- `valid rate`：`valid yes / sample rows`。
+- `estimated valid total`：把该 bucket 的有效率外推到对应 L2 universe 后得到的估计有效失败总量。
 
 | bucket | sample rows | valid yes | uncertain | valid rate | estimated valid total |
 |---|---:|---:|---:|---:|---:|
