@@ -131,8 +131,6 @@ QATest-adapted 的修改程度要这样理解：
 | synonym replacement | 120 |
 | wh contraction | 25 |
 
-这里也要诚实说明：`adverbial_preposition` 在尝试中没有成功接受样本，Rouge 质量过滤也没有实际触发。所以今晚汇报时不要说“完整复现了 QATest 的所有机制”，要说“保留 QATest 的文本变异和反馈选择思路，做成一个可复现、边界干净的 adapted baseline”。
-
 关键特点：
 
 - 独立于 ADVTEST。
@@ -155,6 +153,28 @@ QAAskeR 当前不进入主表。
 所以一个完整 pair 至少消耗 2 次 VLM call。ADVTEST、Random、Official-QA、QATest-adapted 都是每题 1 次 VLM call。为了主表公平，本轮先不把 QAAskeR 放进 1000-call 主比较。
 
 后续可以单独做 QAAskeR 的 two-call protocol 或 capacity table。
+
+QAAskeR 复现接入的原理要这样讲：
+
+| 步骤 | 原版 QAAskeR 做什么 | 接入到我们实验时的含义 |
+|---|---|---|
+| 1. primary question | 先拿一条源 QA 问题去问被测系统，得到 primary answer | 对 VLM 来说，就是先对一张图问原始问题，拿到模型回答 |
+| 2. declarative sentence | 把“源问题 + 模型回答”改写成一个陈述句 | 例如“车在哪里？”+“左侧”变成“车在左侧”这类事实陈述 |
+| 3. follow-up question | 根据陈述句生成新的追问题 | 追问题不是随便生成，而是由 metamorphic relation 约束 |
+| 4. target answer | 同时推出 follow-up 的期望答案 | 这个答案来自前一步的陈述句和变形规则，不依赖人工新标注 |
+| 5. violation check | 再问一次被测系统，把 follow-up answer 和 target answer 比较 | 如果不一致，就算违反 metamorphic relation，也就是发现潜在错误 |
+
+原版 QAAskeR 有三类 MR：
+
+- MR1：wh-question 变成另一个 wh-question，目标是问陈述句里的另一个对象。
+- MR2：wh-question 变成 general yes/no question，目标答案通常是 yes。
+- MR3：general/alternative question 变成 wh-question。
+
+我们现在复现接入的是它的工具链和思想边界：`Q2S/GA2S` 负责把问题和模型回答转成陈述句，`S2G/S2W` 负责从陈述句生成 follow-up 或候选 target answer，`calculate_score` 负责比较 follow-up answer 和 target answer。它和 QATest-adapted 完全不是一条线：QAAskeR 的核心是“先问一次模型，再根据模型回答追问一次”，所以成本天然是 two-call；QATest-adapted 的核心是“对官方原题做文本变异”，生成阶段不问 VLM。
+
+今晚可以直接这样说：
+
+> QAAskeR 不是简单生成一批新题。它先问模型原题，拿模型自己的回答构造一个陈述事实，再围绕这个事实生成 follow-up 问题。然后它再问模型 follow-up，如果前后回答违反变形关系，就判为 failure。因此它的一个测试单元不是单题，而是 primary + follow-up 这一对，至少两次 VLM 调用。这个预算口径和我们主表里一题一 call 的方法不同，所以本轮先不放进主表。
 
 ## 3. Seed 怎么用
 
@@ -211,6 +231,18 @@ QATest-adapted 的 1000 题生成审计结果：
 | qatest_adapted | 1000 | 1000 | 723 | 100 | 0 | 0 |
 
 解释一下 723 个官方 source：这不是说只用了 723 道题，而是 1000 道变异题里，有些来自同一道官方原题的不同文本变体。因为它不改官方答案和图像，所以这类重复 source 会在后面的 independent failure 去重里体现出来。
+
+这个过程可以按“抽 seed、造候选、过滤、收满预算”来讲：
+
+1. 先从官方 NuScenes-QA 里拿 source question，当作 seed。
+2. 对每个 seed 尝试多个轻量文本变异算子，比如键盘邻近替换、拼写删除、OCR 混淆、同义词替换、疑问词缩写、重复问号。
+3. 每生成一个候选，就检查它是否和原题语义偏离太多、是否和已接受题重复。
+4. 如果通过，就把它收进 QATest-adapted suite，并记录它来自哪一道官方 source。
+5. 如果没通过，就继续尝试下一个候选，直到收满 `generation_budget=1000`。
+
+所以 723 到 1000 的意思是：723 道官方原题贡献了 1000 个最终被接受的文本变体，其中有 277 个额外题来自已经用过的官方 source 的第二个或更多变体。中间实际尝试了 1478 个候选，丢掉了 478 个重复候选，最后留下 1000 个唯一问题文本。
+
+这也解释了为什么 QATest-adapted 的 wrong 是 637，但 independent failures 只有 468：它确实生成了 1000 个唯一文本问题，但很多问题仍然绑定到同一张图、同一个官方答案边界、甚至同一个 source，所以发现错误时需要按 source/语义边界去重。
 
 ## 4. 预算怎么算
 
