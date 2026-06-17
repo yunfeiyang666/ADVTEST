@@ -1,0 +1,445 @@
+# RQ1 故障检测晚间汇报稿
+
+日期：2026-06-17
+
+## 1. 这次汇报要讲清楚的问题
+
+我们现在的 RQ1 不是单纯问“谁生成的问题覆盖了更多 scene graph gap”，而是问：
+
+> 在相同测试预算下，哪种测试用例生成或选择方法更能发现 VLM 在自动驾驶场景理解中的错误？
+
+所以主结果看两件事：
+
+1. 同样 VLM 调用次数下，发现多少独立错误。
+2. 这些错误覆盖了多少结构项，特别是 frame-qualified L2 关系项。
+
+这里要先讲明白：ADVTEST 的优势不是“每一道题都更容易让模型错”，而是“把预算投向更广的结构空间，从而暴露更多结构关系上的失败”。
+
+## 2. 方法流程
+
+### 2.1 ADVTEST 完整流程
+
+ADVTEST 是我们的完整方法。流程如下：
+
+1. 对每一帧构建结构化候选问题空间。
+2. 每个候选问题带有结构覆盖信息，包括 L0 对象、L1 一跳关系、L2 多跳或组合关系。
+3. 按固定帧顺序进入当前帧。
+4. 在当前帧内，优先选择能带来最大新增结构覆盖的问题。
+5. 每生成一道题后，更新当前已经覆盖的结构项。
+6. 如果当前帧已经覆盖充分、候选题耗尽，或者达到单帧上限，就切到下一帧。
+7. 最后得到一个按覆盖增益排序的测试 suite。
+8. 用 VLM 逐题推理，用自动评分判断模型是否答错。
+9. 对错误样本统计独立错误数和 failed unique L2。
+
+关键特点：
+
+- 使用结构覆盖反馈。
+- 选择题目时会看“新增覆盖收益”。
+- 同一帧内是自适应更新，不是一次性排序后不变。
+- 主要目标不是生成更多题，而是在固定题数或固定 VLM call 下覆盖更多关键结构。
+
+### 2.2 Random
+
+Random 是内部消融，不是外部 SOTA baseline。
+
+它和 ADVTEST 使用同一个结构化候选问题空间、同一批帧、同样的单帧题数上限。不同点只有一个：
+
+- ADVTEST 按覆盖增益选题。
+- Random 完全随机选题，不读取 gap、coverage score 或历史覆盖反馈。
+
+关键特点：
+
+- 用来回答“coverage-guided selection 是否比随机 selection 有效”。
+- 因为它共享我们的结构化候选空间，所以只能叫 internal ablation。
+- 不能把 Random 包装成一个独立外部方法。
+
+### 2.3 Official NuScenes-QA
+
+Official NuScenes-QA 是中立参考题集。
+
+流程：
+
+1. 从官方 NuScenes-QA 中按 sample token 匹配当前可用帧。
+2. 保留官方问题和官方答案。
+3. 不改写问题。
+4. 不读取 ADVTEST 的候选池、coverage、gap 或 footprint。
+5. 用同样的 VLM call 预算评测。
+
+关键特点：
+
+- 它是 category-level ground truth，比如 car、truck、yes/no、数量。
+- 它没有我们的 frame-qualified L2 footprint。
+- 所以它能作为“官方 QA 参考”，不能和 ADVTEST 直接比较结构覆盖。
+
+### 2.4 QATest-adapted
+
+QATest-adapted 是外部方法参考，不是逐字节复现原版 QATest。
+
+原因是原版 QATest 依赖旧环境、硬编码模型路径、外部服务或 token 风险，不能直接作为可复现实验代码使用。我们保留它的核心思想，做成可运行的 adapted 版本。
+
+流程：
+
+1. 只使用官方 NuScenes-QA 作为 seed。
+2. 从 seed pool 中取官方问题。
+3. 使用文本变异算子生成候选问题。
+4. 用 Rouge-1 过滤过度偏离原题的候选。
+5. 用 POS-transition probability 和 1-4 gram coverage feedback 选择更有语言变化的候选。
+6. 做 duplicate rejection。
+7. 生成后的题仍继承官方 QA 的答案粒度。
+8. 不读取 ADVTEST 候选池、coverage gap、coverage score 或 footprint。
+
+当前实现使用的变异算子包括：
+
+- double question mark
+- keyboard substitution
+- OCR substitution
+- spelling deletion
+- synonym replacement
+- wh contraction
+
+关键特点：
+
+- 独立于 ADVTEST。
+- 使用官方 QA seed。
+- 保留 QATest 的“变异加反馈选择”思路。
+- 但 GT 仍是官方 category-level，所以不参与结构 L2 head-to-head。
+
+### 2.5 QAAskeR
+
+QAAskeR 当前不进入主表。
+
+原因不是它不重要，而是预算口径不同。QAAskeR 的完整流程通常需要：
+
+1. 先问 primary question。
+2. 得到 SUT 的 primary answer。
+3. 根据这个 answer 生成 follow-up question。
+4. 再问 follow-up。
+5. 检查 primary 和 follow-up 是否违反 metamorphic relation。
+
+所以一个完整 pair 至少消耗 2 次 VLM call。ADVTEST、Random、Official-QA、QATest-adapted 都是每题 1 次 VLM call。为了主表公平，本轮先不把 QAAskeR 放进 1000-call 主比较。
+
+后续可以单独做 QAAskeR 的 two-call protocol 或 capacity table。
+
+## 3. Seed 怎么用
+
+### 3.1 ADVTEST 和 Random
+
+两者 seed 来源相同：
+
+- 都来自我们程序化构造的结构化候选问题空间。
+- 都使用相同帧顺序。
+- 都使用相同单帧上限。
+- 都保留 instance/relation-level ground truth。
+
+不同点：
+
+- ADVTEST 用覆盖反馈排序。
+- Random 不用覆盖反馈，随机抽取。
+
+Random 的随机种子用于控制随机抽样顺序。当前做过 seed 42、43、44 的稳定性检查。
+
+### 3.2 Official-QA
+
+Official-QA 的 seed 就是官方 NuScenes-QA 原题。
+
+- 不生成新结构问题。
+- 不做覆盖反馈。
+- 不继承 ADVTEST footprint。
+- 如果前 1000 条里有同帧重复题，会跳过重复并继续补足到 1000 calls。
+
+### 3.3 QATest-adapted
+
+QATest-adapted 的 seed 也是官方 NuScenes-QA。
+
+它和 Official-QA 的区别是：
+
+- Official-QA 直接使用原题。
+- QATest-adapted 从官方原题出发做文本变异，再过滤、选择、去重。
+
+QATest-adapted 的 1000 题生成审计结果：
+
+| 方法 | 题数 | 唯一问题数 | 官方 source 数 | 覆盖帧数 | answer mismatch | boundary violation |
+|---|---:|---:|---:|---:|---:|---:|
+| qatest_style | 1000 | 1000 | 1000 | 99 | 0 | 0 |
+| qatest_adapted | 1000 | 1000 | 723 | 100 | 0 | 0 |
+
+正式汇报里建议只讲 QATest-adapted。qatest_style 只是早期 legacy ablation，不作为主要外部参考。
+
+## 4. 预算怎么算
+
+我们现在明确区分两个预算。
+
+| 预算 | 含义 | 用途 |
+|---|---|---|
+| generation_budget | 离线生成多少题 | 看生成能力和结构覆盖 |
+| vlm_call_budget | 实际调用 VLM 多少次 | 看故障检测能力 |
+
+主实验使用 `vlm_call_budget`，因为最终目标是比较同样模型测试成本下能发现多少错误。
+
+本轮主实验设置：
+
+- 每个方法 1000 次真实 VLM call。
+- 4 个方法共 4000 次真实推理。
+- 无 mock fallback。
+- 模型为 mPLUG-Owl2。
+- 评分方式为 `token_boundary_v2_frame_qualified_l2`。
+
+输入侧约束：
+
+| 方法 | Calls | Frames | Max/frame | GT 粒度 | 结构覆盖可比 |
+|---|---:|---:|---:|---|---:|
+| ADVTEST | 1000 | 20 | 50 | instance_or_relation | 是 |
+| Random | 1000 | 20 | 50 | instance_or_relation | 是 |
+| Official-QA | 1000 | 67 | 28 | category_level_official | 否 |
+| QATest-adapted | 1000 | 100 | 29 | category_level_official | 否 |
+
+因此：
+
+- ADVTEST vs Random 是严格可比的内部消融。
+- Official-QA 和 QATest-adapted 只能作为跨范式参考，不能拿 structural L2 覆盖和 ADVTEST 直接排位。
+
+## 5. 实验一：1000-call 主实验
+
+### 5.1 设置
+
+模型：mPLUG-Owl2
+
+方法：
+
+- ADVTEST
+- Random
+- Official-QA
+- QATest-adapted
+
+预算：
+
+- 每个方法 1000 real VLM calls。
+- 总计 4000 real inference records。
+
+运行情况：
+
+- 运行完成。
+- 耗时 32921.27 秒，约 9.14 小时。
+- mock fallback records = 0。
+- raw audit 没有 wrong mode、empty output、error 或 nonpositive-duration 记录。
+
+### 5.2 结果
+
+| 方法 | 角色 | Calls | Wrong | Independent failures | UF/100 | Duplicate rate | Failed unique L2 | Frames |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| ADVTEST | proposed | 1000 | 981 | 981 | 98.1 | 0.000 | 4488 | 20 |
+| Random | internal ablation | 1000 | 912 | 912 | 91.2 | 0.000 | 2727 | 20 |
+| Official-QA | neutral reference | 1000 | 650 | 650 | 65.0 | 0.000 | N/A | 67 |
+| QATest-adapted | external reference | 1000 | 637 | 468 | 46.8 | 0.265 | N/A | 100 |
+
+严格可比的主结论只看 ADVTEST vs Random：
+
+| 指标 | ADVTEST | Random | 差值 |
+|---|---:|---:|---:|
+| 输入 covered L2 | 4508 | 2818 | +1690 |
+| Independent failures | 981 | 912 | +69 |
+| Failed unique L2 | 4488 | 2727 | +1761 |
+
+相对提升：
+
+- 输入 L2 覆盖提升 59.97%。
+- independent failures 提升 7.57%。
+- failed unique L2 提升 64.58%。
+
+这说明 ADVTEST 的核心优势在 failed structural coverage，而不只是 raw failure count。
+
+### 5.3 对 Official-QA 和 QATest-adapted 的解释
+
+Official-QA 和 QATest-adapted 的结果不能直接说“输给 ADVTEST”，原因是：
+
+- 它们是 category-level official GT。
+- ADVTEST 和 Random 是 instance/relation-level GT。
+- 它们没有 structural L2 footprint。
+- 它们覆盖的帧分布也不同。
+
+所以这两行只说明跨范式情况下的错误发现效率，不作为结构覆盖排名。
+
+QATest-adapted 的 wrong 是 637，但 independent failures 是 468，duplicate rate 是 0.265。这说明它生成的变异题中，有不少题最终指向同一个独立失败。
+
+## 6. 实验二：Random seed 稳定性检查
+
+### 6.1 设置
+
+目的：避免 Random seed 42 偶然偏弱导致 ADVTEST 看起来更好。
+
+设置：
+
+- ADVTEST 固定 100 calls。
+- Random 分别跑 seed 42、43、44。
+- 每组 100 real VLM calls。
+- 仍使用 frame-qualified L2 scoring。
+
+### 6.2 结果
+
+| 方法 | Seed | Calls | Independent failures | Failed unique L2 |
+|---|---:|---:|---:|---:|
+| ADVTEST | fixed | 100 | 92 | 236 |
+| Random | 42 | 100 | 86 | 169 |
+| Random | 43 | 100 | 88 | 180 |
+| Random | 44 | 100 | 90 | 183 |
+
+Random 三个 seed：
+
+- independent failures 平均 88.00，标准差 1.63。
+- failed unique L2 平均 177.33，标准差 6.02。
+
+ADVTEST 相比 Random 平均值：
+
+- independent failures +4.00，相对提升 4.55%。
+- failed unique L2 +58.67，相对提升 33.08%。
+- ADVTEST 在三个 Random seed 上都更高。
+
+结论：
+
+- failure count 上 ADVTEST 有提升，但幅度不算巨大。
+- failed unique L2 上优势更明显，说明结构覆盖收益更稳定。
+
+## 7. 实验三：Failure audit
+
+### 7.1 为什么要做 audit
+
+VLM 答错不一定都是真实视觉或结构错误，也可能是：
+
+- answer granularity mismatch
+- ambiguous question
+- mosaic or label artifact
+- lexical scoring artifact
+
+所以我们做 failure audit，检查自动评分得到的 failure 里有多少是真正有效的视觉或结构失败。
+
+### 7.2 48 行人工 sanity audit
+
+设置：
+
+- 48 行 sampled failures。
+- 分成 ADVTEST-only、Random-only、shared_l2_advtest、shared_l2_random 四类。
+
+结果：
+
+| bucket | rows | valid yes | valid rate |
+|---|---:|---:|---:|
+| advtest_only_l2 | 12 | 8 | 66.7% |
+| random_only_l2 | 12 | 9 | 75.0% |
+| shared_l2_advtest | 12 | 8 | 66.7% |
+| shared_l2_random | 12 | 8 | 66.7% |
+
+总体：
+
+- 33/48 是 valid visual or structural failure。
+- 15/48 是边界问题，主要是 answer granularity mismatch。
+
+解释：
+
+- Random-only 的单样本有效率略高。
+- 但 Random-only 的 exclusive failed L2 总空间更小。
+- 所以最终要看“有效失败总量”，不是只看单样本有效率。
+
+按 48 行 audit 粗略外推：
+
+- ADVTEST-only：3070 * 66.7% 约 2047。
+- Random-only：1309 * 75.0% 约 982。
+- ADVTEST 约为 Random 的 2.08 倍。
+
+### 7.3 400 行 assisted audit
+
+设置：
+
+- ADVTEST-only L2：100 行。
+- Random-only L2：100 行。
+- Shared L2 pairs：100 pair，也就是 200 行。
+- 总计 400 行。
+
+当前是 deterministic assisted review，不是最终人工审定。
+
+结果：
+
+| bucket | sample rows | valid yes | uncertain | valid rate | estimated valid total |
+|---|---:|---:|---:|---:|---:|
+| advtest_only_l2 | 100 | 70 | 6 | 70.0% | 2149.0 |
+| random_only_l2 | 100 | 87 | 3 | 87.0% | 1138.8 |
+| shared_l2_advtest | 100 | 77 | 8 | 77.0% | 1091.9 |
+| shared_l2_random | 100 | 77 | 8 | 77.0% | 1091.9 |
+
+总体：
+
+- 311/400 assisted valid。
+- 64 no。
+- 25 uncertain。
+- assisted valid rate = 77.8%。
+
+ADVTEST-only vs Random-only：
+
+- estimated valid total difference = +1010.2。
+- conservative Wilson lower-minus-upper = +647.3。
+
+解释：
+
+- Random-only 单样本有效率仍更高。
+- 但 ADVTEST-only 的 exclusive failed L2 universe 大得多。
+- 所以估计有效结构失败总量仍然是 ADVTEST 更高。
+
+### 7.4 Human adjudication 当前状态
+
+我们已经生成 100 行 human adjudication calibration pack。
+
+分布：
+
+- 25 行 ADVTEST-only。
+- 25 行 Random-only。
+- 25 行 shared_l2_advtest。
+- 25 行 shared_l2_random。
+
+按 assisted label：
+
+- yes：43。
+- no：32。
+- uncertain：25。
+
+当前状态：
+
+- reviewed rows = 0。
+- pending rows = 100。
+- calibrated estimates 还不可用。
+
+所以今晚汇报必须说：
+
+> 400 行 assisted audit 支持当前方向，但 human-calibrated 结果仍 pending。
+
+不能说：
+
+> 人工审计已经最终确认。
+
+## 8. 当前结论
+
+可以这样讲：
+
+1. 我们已经把实验边界重新整理清楚，不再让外部 baseline 复用 ADVTEST 的候选池或 coverage footprint。
+2. 当前最公平的主比较是 ADVTEST vs Random，因为它们共享结构化候选空间，区别只在 selection strategy。
+3. 在 1000-call mPLUG-Owl2 主实验中，ADVTEST 比 Random 多发现 69 个 independent failures。
+4. 更关键的是，ADVTEST 的 failed unique L2 是 4488，Random 是 2727，提升 64.58%。
+5. Random 多 seed 检查显示，ADVTEST 在 100-call 下超过三个 Random seed，尤其 failed unique L2 优势稳定。
+6. Failure audit 显示，Random-only 单样本有效率略高，但 ADVTEST 覆盖的 exclusive failed L2 空间更大，估计有效结构失败总量仍更高。
+7. Official-QA 和 QATest-adapted 是跨范式参考，不能作为 structural L2 head-to-head baseline。
+8. QAAskeR 由于 two-call protocol，本轮不进入主表，后续单独做。
+
+## 9. 今晚建议怎么讲
+
+建议顺序：
+
+1. 先说 RQ1 现在是 testing 问题：同预算下谁发现更多 VLM 错误。
+2. 再说为什么要拆 baseline：不能让对照组复用 ADVTEST 能力。
+3. 然后讲方法流程：ADVTEST 完整版，Random 只改 selection，Official-QA 直接用官方题，QATest-adapted 从官方题变异，QAAskeR 暂缓。
+4. 接着讲 seed 和预算：seed 来源不同，预算统一用 VLM call。
+5. 讲主结果：ADVTEST vs Random，重点讲 failed unique L2。
+6. 讲 Random seed 检查：不是 seed 42 偶然。
+7. 讲 failure audit：承认边界问题，但总量优势仍在。
+8. 最后讲下一步：完成 100 行 human adjudication，把 assisted audit 校准成 human-calibrated estimate。
+
+## 10. 一句话总结
+
+在相同 VLM 调用预算下，ADVTEST 相比随机结构化采样能发现更多 mPLUG-Owl2 错误，更重要的是显著扩大了被触发失败的结构关系覆盖范围；它的优势主要来自覆盖广度，而不是单题有效率更高。
