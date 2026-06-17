@@ -11,10 +11,12 @@ from fixed_budget_experiment import (
     FrameInput,
     SwitchPolicy,
     build_parser,
+    build_frame_question_counts,
     build_method_stream,
     choose_switch_reason,
     compute_aggregate_metrics,
     run_method,
+    run_method_presampled_frames,
 )
 
 
@@ -143,6 +145,57 @@ class CoverageAccountingTests(unittest.TestCase):
 
         self.assertEqual([row["question"] for row in loaded], ["q0", "q1"])
 
+
+class FrameQuestionCountTests(unittest.TestCase):
+    def test_pre_sampled_frame_counts_are_deterministic_and_sum_to_budget(self):
+        first = build_frame_question_counts(["frame-a", "frame-b"], 11, seed=5)
+        second = build_frame_question_counts(["frame-a", "frame-b"], 11, seed=5)
+
+        self.assertEqual(first, second)
+        self.assertEqual(sum(first["frame_question_counts"].values()), 11)
+        self.assertEqual(first["total_questions"], 11)
+
+    def test_pre_sampled_mode_processes_each_frame_in_one_batch(self):
+        def make_questions(prefix, count):
+            return [
+                {
+                    "question_id": f"{prefix}-{index}",
+                    "question": f"{prefix} q{index}",
+                    "coverage_footprint": {
+                        "l0": [f"{prefix}-obj{index}"],
+                        "l1": [f"{prefix}-obj{index}|rel"],
+                        "l2": [f"{prefix}-obj{index}|rel|ego"],
+                    },
+                }
+                for index in range(count)
+            ]
+
+        frames = [
+            FrameInput("frame-a", make_questions("a", 10), 20, 20, 20),
+            FrameInput("frame-b", make_questions("b", 10), 20, 20, 20),
+        ]
+
+        result = run_method_presampled_frames(
+            "advtest",
+            frames,
+            generation_budget=10,
+            seed=7,
+            frame_question_counts={"frame-a": 7, "frame-b": 3},
+        )
+
+        self.assertEqual(result["summary"]["suite_size"], 10)
+        self.assertEqual(
+            [run["questions"] for run in result["frame_runs"]],
+            [7, 3],
+        )
+        self.assertEqual(
+            [run["assigned_questions"] for run in result["frame_runs"]],
+            [7, 3],
+        )
+        self.assertEqual(
+            result["summary"]["switch_reason_counts"],
+            {"assigned_questions_done": 2},
+        )
 
 
 
@@ -337,6 +390,16 @@ class FixedBudgetRunnerTests(unittest.TestCase):
 
         self.assertEqual(args.generation_budget, 17)
         self.assertFalse(hasattr(args, "budget"))
+
+    def test_cli_accepts_presampled_frame_execution_mode(self):
+        args = build_parser().parse_args(["--execution-mode", "presampled_frames"])
+
+        self.assertEqual(args.execution_mode, "presampled_frames")
+
+    def test_cli_can_run_only_selected_methods(self):
+        args = build_parser().parse_args(["--methods", "advtest"])
+
+        self.assertEqual(args.methods, ["advtest"])
 
 if __name__ == "__main__":
     unittest.main()

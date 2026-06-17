@@ -68,13 +68,21 @@ seed bank 至少要保存：
 
 本轮不再谈“切帧”。帧集合固定后，把所有帧的 gap 合成一个全局 gap universe。
 
+执行时为了减少反复加载场景图的开销，不采用“生成一道题就随机跳一次帧”的实现方式。我们采用等价但更省时的做法：
+
+1. 先固定随机种子，随机抽 1000 次帧。
+2. 统计每个帧被抽中了多少次，也就是这个帧本轮要生成多少道题。
+3. 再按帧集中生成：一个帧一次性生成完它分到的题数，再处理下一个帧。
+
+这里“分到多少道题”只是提前确定每个帧要跑多少题，不是提前确定具体题目。具体选哪一道题，仍然由这个帧当时的 coverage 状态逐题决定。
+
 ADVTEST 流程：
 
 1. 输入统一 seed bank。
 2. 按旧方法从 seed bank 直接得到 initial coverage state。
 3. 构建所选帧集合内的所有可生成候选。
-4. 每轮随机选一个帧，随机过程固定 seed，保证可复现。
-5. 在这个帧内，根据该帧当前覆盖状态选择 coverage gain 最大或综合得分最高的问题。
+4. 先用固定随机种子抽 1000 次帧，得到“每个帧要生成几道题”。
+5. 按帧集中执行；在当前帧内，根据该帧当前覆盖状态选择 coverage gain 最大或综合得分最高的问题。
 6. 生成/加入一道新题后，更新该帧 coverage，同时更新全局 coverage。
 7. 重复直到生成 1000 道新题，或者候选耗尽。
 
@@ -84,7 +92,7 @@ ADVTEST 流程：
 global_coverage = covered_gaps_across_selected_frames / total_gaps_across_selected_frames
 ```
 
-这里不再有“换帧条件”。每轮选帧由固定随机过程控制；覆盖状态只影响该帧内选哪道题。
+这里不再有“换帧条件”。随机过程只决定每个帧本轮分到多少道题；覆盖状态只影响该帧内具体选哪道题。这样统计口径仍然是随机跨帧，但工程执行上可以一帧一帧跑，避免频繁重复加载同一个场景图。
 
 ## 5. QATest 新流程
 
@@ -332,3 +340,38 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe `
 - 状态文件：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\overnight_orchestrator\status.json`
 - 当前状态：`start_checks_completed`
 - 下一步：不要直接把 smoke 当主实验结果；应先补 seed-bank-driven QATest/QAAskeR glue，再启动三条 1000 新题主实验。
+
+## 14. ADVTEST 按帧集中生成验证
+
+为了解决“每道题随机选帧会不会反复加载场景图、导致时间开销变大”的问题，已新增 ADVTEST 的按帧集中生成入口。
+
+核心口径：
+
+1. 固定随机种子。
+2. 先随机抽 1000 次帧，统计每个帧要生成多少道题。
+3. 再按帧集中生成。
+4. 每个帧内部仍然逐题根据当前覆盖状态选题，不提前固定具体题目。
+
+已实现命令入口：
+
+```powershell
+E:\Project\ADVTEST\.venv310\Scripts\python.exe fixed_budget_experiment.py `
+  --methods advtest `
+  --execution-mode presampled_frames `
+  --generation-budget 1000 `
+  --frame-pool-size 30 `
+  --output-dir E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\advtest-presampled-f30-q1000\results
+```
+
+已跑一次记录化实验：
+
+- run id：`advtest-presampled-f30-q1000`
+- 运行目录：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\advtest-presampled-f30-q1000`
+- 执行时间：约 92.64 秒。
+- 生成题数：1000。
+- 参与帧数：30。
+- 30 个帧全部完成自己分到的题数，没有候选耗尽。
+- L2 覆盖：`covered_l2=5730 / total_l2=539733`。
+- 平均每题新增唯一 L2 覆盖：`unique_l2_per_question=5.73`。
+
+这一步只验证 ADVTEST 结构生成和覆盖统计，不是最终三方法 VLM 检错率结果。下一步仍然是补 seed-bank-driven QATest/QAAskeR glue，再启动三条方法的 1000 新题 VLM 评测。

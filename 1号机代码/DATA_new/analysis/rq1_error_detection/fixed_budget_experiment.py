@@ -6,7 +6,7 @@ import sys
 from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence
+from typing import Dict, Iterable, List, Mapping, Optional, Sequence
 
 
 def mean(values: Sequence[float]) -> float:
@@ -133,6 +133,25 @@ def compute_aggregate_metrics(
         metrics["covered_l2"] / question_count if question_count else 0.0
     )
     return metrics
+
+
+def build_frame_question_counts(
+    frame_names: Sequence[str], generation_budget: int, seed: int
+) -> dict:
+    if generation_budget < 0:
+        raise ValueError("generation_budget must be non-negative")
+    names = list(frame_names)
+    if generation_budget and not names:
+        raise ValueError("Cannot assign questions without frames")
+    rng = random.Random(seed)
+    counts = Counter(rng.choice(names) for _ in range(generation_budget))
+    return {
+        "seed": seed,
+        "total_questions": generation_budget,
+        "frame_question_counts": {
+            name: int(counts.get(name, 0)) for name in names
+        },
+    }
 
 
 def _question_file(frame_dir: Path, scene_frame: str) -> Path:
@@ -483,6 +502,124 @@ def run_method(
     }
 
 
+def run_method_presampled_frames(
+    method: str,
+    frames: Sequence[FrameInput],
+    generation_budget: int,
+    seed: int,
+    frame_question_counts: Mapping[str, int],
+) -> dict:
+    frame_states = {
+        frame.scene_frame: FrameCoverage(
+            total_l0=frame.total_l0,
+            total_l1=frame.total_l1,
+            total_l2=frame.total_l2,
+        )
+        for frame in frames
+    }
+    suite = []
+    curve = [_metric_snapshot(frame_states, 0, 0)]
+    frame_runs = []
+    switch_counts = Counter()
+
+    for frame_index, frame_input in enumerate(frames):
+        assigned_questions = int(frame_question_counts.get(frame_input.scene_frame, 0))
+        if assigned_questions <= 0:
+            continue
+        frame_seed = seed + frame_index * 1009
+        stream = build_method_stream(
+            method,
+            frame_input.questions,
+            assigned_questions,
+            frame_seed,
+        )
+        gains = []
+        frame_state = frame_states[frame_input.scene_frame]
+        for local_index, question in enumerate(stream, start=1):
+            deltas = _apply_question(frame_state, question)
+            gains.append(deltas["delta_l2"])
+            record = annotate_provenance(
+                question,
+                layer=STRUCTURAL_LAYER,
+                method=method,
+                question_source="programmatic_candidate_space",
+                source_question_id=str(
+                    question.get("question_id") or question.get("id") or local_index
+                ),
+                source_sample_token=str(question.get("sample_token") or ""),
+                generation_adapter=str(
+                    question.get("generation_backend") or "programmatic"
+                ),
+                uses_coverage_feedback=method in COVERAGE_FEEDBACK_METHODS,
+                vlm_call_cost=1,
+                scene_frame=frame_input.scene_frame,
+                global_budget_index=len(suite) + 1,
+            )
+            record.update(
+                {
+                    "frame_budget_index": local_index,
+                    "frame_assigned_questions": assigned_questions,
+                    **deltas,
+                }
+            )
+            suite.append(record)
+            curve.append(
+                _metric_snapshot(frame_states, len(suite), len(frame_runs) + 1)
+            )
+
+        if len(gains) < assigned_questions:
+            reason = "candidate_exhausted"
+        else:
+            reason = "assigned_questions_done"
+        switch_counts[reason] += 1
+        frame_runs.append(
+            {
+                "scene_frame": frame_input.scene_frame,
+                "assigned_questions": assigned_questions,
+                "questions": len(gains),
+                "covered_l2": len(frame_state.covered_l2),
+                "total_l2": frame_state.total_l2,
+                "coverage_l2": (
+                    len(frame_state.covered_l2) / frame_state.total_l2
+                    if frame_state.total_l2
+                    else 1.0
+                ),
+                "switch_reason": reason,
+                "initial_gain_mean": mean(gains[:20]) if gains else 0.0,
+                "final_gain_mean": mean(gains[-20:]) if gains else 0.0,
+            }
+        )
+
+    if curve:
+        while len(curve) <= generation_budget:
+            padded = dict(curve[-1])
+            padded["question_count"] = len(curve)
+            curve.append(padded)
+
+    final_metrics = compute_aggregate_metrics(frame_states, len(suite))
+    final_metrics["suite_size"] = len(suite)
+    final_metrics["visited_frames"] = len(frame_runs)
+    final_metrics["assigned_frame_count"] = sum(
+        1 for value in frame_question_counts.values() if int(value) > 0
+    )
+    final_metrics["switch_reason_counts"] = dict(switch_counts)
+    final_metrics["auc_micro_l2"] = _normalized_auc(
+        [point["micro_l2"] for point in curve[: generation_budget + 1]],
+        generation_budget,
+    )
+    final_metrics["auc_macro_l2"] = _normalized_auc(
+        [point["macro_l2"] for point in curve[: generation_budget + 1]],
+        generation_budget,
+    )
+    return {
+        "method": method,
+        "summary": final_metrics,
+        "frame_runs": frame_runs,
+        "curve": curve[: generation_budget + 1],
+        "suite": suite,
+    }
+
+
 def _normalized_auc(values: Sequence[float], generation_budget: int) -> float:
     if generation_budget <= 0 or len(values) < 2:
         return 0.0
@@ -504,6 +641,7 @@ def write_results(
     generation_budget: int,
     policy: SwitchPolicy,
     method_results: Sequence[dict],
+    execution_metadata: Optional[dict] = None,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     summary = {
@@ -526,6 +664,8 @@ def write_results(
             for result in method_results
         },
     }
+    if execution_metadata:
+        summary.update(execution_metadata)
     with (output_dir / "fixed_budget_summary.json").open(
         "w", encoding="utf-8"
     ) as handle:
@@ -563,16 +703,32 @@ def write_results(
             output_dir / f"{result['method']}_suite.jsonl", result["suite"]
         )
 
+    execution_mode = (
+        execution_metadata.get("execution_mode")
+        if execution_metadata
+        else "sequential_frames"
+    )
     report_lines = [
         "# Generation-Budget Structural Coverage Trial",
         "",
         f"- Shared frame pool: {len(frame_names)} frames",
         f"- Generation budget: {generation_budget} questions per method",
-        f"- Per-frame range: {policy.min_questions}-{policy.max_questions}",
+        f"- Execution mode: {execution_mode}",
+    ]
+    if execution_mode == "presampled_frames":
+        report_lines.append(
+            "- Frame counts are sampled once with the fixed random seed, then "
+            "each frame is processed in one batch."
+        )
+    else:
+        report_lines.append(f"- Per-frame range: {policy.min_questions}-{policy.max_questions}")
+    report_lines.extend(
+        [
         "",
         "| Method | Suite | Frames | Micro L2 | Macro L2 | L2/Q | AUC Micro L2 |",
         "|---|---:|---:|---:|---:|---:|---:|",
-    ]
+        ]
+    )
     for result in method_results:
         metrics = result["summary"]
         report_lines.append(
@@ -586,6 +742,16 @@ def write_results(
             f"- **{result['method']}**: "
             f"{json.dumps(result['summary']['switch_reason_counts'], ensure_ascii=False)}"
         )
+    if execution_mode == "presampled_frames":
+        report_lines.extend(
+            [
+                "",
+                "## Frame Question Counts",
+                "",
+                "Frame counts are sampled once with the fixed random seed, then each "
+                "frame is processed in one batch.",
+            ]
+        )
     (output_dir / "fixed_budget_report.md").write_text(
         "\n".join(report_lines) + "\n", encoding="utf-8"
     )
@@ -598,6 +764,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--generation-budget", type=int, default=1000)
     parser.add_argument("--frame-pool-size", type=int, default=30)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--methods", nargs="+", choices=METHODS, default=list(METHODS))
+    parser.add_argument(
+        "--execution-mode",
+        choices=["sequential_frames", "presampled_frames"],
+        default="sequential_frames",
+        help=(
+            "sequential_frames keeps the original frame-by-frame switching; "
+            "presampled_frames first samples how many questions each frame gets, "
+            "then processes each frame in one batch."
+        ),
+    )
     parser.add_argument("--max-questions", type=int, default=100)
     parser.add_argument(
         "--question-load-limit",
@@ -622,11 +799,33 @@ def main() -> None:
         question_load_limit=args.question_load_limit,
     )
     results = []
-    for method in METHODS:
-        print(f"[fixed-budget] Running {method}...", flush=True)
-        result = run_method(
-            method, frames, args.generation_budget, args.seed, policy
+    frame_assignment = None
+    if args.execution_mode == "presampled_frames":
+        frame_assignment = build_frame_question_counts(
+            [frame.scene_frame for frame in frames],
+            args.generation_budget,
+            args.seed,
         )
+        print(
+            "[fixed-budget] Presampled frame question counts with seed "
+            f"{args.seed}.",
+            flush=True,
+        )
+    for method in args.methods:
+        print(f"[fixed-budget] Running {method}...", flush=True)
+        if args.execution_mode == "presampled_frames":
+            assert frame_assignment is not None
+            result = run_method_presampled_frames(
+                method,
+                frames,
+                args.generation_budget,
+                args.seed,
+                frame_assignment["frame_question_counts"],
+            )
+        else:
+            result = run_method(
+                method, frames, args.generation_budget, args.seed, policy
+            )
         results.append(result)
         print(
             f"  suite={result['summary']['suite_size']} "
@@ -640,6 +839,12 @@ def main() -> None:
         args.generation_budget,
         policy,
         results,
+        execution_metadata={
+            "execution_mode": args.execution_mode,
+            "frame_assignment": frame_assignment,
+        }
+        if frame_assignment
+        else {"execution_mode": args.execution_mode},
     )
     print(f"[fixed-budget] Results written to {args.output_dir}", flush=True)
 
