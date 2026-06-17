@@ -65,6 +65,9 @@ Human reviewers should fill only the blank `human_*` columns:
 - `human_agrees_with_assisted`: whether the human label matches `manual_valid_failure`
 - `human_notes`: short rationale, especially for disagreements
 
+The step-by-step annotation and completion checklist is in
+`human_adjudication_runbook_2026-06-17.md`.
+
 To regenerate the calibration pack:
 
 ```powershell
