@@ -296,7 +296,34 @@ QATest-adapted 的 1000 题生成审计结果：
 - ADVTEST vs Random 是严格可比的内部消融。
 - Official-QA 和 QATest-adapted 只能作为跨范式参考，不能拿 structural L2 覆盖和 ADVTEST 直接排位。
 
-### 4.1 做题速度怎么算
+### 4.1 对象 id 和 GT 粒度怎么影响比较
+
+这里还有一个必须讲清楚的边界：官方 NuScenes-QA 原题通常只给类别级答案，不给我们这种具体对象 id。比如官方题可能问“有几辆 car”“是否有 pedestrian”，答案是类别、数量或 yes/no；而 ADVTEST/Random 的题会绑定到具体 instance 或具体 relation，例如某个 token/id 对应的车、行人、车道关系。
+
+所以这几种方法不是在同一个标注粒度上产生 GT：
+
+| 方法 | 是否有具体对象 id | GT 粒度 | 能直接比较什么 |
+|---|---|---|---|
+| ADVTEST | 有 | instance/relation-level | 可以比较 wrong、independent failure、failed unique L2、结构覆盖 |
+| Random | 有 | instance/relation-level | 可以和 ADVTEST 严格比较结构覆盖和失败结构覆盖 |
+| Official-QA | 通常没有 | category-level official answer | 可以比较同等 VLM call 下的答错数量，但不能比较具体结构覆盖 |
+| QATest-adapted | 沿用官方原题，通常没有 | category-level official answer | 可以比较同等 VLM call 下的答错数量和去重后失败，但不能比较具体结构覆盖 |
+| QAAskeR | 取决于 source QA，本轮未进主表 | metamorphic pair-level | 后续按 two-call protocol 单独比较 violation |
+
+因此，比较口径要分两层：
+
+| 比较问题 | 可以放哪些方法 | 原因 |
+|---|---|---|
+| 同样 1000 次 VLM call，谁让模型答错更多 | ADVTEST、Random、Official-QA、QATest-adapted | 都能形成一题一 call 的测试输入和自动判错 |
+| 同样结构化候选空间下，谁覆盖更多失败 L2 | 只能 ADVTEST vs Random | 两者都有具体对象 id 和 relation-level GT |
+| QATest-adapted 是否比直接用官方题更强 | QATest-adapted vs Official-QA | 两者都基于官方 QA，GT 粒度一致 |
+| QAAskeR 是否有效 | 单独 two-call / pair-level 表 | 它的测试单元是 primary + follow-up，不是一题一 call |
+
+不能做的比较是：把 Official-QA 或 QATest-adapted 的结果拿来和 ADVTEST 的 failed unique L2 直接比。原因不是它们一定更弱，而是它们没有具体对象 id，无法落到同一个 L2 denominator 上。
+
+也不要临时给官方 QA 强行补对象 id。因为“这道官方题到底指哪辆车、哪个行人、哪个 relation”很多时候并不唯一，靠规则硬配会引入新的 oracle 偏差。后续如果要做更严格的跨方法结构比较，需要单独做一个人工或半自动对齐层：把官方 QA 映射到具体 instance/relation，并记录 ambiguous / unmatched 的比例。这个目前不是主实验结论的一部分。
+
+### 4.2 做题速度怎么算
 
 这里也要把“做题速度”讲清楚。我们现在有两个速度口径：
 
@@ -338,7 +365,7 @@ QATest-adapted 的 1000 题生成审计结果：
 
 整轮 4000 条真实推理总耗时 32921.27 秒，约 9.14 小时。ADVTEST 单题推理更慢，主要可能和题目文本、目标关系复杂度、输出长度和机器负载有关；所以今晚不要把“跑得慢”讲成方法劣势，只讲成工程成本和后续并行化需求。
 
-### 4.2 换帧条件和预算设置
+### 4.3 换帧条件和预算设置
 
 预算设置现在采用“题数/调用数”而不是“帧数”。原因是我们的目标不是证明某个方法在固定帧数里做得更满，而是比较在相同测试成本下，谁能发现更多错误、覆盖更多失败结构。
 
