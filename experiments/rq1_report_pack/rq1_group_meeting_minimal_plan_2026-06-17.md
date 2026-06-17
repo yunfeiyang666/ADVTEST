@@ -220,3 +220,47 @@ ADVTEST 额外加一张覆盖表：
 - 不做多 seed 稳定性。
 - 不调 QATest / QAAskeR 参数。
 - 不把 official category-level QA 强行硬配成 instance-level GT。
+
+## 12. 当前执行记录（2026-06-17 晚）
+
+本轮先跑统一 seed 前置步骤，不先进入三方法 1000 新题主实验。
+
+已完成：
+
+- 固定前 30 个 RQ1 评估帧。
+- 从这些帧中抽取官方 NuScenes-QA 原题，共 454 道候选 seed 题。
+- 生成候选 suite：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\group-seed-candidates-f30\results\official_qa_suite.jsonl`。
+- 用 MOCK 模式验证评测链路 5 题，输出正常。
+- 新增 `build_seed_bank_from_eval.py`：用于把 VLM raw results 中 `is_correct=true` 的官方 QA 抽成统一 seed bank。
+- 已用 MOCK 5 题验证 seed bank 抽取，输出 `correct_seed_bank.jsonl` 和 `correct_seed_bank_summary.json`。
+
+正在跑：
+
+- Run ID：`seed-filter-mplug-f30-q454-v5`。
+- 目的：用 mPLUG-Owl2 跑 454 道官方 QA 候选题，只保留模型答对的题作为 correct seed bank。
+- 运行目录：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\seed-filter-mplug-f30-q454-v5`。
+- 输入：`group-seed-candidates-f30/results/official_qa_suite.jsonl`。
+- 输出 raw results：`seed-filter-mplug-f30-q454-v5/results/official_qa_suite_raw_results.jsonl`。
+- 当前状态：已开始写入 raw results；完成后执行 seed bank 抽取脚本。
+
+启动命令口径：
+
+```powershell
+E:\Project\ADVTEST\.venv310\Scripts\python.exe run_recorded_experiment.py `
+  --run-id seed-filter-mplug-f30-q454-v5 `
+  --purpose GroupMeeting_RQ1_seed_filter_454_official_questions_mPLUG `
+  --run-root E:\Project\ADVTEST\scratch\rq1_group_minimal\runs `
+  --input-file E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\group-seed-candidates-f30\results\official_qa_suite.jsonl `
+  --parameter frame_pool_size=30 `
+  --parameter seed_candidate_questions=454 `
+  --parameter model_mode=MPLUG `
+  --cwd E:\Project\ADVTEST\1号机代码\DATA_new\analysis\rq1_error_detection `
+  -- E:\Project\ADVTEST\.venv310\Scripts\python.exe run_suite_evaluation.py `
+    --suite-dir E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\group-seed-candidates-f30\results `
+    --output-dir E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\seed-filter-mplug-f30-q454-v5\results `
+    --outputs-root E:\Project\ADVTEST\1号机代码\DATA_new\outputs `
+    --dataroot E:\Project\ADVTEST\1号机代码\DATA_new\data `
+    --mode MPLUG `
+    --methods official_qa `
+    --vlm-call-budget 454
+```
