@@ -446,3 +446,107 @@ QAAskeR 生成质量问题：
 | QAAskeR | `qaasker-seeded-f30-q1000` | MOCK limit=5 | 可读可评测 |
 
 下一步可以启动真实 VLM 小预算 sanity check，例如每条线先 `limit=20`，确认图像解析、答案判定和输出报告都稳定，再考虑完整 1000 题评测。
+
+## 16. QAAskeR 失败原因审计
+
+已新增 QAAskeR seed failure audit，直接检查 158 个 correct seed 为什么不能生成 follow-up。
+
+审计脚本：
+
+```powershell
+E:\Project\ADVTEST\.venv310\Scripts\python.exe audit_qaasker_seed_failures.py `
+  --output-dir E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\qaasker-seed-failure-audit\results
+```
+
+审计方式：
+
+- 核心调用仍然是 QAAskeR 原始 `Q2S.change()` 和 `S2G.S2I()`。
+- 同时比较 raw original question 和 NuScenes 句式协调后的 question。
+- 同时比较 gold short answer 和 VLM primary answer。
+
+结果：
+
+| 模式 | 尝试 seed | 成功 follow-up | 失败 | 成功率 | 失败阶段 |
+|---|---:|---:|---:|---:|---|
+| raw + gold answer | 158 | 49 | 109 | 0.310 | Q2S returned None |
+| coordinated + gold answer | 158 | 49 | 109 | 0.310 | Q2S returned None |
+| raw + VLM answer | 158 | 49 | 109 | 0.310 | Q2S returned None |
+| coordinated + VLM answer | 158 | 49 | 109 | 0.310 | Q2S returned None |
+
+这个结果说明：
+
+1. 失败不是由我们的 NuScenes glue 引入的。raw original question 和 coordinated question 的成功/失败数量完全一致。
+2. 失败也不是因为用了 VLM 长答案。gold answer 和 VLM answer 的成功/失败数量也完全一致。
+3. 失败集中在 Q2S 阶段，也就是原问题 + answer 转声明句失败，还没有进入 follow-up VLM 检错。
+
+失败类型分布：
+
+- `exist` 模板失败 80 条。
+- `comparison` 模板失败 29 条。
+- 失败问题形态主要是 existential / yes-no / comparison：
+  - `Are there ...`
+  - `Is there ...`
+  - `Does ... have the same status ...`
+  - `There is ...; is its status the same as ...`
+
+典型失败例子：
+
+```text
+Question:
+Are there any other bicycles that in the same status as the traffic cone?
+
+Answer:
+no
+
+QAAskeR result:
+Q2S returned None
+```
+
+```text
+Question:
+Does the bicycle to the front left of the stopped thing have the same status as the bicycle that is to the front left of the moving thing?
+
+Answer:
+yes
+
+QAAskeR result:
+Q2S returned None
+```
+
+成功例子主要是简单 wh/object/status 问题：
+
+```text
+Question:
+What is the status of the construction vehicle?
+
+Answer:
+parked
+
+Q2S:
+Parked is the status of the construction vehicle.
+
+S2G:
+Is parked the status of the construction vehicle?
+```
+
+```text
+Question:
+There is a thing to the back right of me; what is it?
+
+Answer:
+bus
+
+Q2S:
+Bus is located to the back right of me.
+
+S2G:
+Is bus located to the back right of me?
+```
+
+理论解释：
+
+QAAskeR MR2 的设计前提是：source question 是可转换的 wh-question，形式接近 `What/Which/Who ... ?`，然后把 `question + answer` 变成声明句，再由声明句生成 yes/no follow-up。
+
+NuScenes-QA 里大量原题不是这种形态，而是自动驾驶场景里的存在性、比较性、状态一致性问题。很多 source question 本身已经是 yes/no 问题，或者包含复杂空间关系和比较结构。QAAskeR 原始 Q2S 规则无法稳定为这些句子生成声明句，所以返回 `None`。
+
+因此，QAAskeR 在这里失败的主要原因是方法适用边界：它是文本 QA 的 metamorphic consistency 方法，不是面向自动驾驶视觉场景的结构覆盖生成器。
