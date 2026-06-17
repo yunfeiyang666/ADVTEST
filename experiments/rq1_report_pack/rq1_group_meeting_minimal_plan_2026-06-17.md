@@ -271,3 +271,37 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe run_recorded_experiment.py `
 - 原始 QATest import 超过 30 秒未返回。其 `question_trans.py` 会加载 `nlpaug/tagme/requests`，并引用本地硬编码预训练模型路径；后续应使用子进程和超时隔离运行。
 - 原始 QAAskeR 工具 import 超过 30 秒未返回。其工具模块 import 时会直接加载 spaCy 模型和 `pattern`，后续也应使用子进程 worker 方式隔离。
 - QATest 原仓库文件中存在硬编码外部服务 token。实验中不应打印或复用该 token；如果后续要共享仓库或材料，必须先做脱敏或要求更换 token。
+
+## 13. 过夜任务安排
+
+过夜目标按优先级执行：
+
+1. 继续等待 `seed-filter-mplug-f30-q454-v5` 完成 454 道官方 QA 的 mPLUG 筛选。
+2. 筛选完成后运行 `build_seed_bank_from_eval.py`，生成 `correct_seed_bank.jsonl` 和 `correct_seed_bank_summary.json`。
+3. 运行三条方法线的启动 smoke：
+   - ADVTEST：用结构化候选生成小预算 smoke，确认结构生成链路可跑。
+   - QATest：通过隔离子进程调用原始 QATest smoke，不调内部策略。
+   - QAAskeR：通过隔离子进程调用原始 QAAskeR smoke，不伪造人工判断。
+4. smoke 成功的线再进入后续 1000 新题主实验；失败的线保留 stderr、timeout 和 blocker，作为第二天修复入口。
+
+本地守夜脚本：
+
+```powershell
+E:\Project\ADVTEST\.venv310\Scripts\python.exe `
+  E:\Project\ADVTEST\1号机代码\DATA_new\analysis\rq1_error_detection\run_rq1_group_overnight.py `
+  --loop `
+  --sleep-seconds 900 `
+  --max-hours 12 `
+  --command-timeout-seconds 120 `
+  --smoke-budget 5
+```
+
+状态文件：
+
+- `E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\overnight_orchestrator\status.json`
+
+同时已创建 Codex 心跳自动化：
+
+- Automation ID：`rq1-overnight-continuation`
+- 间隔：45 分钟
+- 任务：检查 seed 筛选、抽 seed bank、推进三条线启动预检和后续实验；不 push，不假装人工检测已完成。
