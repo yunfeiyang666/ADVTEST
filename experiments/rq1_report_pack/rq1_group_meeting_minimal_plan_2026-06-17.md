@@ -375,3 +375,74 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe fixed_budget_experiment.py `
 - 平均每题新增唯一 L2 覆盖：`unique_l2_per_question=5.73`。
 
 这一步只验证 ADVTEST 结构生成和覆盖统计，不是最终三方法 VLM 检错率结果。下一步仍然是补 seed-bank-driven QATest/QAAskeR glue，再启动三条方法的 1000 新题 VLM 评测。
+
+## 15. Seeded baseline suite 生成进展
+
+已新增 seed-bank-driven baseline suite builder：
+
+```powershell
+E:\Project\ADVTEST\.venv310\Scripts\python.exe build_seeded_baseline_suites.py `
+  --methods qatest qaasker `
+  --budget 1000 `
+  --output-dir <run-results>
+```
+
+这个脚本只做三件事：
+
+1. 读取统一 correct seed bank。
+2. 把 seed 转成 QATest / QAAskeR 原始代码需要的输入。
+3. 调用原始 QATest / QAAskeR 生成逻辑，输出统一 JSONL suite 和生成质量 summary。
+
+没有做的事：
+
+- 不给 QATest 加 coverage。
+- 不调 QATest / QAAskeR 的内部策略。
+- 不人工剔除坏题。
+- 不把生成失败藏掉。
+
+QATest 环境兼容说明：
+
+- 原始 QATest 的若干算子依赖硬编码本地模型路径或外部服务。
+- 本轮 glue 对这些不可用算子返回原题，让原始 `run(...)` 自己把它视为“本次变异失败”，继续尝试其它算子。
+- 原始 QATest 的语言覆盖评分依赖 NLTK 全局数据；为了不改全局环境，本轮 glue 提供本地 fallback tokenizer/POS tagger，只保证原始迭代流程能跑通。
+
+已生成 QATest 1000 新题 suite：
+
+- run id：`qatest-seeded-f30-q1000`
+- 运行目录：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\qatest-seeded-f30-q1000`
+- 执行时间：约 18.31 秒。
+- 原始生成数：1091。
+- 进入评测 suite：1000。
+- 同帧同文本重复：88。
+- 原始 QATest stdout 已保存到：`qatest_original_stdout.log`。
+
+QAAskeR 生成质量问题：
+
+- QAAskeR 原始 MR2 在 NuScenes-QA 这批 seed 上成功率偏低。
+- capacity 探测：500 次尝试只接受 153 条，拒绝 347 条；同帧同文本唯一题只有 49 条。
+- 主生成 run 为了凑 1000 条 accepted follow-up，实际尝试 3220 次，拒绝 2220 次。
+- 1000 条 accepted follow-up 中，同帧同文本重复 951 条，同帧同文本唯一题只有 49 条。
+
+已生成 QAAskeR 1000 accepted follow-up suite：
+
+- run id：`qaasker-seeded-f30-q1000`
+- 运行目录：`E:\Project\ADVTEST\scratch\rq1_group_minimal\runs\qaasker-seeded-f30-q1000`
+- 执行时间：约 101.72 秒。
+- attempted_generated：3220。
+- accepted_for_eval：1000。
+- generation_rejected：2220。
+- generation_rejection_rate：0.6894。
+- duplicate_same_frame_questions：951。
+- unique_same_frame_questions：49。
+
+这说明 QAAskeR 这条 baseline 虽然能按“1000 条 accepted follow-up”凑出 suite，但有效多样性非常低。后续 VLM 检错率表里必须同时报告 `accepted_for_eval`、`generation_rejected`、`duplicate_same_frame_questions` 和 `unique_same_frame_questions`，否则单看 1000 题会误导。
+
+三个 suite 已通过统一 evaluator 的 MOCK smoke：
+
+| 方法 | suite | smoke 设置 | 结果 |
+|---|---|---|---|
+| ADVTEST | `advtest-presampled-f30-q1000` | MOCK limit=5 | 可读可评测 |
+| QATest | `qatest-seeded-f30-q1000` | MOCK limit=5 | 可读可评测 |
+| QAAskeR | `qaasker-seeded-f30-q1000` | MOCK limit=5 | 可读可评测 |
+
+下一步可以启动真实 VLM 小预算 sanity check，例如每条线先 `limit=20`，确认图像解析、答案判定和输出报告都稳定，再考虑完整 1000 题评测。
