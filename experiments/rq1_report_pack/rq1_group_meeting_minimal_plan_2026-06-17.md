@@ -264,3 +264,10 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe run_recorded_experiment.py `
     --methods official_qa `
     --vlm-call-budget 454
 ```
+
+基线接入预检发现：
+
+- 原始 QATest 的 `main.py` 不是天然可直接吃 NuScenes seed bank 的 CLI；最小接入方式应是把 seed bank 转成它的 `seed_tests` 结构，再调用原始 `run(...)`，而不是改内部策略。
+- 原始 QATest import 超过 30 秒未返回。其 `question_trans.py` 会加载 `nlpaug/tagme/requests`，并引用本地硬编码预训练模型路径；后续应使用子进程和超时隔离运行。
+- 原始 QAAskeR 工具 import 超过 30 秒未返回。其工具模块 import 时会直接加载 spaCy 模型和 `pattern`，后续也应使用子进程 worker 方式隔离。
+- QATest 原仓库文件中存在硬编码外部服务 token。实验中不应打印或复用该 token；如果后续要共享仓库或材料，必须先做脱敏或要求更换 token。
