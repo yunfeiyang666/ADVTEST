@@ -1,5 +1,6 @@
 import argparse
 import csv
+import heapq
 import json
 import random
 import sys
@@ -174,16 +175,19 @@ def redistribute_frame_question_counts(
 
     target_questions = min(generation_budget, sum(capacities.values()))
     shortfall = target_questions - sum(adjusted.values())
-    for frame in frames:
-        if shortfall <= 0:
-            break
+    heap = []
+    for order, frame in enumerate(frames):
         name = frame.scene_frame
         spare = capacities[name] - adjusted[name]
-        if spare <= 0:
-            continue
-        added = min(spare, shortfall)
-        adjusted[name] += added
-        shortfall -= added
+        if spare > 0:
+            heapq.heappush(heap, (adjusted[name], order, name, spare))
+    while shortfall > 0 and heap:
+        current, order, name, spare = heapq.heappop(heap)
+        adjusted[name] += 1
+        shortfall -= 1
+        spare -= 1
+        if spare > 0:
+            heapq.heappush(heap, (current + 1, order, name, spare))
 
     return {
         "total_questions": generation_budget,

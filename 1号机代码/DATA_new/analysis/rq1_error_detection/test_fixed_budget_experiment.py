@@ -234,6 +234,37 @@ class FrameQuestionCountTests(unittest.TestCase):
             [1, 9],
         )
 
+    def test_pre_sampled_reallocation_is_balanced_across_spare_frames(self):
+        frames = [
+            FrameInput("frame-a", [{"question": "a0"}], 1, 1, 1),
+            FrameInput(
+                "frame-b",
+                [{"question": f"b{index}"} for index in range(10)],
+                10,
+                10,
+                10,
+            ),
+            FrameInput(
+                "frame-c",
+                [{"question": f"c{index}"} for index in range(10)],
+                10,
+                10,
+                10,
+            ),
+        ]
+
+        adjusted = redistribute_frame_question_counts(
+            frames,
+            {"frame-a": 10, "frame-b": 0, "frame-c": 0},
+            generation_budget=10,
+        )
+
+        self.assertEqual(sum(adjusted["frame_question_counts"].values()), 10)
+        self.assertEqual(
+            adjusted["frame_question_counts"],
+            {"frame-a": 1, "frame-b": 5, "frame-c": 4},
+        )
+
 
 
 
