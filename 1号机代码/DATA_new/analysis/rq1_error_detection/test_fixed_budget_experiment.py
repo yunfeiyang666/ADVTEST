@@ -17,6 +17,7 @@ from fixed_budget_experiment import (
     compute_aggregate_metrics,
     run_method,
     run_method_presampled_frames,
+    redistribute_frame_question_counts,
 )
 
 
@@ -195,6 +196,42 @@ class FrameQuestionCountTests(unittest.TestCase):
         self.assertEqual(
             result["summary"]["switch_reason_counts"],
             {"assigned_questions_done": 2},
+        )
+
+    def test_pre_sampled_counts_reallocate_exhausted_frame_budget(self):
+        frames = [
+            FrameInput("frame-a", [{"question": "a0"}], 1, 1, 1),
+            FrameInput(
+                "frame-b",
+                [{"question": f"b{index}"} for index in range(10)],
+                10,
+                10,
+                10,
+            ),
+        ]
+
+        adjusted = redistribute_frame_question_counts(
+            frames,
+            {"frame-a": 7, "frame-b": 3},
+            generation_budget=10,
+        )
+        result = run_method_presampled_frames(
+            "advtest",
+            frames,
+            generation_budget=10,
+            seed=7,
+            frame_question_counts=adjusted["frame_question_counts"],
+        )
+
+        self.assertEqual(sum(adjusted["frame_question_counts"].values()), 10)
+        self.assertEqual(
+            adjusted["frame_question_counts"],
+            {"frame-a": 1, "frame-b": 9},
+        )
+        self.assertEqual(result["summary"]["suite_size"], 10)
+        self.assertEqual(
+            [run["assigned_questions"] for run in result["frame_runs"]],
+            [1, 9],
         )
 
 

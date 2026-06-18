@@ -154,6 +154,51 @@ def build_frame_question_counts(
     }
 
 
+def redistribute_frame_question_counts(
+    frames: Sequence[FrameInput],
+    frame_question_counts: Mapping[str, int],
+    generation_budget: int,
+) -> dict:
+    if generation_budget < 0:
+        raise ValueError("generation_budget must be non-negative")
+
+    capacities = {frame.scene_frame: len(frame.questions) for frame in frames}
+    adjusted = {}
+    redistributed_questions = 0
+    for frame in frames:
+        name = frame.scene_frame
+        requested = max(0, int(frame_question_counts.get(name, 0)))
+        assigned = min(requested, capacities[name])
+        adjusted[name] = assigned
+        redistributed_questions += requested - assigned
+
+    target_questions = min(generation_budget, sum(capacities.values()))
+    shortfall = target_questions - sum(adjusted.values())
+    for frame in frames:
+        if shortfall <= 0:
+            break
+        name = frame.scene_frame
+        spare = capacities[name] - adjusted[name]
+        if spare <= 0:
+            continue
+        added = min(spare, shortfall)
+        adjusted[name] += added
+        shortfall -= added
+
+    return {
+        "total_questions": generation_budget,
+        "target_questions": target_questions,
+        "assigned_questions": sum(adjusted.values()),
+        "unassigned_questions": generation_budget - sum(adjusted.values()),
+        "redistributed_questions": redistributed_questions,
+        "frame_question_counts": adjusted,
+        "raw_frame_question_counts": {
+            frame.scene_frame: int(frame_question_counts.get(frame.scene_frame, 0))
+            for frame in frames
+        },
+    }
+
+
 def _question_file(frame_dir: Path, scene_frame: str) -> Path:
     qa_dir = frame_dir / "generation" / "qa"
     candidates = [
@@ -801,11 +846,17 @@ def main() -> None:
     results = []
     frame_assignment = None
     if args.execution_mode == "presampled_frames":
-        frame_assignment = build_frame_question_counts(
+        raw_frame_assignment = build_frame_question_counts(
             [frame.scene_frame for frame in frames],
             args.generation_budget,
             args.seed,
         )
+        frame_assignment = redistribute_frame_question_counts(
+            frames,
+            raw_frame_assignment["frame_question_counts"],
+            args.generation_budget,
+        )
+        frame_assignment["seed"] = raw_frame_assignment["seed"]
         print(
             "[fixed-budget] Presampled frame question counts with seed "
             f"{args.seed}.",
