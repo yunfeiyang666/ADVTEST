@@ -658,7 +658,7 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
 
     draw = ImageDraw.Draw(mosaic)
     try:
-        font = ImageFont.truetype("arial.ttf", 28)
+        font = ImageFont.truetype("arial.ttf", 56)
     except Exception:
         font = ImageFont.load_default()
 
@@ -677,7 +677,7 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
         vis = n.get('visibility') or {}
         cat = n.get('category_name') or n.get('category') or ''
         color = color_for(cat)
-
+        draw_candidates = []
         for ch in CAM_ORDER:
             v = vis.get(ch)
             if not v or not v.get('visible'):
@@ -694,18 +694,25 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
                 x1, x2 = x1 * sx, x2 * sx
                 y1, y2 = y1 * sy, y2 * sy
             mosaic_bbox = (ox+x1, oy+y1, ox+x2, oy+y2)
-            draw_box(draw, mosaic_bbox, color, width=4)
+            area = max(0.0, (x2 - x1) * (y2 - y1))
+            depth = float(v.get("depth") or 1e9)
+            draw_candidates.append((-area, depth, mosaic_bbox))
 
-            # Label box with unique ID
-            draw_label(
-                draw,
-                mosaic_bbox,
-                str(nid),
-                color,
-                font,
-                occupied_labels,
-                mosaic.size,
-            )
+        if not draw_candidates:
+            continue
+        _, _, mosaic_bbox = min(draw_candidates)
+        draw_box(draw, mosaic_bbox, color, width=6)
+
+        # Label box with unique ID
+        draw_label(
+            draw,
+            mosaic_bbox,
+            str(nid),
+            color,
+            font,
+            occupied_labels,
+            mosaic.size,
+        )
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     mosaic.save(out_path)
@@ -755,6 +762,10 @@ def check_correctness(predicted: str, ground_truth: str) -> bool:
             pred_norm,
         )
     )
+
+
+def build_vlm_prompt(question: Dict[str, Any]) -> str:
+    return str(question.get("question", ""))
 
 
 # --- Evaluator Classes ---
@@ -869,7 +880,7 @@ class MPLUGEvaluator:
             from mplug_owl2.conversation import conv_templates, SeparatorStyle
             from mplug_owl2.mm_utils import tokenizer_image_token, KeywordsStoppingCriteria
 
-            q_text = question.get("question", "")
+            q_text = build_vlm_prompt(question)
             gt = str(question.get("answer", ""))
 
             prompt = DEFAULT_IMAGE_TOKEN + "\n" + q_text
@@ -946,7 +957,7 @@ class LocalGPUEvaluator:
             from transformers import Qwen2VLForConditionalGeneration
             import torch
 
-            q_text = question.get("question", "")
+            q_text = build_vlm_prompt(question)
             gt = str(question.get("answer", ""))
 
             messages = [
@@ -1037,7 +1048,7 @@ class MiniCPMOEvaluator:
 
         try:
             from PIL import Image
-            q_text = question.get("question", "")
+            q_text = build_vlm_prompt(question)
             gt = str(question.get("answer", ""))
 
             image = Image.open(image_path).convert('RGB')
@@ -1074,7 +1085,7 @@ class APIEvaluator:
 
         try:
             import base64
-            q_text = question.get("question", "")
+            q_text = build_vlm_prompt(question)
             gt = str(question.get("answer", ""))
 
             with open(image_path, "rb") as image_file:
