@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import subprocess
 import time
 from datetime import datetime, timezone
@@ -77,35 +78,29 @@ def correct_count(raw_results: Path) -> int:
     return sum(1 for row in iter_jsonl(raw_results) if row.get("is_correct") is True)
 
 
+def is_seed_filter_process(command_line: str, seed_filter_run_id: str) -> bool:
+    if not command_line or seed_filter_run_id not in command_line:
+        return False
+    lowered = command_line.lower()
+    if "start_formal_eval_after_assembly.py" in lowered:
+        return False
+    return (
+        "run_recorded_experiment.py" in lowered
+        or "run_suite_evaluation.py" in lowered
+    )
+
+
 def stop_seed_filter(seed_filter_run_id: str) -> list[dict]:
     """Stop the seed-filter command line once the required seed threshold is met."""
 
-    escaped = seed_filter_run_id.replace("'", "''")
-    command = f"""
-$procs = Get-CimInstance Win32_Process |
-  Where-Object {{ $_.CommandLine -like '*{escaped}*' }}
-$stopped = @()
-foreach ($proc in $procs) {{
-  try {{
-    Stop-Process -Id $proc.ProcessId -Force
-    $stopped += [pscustomobject]@{{
-      process_id = $proc.ProcessId
-      command_line = $proc.CommandLine
-      stopped = $true
-    }}
-  }} catch {{
-    $stopped += [pscustomobject]@{{
-      process_id = $proc.ProcessId
-      command_line = $proc.CommandLine
-      stopped = $false
-      error = $_.Exception.Message
-    }}
-  }}
-}}
-$stopped | ConvertTo-Json -Depth 3
-"""
     result = subprocess.run(
-        ["powershell", "-NoProfile", "-Command", command],
+        [
+            "powershell",
+            "-NoProfile",
+            "-Command",
+            "Get-CimInstance Win32_Process | "
+            "Select-Object ProcessId,CommandLine | ConvertTo-Json -Depth 3",
+        ],
         check=False,
         capture_output=True,
         text=True,
@@ -113,9 +108,36 @@ $stopped | ConvertTo-Json -Depth 3
     if not result.stdout.strip():
         return []
     payload = json.loads(result.stdout)
-    if isinstance(payload, dict):
-        return [payload]
-    return list(payload)
+    processes = [payload] if isinstance(payload, dict) else list(payload)
+    stopped = []
+    current_pid = os.getpid()
+    for proc in processes:
+        process_id = int(proc.get("ProcessId") or 0)
+        command_line = str(proc.get("CommandLine") or "")
+        if process_id == current_pid:
+            continue
+        if not is_seed_filter_process(command_line, seed_filter_run_id):
+            continue
+        stop_result = subprocess.run(
+            [
+                "powershell",
+                "-NoProfile",
+                "-Command",
+                f"Stop-Process -Id {process_id} -Force",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        stopped.append(
+            {
+                "process_id": process_id,
+                "command_line": command_line,
+                "stopped": stop_result.returncode == 0,
+                "error": stop_result.stderr.strip(),
+            }
+        )
+    return stopped
 
 
 def run_recorded_formal_eval(args: argparse.Namespace, suite_details: dict) -> None:
