@@ -50,6 +50,7 @@ import re
 import json
 import math
 import hashlib
+import copy
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from typing import Dict, Any, List, Tuple, Optional
@@ -146,6 +147,7 @@ def get_sample_token(scene_graph: Dict[str, Any], dataroot: Path) -> Optional[st
     return _SCENE_FRAME_MAP_CACHE.get((scene_name, frame_idx))
 
 _SAMPLE_TOKEN_TO_CAM_FILES = None
+_METADATA_RECORD_CACHE: Dict[Tuple[str, str], Dict[str, dict]] = {}
 
 
 
@@ -306,6 +308,312 @@ def get_sample_camera_files(sample_token: str, dataroot: Path) -> Dict[str, Path
         print(f"Error scanning camera files for {sample_token}: {exc}")
     return camera_files
 
+
+def _records_by_token(dataroot: Path, filename: str) -> Dict[str, dict]:
+    """Load a nuScenes metadata table keyed by token."""
+    cache_key = (str(dataroot.absolute()), filename)
+    if cache_key in _METADATA_RECORD_CACHE:
+        return _METADATA_RECORD_CACHE[cache_key]
+    table_path = _find_metadata_file(dataroot, filename)
+    if not table_path:
+        _METADATA_RECORD_CACHE[cache_key] = {}
+        return {}
+    try:
+        records = json.loads(table_path.read_text(encoding="utf-8"))
+        keyed = {str(row.get("token")): row for row in records if row.get("token")}
+    except Exception as exc:
+        print(f"Error loading {filename}: {exc}")
+        keyed = {}
+    _METADATA_RECORD_CACHE[cache_key] = keyed
+    return keyed
+
+
+def _sample_camera_records(sample_token: str, dataroot: Path) -> Dict[str, dict]:
+    """Find sample_data records for the six key-frame cameras of one sample."""
+    sample_data_file = _find_metadata_file(dataroot, "sample_data.json")
+    if not sample_data_file:
+        return {}
+    records: Dict[str, dict] = {}
+    token_bytes = f'"sample_token": "{sample_token}"'.encode("utf-8")
+    try:
+        with sample_data_file.open("rb") as handle:
+            with mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as mm:
+                pos = 0
+                while True:
+                    hit = mm.find(token_bytes, pos)
+                    if hit < 0:
+                        break
+                    start = mm.rfind(b"{", 0, hit)
+                    end = mm.find(b"\n}", hit)
+                    if start < 0 or end < 0:
+                        break
+                    block = mm[start : end + 2].decode("utf-8", errors="ignore")
+                    record = json.loads(block)
+                    filename = str(record.get("filename") or "").replace("\\", "/")
+                    if record.get("is_key_frame", True) and "samples/CAM_" in filename:
+                        for ch in CAM_ORDER:
+                            if f"/{ch}/" in filename:
+                                records[ch] = record
+                                break
+                    if len(records) == len(CAM_ORDER):
+                        break
+                    pos = end + 2
+    except Exception as exc:
+        print(f"Error scanning camera metadata for {sample_token}: {exc}")
+    return records
+
+
+def _ensure_projected_visibility(
+    scene_graph: Dict[str, Any],
+    dataroot: Path,
+    sample_token: str,
+    image_sizes: Dict[str, Tuple[int, int]],
+    min_corner_vis: int = 2,
+) -> Dict[str, Any]:
+    """Add visibility/bbox2d fields when a filtered scene graph lacks them."""
+    nodes = scene_graph.get("nodes") or scene_graph.get("objects") or []
+    if any((node.get("visibility") or {}) for node in nodes):
+        return scene_graph
+
+    try:
+        import numpy as np
+        from nuscenes.utils.data_classes import Box
+        from nuscenes.utils.geometry_utils import view_points
+        from pyquaternion import Quaternion
+    except Exception as exc:
+        print(f"[mosaic] nuScenes projection dependencies unavailable: {exc}")
+        return scene_graph
+
+    camera_records = _sample_camera_records(sample_token, dataroot)
+    calibrated = _records_by_token(dataroot, "calibrated_sensor.json")
+    ego_poses = _records_by_token(dataroot, "ego_pose.json")
+    if not camera_records or not calibrated or not ego_poses:
+        return scene_graph
+
+    enriched = copy.deepcopy(scene_graph)
+    enriched_nodes = enriched.get("nodes") or enriched.get("objects") or []
+    for node in enriched_nodes:
+        nid = node.get("id") or node.get("unique_id")
+        node.setdefault("visibility", {})
+        if nid == "ego":
+            continue
+
+        translation = node.get("translation")
+        size = node.get("size")
+        rotation = node.get("rotation")
+        if not translation or not size or not rotation:
+            continue
+        try:
+            center = [
+                float(translation["x"]),
+                float(translation["y"]),
+                float(translation.get("z", 0.0)),
+            ]
+            wlh = [
+                float(size["width"]),
+                float(size["length"]),
+                float(size.get("height", 1.0)),
+            ]
+            orientation = Quaternion(rotation)
+            box = Box(center, wlh, orientation, name=str(node.get("type") or ""))
+        except Exception:
+            continue
+
+        for ch in CAM_ORDER:
+            sd = camera_records.get(ch)
+            if not sd:
+                continue
+            cs = calibrated.get(str(sd.get("calibrated_sensor_token")))
+            pose = ego_poses.get(str(sd.get("ego_pose_token")))
+            if not cs or not pose:
+                continue
+            try:
+                box_cam = box.copy()
+                box_cam.translate(-np.array(pose["translation"], dtype=float))
+                box_cam.rotate(Quaternion(pose["rotation"]).inverse)
+                box_cam.translate(-np.array(cs["translation"], dtype=float))
+                box_cam.rotate(Quaternion(cs["rotation"]).inverse)
+                corners = box_cam.corners()
+                if np.any(corners[2, :] <= 0):
+                    continue
+                corners_2d = view_points(
+                    corners,
+                    np.array(cs["camera_intrinsic"], dtype=float),
+                    normalize=True,
+                )[:2, :].T
+                width, height = image_sizes.get(
+                    ch,
+                    (
+                        int(sd.get("width") or 1600),
+                        int(sd.get("height") or 900),
+                    ),
+                )
+                xs = corners_2d[:, 0]
+                ys = corners_2d[:, 1]
+                inside = int(
+                    np.sum((xs >= 0) & (xs < width) & (ys >= 0) & (ys < height))
+                )
+                if inside < min_corner_vis:
+                    continue
+                xmin = max(0.0, float(np.min(xs)))
+                ymin = max(0.0, float(np.min(ys)))
+                xmax = min(float(width - 1), float(np.max(xs)))
+                ymax = min(float(height - 1), float(np.max(ys)))
+                if xmax <= xmin or ymax <= ymin:
+                    continue
+                center_uv = view_points(
+                    box_cam.center.reshape(3, 1),
+                    np.array(cs["camera_intrinsic"], dtype=float),
+                    normalize=True,
+                )[:2, 0]
+                node["visibility"][ch] = {
+                    "visible": True,
+                    "bbox2d": [xmin, ymin, xmax, ymax],
+                    "center_uv": [float(center_uv[0]), float(center_uv[1])],
+                    "depth": float(box_cam.center[2]),
+                }
+            except Exception:
+                continue
+
+    return enriched
+
+
+def _label_rect(
+    draw: ImageDraw.ImageDraw,
+    xy: Tuple[float, float],
+    text: str,
+    font,
+    pad: int,
+) -> Tuple[float, float, float, float]:
+    x, y = xy
+    try:
+        bbox = draw.textbbox((x, y), text, font=font)
+    except Exception:
+        bbox = (x, y, x + 8 * len(text), y + 16)
+    return (
+        float(bbox[0] - pad),
+        float(bbox[1] - pad),
+        float(bbox[2] + pad),
+        float(bbox[3] + pad),
+    )
+
+
+def _rect_intersection_area(
+    a: Tuple[float, float, float, float],
+    b: Tuple[float, float, float, float],
+) -> float:
+    x1 = max(a[0], b[0])
+    y1 = max(a[1], b[1])
+    x2 = min(a[2], b[2])
+    y2 = min(a[3], b[3])
+    if x2 <= x1 or y2 <= y1:
+        return 0.0
+    return (x2 - x1) * (y2 - y1)
+
+
+def _clamp_label_xy(
+    draw: ImageDraw.ImageDraw,
+    xy: Tuple[float, float],
+    text: str,
+    font,
+    pad: int,
+    canvas_size: Tuple[int, int],
+) -> Tuple[float, float]:
+    x, y = xy
+    rect = _label_rect(draw, (x, y), text, font, pad)
+    canvas_w, canvas_h = canvas_size
+    if rect[0] < 0:
+        x -= rect[0]
+    if rect[1] < 0:
+        y -= rect[1]
+    rect = _label_rect(draw, (x, y), text, font, pad)
+    if rect[2] > canvas_w:
+        x -= rect[2] - canvas_w
+    if rect[3] > canvas_h:
+        y -= rect[3] - canvas_h
+    return max(0.0, x), max(0.0, y)
+
+
+def draw_label(
+    draw: ImageDraw.ImageDraw,
+    bbox: Tuple[float, float, float, float],
+    text: str,
+    color: Tuple[int, int, int],
+    font,
+    occupied: List[Tuple[float, float, float, float]],
+    canvas_size: Tuple[int, int],
+) -> None:
+    x1, y1, x2, y2 = bbox
+    pad = 3
+    margin = 8
+    try:
+        tb = draw.textbbox((0, 0), text, font=font)
+        label_w = tb[2] - tb[0] + pad * 2
+        label_h = tb[3] - tb[1] + pad * 2
+    except Exception:
+        label_w = 8 * len(text) + pad * 2
+        label_h = 16 + pad * 2
+
+    # Try multiple positions around the box. This keeps labels readable when
+    # many close objects appear in the same camera view.
+    raw_candidates = [
+        (x1, y1 - label_h - margin),                 # above-left
+        (x2 - label_w, y1 - label_h - margin),       # above-right
+        (x1, y2 + margin),                           # below-left
+        (x2 - label_w, y2 + margin),                 # below-right
+        (x1 - label_w - margin, y1),                 # left
+        (x2 + margin, y1),                           # right
+        (x1 + margin, y1 + margin),                  # inside-left
+        (x2 - label_w - margin, y1 + margin),        # inside-right
+    ]
+
+    best_xy = None
+    best_rect = None
+    best_score = None
+    for xy in raw_candidates:
+        candidate_xy = _clamp_label_xy(draw, xy, text, font, pad, canvas_size)
+        rect = _label_rect(draw, candidate_xy, text, font, pad)
+        overlap = sum(_rect_intersection_area(rect, prev) for prev in occupied)
+        box_overlap = _rect_intersection_area(rect, bbox) * 0.15
+        # Prefer less overlap, then labels closer to their object.
+        cx = (rect[0] + rect[2]) / 2.0
+        cy = (rect[1] + rect[3]) / 2.0
+        bx = (x1 + x2) / 2.0
+        by = (y1 + y2) / 2.0
+        distance_penalty = math.hypot(cx - bx, cy - by) * 0.01
+        score = overlap + box_overlap + distance_penalty
+        if best_score is None or score < best_score:
+            best_xy = candidate_xy
+            best_rect = rect
+            best_score = score
+
+    if best_xy is None or best_rect is None:
+        best_xy = _clamp_label_xy(draw, (x1, y1), text, font, pad, canvas_size)
+        best_rect = _label_rect(draw, best_xy, text, font, pad)
+
+    bg = (
+        max(0, color[0] // 4),
+        max(0, color[1] // 4),
+        max(0, color[2] // 4),
+    )
+    draw.rectangle(
+        [(best_rect[0], best_rect[1]), (best_rect[2], best_rect[3])],
+        fill=bg,
+        outline=color,
+        width=2,
+    )
+    draw.text(best_xy, text, fill=(255, 255, 255), font=font)
+
+    # Draw a short pointer if the adaptive placement moves the label away.
+    lx = (best_rect[0] + best_rect[2]) / 2.0
+    ly = (best_rect[1] + best_rect[3]) / 2.0
+    bx = min(max(lx, x1), x2)
+    by = min(max(ly, y1), y2)
+    if math.hypot(lx - bx, ly - by) > 12:
+        draw.line([(lx, ly), (bx, by)], fill=color, width=2)
+
+    occupied.append(best_rect)
+
 def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path: Path) -> bool:
     """Stitch 6 cameras and label bounding boxes with unique IDs (e.g. car17)."""
     sample_token = get_sample_token(scene_graph, dataroot)
@@ -316,10 +624,13 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
 
     # Find sample images
     imgs = []
+    image_sizes: Dict[str, Tuple[int, int]] = {}
     for ch in CAM_ORDER:
         img_path = cam_files.get(ch)
         if img_path and img_path.exists():
-            imgs.append(Image.open(img_path).convert('RGB'))
+            image = Image.open(img_path).convert('RGB')
+            image_sizes[ch] = image.size
+            imgs.append(image)
         else:
             imgs.append(None)
 
@@ -347,14 +658,18 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
 
     draw = ImageDraw.Draw(mosaic)
     try:
-        font = ImageFont.truetype("arial.ttf", 14)
+        font = ImageFont.truetype("arial.ttf", 28)
     except Exception:
         font = ImageFont.load_default()
 
     ch_to_offset = {CAM_ORDER[i]: positions[i] for i in range(len(CAM_ORDER))}
+    scene_graph = _ensure_projected_visibility(
+        scene_graph, dataroot, sample_token, image_sizes
+    )
 
     # Draw boxes labeled with unique IDs (e.g. car17)
     nodes = scene_graph.get('nodes') or scene_graph.get('objects') or []
+    occupied_labels: List[Tuple[float, float, float, float]] = []
     for n in nodes:
         nid = n.get('id') or n.get('unique_id')
         if not nid or nid == 'ego':
@@ -372,10 +687,25 @@ def render_labeled_mosaic(scene_graph: Dict[str, Any], dataroot: Path, out_path:
                 continue
             (ox, oy) = ch_to_offset[ch]
             x1, y1, x2, y2 = bbox
-            draw_box(draw, (ox+x1, oy+y1, ox+x2, oy+y2), color)
+            original_w, original_h = image_sizes.get(ch, (W, H))
+            if original_w and original_h:
+                sx = W / original_w
+                sy = H / original_h
+                x1, x2 = x1 * sx, x2 * sx
+                y1, y2 = y1 * sy, y2 * sy
+            mosaic_bbox = (ox+x1, oy+y1, ox+x2, oy+y2)
+            draw_box(draw, mosaic_bbox, color, width=4)
 
             # Label box with unique ID
-            draw.text((ox+x1, oy+y1-12), str(nid), fill=color, font=font)
+            draw_label(
+                draw,
+                mosaic_bbox,
+                str(nid),
+                color,
+                font,
+                occupied_labels,
+                mosaic.size,
+            )
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     mosaic.save(out_path)
