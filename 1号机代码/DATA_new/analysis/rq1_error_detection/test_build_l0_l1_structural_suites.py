@@ -12,9 +12,13 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
         self.scene_graph = {
             "nodes": [
                 {"unique_id": "ego", "type": "ego"},
-                {"unique_id": "car1", "type": "car"},
+                {"unique_id": "car1", "type": "car", "status": "moving"},
                 {"unique_id": "traffic_cone2", "type": "traffic_cone"},
-                {"unique_id": "pedestrian3", "category": "human.pedestrian.adult"},
+                {
+                    "unique_id": "pedestrian3",
+                    "category": "human.pedestrian.adult",
+                    "status": "stopped",
+                },
             ],
             "edges": [
                 {
@@ -38,18 +42,35 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
     def test_l0_candidates_ask_object_type_and_skip_ego(self):
         questions = l0_candidates(self.scene_frame, self.scene_graph)
 
-        self.assertEqual(len(questions), 3)
+        self.assertGreaterEqual(len(questions), 9)
         self.assertEqual(questions[0]["question"], "What type of object is car1?")
         self.assertEqual(questions[0]["answer"], "car")
-        self.assertEqual(questions[1]["answer"], "traffic cone")
-        self.assertEqual(questions[2]["answer"], "adult")
         self.assertEqual(questions[0]["coverage_footprint"]["l0"], ["car1"])
         self.assertEqual(questions[0]["topology_level"], "L0")
+        by_template = {question["template_id"]: question for question in questions}
+        self.assertIn("l0_object_status", by_template)
+        self.assertIn("l0_object_exists", by_template)
+        self.assertIn("l0_count_type", by_template)
+        self.assertIn("l0_exist_status_type", by_template)
+        self.assertTrue(
+            any(
+                question["question"] == "Are any moving cars visible?"
+                and question["answer"] == "yes"
+                for question in questions
+            )
+        )
+        self.assertTrue(
+            any(
+                question["question"] == "How many traffic cones are visible?"
+                and question["answer"] == "1"
+                for question in questions
+            )
+        )
 
     def test_l1_candidates_ask_pair_direction_and_filter_missing_nodes(self):
         questions = l1_candidates(self.scene_frame, self.scene_graph)
 
-        self.assertEqual(len(questions), 2)
+        self.assertGreaterEqual(len(questions), 8)
         self.assertEqual(
             questions[0]["question"],
             "Where is traffic_cone2 relative to car1?",
@@ -60,6 +81,19 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
             ["car1|traffic_cone2|front_left"],
         )
         self.assertEqual(questions[0]["topology_level"], "L1")
+        templates = {question["template_id"] for question in questions}
+        self.assertIn("l1_relation_exists", templates)
+        self.assertIn("l1_relation_exists_neg", templates)
+        self.assertIn("l1_object_at_direction", templates)
+        self.assertIn("l1_count_direction_type", templates)
+        self.assertTrue(
+            any(
+                question["question"]
+                == "How many traffic cones are to the front left of car1?"
+                and question["answer"] == "1"
+                for question in questions
+            )
+        )
 
 
 if __name__ == "__main__":
