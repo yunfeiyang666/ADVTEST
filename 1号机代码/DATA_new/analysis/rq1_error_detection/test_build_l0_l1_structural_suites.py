@@ -19,6 +19,7 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
                     "category": "human.pedestrian.adult",
                     "status": "stopped",
                 },
+                {"unique_id": "car4", "type": "car", "status": "stopped"},
             ],
             "edges": [
                 {
@@ -49,9 +50,14 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
         self.assertEqual(questions[0]["topology_level"], "L0")
         by_template = {question["template_id"]: question for question in questions}
         self.assertIn("l0_object_status", by_template)
+        self.assertIn("l0_object_type_yes", by_template)
+        self.assertIn("l0_object_type_no", by_template)
+        self.assertIn("l0_object_status_yes", by_template)
+        self.assertIn("l0_object_status_no", by_template)
         self.assertIn("l0_object_exists", by_template)
         self.assertIn("l0_count_type", by_template)
         self.assertIn("l0_exist_status_type", by_template)
+        self.assertIn("l0_more_type_than_type", by_template)
         self.assertTrue(
             any(
                 question["question"] == "Are any moving cars visible?"
@@ -63,6 +69,20 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
             any(
                 question["question"] == "How many traffic cones are visible?"
                 and question["answer"] == "1"
+                for question in questions
+            )
+        )
+        self.assertTrue(
+            any(
+                question["question"] == "Is car1 a car?"
+                and question["answer"] == "yes"
+                for question in questions
+            )
+        )
+        self.assertTrue(
+            any(
+                question["question"] == "Is car1 moving?"
+                and question["answer"] == "yes"
                 for question in questions
             )
         )
@@ -82,15 +102,35 @@ class BuildL0L1StructuralSuitesTests(unittest.TestCase):
         )
         self.assertEqual(questions[0]["topology_level"], "L1")
         templates = {question["template_id"] for question in questions}
+        self.assertIn("l1_pair_direction_reverse", templates)
         self.assertIn("l1_relation_exists", templates)
         self.assertIn("l1_relation_exists_neg", templates)
         self.assertIn("l1_object_at_direction", templates)
+        self.assertIn("l1_exist_direction_type", templates)
+        self.assertIn("l1_exist_direction_type_no", templates)
+        self.assertIn("l1_exist_status_direction_type", templates)
+        self.assertIn("l1_count_status_direction_type", templates)
         self.assertIn("l1_count_direction_type", templates)
         self.assertTrue(
             any(
                 question["question"]
                 == "How many traffic cones are to the front left of car1?"
                 and question["answer"] == "1"
+                for question in questions
+            )
+        )
+        self.assertTrue(
+            any(
+                question["question"] == "Where is car1 relative to traffic_cone2?"
+                and question["answer"] == "back right"
+                for question in questions
+            )
+        )
+        self.assertTrue(
+            any(
+                question["question"]
+                == "Are any traffic cones to the front left of car1?"
+                and question["answer"] == "yes"
                 for question in questions
             )
         )

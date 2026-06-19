@@ -39,6 +39,15 @@ DIRECTION_TEXT = {
     "back_right": "back right",
 }
 
+OPPOSITE_DIRECTION = {
+    "front": "back",
+    "back": "front",
+    "front_left": "back_right",
+    "front_right": "back_left",
+    "back_left": "front_right",
+    "back_right": "front_left",
+}
+
 PLURAL_TYPES = {
     "bus": "buses",
     "construction vehicle": "construction vehicles",
@@ -86,6 +95,22 @@ def node_id(node: Mapping) -> str:
 
 def object_ref(uid: str) -> str:
     return "me" if uid == "ego" else uid
+
+
+def sorted_object_types(nodes: Sequence[Mapping]) -> list[str]:
+    return sorted({display_type(node) for node in nodes if display_type(node)})
+
+
+def alternate_type(true_type: str, object_types: Sequence[str], seed_text: str) -> str:
+    candidates = [item for item in object_types if item != true_type]
+    if not candidates:
+        candidates = [item for item in ("car", "pedestrian", "barrier", "truck") if item != true_type]
+    return random.Random(seed_text).choice(candidates)
+
+
+def alternate_status(true_status: str, seed_text: str) -> str:
+    candidates = [status for status in STATUS_VALUES if status != true_status]
+    return random.Random(seed_text).choice(candidates)
 
 
 def scene_graph_path(outputs_root: Path, scene_frame: str) -> Path:
@@ -137,6 +162,7 @@ def base_record(scene_frame: str, level: str, question_id: str) -> dict:
 def l0_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
     records = []
     nodes = object_nodes(scene_graph)
+    object_types = sorted_object_types(nodes)
     for node in nodes:
         uid = node_id(node)
         answer = display_type(node)
@@ -156,6 +182,46 @@ def l0_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
             }
         )
         records.append(record)
+
+        type_yes = base_record(scene_frame, "l0", f"{scene_frame}:l0:type_yes:{uid}")
+        type_yes.update(
+            {
+                "template_id": "l0_object_type_yes",
+                "question": f"Is {uid} a {answer}?",
+                "answer": "yes",
+                "answer_type": "boolean",
+                "target_object": uid,
+                "target_type": answer,
+                "footprint_nodes": [uid],
+                "coverage_footprint": {"l0": [uid], "l1": [], "l2": []},
+                "coverage_l0": [uid],
+                "coverage_l1": [],
+                "coverage_l2": [],
+            }
+        )
+        records.append(type_yes)
+
+        wrong_type = alternate_type(answer, object_types, f"{scene_frame}:type:{uid}")
+        type_no = base_record(
+            scene_frame, "l0", f"{scene_frame}:l0:type_no:{uid}:{wrong_type}"
+        )
+        type_no.update(
+            {
+                "template_id": "l0_object_type_no",
+                "question": f"Is {uid} a {wrong_type}?",
+                "answer": "no",
+                "answer_type": "boolean",
+                "target_object": uid,
+                "target_type": wrong_type,
+                "true_type": answer,
+                "footprint_nodes": [uid],
+                "coverage_footprint": {"l0": [uid], "l1": [], "l2": []},
+                "coverage_l0": [uid],
+                "coverage_l1": [],
+                "coverage_l2": [],
+            }
+        )
+        records.append(type_no)
 
         status = node_status(node)
         if status:
@@ -177,6 +243,50 @@ def l0_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
                 }
             )
             records.append(status_record)
+
+            status_yes = base_record(
+                scene_frame, "l0", f"{scene_frame}:l0:status_yes:{uid}:{status}"
+            )
+            status_yes.update(
+                {
+                    "template_id": "l0_object_status_yes",
+                    "question": f"Is {uid} {status}?",
+                    "answer": "yes",
+                    "answer_type": "boolean",
+                    "target_object": uid,
+                    "target_status": status,
+                    "footprint_nodes": [uid],
+                    "coverage_footprint": {"l0": [uid], "l1": [], "l2": []},
+                    "coverage_l0": [uid],
+                    "coverage_l1": [],
+                    "coverage_l2": [],
+                }
+            )
+            records.append(status_yes)
+
+            wrong_status = alternate_status(status, f"{scene_frame}:status:{uid}")
+            status_no = base_record(
+                scene_frame,
+                "l0",
+                f"{scene_frame}:l0:status_no:{uid}:{wrong_status}",
+            )
+            status_no.update(
+                {
+                    "template_id": "l0_object_status_no",
+                    "question": f"Is {uid} {wrong_status}?",
+                    "answer": "no",
+                    "answer_type": "boolean",
+                    "target_object": uid,
+                    "target_status": wrong_status,
+                    "true_status": status,
+                    "footprint_nodes": [uid],
+                    "coverage_footprint": {"l0": [uid], "l1": [], "l2": []},
+                    "coverage_l0": [uid],
+                    "coverage_l1": [],
+                    "coverage_l2": [],
+                }
+            )
+            records.append(status_no)
 
         exists_record = base_record(scene_frame, "l0", f"{scene_frame}:l0:exists:{uid}")
         exists_record.update(
@@ -252,6 +362,41 @@ def l0_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
                 }
             )
             records.append(exist_record)
+
+    for index, left_type in enumerate(candidate_types):
+        for right_type in candidate_types[index + 1 :]:
+            left_ids = sorted(by_type[left_type])
+            right_ids = sorted(by_type[right_type])
+            if len(left_ids) == len(right_ids):
+                continue
+            comparison_record = base_record(
+                scene_frame,
+                "l0",
+                f"{scene_frame}:l0:more_type:{left_type}:{right_type}",
+            )
+            comparison_record.update(
+                {
+                    "template_id": "l0_more_type_than_type",
+                    "question": (
+                        f"Are there more {plural_type(left_type)} than "
+                        f"{plural_type(right_type)} visible?"
+                    ),
+                    "answer": "yes" if len(left_ids) > len(right_ids) else "no",
+                    "answer_type": "boolean",
+                    "left_type": left_type,
+                    "right_type": right_type,
+                    "footprint_nodes": [*left_ids, *right_ids],
+                    "coverage_footprint": {
+                        "l0": [*left_ids, *right_ids],
+                        "l1": [],
+                        "l2": [],
+                    },
+                    "coverage_l0": [*left_ids, *right_ids],
+                    "coverage_l1": [],
+                    "coverage_l2": [],
+                }
+            )
+            records.append(comparison_record)
     return records
 
 
@@ -266,6 +411,12 @@ def l1_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
     direction_values = sorted(DIRECTION_TEXT)
     targets_by_source_direction: dict[tuple[str, str], list[str]] = {}
     targets_by_source_direction_type: dict[tuple[str, str, str], list[str]] = {}
+    targets_by_source_direction_status_type: dict[
+        tuple[str, str, str, str], list[str]
+    ] = {}
+    object_types = sorted_object_types(
+        [node for uid, node in nodes.items() if uid != "ego"]
+    )
     for edge in scene_graph.get("edges") or []:
         source = str(edge.get("source") or "")
         target = str(edge.get("target") or "")
@@ -284,6 +435,11 @@ def l1_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
         targets_by_source_direction_type.setdefault(
             (source, direction, target_type), []
         ).append(target)
+        target_status = node_status(nodes[target])
+        if target_status:
+            targets_by_source_direction_status_type.setdefault(
+                (source, direction, target_status, target_type), []
+            ).append(target)
         record = base_record(
             scene_frame, "l1", f"{scene_frame}:l1:direction:{source}:{target}"
         )
@@ -310,6 +466,37 @@ def l1_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
             }
         )
         records.append(record)
+
+        opposite = OPPOSITE_DIRECTION[direction]
+        reverse_record = base_record(
+            scene_frame,
+            "l1",
+            f"{scene_frame}:l1:direction_reverse:{target}:{source}",
+        )
+        reverse_record.update(
+            {
+                "template_id": "l1_pair_direction_reverse",
+                "question": (
+                    f"Where is {object_ref(source)} relative to {object_ref(target)}?"
+                ),
+                "answer": DIRECTION_TEXT[opposite],
+                "answer_type": "direction",
+                "source_object": target,
+                "target_object": source,
+                "direction_6": opposite,
+                "true_direction_6": direction,
+                "footprint_nodes": [source, target],
+                "coverage_footprint": {
+                    "l0": [source, target],
+                    "l1": [relation_item],
+                    "l2": [],
+                },
+                "coverage_l0": [source, target],
+                "coverage_l1": [relation_item],
+                "coverage_l2": [],
+            }
+        )
+        records.append(reverse_record)
 
         yes_record = base_record(
             scene_frame, "l1", f"{scene_frame}:l1:relation_yes:{source}:{target}"
@@ -408,6 +595,76 @@ def l1_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
         targets_by_source_direction_type.items()
     ):
         relation_items = [f"{source}|{target}|{direction}" for target in targets]
+        exists_record = base_record(
+            scene_frame,
+            "l1",
+            f"{scene_frame}:l1:exists_direction_type:{source}:{direction}:{obj_type}",
+        )
+        exists_record.update(
+            {
+                "template_id": "l1_exist_direction_type",
+                "question": (
+                    f"Are any {plural_type(obj_type)} to the "
+                    f"{DIRECTION_TEXT[direction]} of {object_ref(source)}?"
+                ),
+                "answer": "yes",
+                "answer_type": "boolean",
+                "source_object": source,
+                "target_type": obj_type,
+                "direction_6": direction,
+                "footprint_nodes": [source, *targets],
+                "coverage_footprint": {
+                    "l0": [source, *targets],
+                    "l1": relation_items,
+                    "l2": [],
+                },
+                "coverage_l0": [source, *targets],
+                "coverage_l1": relation_items,
+                "coverage_l2": [],
+            }
+        )
+        records.append(exists_record)
+
+        present_types = {
+            key_type
+            for key_source, key_direction, key_type in targets_by_source_direction_type
+            if key_source == source and key_direction == direction
+        }
+        absent_types = [item for item in object_types if item not in present_types]
+        if absent_types:
+            wrong_type = random.Random(
+                f"{scene_frame}:l1:type:{source}:{direction}"
+            ).choice(absent_types)
+            type_no_record = base_record(
+                scene_frame,
+                "l1",
+                f"{scene_frame}:l1:exists_direction_type_no:{source}:{direction}:{wrong_type}",
+            )
+            type_no_record.update(
+                {
+                    "template_id": "l1_exist_direction_type_no",
+                    "question": (
+                        f"Are any {plural_type(wrong_type)} to the "
+                        f"{DIRECTION_TEXT[direction]} of {object_ref(source)}?"
+                    ),
+                    "answer": "no",
+                    "answer_type": "boolean",
+                    "source_object": source,
+                    "target_type": wrong_type,
+                    "direction_6": direction,
+                    "footprint_nodes": [source, *targets],
+                    "coverage_footprint": {
+                        "l0": [source, *targets],
+                        "l1": relation_items,
+                        "l2": [],
+                    },
+                    "coverage_l0": [source, *targets],
+                    "coverage_l1": relation_items,
+                    "coverage_l2": [],
+                }
+            )
+            records.append(type_no_record)
+
         count_record = base_record(
             scene_frame,
             "l1",
@@ -437,6 +694,72 @@ def l1_candidates(scene_frame: str, scene_graph: Mapping) -> List[dict]:
             }
         )
         records.append(count_record)
+
+    for (source, direction, status, obj_type), targets in sorted(
+        targets_by_source_direction_status_type.items()
+    ):
+        relation_items = [f"{source}|{target}|{direction}" for target in targets]
+        status_exists = base_record(
+            scene_frame,
+            "l1",
+            f"{scene_frame}:l1:exists_status_direction_type:{source}:{direction}:{status}:{obj_type}",
+        )
+        status_exists.update(
+            {
+                "template_id": "l1_exist_status_direction_type",
+                "question": (
+                    f"Are any {status} {plural_type(obj_type)} to the "
+                    f"{DIRECTION_TEXT[direction]} of {object_ref(source)}?"
+                ),
+                "answer": "yes",
+                "answer_type": "boolean",
+                "source_object": source,
+                "target_status": status,
+                "target_type": obj_type,
+                "direction_6": direction,
+                "footprint_nodes": [source, *targets],
+                "coverage_footprint": {
+                    "l0": [source, *targets],
+                    "l1": relation_items,
+                    "l2": [],
+                },
+                "coverage_l0": [source, *targets],
+                "coverage_l1": relation_items,
+                "coverage_l2": [],
+            }
+        )
+        records.append(status_exists)
+
+        count_status = base_record(
+            scene_frame,
+            "l1",
+            f"{scene_frame}:l1:count_status_direction_type:{source}:{direction}:{status}:{obj_type}",
+        )
+        count_status.update(
+            {
+                "template_id": "l1_count_status_direction_type",
+                "question": (
+                    f"How many {status} {plural_type(obj_type)} are to the "
+                    f"{DIRECTION_TEXT[direction]} of {object_ref(source)}?"
+                ),
+                "answer": str(len(targets)),
+                "answer_type": "count",
+                "source_object": source,
+                "target_status": status,
+                "target_type": obj_type,
+                "direction_6": direction,
+                "footprint_nodes": [source, *targets],
+                "coverage_footprint": {
+                    "l0": [source, *targets],
+                    "l1": relation_items,
+                    "l2": [],
+                },
+                "coverage_l0": [source, *targets],
+                "coverage_l1": relation_items,
+                "coverage_l2": [],
+            }
+        )
+        records.append(count_status)
     return records
 
 
