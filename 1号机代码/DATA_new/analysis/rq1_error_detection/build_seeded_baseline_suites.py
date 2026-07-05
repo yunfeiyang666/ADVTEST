@@ -63,6 +63,25 @@ def iter_jsonl(path: Path) -> Iterable[dict]:
                 yield json.loads(line)
 
 
+def load_frame_allowlist(path: Optional[Path]) -> Optional[set[str]]:
+    if path is None:
+        return None
+    text = path.read_text(encoding="utf-8").strip()
+    if not text:
+        return set()
+    if path.suffix.lower() == ".json":
+        data = json.loads(text)
+        if isinstance(data, list):
+            frames = [
+                item.get("scene_frame") if isinstance(item, Mapping) else item
+                for item in data
+            ]
+        else:
+            frames = data.get("frames") or data.get("frame_pool") or []
+        return {str(frame) for frame in frames if str(frame)}
+    return {line.strip() for line in text.splitlines() if line.strip()}
+
+
 def write_jsonl(path: Path, records: Iterable[Mapping]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -410,6 +429,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--seed-bank", type=Path, default=DEFAULT_SEED_BANK)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument(
+        "--frame-allowlist",
+        type=Path,
+        default=None,
+        help="Optional JSON/TXT list of scene_frame values to keep from the seed bank.",
+    )
     parser.add_argument("--budget", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument(
@@ -433,10 +458,21 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Optional[Sequence[str]] = None) -> None:
     args = build_parser().parse_args(argv)
     seeds = list(iter_jsonl(args.seed_bank))
+    frame_allowlist = load_frame_allowlist(args.frame_allowlist)
+    original_seed_count = len(seeds)
+    if frame_allowlist is not None:
+        seeds = [
+            seed
+            for seed in seeds
+            if str(seed.get("scene_frame") or "") in frame_allowlist
+        ]
     args.output_dir.mkdir(parents=True, exist_ok=True)
     run_summary = {
         "seed_bank": str(args.seed_bank),
+        "original_seed_count": original_seed_count,
         "seed_count": len(seeds),
+        "frame_allowlist": str(args.frame_allowlist) if args.frame_allowlist else None,
+        "frame_allowlist_count": len(frame_allowlist) if frame_allowlist is not None else None,
         "budget": args.budget,
         "seed": args.seed,
         "methods": args.methods,
