@@ -1,5 +1,6 @@
 import argparse
 import json
+import random
 from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
@@ -7,10 +8,15 @@ from typing import Iterable
 from fixed_budget_experiment import (
     DEFAULT_FRAME_CACHE,
     DEFAULT_OUTPUTS_ROOT,
+    FrameCoverage,
     FrameInput,
     SwitchPolicy,
     _footprint,
+    _metric_snapshot,
+    _normalized_auc,
+    annotate_provenance,
     build_frame_question_counts,
+    compute_aggregate_metrics,
     redistribute_frame_question_counts,
     run_method_presampled_frames,
     write_results,
@@ -96,6 +102,140 @@ def load_family_frames(
     return frames_by_family
 
 
+def select_common_frames(
+    frames_by_family: dict[str, list[FrameInput]], families: tuple[str, ...]
+) -> dict[str, list[FrameInput]]:
+    frame_order = [frame.scene_frame for frame in frames_by_family[families[0]]]
+    lookup = {
+        family: {frame.scene_frame: frame for frame in frames_by_family[family]}
+        for family in families
+    }
+    common_names = [
+        scene_frame
+        for scene_frame in frame_order
+        if all(lookup[family][scene_frame].questions for family in families)
+    ]
+    return {
+        family: [lookup[family][scene_frame] for scene_frame in common_names]
+        for family in families
+    }
+
+
+def _flatten_questions(frames: list[FrameInput]) -> list[dict]:
+    rows = []
+    for frame in frames:
+        for question in frame.questions:
+            row = dict(question)
+            row["scene_frame"] = frame.scene_frame
+            rows.append(row)
+    return rows
+
+
+def build_random_common_frame_suite(
+    family: str,
+    frames: list[FrameInput],
+    output_dir: Path,
+    generation_budget: int,
+    seed: int,
+    per_frame_candidate_limit: int,
+) -> dict:
+    rng = random.Random(f"{seed}:{family}:common-frame-random")
+    candidates = _flatten_questions(frames)
+    rng.shuffle(candidates)
+    if len(candidates) < generation_budget:
+        raise ValueError(
+            f"Family {family} has only {len(candidates)} candidates, "
+            f"less than requested budget {generation_budget}"
+        )
+    selected = candidates[:generation_budget]
+    coverage_states = {
+        frame.scene_frame: FrameCoverage(
+            total_l0=frame.total_l0,
+            total_l1=frame.total_l1,
+            total_l2=frame.total_l2,
+        )
+        for frame in frames
+    }
+    suite = []
+    curve = []
+    visited_frames = set()
+    for global_index, question in enumerate(selected, start=1):
+        scene_frame = question["scene_frame"]
+        visited_frames.add(scene_frame)
+        state = coverage_states[scene_frame]
+        deltas = {}
+        for level in ("l0", "l1", "l2"):
+            covered = getattr(state, f"covered_{level}")
+            new_items = _footprint(question, level) - covered
+            covered.update(new_items)
+            deltas[f"delta_{level}"] = len(new_items)
+        record = annotate_provenance(
+            question,
+            layer="structural_coverage",
+            method="advtest",
+            question_source="programmatic_candidate_space_random_common_frames",
+            source_question_id=str(
+                question.get("question_id") or question.get("id") or global_index
+            ),
+            source_sample_token=str(question.get("sample_token") or ""),
+            generation_adapter=str(question.get("generation_backend") or "programmatic"),
+            uses_coverage_feedback=False,
+            vlm_call_cost=1,
+            scene_frame=scene_frame,
+            global_budget_index=global_index,
+        )
+        record.update(
+            {
+                "selection_mode": "random_common_frames",
+                "frame_budget_index": None,
+                "frame_assigned_questions": None,
+                **deltas,
+            }
+        )
+        suite.append(record)
+        curve.append(
+            _metric_snapshot(
+                coverage_states,
+                global_index,
+                len(visited_frames),
+            )
+        )
+    summary = compute_aggregate_metrics(coverage_states, len(suite))
+    summary["suite_size"] = len(suite)
+    summary["visited_frames"] = len(visited_frames)
+    summary["switch_reason_counts"] = {}
+    summary["auc_micro_l2"] = _normalized_auc(
+        [point["micro_l2"] for point in curve],
+        generation_budget,
+    )
+    summary["auc_macro_l2"] = _normalized_auc(
+        [point["macro_l2"] for point in curve],
+        generation_budget,
+    )
+    result = {
+        "method": "advtest",
+        "summary": summary,
+        "frame_runs": [],
+        "curve": curve,
+        "suite": suite,
+    }
+    write_results(
+        output_dir,
+        [frame.scene_frame for frame in frames],
+        generation_budget,
+        SwitchPolicy(),
+        [result],
+        execution_metadata={
+            "execution_mode": "random_common_frames",
+            "l2_family_filter": [family],
+            "per_frame_candidate_limit": per_frame_candidate_limit,
+            "common_frame_count": len(frames),
+            "seed": seed,
+        },
+    )
+    return result
+
+
 def build_family_suite(
     family: str,
     frames: list[FrameInput],
@@ -152,6 +292,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--per-frame-candidate-limit", type=int, default=200)
     parser.add_argument("--families", nargs="+", default=list(L2_FAMILIES))
+    parser.add_argument(
+        "--selection-mode",
+        choices=["advtest_presampled", "random_common_frames"],
+        default="advtest_presampled",
+    )
     return parser
 
 
@@ -165,17 +310,31 @@ def main() -> None:
         families,
         args.per_frame_candidate_limit,
     )
+    if args.selection_mode == "random_common_frames":
+        frames_by_family = select_common_frames(frames_by_family, families)
+        common_count = len(frames_by_family[families[0]]) if families else 0
+        print(f"[l2-family] Common frame count: {common_count}", flush=True)
     for family in families:
         output_dir = args.output_root / f"advtest-{family}-q{args.generation_budget}-v1" / "results"
         print(f"[l2-family] Building {family} -> {output_dir}", flush=True)
-        result = build_family_suite(
-            family,
-            frames_by_family[family],
-            output_dir,
-            args.generation_budget,
-            args.seed,
-            args.per_frame_candidate_limit,
-        )
+        if args.selection_mode == "random_common_frames":
+            result = build_random_common_frame_suite(
+                family,
+                frames_by_family[family],
+                output_dir,
+                args.generation_budget,
+                args.seed,
+                args.per_frame_candidate_limit,
+            )
+        else:
+            result = build_family_suite(
+                family,
+                frames_by_family[family],
+                output_dir,
+                args.generation_budget,
+                args.seed,
+                args.per_frame_candidate_limit,
+            )
         print(
             f"[l2-family] {family}: suite={result['summary']['suite_size']} "
             f"frames={result['summary']['visited_frames']} "
