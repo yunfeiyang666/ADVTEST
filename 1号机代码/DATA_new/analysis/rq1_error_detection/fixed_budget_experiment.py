@@ -230,6 +230,65 @@ def _load_questions(
     return questions
 
 
+def _normalize_family(question: dict) -> str:
+    return str(question.get("l2_family") or question.get("template_id") or "general")
+
+
+def filter_questions_by_l2_family(
+    frames: Sequence[FrameInput], family_filter: Optional[Sequence[str]]
+) -> List[FrameInput]:
+    if not family_filter:
+        return list(frames)
+    allowed = {str(family).strip() for family in family_filter if str(family).strip()}
+    filtered = []
+    for frame in frames:
+        filtered.append(
+            FrameInput(
+                scene_frame=frame.scene_frame,
+                questions=[
+                    question
+                    for question in frame.questions
+                    if _normalize_family(question) in allowed
+                ],
+                total_l0=frame.total_l0,
+                total_l1=frame.total_l1,
+                total_l2=frame.total_l2,
+            )
+        )
+    return filtered
+
+
+def limit_questions_per_frame(
+    frames: Sequence[FrameInput], per_frame_limit: Optional[int]
+) -> List[FrameInput]:
+    if per_frame_limit is None:
+        return list(frames)
+    if per_frame_limit < 1:
+        raise ValueError("--per-frame-candidate-limit must be positive")
+    limited = []
+    for frame in frames:
+        ranked = sorted(
+            frame.questions,
+            key=lambda question: (
+                len(_footprint(question, "l2")),
+                len(_footprint(question, "l1")),
+                len(_footprint(question, "l0")),
+                str(question.get("question_id") or question.get("id") or ""),
+            ),
+            reverse=True,
+        )
+        limited.append(
+            FrameInput(
+                scene_frame=frame.scene_frame,
+                questions=ranked[:per_frame_limit],
+                total_l0=frame.total_l0,
+                total_l1=frame.total_l1,
+                total_l2=frame.total_l2,
+            )
+        )
+    return limited
+
+
 def _load_frame(
     scene_frame: str, outputs_root: Path, question_load_limit: Optional[int] = None
 ) -> FrameInput:
@@ -834,6 +893,24 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--frame-cache", type=Path, default=DEFAULT_FRAME_CACHE)
     parser.add_argument("--outputs-root", type=Path, default=DEFAULT_OUTPUTS_ROOT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_RESULT_DIR)
+    parser.add_argument(
+        "--l2-family-filter",
+        nargs="+",
+        default=None,
+        help=(
+            "Optional L2 family allow-list, e.g. converge distance_chain. "
+            "Use this for family-specific RQ1 suites."
+        ),
+    )
+    parser.add_argument(
+        "--per-frame-candidate-limit",
+        type=int,
+        default=None,
+        help=(
+            "Optional post-filter candidate cap per frame. Candidates are ranked "
+            "by L2/L1/L0 footprint size before the cap is applied."
+        ),
+    )
     return parser
 
 
@@ -847,6 +924,8 @@ def main() -> None:
         args.frame_pool_size,
         question_load_limit=args.question_load_limit,
     )
+    frames = filter_questions_by_l2_family(frames, args.l2_family_filter)
+    frames = limit_questions_per_frame(frames, args.per_frame_candidate_limit)
     results = []
     frame_assignment = None
     if args.execution_mode == "presampled_frames":
@@ -897,9 +976,15 @@ def main() -> None:
         execution_metadata={
             "execution_mode": args.execution_mode,
             "frame_assignment": frame_assignment,
+            "l2_family_filter": args.l2_family_filter,
+            "per_frame_candidate_limit": args.per_frame_candidate_limit,
         }
         if frame_assignment
-        else {"execution_mode": args.execution_mode},
+        else {
+            "execution_mode": args.execution_mode,
+            "l2_family_filter": args.l2_family_filter,
+            "per_frame_candidate_limit": args.per_frame_candidate_limit,
+        },
     )
     print(f"[fixed-budget] Results written to {args.output_dir}", flush=True)
 

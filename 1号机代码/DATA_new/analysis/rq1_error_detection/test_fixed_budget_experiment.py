@@ -15,6 +15,8 @@ from fixed_budget_experiment import (
     build_method_stream,
     choose_switch_reason,
     compute_aggregate_metrics,
+    filter_questions_by_l2_family,
+    limit_questions_per_frame,
     run_method,
     run_method_presampled_frames,
     redistribute_frame_question_counts,
@@ -145,6 +147,60 @@ class CoverageAccountingTests(unittest.TestCase):
             loaded = _load_questions(frame_dir, "frame-a", load_limit=2)
 
         self.assertEqual([row["question"] for row in loaded], ["q0", "q1"])
+
+    def test_filters_questions_by_l2_family(self):
+        frames = [
+            FrameInput(
+                "frame-a",
+                [
+                    {"question": "a", "l2_family": "converge"},
+                    {"question": "b", "template_id": "distance_chain"},
+                    {"question": "c", "l2_family": "viewpoint_transfer"},
+                ],
+                10,
+                10,
+                10,
+            )
+        ]
+
+        filtered = filter_questions_by_l2_family(frames, ["distance_chain"])
+
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(
+            [question["question"] for question in filtered[0].questions],
+            ["b"],
+        )
+
+    def test_limits_questions_per_frame_by_coverage_size(self):
+        frames = [
+            FrameInput(
+                "frame-a",
+                [
+                    {
+                        "question": "small",
+                        "coverage_footprint": {"l0": ["a"], "l1": ["a|b"], "l2": ["a|b|c"]},
+                    },
+                    {
+                        "question": "large",
+                        "coverage_footprint": {
+                            "l0": ["a", "b", "c"],
+                            "l1": ["a|b", "b|c"],
+                            "l2": ["a|b|c", "a|c|d"],
+                        },
+                    },
+                ],
+                10,
+                10,
+                10,
+            )
+        ]
+
+        limited = limit_questions_per_frame(frames, 1)
+
+        self.assertEqual(
+            [question["question"] for question in limited[0].questions],
+            ["large"],
+        )
 
 
 class FrameQuestionCountTests(unittest.TestCase):
@@ -463,6 +519,18 @@ class FixedBudgetRunnerTests(unittest.TestCase):
         args = build_parser().parse_args(["--execution-mode", "presampled_frames"])
 
         self.assertEqual(args.execution_mode, "presampled_frames")
+
+    def test_cli_accepts_l2_family_filter(self):
+        args = build_parser().parse_args(
+            ["--l2-family-filter", "converge", "distance_chain"]
+        )
+
+        self.assertEqual(args.l2_family_filter, ["converge", "distance_chain"])
+
+    def test_cli_accepts_per_frame_candidate_limit(self):
+        args = build_parser().parse_args(["--per-frame-candidate-limit", "500"])
+
+        self.assertEqual(args.per_frame_candidate_limit, 500)
 
     def test_cli_can_run_only_selected_methods(self):
         args = build_parser().parse_args(["--methods", "advtest"])
