@@ -87,6 +87,11 @@ NUSCENES_DIRECTION_RANGES = {
     "back right": "-150° < theta <= -90°",
     "back": "otherwise",
 }
+DIRECTION_DISPLAY_RANGES = {
+    **NUSCENES_DIRECTION_RANGES,
+    "left": "around +90°",
+    "right": "around -90°",
+}
 
 
 def iter_jsonl(path: Path) -> Iterable[dict]:
@@ -406,8 +411,9 @@ def choose_options(
 def direction_instruction() -> str:
     return (
         "Use the NuScenes-QA direction convention. Theta is measured relative to "
-        "the current facing direction: 0° means straight ahead from the origin "
-        "toward the facing object; positive angles rotate to the left. "
+        "the current facing/reference direction: 0° means straight ahead from the "
+        "reference object along the stated facing/front direction; positive angles "
+        "rotate to the left. "
         "front if -30° < theta <= 30°; "
         "front left if 30° < theta <= 90°; front right if -90° < theta <= -30°; "
         "back left if 90° < theta <= 150°; back right if -150° < theta <= -90°; "
@@ -446,9 +452,32 @@ def build_choice_question_text(
     )
 
 
-def choice_display_text(answer: str, *, viewpoint_transfer: bool = False) -> str:
-    if viewpoint_transfer:
-        angle_range = NUSCENES_DIRECTION_RANGES.get(answer)
+def annotate_direction_terms(text: str) -> str:
+    directions = sorted(DIRECTION_DISPLAY_RANGES, key=len, reverse=True)
+    pattern = re.compile(
+        r"\b(" + "|".join(re.escape(direction) for direction in directions) + r")\b(?!\s*\()",
+        flags=re.IGNORECASE,
+    )
+
+    def replace(match: re.Match) -> str:
+        direction = match.group(1).lower()
+        angle_range = DIRECTION_DISPLAY_RANGES[direction]
+        return f"{direction} ({angle_range})"
+
+    return pattern.sub(replace, str(text or ""))
+
+
+def has_direction_terms(text: str) -> bool:
+    value = str(text or "")
+    return any(
+        re.search(rf"\b{re.escape(direction)}\b", value, flags=re.IGNORECASE)
+        for direction in DIRECTION_DISPLAY_RANGES
+    )
+
+
+def choice_display_text(answer: str, *, direction_choice: bool = False) -> str:
+    if direction_choice:
+        angle_range = DIRECTION_DISPLAY_RANGES.get(answer)
         if angle_range:
             return f"{answer} ({angle_range})"
     return answer
@@ -463,12 +492,13 @@ def convert_row(
     option_texts = choose_options(row, pools, rng, outputs_root)
     answer = clean_answer(row.get("answer"))
     is_viewpoint_transfer = family_key(row) == "viewpoint_transfer"
+    is_direction_choice = answer_pool_key(row) == "direction"
     choices = [
         {
             "label": label,
             "text": choice_display_text(
                 text,
-                viewpoint_transfer=is_viewpoint_transfer,
+                direction_choice=is_direction_choice,
             ),
             "canonical_text": text,
         }
@@ -483,10 +513,13 @@ def convert_row(
         if is_viewpoint_transfer
         else source_question
     )
+    question_has_direction_terms = has_direction_terms(choice_question)
+    if question_has_direction_terms:
+        choice_question = annotate_direction_terms(choice_question)
     converted["question"] = build_choice_question_text(
         choice_question,
         choices,
-        include_direction_instruction=answer_pool_key(row) == "direction",
+        include_direction_instruction=is_direction_choice or question_has_direction_terms,
         precise_direction=is_viewpoint_transfer,
     )
     converted["prompt"] = converted["question"]
