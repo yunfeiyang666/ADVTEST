@@ -79,6 +79,14 @@ NUSCENES_DIRECTION_DISTRACTORS = {
     "back right": ("back", "front right", "back left"),
     "front right": ("front", "back right", "front left"),
 }
+NUSCENES_DIRECTION_RANGES = {
+    "front": "-30° < theta <= 30°",
+    "front left": "30° < theta <= 90°",
+    "front right": "-90° < theta <= -30°",
+    "back left": "90° < theta <= 150°",
+    "back right": "-150° < theta <= -90°",
+    "back": "otherwise",
+}
 
 
 def iter_jsonl(path: Path) -> Iterable[dict]:
@@ -397,7 +405,10 @@ def choose_options(
 
 def direction_instruction() -> str:
     return (
-        "Use the NuScenes-QA direction convention: front if -30° < theta <= 30°; "
+        "Use the NuScenes-QA direction convention. Theta is measured relative to "
+        "the current facing direction: 0° means straight ahead from the origin "
+        "toward the facing object; positive angles rotate to the left. "
+        "front if -30° < theta <= 30°; "
         "front left if 30° < theta <= 90°; front right if -90° < theta <= -30°; "
         "back left if 90° < theta <= 150°; back right if -150° < theta <= -90°; "
         "back otherwise."
@@ -434,6 +445,15 @@ def build_choice_question_text(
         f"{option_lines}"
     )
 
+
+def choice_display_text(answer: str, *, viewpoint_transfer: bool = False) -> str:
+    if viewpoint_transfer:
+        angle_range = NUSCENES_DIRECTION_RANGES.get(answer)
+        if angle_range:
+            return f"{answer} ({angle_range})"
+    return answer
+
+
 def convert_row(
     row: dict,
     pools: dict[str, list[str]],
@@ -442,30 +462,39 @@ def convert_row(
 ) -> dict:
     option_texts = choose_options(row, pools, rng, outputs_root)
     answer = clean_answer(row.get("answer"))
+    is_viewpoint_transfer = family_key(row) == "viewpoint_transfer"
     choices = [
-        {"label": label, "text": text}
+        {
+            "label": label,
+            "text": choice_display_text(
+                text,
+                viewpoint_transfer=is_viewpoint_transfer,
+            ),
+            "canonical_text": text,
+        }
         for label, text in zip(LABELS, option_texts)
     ]
-    correct = next(item for item in choices if item["text"] == answer)
+    correct = next(item for item in choices if item["canonical_text"] == answer)
 
     converted = dict(row)
     source_question = str(row.get("question") or row.get("prompt") or "")
     choice_question = (
         viewpoint_choice_question(row)
-        if family_key(row) == "viewpoint_transfer"
+        if is_viewpoint_transfer
         else source_question
     )
     converted["question"] = build_choice_question_text(
         choice_question,
         choices,
         include_direction_instruction=answer_pool_key(row) == "direction",
-        precise_direction=family_key(row) == "viewpoint_transfer",
+        precise_direction=is_viewpoint_transfer,
     )
     converted["prompt"] = converted["question"]
     converted["answer"] = answer
     converted["choices"] = choices
     converted["choice_answer_label"] = correct["label"]
     converted["choice_answer_text"] = correct["text"]
+    converted["choice_answer_canonical_text"] = correct["canonical_text"]
     converted["question_format"] = f"multiple_choice_{len(choices)}way"
     converted["source_question_format"] = "strict_open_qa"
     converted["source_question"] = source_question
