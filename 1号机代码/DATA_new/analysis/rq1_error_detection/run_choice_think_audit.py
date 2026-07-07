@@ -1,0 +1,263 @@
+import argparse
+import csv
+import json
+import re
+import sys
+import time
+from pathlib import Path
+from typing import Iterable, Optional, Tuple
+
+WORKSPACE_ROOT = Path(__file__).absolute().parents[4]
+sys.path.insert(0, str(Path(__file__).parent))
+
+import evaluator
+from run_suite_evaluation import (
+    DEFAULT_DATAROOT,
+    get_scene_frame,
+    make_evaluator,
+    resolve_image_path,
+)
+
+
+DEFAULT_OUTPUT_DIR = (
+    WORKSPACE_ROOT
+    / "scratch"
+    / "rq1_choice_suites_v3_formal"
+    / "think_audit_pilot"
+)
+
+
+def iter_jsonl(path: Path) -> Iterable[dict]:
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            if line.strip():
+                yield json.loads(line)
+
+
+def clean_choice_question(text: str) -> str:
+    text = str(text or "").strip()
+    if "\n\nChoose the best answer from the options below." in text:
+        return text.split("\n\nChoose the best answer from the options below.", 1)[0].strip()
+    return text
+
+
+def source_question_text(row: dict) -> str:
+    return str(
+        row.get("source_question")
+        or row.get("question")
+        or row.get("prompt")
+        or ""
+    ).strip()
+
+
+def option_lines(row: dict) -> str:
+    choices = row.get("choices") or []
+    return "\n".join(
+        f"{choice.get('label')}. {choice.get('text')}" for choice in choices
+    )
+
+
+def choice_answer(row: dict) -> str:
+    label = str(row.get("choice_answer_label") or "").strip()
+    text = str(row.get("choice_answer_text") or row.get("answer") or "").strip()
+    return f"{label}. {text}".strip(". ")
+
+
+def prior_prediction(row: dict) -> str:
+    return str(
+        row.get("mapping_predicted")
+        or row.get("predicted")
+        or row.get("raw_model_output")
+        or ""
+    ).strip()
+
+
+def build_think_prompt(row: dict) -> str:
+    return (
+        "Answer the visual multiple-choice question. Then give one short reason.\n"
+        "Use exactly this format:\n"
+        "Pred: <option letter and option text>\n"
+        "Think: <one concise reason, no more than 20 words>\n\n"
+        f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
+        "Options:\n"
+        f"{option_lines(row)}"
+    )
+
+
+def parse_pred_and_think(output: str) -> Tuple[str, str]:
+    text = str(output or "").strip()
+    pred_match = re.search(r"(?im)^\s*Pred\s*:\s*(.+?)\s*$", text)
+    think_match = re.search(r"(?im)^\s*Think\s*:\s*(.+?)\s*$", text)
+    pred = pred_match.group(1).strip() if pred_match else text.splitlines()[0].strip()
+    think = think_match.group(1).strip() if think_match else ""
+    return pred, think
+
+
+def normalize_raw_row(row: dict, method: str) -> dict:
+    normalized = dict(row)
+    normalized["method"] = str(row.get("method") or method)
+    normalized["question"] = clean_choice_question(source_question_text(row))
+    normalized["prompt"] = normalized["question"]
+    if "answer" not in normalized:
+        normalized["answer"] = row.get("choice_answer_text", "")
+    return normalized
+
+
+def collect_wrong_rows(paths: list[Path], per_file_limit: int) -> list[dict]:
+    rows = []
+    for path in paths:
+        method = path.stem.replace("_raw_results", "").replace("_two_step_raw_results", "")
+        count = 0
+        for row in iter_jsonl(path):
+            if row.get("is_correct") is True:
+                continue
+            if not row.get("choices"):
+                continue
+            rows.append(normalize_raw_row(row, method))
+            count += 1
+            if per_file_limit and count >= per_file_limit:
+                break
+    return rows
+
+
+def evaluate_row(
+    row: dict,
+    vlm,
+    mode: str,
+    outputs_root: Path,
+    dataroot: Path,
+    image_cache_dir: Path,
+) -> dict:
+    question = dict(row)
+    question["question"] = build_think_prompt(row)
+    question["prompt"] = question["question"]
+    image_path: Optional[Path] = None
+    if mode != "MOCK":
+        image_path = resolve_image_path(question, outputs_root, image_cache_dir, dataroot)
+        if image_path is None:
+            raise FileNotFoundError(
+                f"A real mosaic is required for {mode}: {get_scene_frame(question)}"
+            )
+    start = time.perf_counter()
+    if mode == "MOCK":
+        raw_output, _ = vlm.evaluate(question)
+    else:
+        raw_output, _ = vlm.evaluate(question, image_path)
+    elapsed = time.perf_counter() - start
+    pred, think = parse_pred_and_think(raw_output)
+    return {
+        "method": row.get("method", ""),
+        "question_index": row.get("question_index", ""),
+        "scene_frame": get_scene_frame(row),
+        "family": row.get("family", ""),
+        "question": clean_choice_question(source_question_text(row)),
+        "choices": row.get("choices", []),
+        "gt": choice_answer(row),
+        "prior_pred": prior_prediction(row),
+        "think_pred": pred,
+        "think": think,
+        "think_is_correct": evaluator.check_question_correctness(pred, row),
+        "raw_think_output": raw_output,
+        "image_path": str(image_path) if image_path else str(row.get("image_path") or ""),
+        "elapsed_seconds": elapsed,
+    }
+
+
+def write_outputs(rows: list[dict], output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = output_dir / "think_audit_raw_results.jsonl"
+    with jsonl_path.open("w", encoding="utf-8") as handle:
+        for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+    csv_path = output_dir / "think_audit_summary.csv"
+    fields = [
+        "method",
+        "question_index",
+        "scene_frame",
+        "family",
+        "gt",
+        "prior_pred",
+        "think_pred",
+        "think",
+        "think_is_correct",
+        "image_path",
+    ]
+    with csv_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row.get(field, "") for field in fields})
+
+    lines = ["# Choice Think Audit Pilot", ""]
+    lines.append("| Method | QIdx | GT | Prior Pred | Think Pred | Correct | Think |")
+    lines.append("|---|---:|---|---|---|---:|---|")
+    for row in rows:
+        lines.append(
+            "| {method} | {idx} | {gt} | {prior} | {pred} | {ok} | {think} |".format(
+                method=row.get("method", ""),
+                idx=row.get("question_index", ""),
+                gt=str(row.get("gt", "")).replace("|", "/"),
+                prior=str(row.get("prior_pred", "")).replace("|", "/"),
+                pred=str(row.get("think_pred", "")).replace("|", "/"),
+                ok=row.get("think_is_correct", False),
+                think=str(row.get("think", "")).replace("|", "/"),
+            )
+        )
+    (output_dir / "think_audit_report.md").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Re-ask wrong choice cases with concise Pred/Think output."
+    )
+    parser.add_argument("--raw-result", type=Path, action="append", required=True)
+    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument(
+        "--outputs-root",
+        type=Path,
+        default=WORKSPACE_ROOT / "1号机代码" / "DATA_new" / "outputs",
+    )
+    parser.add_argument("--dataroot", type=Path, default=DEFAULT_DATAROOT)
+    parser.add_argument(
+        "--mode",
+        choices=["MOCK", "LOCAL_GPU", "API", "MPLUG", "MINICPM"],
+        default="MOCK",
+    )
+    parser.add_argument("--per-file-limit", type=int, default=10)
+    parser.add_argument("--limit", type=int, default=0)
+    args = parser.parse_args()
+
+    selected = collect_wrong_rows(args.raw_result, args.per_file_limit)
+    if args.limit:
+        selected = selected[: args.limit]
+    if not selected:
+        raise ValueError("No wrong choice rows selected for think audit.")
+
+    vlm = make_evaluator(args.mode)
+    image_cache_dir = args.output_dir / "mosaics"
+    results = []
+    for index, row in enumerate(selected, start=1):
+        print(
+            f"[think-audit] {index}/{len(selected)} "
+            f"{row.get('method')} qidx={row.get('question_index')}",
+            flush=True,
+        )
+        results.append(
+            evaluate_row(
+                row,
+                vlm,
+                args.mode,
+                args.outputs_root,
+                args.dataroot,
+                image_cache_dir,
+            )
+        )
+    write_outputs(results, args.output_dir)
+    print(f"[think-audit] Results written to {args.output_dir}", flush=True)
+
+
+if __name__ == "__main__":
+    main()
