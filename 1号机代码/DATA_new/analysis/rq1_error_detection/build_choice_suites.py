@@ -19,6 +19,14 @@ DIRECTION_OPTIONS = (
     "right",
     "front right",
 )
+NUSCENES_DIRECTION_OPTIONS = (
+    "front",
+    "front left",
+    "back left",
+    "back",
+    "back right",
+    "front right",
+)
 STATUS_OPTIONS = ("moving", "parked", "stopped")
 TYPE_OPTIONS = (
     "car",
@@ -62,6 +70,14 @@ DIRECTION_DISTRACTORS = {
     "back right": ("back", "right", "back left"),
     "right": ("front right", "back right", "left"),
     "front right": ("front", "right", "back right"),
+}
+NUSCENES_DIRECTION_DISTRACTORS = {
+    "front": ("front left", "front right", "back"),
+    "front left": ("front", "back left", "front right"),
+    "back left": ("back", "front left", "back right"),
+    "back": ("back left", "back right", "front"),
+    "back right": ("back", "front right", "back left"),
+    "front right": ("front", "back right", "front left"),
 }
 
 
@@ -151,7 +167,11 @@ def answer_pool_key(row: dict) -> str:
     family = family_key(row)
     if answer in ("yes", "no"):
         return "boolean"
-    if answer in DIRECTION_OPTIONS or "direction" in family:
+    if (
+        answer in DIRECTION_OPTIONS
+        or "direction" in family
+        or family == "viewpoint_transfer"
+    ):
         return "direction"
     if answer in STATUS_OPTIONS or "status" in family:
         return "status"
@@ -218,35 +238,22 @@ def scene_graph_path(outputs_root: Path, scene_frame: str) -> Path:
     )
 
 
-def discretize_direction_8(angle_deg: float) -> str:
-    # Positive angles are to the left of the facing vector.
-    bins = [
-        (22.5, "front"),
-        (67.5, "front left"),
-        (112.5, "left"),
-        (157.5, "back left"),
-        (180.0, "back"),
-    ]
-    if angle_deg >= 0:
-        for limit, label in bins:
-            if angle_deg <= limit:
-                return label
-        return "back"
-    mirrored = -angle_deg
-    right_bins = [
-        (22.5, "front"),
-        (67.5, "front right"),
-        (112.5, "right"),
-        (157.5, "back right"),
-        (180.0, "back"),
-    ]
-    for limit, label in right_bins:
-        if mirrored <= limit:
-            return label
+def discretize_direction_nuscenes(angle_deg: float) -> str:
+    # Match the NuScenes-QA six-way direction bins.
+    if -30 < angle_deg <= 30:
+        return "front"
+    if 30 < angle_deg <= 90:
+        return "front left"
+    if -90 < angle_deg <= -30:
+        return "front right"
+    if 90 < angle_deg <= 150:
+        return "back left"
+    if -150 < angle_deg <= -90:
+        return "back right"
     return "back"
 
 
-def viewpoint_direction_8(row: dict, outputs_root: Path) -> str:
+def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
     path_pattern = str(row.get("path_pattern") or "")
     parts = path_pattern.split("|")
     if len(parts) != 3:
@@ -277,7 +284,7 @@ def viewpoint_direction_8(row: dict, outputs_root: Path) -> str:
     dot = fx * tx + fy * ty
     cross = fx * ty - fy * tx
     angle = math.degrees(math.atan2(cross, dot))
-    return discretize_direction_8(angle)
+    return discretize_direction_nuscenes(angle)
 
 
 def viewpoint_choice_question(row: dict) -> str:
@@ -316,14 +323,27 @@ def choose_options(
 ) -> list[str]:
     answer = clean_answer(row.get("answer"))
     if family_key(row) == "viewpoint_transfer":
-        answer = viewpoint_direction_8(row, outputs_root)
+        answer = viewpoint_direction_nuscenes(row, outputs_root)
         row["answer"] = answer
         row["answer_type"] = "direction"
-        row["choice_answer_resolution"] = "viewpoint_transfer_8way"
+        row["choice_answer_resolution"] = "viewpoint_transfer_nuscenes_6way"
     if not answer:
         raise ValueError("Cannot build choices for a row with an empty answer")
     if answer in ("yes", "no"):
         return [answer, "no" if answer == "yes" else "yes"]
+    if family_key(row) == "viewpoint_transfer":
+        candidates = dedupe_keep_order(
+            [
+                answer,
+                *NUSCENES_DIRECTION_DISTRACTORS.get(answer, ()),
+                *NUSCENES_DIRECTION_OPTIONS,
+            ]
+        )
+        distractors = [item for item in candidates if item != answer]
+        rng.shuffle(distractors)
+        options = [answer, *distractors[:3]]
+        rng.shuffle(options)
+        return options
     if family_key(row) == "distance_chain":
         question = str(row.get("question") or row.get("prompt") or "")
         candidates = extract_distance_chain_candidates(question)
@@ -377,11 +397,10 @@ def choose_options(
 
 def direction_instruction() -> str:
     return (
-        "Use the ego-vehicle coordinate convention. Direction labels are "
-        "determined by the approximate bearing from the reference object to "
-        "the target object: front is around 0 degrees, front left around 45, "
-        "left around 90, back left around 135, back around 180, back right "
-        "around -135, right around -90, and front right around -45."
+        "Use the NuScenes-QA direction convention: front if -30° < theta <= 30°; "
+        "front left if 30° < theta <= 90°; front right if -90° < theta <= -30°; "
+        "back left if 90° < theta <= 150°; back right if -150° < theta <= -90°; "
+        "back otherwise."
     )
 
 
@@ -486,6 +505,7 @@ def main() -> None:
             "status": list(STATUS_OPTIONS),
             "type": list(TYPE_OPTIONS),
             "boolean": list(BOOLEAN_OPTIONS),
+            "nuscenes_direction": list(NUSCENES_DIRECTION_OPTIONS),
         },
     }
 
