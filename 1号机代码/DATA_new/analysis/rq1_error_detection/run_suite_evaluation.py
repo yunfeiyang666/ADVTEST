@@ -82,6 +82,12 @@ def failure_signature(question: dict, predicted: str) -> str:
 def resolve_image_path(
     question: dict, outputs_root: Path, image_cache_dir: Path, dataroot: Path
 ) -> Optional[Path]:
+    direct_image = question.get("image_path")
+    if direct_image:
+        direct_path = Path(str(direct_image))
+        if direct_path.exists():
+            return direct_path
+
     scene_frame = get_scene_frame(question)
     if scene_frame == "unknown":
         return None
@@ -124,13 +130,15 @@ def evaluate_question(
     vlm, question: dict, mode: str, image_path: Optional[Path]
 ) -> Tuple[str, bool]:
     if mode == "MOCK":
-        return vlm.evaluate(question)
+        predicted, _ = vlm.evaluate(question)
+        return predicted, evaluator.check_question_correctness(predicted, question)
     if image_path is None:
         raise FileNotFoundError(
             f"A real mosaic is required for {mode} evaluation: "
             f"{get_scene_frame(question)}"
         )
-    return vlm.evaluate(question, image_path)
+    predicted, _ = vlm.evaluate(question, image_path)
+    return predicted, evaluator.check_question_correctness(predicted, question)
 
 
 def evaluate_suite(
@@ -221,6 +229,13 @@ def evaluate_suite(
                             "question": q_text,
                             "prompt": q_text,
                             "answer": question.get("answer", ""),
+                            "choices": question.get("choices", []),
+                            "choice_answer_label": question.get(
+                                "choice_answer_label", ""
+                            ),
+                            "choice_answer_text": question.get(
+                                "choice_answer_text", ""
+                            ),
                             "predicted": predicted,
                             "raw_model_output": predicted,
                             "is_correct": is_correct,

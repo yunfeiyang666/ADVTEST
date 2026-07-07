@@ -764,6 +764,40 @@ def check_correctness(predicted: str, ground_truth: str) -> bool:
     )
 
 
+def _matches_choice_label(predicted: str, label: str) -> bool:
+    """Return True when the model clearly selects a multiple-choice label."""
+    if not label:
+        return False
+    label_norm = str(label).lower().strip()
+    pred = str(predicted or "").lower().strip()
+    if not pred:
+        return False
+    return bool(
+        re.match(
+            rf"^(?:option\s*)?{re.escape(label_norm)}(?:\s*[\).:,-]|\s*$)",
+            pred,
+        )
+    )
+
+
+def check_question_correctness(predicted: str, question: Dict[str, Any]) -> bool:
+    """Check correctness with optional multiple-choice metadata."""
+    if check_correctness(predicted, str(question.get("answer", ""))):
+        return True
+
+    if not question.get("choices"):
+        return False
+
+    choice_text = str(question.get("choice_answer_text") or "")
+    if choice_text and check_correctness(predicted, choice_text):
+        return True
+
+    return _matches_choice_label(
+        predicted,
+        str(question.get("choice_answer_label") or ""),
+    )
+
+
 def build_vlm_prompt(question: Dict[str, Any]) -> str:
     return str(question.get("question", ""))
 

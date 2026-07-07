@@ -1,6 +1,6 @@
 import unittest
 
-from evaluator import check_correctness
+from evaluator import check_correctness, check_question_correctness
 
 
 class AnswerCorrectnessTests(unittest.TestCase):
@@ -25,6 +25,37 @@ class AnswerCorrectnessTests(unittest.TestCase):
     def test_instance_id_requires_exact_token_boundary(self):
         self.assertTrue(check_correctness("The answer is car5.", "car5"))
         self.assertFalse(check_correctness("The answer is car50.", "car5"))
+
+    def test_choice_question_accepts_correct_label(self):
+        question = {
+            "answer": "back left",
+            "choices": [
+                {"label": "A", "text": "back"},
+                {"label": "B", "text": "back left"},
+                {"label": "C", "text": "left"},
+                {"label": "D", "text": "front left"},
+            ],
+            "choice_answer_label": "B",
+            "choice_answer_text": "back left",
+        }
+        self.assertTrue(check_question_correctness("B. back left", question))
+        self.assertFalse(check_question_correctness("A. back", question))
+
+    def test_choice_question_accepts_correct_option_text(self):
+        question = {
+            "answer": "pedestrian",
+            "choices": [
+                {"label": "A", "text": "car"},
+                {"label": "B", "text": "truck"},
+                {"label": "C", "text": "pedestrian"},
+                {"label": "D", "text": "barrier"},
+            ],
+            "choice_answer_label": "C",
+            "choice_answer_text": "pedestrian",
+        }
+        self.assertTrue(
+            check_question_correctness("The answer is pedestrian.", question)
+        )
 
 
 if __name__ == "__main__":
