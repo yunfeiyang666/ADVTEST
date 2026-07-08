@@ -266,7 +266,6 @@ def format_case(
         block.extend(
             [
                 f"Think Pred: {clean_text(think_row.get('think_pred'))}",
-                f"Think Correct: {clean_text(think_row.get('think_is_correct'))}",
                 f"Think: {clean_text(think_row.get('think'))}",
             ]
         )
@@ -276,7 +275,7 @@ def format_case(
     if think_row:
         lines.extend(
             [
-                "模型真实 think（二次询问得到的视觉依据）："
+                "模型事后解释（二次询问得到的视觉依据）："
                 f"{clean_text(think_row.get('think'))}",
                 "",
             ]
@@ -514,7 +513,7 @@ def build_report() -> None:
             "",
             "下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出、two-call think 和图像路径。",
             "",
-            "说明：`Think` 不是模型真实内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。",
+            "说明：`Think` 不是模型内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。",
             "",
         ]
     )

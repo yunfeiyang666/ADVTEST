@@ -110,7 +110,7 @@ L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_
 
 下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出、two-call think 和图像路径。
 
-说明：`Think` 不是模型真实内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。
+说明：`Think` 不是模型内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。
 
 ### Case L0-1：数量题仍然容易错（样例 a）
 
@@ -128,14 +128,13 @@ D. 7
 GT: B. 9
 Pred: A
 Think Pred: A. 11
-Think Correct: False
 Think: A car is parked in front of a building.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
 分析：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。
 
-模型真实 think（二次询问得到的视觉依据）：A car is parked in front of a building.
+模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -153,14 +152,13 @@ D. 8
 GT: B. 7
 Pred: C
 Think Pred: A. 6
-Think Correct: False
 Think: A car is parked in front of a building.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 分析：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。
 
-模型真实 think（二次询问得到的视觉依据）：A car is parked in front of a building.
+模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -176,14 +174,13 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think Correct: True
 Think: A car is stopped in front of a building.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 分析：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。
 
-模型真实 think（二次询问得到的视觉依据）：A car is stopped in front of a building.
+模型事后解释（二次询问得到的视觉依据）：A car is stopped in front of a building.
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -200,14 +197,13 @@ C. stopped
 GT: C. stopped
 Pred: B. moving
 Think Pred: B. moving
-Think Correct: False
 Think: The car20 is moving.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
 分析：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。
 
-模型真实 think（二次询问得到的视觉依据）：The car20 is moving.
+模型事后解释（二次询问得到的视觉依据）：The car20 is moving.
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -225,14 +221,13 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. front (-30° < theta <= 30°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think Correct: False
 Think: The barrier is located to the left of the car14.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame0_mosaic.jpg
 ```
 
 分析：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。
 
-模型真实 think（二次询问得到的视觉依据）：The barrier is located to the left of the car14.
+模型事后解释（二次询问得到的视觉依据）：The barrier is located to the left of the car14.
 
 ### Case L1-1：方向关系选错（样例 b）
 
@@ -250,14 +245,13 @@ D. front (-30° < theta <= 30°)
 GT: C. back left (90° < theta <= 150°)
 Pred: A. back (otherwise)
 Think Pred: A. back (otherwise)
-Think Correct: False
 Think: A car is parked in front of a barrier.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 分析：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。
 
-模型真实 think（二次询问得到的视觉依据）：A car is parked in front of a barrier.
+模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a barrier.
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -275,14 +269,13 @@ D. 2
 GT: B. 4
 Pred: A. 3
 Think Pred: A. 3
-Think Correct: False
 Think: A car is parked behind car14.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame2_mosaic.jpg
 ```
 
 分析：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。
 
-模型真实 think（二次询问得到的视觉依据）：A car is parked behind car14.
+模型事后解释（二次询问得到的视觉依据）：A car is parked behind car14.
 
 ### Case L1-2：带方向约束的计数题（样例 b）
 
@@ -300,14 +293,13 @@ D. 3
 GT: A. 1
 Pred: C. 2
 Think Pred: C. 2
-Think Correct: False
 Think: The image shows two pedestrians to the back right of barrier2.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame7_mosaic.jpg
 ```
 
 分析：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。
 
-模型真实 think（二次询问得到的视觉依据）：The image shows two pedestrians to the back right of barrier2.
+模型事后解释（二次询问得到的视觉依据）：The image shows two pedestrians to the back right of barrier2.
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -325,14 +317,13 @@ D. barrier9
 GT: B. barrier7
 Pred: C. barrier3
 Think Pred: C. barrier3
-Think Correct: False
 Think: The barrier is in front of pedestrian1 and to the back of car20.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0003_frame33_mosaic.jpg
 ```
 
 分析：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。
 
-模型真实 think（二次询问得到的视觉依据）：The barrier is in front of pedestrian1 and to the back of car20.
+模型事后解释（二次询问得到的视觉依据）：The barrier is in front of pedestrian1 and to the back of car20.
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 b）
 
@@ -350,14 +341,13 @@ D. pedestrian12
 GT: D. pedestrian12
 Pred: A. pedestrian3
 Think Pred: A. pedestrian3
-Think Correct: False
 Think: A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame17_mosaic.jpg
 ```
 
 分析：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。
 
-模型真实 think（二次询问得到的视觉依据）：A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.
+模型事后解释（二次询问得到的视觉依据）：A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
@@ -373,14 +363,13 @@ B. yes
 GT: A. no
 Pred: B
 Think Pred: A. no
-Think Correct: True
 Think: A car is driving down the street.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
 分析：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。
 
-模型真实 think（二次询问得到的视觉依据）：A car is driving down the street.
+模型事后解释（二次询问得到的视觉依据）：A car is driving down the street.
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -396,14 +385,13 @@ B. no
 GT: A. yes
 Pred: B. no
 Think Pred: A. yes
-Think Correct: True
 Think: A man is walking on the sidewalk.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
 ```
 
 分析：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。
 
-模型真实 think（二次询问得到的视觉依据）：A man is walking on the sidewalk.
+模型事后解释（二次询问得到的视觉依据）：A man is walking on the sidewalk.
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -419,14 +407,13 @@ B. car20
 GT: B. car20
 Pred: A
 Think Pred: A. car19
-Think Correct: False
 Think: A car is parked in front of a barrier.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame31_mosaic.jpg
 ```
 
 分析：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。
 
-模型真实 think（二次询问得到的视觉依据）：A car is parked in front of a barrier.
+模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a barrier.
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -442,14 +429,13 @@ B. car3
 GT: B. car3
 Pred: A
 Think Pred: A. car1
-Think Correct: False
 Think: A. car1
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame28_mosaic.jpg
 ```
 
 分析：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。
 
-模型真实 think（二次询问得到的视觉依据）：A. car1
+模型事后解释（二次询问得到的视觉依据）：A. car1
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -467,14 +453,13 @@ D. back right (-150° < theta <= -90°)
 GT: A. front right (-90° < theta <= -30°)
 Pred: C. back (otherwise)
 Think Pred: C. back (otherwise)
-Think Correct: False
 Think: The car23 is located behind the pedestrian5.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 分析：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。
 
-模型真实 think（二次询问得到的视觉依据）：The car23 is located behind the pedestrian5.
+模型事后解释（二次询问得到的视觉依据）：The car23 is located behind the pedestrian5.
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
@@ -492,14 +477,13 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. back
 Think Pred: C. back (otherwise)
-Think Correct: False
 Think: The pedestrian is behind the barrier and truck.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
 ```
 
 分析：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。
 
-模型真实 think（二次询问得到的视觉依据）：The pedestrian is behind the barrier and truck.
+模型事后解释（二次询问得到的视觉依据）：The pedestrian is behind the barrier and truck.
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -517,14 +501,13 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. front left (30° < theta <= 90°)
 Think Pred: C. front left (30° < theta <= 90°)
-Think Correct: False
 Think: The pedestrian is located to the left of the car21.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame3_mosaic.jpg
 ```
 
 分析：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。
 
-模型真实 think（二次询问得到的视觉依据）：The pedestrian is located to the left of the car21.
+模型事后解释（二次询问得到的视觉依据）：The pedestrian is located to the left of the car21.
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
 
@@ -542,14 +525,13 @@ D. back left (90° < theta <= 150°)
 GT: C. front right (-90° < theta <= -30°)
 Pred: A. front left (30° < theta <= 90°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think Correct: False
 Think: The pedestrian19 is located to the left of pedestrian15.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame18_mosaic.jpg
 ```
 
 分析：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。
 
-模型真实 think（二次询问得到的视觉依据）：The pedestrian19 is located to the left of pedestrian15.
+模型事后解释（二次询问得到的视觉依据）：The pedestrian19 is located to the left of pedestrian15.
 
 ## 6. 当前结论
 
