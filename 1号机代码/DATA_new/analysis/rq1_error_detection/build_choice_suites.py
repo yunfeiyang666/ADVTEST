@@ -180,18 +180,18 @@ def answer_pool_key(row: dict) -> str:
     family = family_key(row)
     if answer in ("yes", "no"):
         return "boolean"
+    if is_int_answer(answer) or "count" in family or "number" in family:
+        return "count"
+    if answer in STATUS_OPTIONS or "status" in family:
+        return "status"
+    if answer in TYPE_OPTIONS or "type" in family:
+        return "type"
     if (
         answer in DIRECTION_OPTIONS
         or "direction" in family
         or family == "viewpoint_transfer"
     ):
         return "direction"
-    if answer in STATUS_OPTIONS or "status" in family:
-        return "status"
-    if answer in TYPE_OPTIONS or "type" in family:
-        return "type"
-    if is_int_answer(answer) or "count" in family or "number" in family:
-        return "count"
     return family
 
 
@@ -266,8 +266,19 @@ def discretize_direction_nuscenes(angle_deg: float) -> str:
     return "back"
 
 
-def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
+def viewpoint_path_pattern(row: dict) -> str:
     path_pattern = str(row.get("path_pattern") or "")
+    if path_pattern:
+        return path_pattern
+    for item in row.get("l2_items") or []:
+        value = str(item or "")
+        if value.count("|") == 2:
+            return value
+    return ""
+
+
+def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
+    path_pattern = viewpoint_path_pattern(row)
     parts = path_pattern.split("|")
     if len(parts) != 3:
         return ""
@@ -301,7 +312,7 @@ def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
 
 
 def viewpoint_choice_question(row: dict) -> str:
-    path_pattern = str(row.get("path_pattern") or "")
+    path_pattern = viewpoint_path_pattern(row)
     parts = path_pattern.split("|")
     if len(parts) == 3 and all(parts):
         origin, facing, target = parts
@@ -393,15 +404,16 @@ def choose_options(
             "Cannot build fair multiple-choice options for unique ego answer"
         )
 
+    pool_key = answer_pool_key(row)
     candidates = dedupe_keep_order(base_candidates(row, pools))
     distractors = [item for item in candidates if item != answer]
     rng.shuffle(distractors)
     options = [answer, *distractors[:3]]
-    if len(options) < 4:
+    if len(options) < 4 and pool_key not in {"status"}:
         fillers = [item for item in pools.get("global", []) if item not in options]
         rng.shuffle(fillers)
         options.extend(fillers[: 4 - len(options)])
-    if len(options) < 4:
+    if len(options) < 4 and pool_key not in {"status"}:
         options.extend([f"none-{idx}" for idx in range(4 - len(options))])
     options = options[:4]
     rng.shuffle(options)
