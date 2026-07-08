@@ -484,15 +484,6 @@ def build_report() -> None:
         "|---|---:|---:|---:|",
     ]
 
-    conclusions = {
-        "advtest_l0": "下降，主要是类型/状态/数量题不再被同义词和表达格式额外惩罚。",
-        "advtest_l1": "小幅下降，但方向关系和计数关系仍然难，说明不是纯判分格式问题。",
-        "advtest_l2_mixed": "大幅下降；mixed 仍几乎由 converge 支配，v7 去掉了自由回答的 ID/格式损失。",
-        "advtest_l2_converge": "大幅下降但仍高；同类候选选择后，剩下主要是多约束定位错误。",
-        "advtest_l2_direction_chain": "大幅下降；二值选择把输出格式问题压低，这类不应单独当最强证据。",
-        "advtest_l2_distance_chain": "几乎不变；选择题没有明显降低难度，错误更接近真实空间距离判断失败。",
-        "advtest_l2_viewpoint_transfer": "显著上升；v7 从粗粒度表达变成 6 类角度方向选择，暴露了视角转换能力弱。",
-    }
     for method in ORDER:
         s = strict_metrics[method]
         v = v7_metrics[method]
@@ -502,40 +493,23 @@ def build_report() -> None:
     lines.extend(
         [
             "",
-            "简要读法：",
-            "",
-        ]
-    )
-    for method in ORDER:
-        lines.append(f"- {LABELS[method]}：{conclusions[method]}")
-
-    lines.extend(
-        [
-            "",
             "补充：严格版各项均为 1000 题；v7 中 `mixed` 为 955 题、`converge` 为 973 题，因为选择题转换时强制要求同类候选、唯一正确项、无重复选项，转换不出的题没有纳入正式判分。",
             "",
             "## 2. 同一题目上的变化",
             "",
-            "这部分不再铺宽表，只保留最关键的转移现象：",
+            "这一节只列同一题目在两版之间的转移数字；原因统一放到第 3 节解释。",
             "",
         ]
     )
 
-    transition_notes = {
-        "advtest_l0": "v7 修掉一部分同义词/格式问题，但仍保留大量视觉判断错误。",
-        "advtest_l1": "有改善也有反向变差，说明选项化不是简单降难度；方向关系仍会误选。",
-        "advtest_l2_mixed": "主要反映 converge 的变化：自由回答时代很容易答不到精确 ID，选项化后仍有大量同类误选。",
-        "advtest_l2_converge": "很多 strict 错题在 v7 能选对，但双错仍最多，说明多约束定位本身仍难。",
-        "advtest_l2_direction_chain": "大批 strict 错题在 v7 变对，说明原严格版里 yes/no 或自然语言判分损失偏大。",
-        "advtest_l2_distance_chain": "双错和反向变化都存在，整体几乎不变，比较像真实距离关系难点。",
-        "advtest_l2_viewpoint_transfer": "大量 strict 对题在 v7 变错，是因为 v7 要求按 6 类角度规则精确选方向，不再接受粗略 behind/left 叙述。",
-    }
+    lines.append("| 数据项 | 可对齐题数 | 严格错→v7对 | 严格对→v7错 | 两版都错 | 两版都对 |")
+    lines.append("|---|---:|---:|---:|---:|---:|")
     for method in ORDER:
         c = transition_stats[method]
         common = sum(c.values())
         lines.append(
-            f"- {LABELS[method]}：可对齐 {common} 题；严格错→v7对 {c[(False, True)]}，"
-            f"严格对→v7错 {c[(True, False)]}，两版都错 {c[(False, False)]}。{transition_notes[method]}"
+            f"| {LABELS[method]} | {common} | {c[(False, True)]} | "
+            f"{c[(True, False)]} | {c[(False, False)]} | {c[(True, True)]} |"
         )
 
     lines.extend(["", "## 3. 分数据项解释", ""])
