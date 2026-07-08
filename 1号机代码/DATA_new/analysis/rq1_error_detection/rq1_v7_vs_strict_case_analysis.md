@@ -130,17 +130,17 @@ D. 7
 GT: B. 9
 Pred: A
 Think Pred: A. 11
-Think: A car is parked in front of a building.
+Think: The image shows a car driving down a street with 11 pedestrians visible.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
 人工分析：
 - 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
 - 错误位置：模型把数量答成 `A`，重问后为 `A. 11`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释没有提到数量或行人，只给出泛化场景描述，说明它没有形成可验证的计数依据。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `A car is parked in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
+- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 11 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
+模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 11 pedestrians visible.
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -158,17 +158,17 @@ D. 8
 GT: B. 7
 Pred: C
 Think Pred: A. 6
-Think: A car is parked in front of a building.
+Think: The image shows a car driving down a street with 6 pedestrians visible.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
 - 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
 - 错误位置：模型把数量答成 `C`，重问后为 `A. 6`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释没有提到数量或行人，只给出泛化场景描述，说明它没有形成可验证的计数依据。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `A car is parked in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
+- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 6 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
+模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 6 pedestrians visible.
 
 ### Case L0-1：数量题仍然容易错（样例 c）
 
@@ -186,17 +186,17 @@ D. 9
 GT: A. 6
 Pred: C
 Think Pred: A. 6
-Think: A car is parked in front of a building.
+Think: The image shows a car driving down a street with 6 pedestrians visible.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame16_mosaic.jpg
 ```
 
 人工分析：
 - 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
 - 错误位置：模型把数量答成 `C`，重问后为 `A. 6`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释没有提到数量或行人，只给出泛化场景描述，说明它没有形成可验证的计数依据。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `A car is parked in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
+- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 6 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
+模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 6 pedestrians visible.
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -212,7 +212,7 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: A car is stopped in front of a building.
+Think: The car10 is stopped at the intersection.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -220,9 +220,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
 - 错误位置：模型在状态判断上与 GT `yes` 不一致，原回答 `B`，重问为 `A. yes`。
 - 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `A car is stopped in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car10 is stopped at the intersection.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is stopped in front of a building.
+模型事后解释（二次询问得到的视觉依据）：The car10 is stopped at the intersection.
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -239,7 +239,7 @@ C. stopped
 GT: C. stopped
 Pred: B. moving
 Think Pred: B. moving
-Think: The car20 is moving.
+Think: The car20 is moving in the image.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
@@ -247,9 +247,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
 - 错误位置：模型在状态判断上与 GT `stopped` 不一致，原回答 `B. moving`，重问为 `B. moving`。
 - 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car20 is moving.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car20 is moving in the image.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The car20 is moving.
+模型事后解释（二次询问得到的视觉依据）：The car20 is moving in the image.
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 c）
 
@@ -265,7 +265,7 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: A car is stopped at a barrier.
+Think: The car in barrier4 is stopped.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
@@ -273,9 +273,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
 - 错误位置：模型在状态判断上与 GT `yes` 不一致，原回答 `B`，重问为 `A. yes`。
 - 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `A car is stopped at a barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car in barrier4 is stopped.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is stopped at a barrier.
+模型事后解释（二次询问得到的视觉依据）：The car in barrier4 is stopped.
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -321,7 +321,7 @@ D. front (-30° < theta <= 30°)
 GT: C. back left (90° < theta <= 150°)
 Pred: A. back (otherwise)
 Think Pred: A. back (otherwise)
-Think: A car is parked in front of a barrier.
+Think: The car25 is located behind the barrier1.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -329,9 +329,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型选了 `A. back (otherwise)`，但 GT 是 `back left (90° < theta <= 150°)`；重问后 `A. back (otherwise)`，仍然没有稳定落到正确角度区间。
 - 事后解释怎么看：事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。
-- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `A car is parked in front of a barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `The car25 is located behind the barrier1.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a barrier.
+模型事后解释（二次询问得到的视觉依据）：The car25 is located behind the barrier1.
 
 ### Case L1-1：方向关系选错（样例 c）
 
@@ -349,7 +349,7 @@ D. left (around +90°)
 GT: C. front left (30° < theta <= 90°)
 Pred: A. back (otherwise)
 Think Pred: A. back (otherwise)
-Think: A car is parked on the side of the road.
+Think: A car is parked in front of a building.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -357,9 +357,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型选了 `A. back (otherwise)`，但 GT 是 `front left (30° < theta <= 90°)`；重问后 `A. back (otherwise)`，仍然没有稳定落到正确角度区间。
 - 事后解释怎么看：事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。
-- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `A car is parked on the side of the road.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `A car is parked in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked on the side of the road.
+模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -405,7 +405,7 @@ D. 3
 GT: A. 1
 Pred: C. 2
 Think Pred: C. 2
-Think: The image shows two pedestrians to the back right of barrier2.
+Think: The pedestrians are to the back right of barrier2.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame7_mosaic.jpg
 ```
 
@@ -413,9 +413,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
 - 错误位置：模型在带方向约束的计数上答成 `C. 2`，重问后 `C. 2`；错因是方向筛选和计数叠加失败。
 - 事后解释怎么看：事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。
-- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `The image shows two pedestrians to the back right of barrier2.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `The pedestrians are to the back right of barrier2.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The image shows two pedestrians to the back right of barrier2.
+模型事后解释（二次询问得到的视觉依据）：The pedestrians are to the back right of barrier2.
 
 ### Case L1-2：带方向约束的计数题（样例 c）
 
@@ -433,7 +433,7 @@ D. 3
 GT: D. 3
 Pred: B. 2
 Think Pred: B. 2
-Think: Two pedestrians are to the front left of barrier1.
+Think: The pedestrian is standing in front of the barrier.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
@@ -441,9 +441,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 - 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
 - 错误位置：模型在带方向约束的计数上答成 `B. 2`，重问后 `B. 2`；错因是方向筛选和计数叠加失败。
 - 事后解释怎么看：事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。
-- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `Two pedestrians are to the front left of barrier1.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `The pedestrian is standing in front of the barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：Two pedestrians are to the front left of barrier1.
+模型事后解释（二次询问得到的视觉依据）：The pedestrian is standing in front of the barrier.
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -543,7 +543,7 @@ B. yes
 GT: A. no
 Pred: B
 Think Pred: A. no
-Think: A car is driving down the street.
+Think: The car8 is in the opposite direction from truck1.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
@@ -551,9 +551,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 - 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
 - 错误位置：原回答 `B` 与 GT `no` 不一致，重问后 `A. no`；这一类容易被二次选择题格式纠正。
 - 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `A car is driving down the street.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The car8 is in the opposite direction from truck1.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is driving down the street.
+模型事后解释（二次询问得到的视觉依据）：The car8 is in the opposite direction from truck1.
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -569,7 +569,7 @@ B. no
 GT: A. yes
 Pred: B. no
 Think Pred: A. yes
-Think: A man is walking on the sidewalk.
+Think: The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
 ```
 
@@ -577,9 +577,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 - 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
 - 错误位置：原回答 `B. no` 与 GT `yes` 不一致，重问后 `A. yes`；这一类容易被二次选择题格式纠正。
 - 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `A man is walking on the sidewalk.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A man is walking on the sidewalk.
+模型事后解释（二次询问得到的视觉依据）：The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 c）
 
@@ -595,7 +595,7 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: A car is driving down the street.
+Think: The bus is in the same direction as the car.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame17_mosaic.jpg
 ```
 
@@ -603,9 +603,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 - 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
 - 错误位置：原回答 `B` 与 GT `yes` 不一致，重问后 `A. yes`；这一类容易被二次选择题格式纠正。
 - 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `A car is driving down the street.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The bus is in the same direction as the car.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is driving down the street.
+模型事后解释（二次询问得到的视觉依据）：The bus is in the same direction as the car.
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -621,7 +621,7 @@ B. car20
 GT: B. car20
 Pred: A
 Think Pred: A. car19
-Think: A car is parked in front of a barrier.
+Think: The barrier1 is nearer to car19.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame31_mosaic.jpg
 ```
 
@@ -629,9 +629,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
 - 错误位置：模型在二选一距离比较中选了 `A`，GT 是 `car20`，重问后 `A. car19`。
 - 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `A car is parked in front of a barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `The barrier1 is nearer to car19.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a barrier.
+模型事后解释（二次询问得到的视觉依据）：The barrier1 is nearer to car19.
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -647,7 +647,7 @@ B. car3
 GT: B. car3
 Pred: A
 Think Pred: A. car1
-Think: A. car1
+Think: A. car1 is closer to pedestrian2.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame28_mosaic.jpg
 ```
 
@@ -655,9 +655,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
 - 错误位置：模型在二选一距离比较中选了 `A`，GT 是 `car3`，重问后 `A. car1`。
 - 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `A. car1`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `A. car1 is closer to pedestrian2.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A. car1
+模型事后解释（二次询问得到的视觉依据）：A. car1 is closer to pedestrian2.
 
 ### Case L2-3：distance_chain 距离比较错误（样例 c）
 
@@ -673,7 +673,7 @@ B. bus1
 GT: A. bicycle1
 Pred: B
 Think Pred: B. bus1
-Think: The bus is closer to the camera.
+Think: The bus is closer to the camera than the bicycle.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0015_frame24_mosaic.jpg
 ```
 
@@ -681,9 +681,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
 - 错误位置：模型在二选一距离比较中选了 `B`，GT 是 `bicycle1`，重问后 `B. bus1`。
 - 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `The bus is closer to the camera.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `The bus is closer to the camera than the bicycle.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The bus is closer to the camera.
+模型事后解释（二次询问得到的视觉依据）：The bus is closer to the camera than the bicycle.
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -729,7 +729,7 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. back
 Think Pred: C. back (otherwise)
-Think: The pedestrian is behind the barrier and truck.
+Think: The pedestrian is located behind the barrier and truck.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
 ```
 
@@ -737,9 +737,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `C. back`，重问后 `C. back (otherwise)`；这是目标朝向坐标系转换失败。
 - 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The pedestrian is behind the barrier and truck.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The pedestrian is located behind the barrier and truck.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The pedestrian is behind the barrier and truck.
+模型事后解释（二次询问得到的视觉依据）：The pedestrian is located behind the barrier and truck.
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 c）
 
@@ -757,7 +757,7 @@ D. front left (30° < theta <= 90°)
 GT: D. front left (30° < theta <= 90°)
 Pred: B. back (otherwise)
 Think Pred: B. back (otherwise)
-Think: The image shows a car driving down a street with barriers on both sides.
+Think: The car is parked in front of the barrier.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
@@ -765,9 +765,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型把 GT `front left (30° < theta <= 90°)` 误选成 `B. back (otherwise)`，重问后 `B. back (otherwise)`；这是目标朝向坐标系转换失败。
 - 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The image shows a car driving down a street with barriers on both sides.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The car is parked in front of the barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with barriers on both sides.
+模型事后解释（二次询问得到的视觉依据）：The car is parked in front of the barrier.
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -813,7 +813,7 @@ D. back left (90° < theta <= 150°)
 GT: C. front right (-90° < theta <= -30°)
 Pred: A. front left (30° < theta <= 90°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think: The pedestrian19 is located to the left of pedestrian15.
+Think: A. front left (30° < theta <= 90°)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame18_mosaic.jpg
 ```
 
@@ -821,9 +821,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `A. front left (30° < theta <= 90°)`，重问后 `A. front left (30° < theta <= 90°)`；这是目标朝向坐标系转换失败。
 - 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `The pedestrian19 is located to the left of pedestrian15.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `A. front left (30° < theta <= 90°)`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：The pedestrian19 is located to the left of pedestrian15.
+模型事后解释（二次询问得到的视觉依据）：A. front left (30° < theta <= 90°)
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 c）
 
@@ -841,7 +841,7 @@ D. front (-30° < theta <= 30°)
 GT: A. front left (30° < theta <= 90°)
 Pred: C. front right (-90° < theta <= -30°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think: A car is driving down the street and there is a pedestrian in front of it.
+Think: A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame25_mosaic.jpg
 ```
 
@@ -849,9 +849,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 - 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
 - 错误位置：模型把 GT `front left (30° < theta <= 90°)` 误选成 `C. front right (-90° < theta <= -30°)`，重问后 `A. front left (30° < theta <= 90°)`；这是目标朝向坐标系转换失败。
 - 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `A car is driving down the street and there is a pedestrian in front of it.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
+- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
 
-模型事后解释（二次询问得到的视觉依据）：A car is driving down the street and there is a pedestrian in front of it.
+模型事后解释（二次询问得到的视觉依据）：A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.
 
 ## 6. 当前结论
 

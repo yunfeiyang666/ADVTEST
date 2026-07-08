@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v4_twocall_q27\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v5_targeted_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -308,7 +308,7 @@ def render_human_analysis(
 
     if family == "l0:count_type":
         error = f"模型把数量答成 `{pred}`，重问后为 `{think_pred}`；这不是同义词判分问题，而是没有数清对象数量。"
-        reason_note = "事后解释没有提到数量或行人，只给出泛化场景描述，说明它没有形成可验证的计数依据。"
+        reason_note = "事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。"
     elif family in {"l0:status", "l0:status_yes"}:
         error = f"模型在状态判断上与 GT `{gt}` 不一致，原回答 `{pred}`，重问为 `{think_pred}`。"
         reason_note = "事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。"
