@@ -398,6 +398,23 @@ def family_metrics(rows: list[dict[str, Any]], method: str) -> list[tuple[str, i
     return sorted(result, key=lambda item: (-item[1], item[0]))
 
 
+def compact_family_metrics(
+    rows: list[dict[str, Any]], method: str, limit_each: int = 3
+) -> list[tuple[str, int, int, float, str]]:
+    metrics = family_metrics(rows, method)
+    high = sorted(metrics, key=lambda item: (-item[3], -item[1], item[0]))[:limit_each]
+    low = sorted(metrics, key=lambda item: (item[3], -item[1], item[0]))[:limit_each]
+    selected: list[tuple[str, int, int, float, str]] = []
+    seen = set()
+    for bucket, rows_in_bucket in (("高错", high), ("低错", low)):
+        for family, total, wrong, rate in rows_in_bucket:
+            if family in seen:
+                continue
+            selected.append((family, total, wrong, rate, bucket))
+            seen.add(family)
+    return selected
+
+
 FAMILY_EXPLANATIONS = {
     "l0:count_type": "按类别计数，主要考察能否数清同类对象。",
     "l0:exists": "判断具体对象是否存在。",
@@ -463,8 +480,8 @@ def build_report() -> None:
         "",
         "## 1. 总体对比",
         "",
-        "| 数据项 | 严格版 Q | 严格版错题 | 严格版错误率 | v7 Q | v7 错题 | v7 错误率 | 变化 | 结论 |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---|",
+        "| 数据项 | 严格版错误率 | v7 错误率 | 变化 | 读法 |",
+        "|---|---:|---:|---:|---|",
     ]
 
     conclusions = {
@@ -481,19 +498,18 @@ def build_report() -> None:
         v = v7_metrics[method]
         delta = v["rate"] - s["rate"]
         lines.append(
-            f"| {LABELS[method]} | {s['rows']} | {s['wrong']} | {pct(s['rate'])} | "
-            f"{v['rows']} | {v['wrong']} | {pct(v['rate'])} | {pp(delta)} | {conclusions[method]} |"
+            f"| {LABELS[method]} | {pct(s['rate'])} | {pct(v['rate'])} | {pp(delta)} | {conclusions[method]} |"
         )
 
     lines.extend(
         [
             "",
-            "说明：`mixed` 和 `converge` 的 v7 分母不是 1000，是因为选择题转换时强制要求选项公平，例如同类候选、唯一正确项、无重复选项；转换不出的题没有纳入 v7 正式判分。",
+            "补充：严格版各项均为 1000 题；v7 中 `mixed` 为 955 题、`converge` 为 973 题，因为选择题转换时强制要求同类候选、唯一正确项、无重复选项，转换不出的题没有纳入正式判分。",
             "",
             "## 2. 同一题目上的变化",
             "",
-            "| 数据项 | 可对齐题数 | 严格错→v7对 | 严格对→v7错 | 两版都错 | 两版都对 | 解释 |",
-            "|---|---:|---:|---:|---:|---:|---|",
+            "这部分不再铺宽表，只保留最关键的转移现象：",
+            "",
         ]
     )
 
@@ -510,8 +526,8 @@ def build_report() -> None:
         c = transition_stats[method]
         common = sum(c.values())
         lines.append(
-            f"| {LABELS[method]} | {common} | {c[(False, True)]} | {c[(True, False)]} | "
-            f"{c[(False, False)]} | {c[(True, True)]} | {transition_notes[method]} |"
+            f"- {LABELS[method]}：可对齐 {common} 题；严格错→v7对 {c[(False, True)]}，"
+            f"严格对→v7错 {c[(True, False)]}，两版都错 {c[(False, False)]}。{transition_notes[method]}"
         )
 
     lines.extend(["", "## 3. 分数据项解释", ""])
@@ -563,16 +579,16 @@ def build_report() -> None:
 
     for method in ("advtest_l0", "advtest_l1"):
         lines.extend([f"### {LABELS[method]}", ""])
-        lines.append("| 题型 | Q | 错题 | 错误率 | 说明 |")
-        lines.append("|---|---:|---:|---:|---|")
-        for family, total, wrong, rate in family_metrics(v7_rows[method], method):
+        lines.append("| 类型 | Q | 错题率 | 为什么看它 |")
+        lines.append("|---|---:|---:|---|")
+        for family, total, wrong, rate, bucket in compact_family_metrics(v7_rows[method], method):
             explanation = FAMILY_EXPLANATIONS.get(family, "")
-            lines.append(f"| `{family}` | {total} | {wrong} | {pct(rate)} | {explanation} |")
+            lines.append(f"| `{family}`（{bucket}） | {total} | {pct(rate)} | {explanation} |")
         lines.append("")
 
     lines.extend(
         [
-            "从这张表看，L0/L1 不是均匀难：有些 yes/no 子类很低，有些状态/关系子类异常高。后续人工复核应该优先抽 `l0:status_yes`、`l1:relation_yes`、`l1:exists_status_direction_type` 这类极端项，判断是模型确实错、题干口径问题，还是 GT/自动判分问题。",
+            "完整 L0/L1 明细不放正文铺开。当前最需要人工复核的是高错项：`l0:status_yes`、`l1:relation_yes`、`l1:exists_status_direction_type`；它们可能混有模型错误、题干口径问题和 GT/自动判分问题。",
             "",
             "## 5. v7 错题 case",
             "",
