@@ -30,6 +30,11 @@ V7_RAW = {
     / r"scratch\rq1_choice_suites_v7_option_consistency\mplug_advtest_v7_recover_mixed_viewpoint\advtest_l2_viewpoint_transfer_choice_suite_raw_results.jsonl",
 }
 
+THINK_AUDIT_RAW = (
+    ROOT
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v3_twocall\think_audit_raw_results.jsonl"
+)
+
 LABELS = {
     "advtest_l0": "ADVTEST-L0",
     "advtest_l1": "ADVTEST-L1",
@@ -62,7 +67,7 @@ def pp(value: float) -> str:
 
 
 def clean_text(text: Any) -> str:
-    value = str(text or "")
+    value = "" if text is None else str(text)
     replacements = {
         "掳": "°",
         "锛?": "：",
@@ -109,6 +114,27 @@ def row_key(row: dict[str, Any]) -> tuple[str, str]:
         or ""
     )
     return (str(row.get("scene_frame") or ""), str(qid))
+
+
+def think_key(row: dict[str, Any]) -> tuple[str, str, str]:
+    qid = (
+        row.get("source_question_id")
+        or row.get("original_question_id")
+        or row.get("question_id")
+        or row.get("id")
+        or ""
+    )
+    return (
+        str(row.get("method") or ""),
+        str(row.get("scene_frame") or ""),
+        str(qid),
+    )
+
+
+def load_think_rows(path: Path = THINK_AUDIT_RAW) -> dict[tuple[str, str, str], dict[str, Any]]:
+    if not path.exists():
+        return {}
+    return {think_key(row): row for row in iter_jsonl(path)}
 
 
 def is_correct(row: dict[str, Any]) -> bool:
@@ -206,7 +232,12 @@ def direction_error_type(row: dict[str, Any]) -> str:
     return "direction_other"
 
 
-def format_case(title: str, row: dict[str, Any], note: str) -> list[str]:
+def format_case(
+    title: str,
+    row: dict[str, Any],
+    note: str,
+    think_rows: dict[tuple[str, str, str], dict[str, Any]] | None = None,
+) -> list[str]:
     lines = [f"### {title}", ""]
     row_method = str(row.get("method") or "")
     analysis_method = row_method.removesuffix("_choice")
@@ -221,6 +252,7 @@ def format_case(title: str, row: dict[str, Any], note: str) -> list[str]:
     if choices:
         block.append("")
         block.extend(choices)
+    think_row = (think_rows or {}).get(think_key(row))
     block.extend(
         [
             "",
@@ -228,11 +260,27 @@ def format_case(title: str, row: dict[str, Any], note: str) -> list[str]:
             if row.get("choice_answer_label")
             else f"GT: {answer_text(row)}",
             f"Pred: {prediction_text(row)}",
-            f"Image: {clean_text(row.get('image_path'))}",
         ]
     )
+    if think_row:
+        block.extend(
+            [
+                f"Think Pred: {clean_text(think_row.get('think_pred'))}",
+                f"Think Correct: {clean_text(think_row.get('think_is_correct'))}",
+                f"Think: {clean_text(think_row.get('think'))}",
+            ]
+        )
+    block.append(f"Image: {clean_text(row.get('image_path'))}")
     lines.extend(["```text", *block, "```", ""])
     lines.extend([f"分析：{note}", ""])
+    if think_row:
+        lines.extend(
+            [
+                "模型真实 think（二次询问得到的视觉依据）："
+                f"{clean_text(think_row.get('think'))}",
+                "",
+            ]
+        )
     return lines
 
 
@@ -317,6 +365,7 @@ def build_report() -> None:
     strict_sources = manifest["sources"]
     strict_rows = {method: iter_jsonl(Path(strict_sources[method]["path"])) for method in ORDER}
     v7_rows = {method: iter_jsonl(path) for method, path in V7_RAW.items()}
+    think_rows = load_think_rows()
 
     v7_metrics = {method: raw_metrics(rows) for method, rows in v7_rows.items()}
     strict_metrics = {
@@ -463,7 +512,9 @@ def build_report() -> None:
             "",
             "## 5. v7 错题 case",
             "",
-            "下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出和图像路径。",
+            "下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出、two-call think 和图像路径。",
+            "",
+            "说明：`Think` 不是模型真实内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。",
             "",
         ]
     )
@@ -557,7 +608,7 @@ def build_report() -> None:
     for title, rows, note in cases:
         for index, row in enumerate(rows, start=1):
             suffix = "a" if index == 1 else "b"
-            lines.extend(format_case(f"{title}（样例 {suffix}）", row, note))
+            lines.extend(format_case(f"{title}（样例 {suffix}）", row, note, think_rows))
 
     lines.extend(
         [
