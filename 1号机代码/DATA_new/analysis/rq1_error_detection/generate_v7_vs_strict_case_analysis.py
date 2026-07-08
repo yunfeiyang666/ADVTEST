@@ -480,8 +480,8 @@ def build_report() -> None:
         "",
         "## 1. 总体对比",
         "",
-        "| 数据项 | 严格版错误率 | v7 错误率 | 变化 | 读法 |",
-        "|---|---:|---:|---:|---|",
+        "| 数据项 | 严格版错误率 | v7 错误率 | 变化 |",
+        "|---|---:|---:|---:|",
     ]
 
     conclusions = {
@@ -497,9 +497,17 @@ def build_report() -> None:
         s = strict_metrics[method]
         v = v7_metrics[method]
         delta = v["rate"] - s["rate"]
-        lines.append(
-            f"| {LABELS[method]} | {pct(s['rate'])} | {pct(v['rate'])} | {pp(delta)} | {conclusions[method]} |"
-        )
+        lines.append(f"| {LABELS[method]} | {pct(s['rate'])} | {pct(v['rate'])} | {pp(delta)} |")
+
+    lines.extend(
+        [
+            "",
+            "简要读法：",
+            "",
+        ]
+    )
+    for method in ORDER:
+        lines.append(f"- {LABELS[method]}：{conclusions[method]}")
 
     lines.extend(
         [
