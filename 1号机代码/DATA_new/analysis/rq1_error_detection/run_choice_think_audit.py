@@ -74,20 +74,31 @@ def prior_prediction(row: dict) -> str:
 
 def build_think_prompt(row: dict) -> str:
     return (
-        "Answer the visual multiple-choice question. Then give one short reason.\n"
-        "Use exactly this format:\n"
+        "Answer the visual multiple-choice question.\n"
+        "You MUST output exactly two lines:\n"
         "Pred: <option letter and option text>\n"
-        "Think: <one concise reason, no more than 20 words>\n\n"
+        "Reason: <one short visual reason, no more than 15 words>\n"
+        "Do not output only the option. The second line is required.\n\n"
         f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
         "Options:\n"
         f"{option_lines(row)}"
     )
 
 
+def build_reason_prompt(row: dict, selected_answer: str) -> str:
+    return (
+        "Look at the image and the question below.\n"
+        "Do not solve the question again. Explain the visual clue for the selected answer.\n"
+        "Output exactly one short sentence, no more than 20 words.\n\n"
+        f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
+        f"Selected answer: {selected_answer}\n"
+    )
+
+
 def parse_pred_and_think(output: str) -> Tuple[str, str]:
     text = str(output or "").strip()
     pred_match = re.search(r"(?im)^\s*Pred\s*:\s*(.+?)\s*$", text)
-    think_match = re.search(r"(?im)^\s*Think\s*:\s*(.+?)\s*$", text)
+    think_match = re.search(r"(?im)^\s*(?:Think|Reason|Because)\s*:\s*(.+?)\s*$", text)
     pred = pred_match.group(1).strip() if pred_match else text.splitlines()[0].strip()
     think = think_match.group(1).strip() if think_match else ""
     return pred, think
@@ -127,6 +138,7 @@ def evaluate_row(
     outputs_root: Path,
     dataroot: Path,
     image_cache_dir: Path,
+    two_call_reason: bool = False,
 ) -> dict:
     question = dict(row)
     question["question"] = build_think_prompt(row)
@@ -145,11 +157,28 @@ def evaluate_row(
         raw_output, _ = vlm.evaluate(question, image_path)
     elapsed = time.perf_counter() - start
     pred, think = parse_pred_and_think(raw_output)
+    reason_raw_output = ""
+    reason_elapsed = 0.0
+    if two_call_reason:
+        reason_question = dict(row)
+        reason_question["question"] = build_reason_prompt(row, pred)
+        reason_question["prompt"] = reason_question["question"]
+        reason_start = time.perf_counter()
+        if mode == "MOCK":
+            reason_raw_output = "visual clue unavailable in mock mode"
+        else:
+            reason_raw_output, _ = vlm.evaluate(reason_question, image_path)
+        reason_elapsed = time.perf_counter() - reason_start
+        if not think:
+            think = str(reason_raw_output or "").strip()
     return {
         "method": row.get("method", ""),
         "question_index": row.get("question_index", ""),
         "scene_frame": get_scene_frame(row),
         "family": row.get("family", ""),
+        "think_case_group": row.get("think_case_group", ""),
+        "think_case_sample": row.get("think_case_sample", ""),
+        "source_question_id": row.get("source_question_id", ""),
         "question": clean_choice_question(source_question_text(row)),
         "choices": row.get("choices", []),
         "gt": choice_answer(row),
@@ -158,8 +187,11 @@ def evaluate_row(
         "think": think,
         "think_is_correct": evaluator.check_question_correctness(pred, row),
         "raw_think_output": raw_output,
+        "raw_reason_output": reason_raw_output,
         "image_path": str(image_path) if image_path else str(row.get("image_path") or ""),
         "elapsed_seconds": elapsed,
+        "reason_elapsed_seconds": reason_elapsed,
+        "vlm_calls": 2 if two_call_reason else 1,
     }
 
 
@@ -176,11 +208,16 @@ def write_outputs(rows: list[dict], output_dir: Path) -> None:
         "question_index",
         "scene_frame",
         "family",
+        "think_case_group",
+        "think_case_sample",
+        "source_question_id",
+        "question",
         "gt",
         "prior_pred",
         "think_pred",
         "think",
         "think_is_correct",
+        "vlm_calls",
         "image_path",
     ]
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
@@ -190,12 +227,16 @@ def write_outputs(rows: list[dict], output_dir: Path) -> None:
             writer.writerow({field: row.get(field, "") for field in fields})
 
     lines = ["# Choice Think Audit Pilot", ""]
-    lines.append("| Method | QIdx | GT | Prior Pred | Think Pred | Correct | Think |")
-    lines.append("|---|---:|---|---|---|---:|---|")
+    lines.append(
+        "| Case | Method | Family | QIdx | GT | Prior Pred | Think Pred | Correct | Think |"
+    )
+    lines.append("|---|---|---|---:|---|---|---|---:|---|")
     for row in rows:
         lines.append(
-            "| {method} | {idx} | {gt} | {prior} | {pred} | {ok} | {think} |".format(
+            "| {case} | {method} | {family} | {idx} | {gt} | {prior} | {pred} | {ok} | {think} |".format(
+                case=str(row.get("think_case_group", "")).replace("|", "/"),
                 method=row.get("method", ""),
+                family=str(row.get("family", "")).replace("|", "/"),
                 idx=row.get("question_index", ""),
                 gt=str(row.get("gt", "")).replace("|", "/"),
                 prior=str(row.get("prior_pred", "")).replace("|", "/"),
@@ -228,6 +269,11 @@ def main() -> None:
     )
     parser.add_argument("--per-file-limit", type=int, default=10)
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument(
+        "--two-call-reason",
+        action="store_true",
+        help="After the answer call, make a second VLM call asking for a short visual reason.",
+    )
     args = parser.parse_args()
 
     selected = collect_wrong_rows(args.raw_result, args.per_file_limit)
@@ -253,6 +299,7 @@ def main() -> None:
                 args.outputs_root,
                 args.dataroot,
                 image_cache_dir,
+                args.two_call_reason,
             )
         )
     write_outputs(results, args.output_dir)
