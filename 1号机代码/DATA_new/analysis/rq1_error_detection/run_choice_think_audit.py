@@ -87,10 +87,14 @@ def build_think_prompt(row: dict) -> str:
 
 def build_reason_prompt(row: dict, selected_answer: str) -> str:
     return (
-        "Look at the image and the question below.\n"
+        "Look at the image, question, and answer options below.\n"
         "Do not solve the question again. Explain the visual clue for the selected answer.\n"
-        "Output exactly one short sentence, no more than 20 words.\n\n"
+        "The explanation must mention the object(s), count, direction, or relation asked in the question.\n"
+        "Do not give a generic scene description.\n"
+        "Output exactly one short sentence, no more than 25 words.\n\n"
         f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
+        "Options:\n"
+        f"{option_lines(row)}\n\n"
         f"Selected answer: {selected_answer}\n"
     )
 
@@ -195,6 +199,18 @@ def evaluate_row(
     }
 
 
+def ensure_real_evaluator(mode: str, vlm) -> None:
+    """Fail fast when a real VLM mode silently fell back to MOCK."""
+    if mode == "MOCK":
+        return
+    if mode == "LOCAL_GPU" and getattr(vlm, "model", None) is None:
+        raise RuntimeError("LOCAL_GPU model did not load; refusing to write MOCK think results.")
+    if mode == "MINICPM" and getattr(vlm, "model", None) is None:
+        raise RuntimeError("MINICPM model did not load; refusing to write MOCK think results.")
+    if mode == "API" and getattr(vlm, "client", None) is None:
+        raise RuntimeError("API client is unavailable; refusing to write MOCK think results.")
+
+
 def write_outputs(rows: list[dict], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = output_dir / "think_audit_raw_results.jsonl"
@@ -283,6 +299,7 @@ def main() -> None:
         raise ValueError("No wrong choice rows selected for think audit.")
 
     vlm = make_evaluator(args.mode)
+    ensure_real_evaluator(args.mode, vlm)
     image_cache_dir = args.output_dir / "mosaics"
     results = []
     for index, row in enumerate(selected, start=1):
