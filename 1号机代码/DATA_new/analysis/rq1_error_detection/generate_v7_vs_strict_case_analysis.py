@@ -120,10 +120,21 @@ def raw_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {"rows": len(rows), "wrong": wrong, "rate": wrong / len(rows) if rows else 0.0}
 
 
+def qid_family(row: dict[str, Any]) -> str:
+    qid = str(row.get("source_question_id") or row.get("question_id") or "")
+    parts = qid.split(":")
+    if len(parts) >= 3 and parts[1] in {"l0", "l1", "l2"}:
+        return f"{parts[1]}:{parts[2]}"
+    return ""
+
+
 def family_name(method: str, row: dict[str, Any]) -> str:
     explicit = row.get("family") or row.get("template_id") or row.get("l2_family")
     if explicit and explicit != "unknown":
         return str(explicit)
+    family = qid_family(row)
+    if family:
+        return family
     if method == "advtest_l0":
         q = short_question(row).lower()
         if "how many" in q:
@@ -197,9 +208,12 @@ def direction_error_type(row: dict[str, Any]) -> str:
 
 def format_case(title: str, row: dict[str, Any], note: str) -> list[str]:
     lines = [f"### {title}", ""]
+    row_method = str(row.get("method") or "")
+    analysis_method = row_method.removesuffix("_choice")
+    parsed_family = family_name(analysis_method, row)
     block = [
         f"Method: {clean_text(row.get('method'))}",
-        f"Family: {clean_text(row.get('family') or row.get('template_id') or '')}",
+        f"Family: {clean_text(parsed_family)}",
         f"Scene: {clean_text(row.get('scene_frame'))}",
         f"Question: {short_question(row)}",
     ]
@@ -229,6 +243,71 @@ def find_case(
         if (not is_correct(row)) and predicate(row):
             return row
     return next((row for row in rows if not is_correct(row)), None)
+
+
+def find_cases(
+    rows: list[dict[str, Any]], predicate: Callable[[dict[str, Any]], bool], limit: int = 2
+) -> list[dict[str, Any]]:
+    picked: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for row in rows:
+        key = row_key(row)
+        if key in seen:
+            continue
+        if (not is_correct(row)) and predicate(row):
+            picked.append(row)
+            seen.add(key)
+        if len(picked) >= limit:
+            return picked
+    for row in rows:
+        key = row_key(row)
+        if key in seen:
+            continue
+        if not is_correct(row):
+            picked.append(row)
+            seen.add(key)
+        if len(picked) >= limit:
+            break
+    return picked
+
+
+def family_metrics(rows: list[dict[str, Any]], method: str) -> list[tuple[str, int, int, float]]:
+    counts: Counter[str] = Counter()
+    wrong_counts: Counter[str] = Counter()
+    for row in rows:
+        family = family_name(method, row)
+        counts[family] += 1
+        if not is_correct(row):
+            wrong_counts[family] += 1
+    result = []
+    for family, total in counts.items():
+        wrong = wrong_counts[family]
+        result.append((family, total, wrong, wrong / total if total else 0.0))
+    return sorted(result, key=lambda item: (-item[1], item[0]))
+
+
+FAMILY_EXPLANATIONS = {
+    "l0:count_type": "按类别计数，主要考察能否数清同类对象。",
+    "l0:exists": "判断具体对象是否存在。",
+    "l0:exists_status_type": "判断某类/某状态对象是否存在，带类型和状态约束。",
+    "l0:more_type": "比较两类对象数量多少。",
+    "l0:status": "询问具体对象运动状态。",
+    "l0:status_no": "状态否定式 yes/no。",
+    "l0:status_yes": "状态肯定式 yes/no；当前 v7 错误率异常高，需优先人工复核题干/GT/图像。",
+    "l0:type": "询问具体对象类别。",
+    "l0:type_no": "类别否定式 yes/no。",
+    "l0:type_yes": "类别肯定式 yes/no。",
+    "l1:count_direction_type": "带方向约束的类别计数。",
+    "l1:count_status_direction_type": "带方向、类别、状态约束的计数。",
+    "l1:direction": "对象相对方向。",
+    "l1:direction_reverse": "反向对象相对方向。",
+    "l1:exists_direction_type": "某方向是否存在某类对象。",
+    "l1:exists_direction_type_no": "方向存在题的否定式。",
+    "l1:exists_status_direction_type": "某方向是否存在某类且某状态对象。",
+    "l1:object_at": "具体对象是否位于某方向。",
+    "l1:relation_no": "关系否定式 yes/no。",
+    "l1:relation_yes": "关系肯定式 yes/no；当前错误率极高，需优先检查是否存在 yes/no 选项或 GT 方向口径问题。",
+}
 
 
 def build_report() -> None:
@@ -362,30 +441,48 @@ def build_report() -> None:
 
     lines.extend(
         [
-            "## 4. v7 错题 case",
+            "## 4. L0/L1 v7 分题型错误率",
+            "",
+            "L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_question_id` 保留了结构化题型片段。下面的表就是从 `source_question_id` 中解析出的题型，例如 `scene-0003_frame0:l1:direction_reverse:car14:barrier2` 归为 `l1:direction_reverse`。",
+            "",
+        ]
+    )
+
+    for method in ("advtest_l0", "advtest_l1"):
+        lines.extend([f"### {LABELS[method]}", ""])
+        lines.append("| 题型 | Q | 错题 | 错误率 | 说明 |")
+        lines.append("|---|---:|---:|---:|---|")
+        for family, total, wrong, rate in family_metrics(v7_rows[method], method):
+            explanation = FAMILY_EXPLANATIONS.get(family, "")
+            lines.append(f"| `{family}` | {total} | {wrong} | {pct(rate)} | {explanation} |")
+        lines.append("")
+
+    lines.extend(
+        [
+            "从这张表看，L0/L1 不是均匀难：有些 yes/no 子类很低，有些状态/关系子类异常高。后续人工复核应该优先抽 `l0:status_yes`、`l1:relation_yes`、`l1:exists_status_direction_type` 这类极端项，判断是模型确实错、题干口径问题，还是 GT/自动判分问题。",
+            "",
+            "## 5. v7 错题 case",
             "",
             "下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出和图像路径。",
             "",
         ]
     )
 
-    cases: list[tuple[str, dict[str, Any], str]] = []
+    cases: list[tuple[str, list[dict[str, Any]], str]] = []
     l0_rows = v7_rows["advtest_l0"]
     cases.append(
         (
             "Case L0-1：数量题仍然容易错",
-            find_case(l0_rows, lambda r: "how many" in short_question(r).lower()),
+            find_cases(l0_rows, lambda r: family_name("advtest_l0", r) == "l0:count_type"),
             "这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。",
         )
     )
     cases.append(
         (
             "Case L0-2：状态/属性题的视觉判断错误",
-            find_case(
+            find_cases(
                 l0_rows,
-                lambda r: "movement status" in short_question(r).lower()
-                or "moving" in short_question(r).lower()
-                or "stopped" in short_question(r).lower(),
+                lambda r: family_name("advtest_l0", r) in {"l0:status", "l0:status_yes"},
             ),
             "状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。",
         )
@@ -395,14 +492,21 @@ def build_report() -> None:
     cases.append(
         (
             "Case L1-1：方向关系选错",
-            find_case(l1_rows, lambda r: "relative to" in short_question(r).lower()),
+            find_cases(
+                l1_rows,
+                lambda r: family_name("advtest_l1", r) in {"l1:direction", "l1:direction_reverse"},
+            ),
             "题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。",
         )
     )
     cases.append(
         (
             "Case L1-2：带方向约束的计数题",
-            find_case(l1_rows, lambda r: "how many" in short_question(r).lower()),
+            find_cases(
+                l1_rows,
+                lambda r: family_name("advtest_l1", r)
+                in {"l1:count_direction_type", "l1:count_status_direction_type"},
+            ),
             "这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。",
         )
     )
@@ -410,28 +514,28 @@ def build_report() -> None:
     cases.append(
         (
             "Case L2-1：converge 多约束定位误选同类目标",
-            find_case(v7_rows["advtest_l2_converge"], lambda r: True),
+            find_cases(v7_rows["advtest_l2_converge"], lambda r: True),
             "converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。",
         )
     )
     cases.append(
         (
             "Case L2-2：direction_chain 二值选择仍有少量错",
-            find_case(v7_rows["advtest_l2_direction_chain"], lambda r: True),
+            find_cases(v7_rows["advtest_l2_direction_chain"], lambda r: True),
             "虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。",
         )
     )
     cases.append(
         (
             "Case L2-3：distance_chain 距离比较错误",
-            find_case(v7_rows["advtest_l2_distance_chain"], lambda r: True),
+            find_cases(v7_rows["advtest_l2_distance_chain"], lambda r: True),
             "distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。",
         )
     )
     cases.append(
         (
             "Case L2-4：viewpoint_transfer 过度选择 back",
-            find_case(
+            find_cases(
                 v7_rows["advtest_l2_viewpoint_transfer"],
                 lambda r: "back" in predicted_choice_text(r).lower()
                 and "back" not in answer_text(r).lower(),
@@ -442,7 +546,7 @@ def build_report() -> None:
     cases.append(
         (
             "Case L2-5：viewpoint_transfer 前后/左右混淆",
-            find_case(
+            find_cases(
                 v7_rows["advtest_l2_viewpoint_transfer"],
                 lambda r: direction_error_type(r) == "left_right_flip",
             ),
@@ -450,13 +554,14 @@ def build_report() -> None:
         )
     )
 
-    for title, row, note in cases:
-        if row:
-            lines.extend(format_case(title, row, note))
+    for title, rows, note in cases:
+        for index, row in enumerate(rows, start=1):
+            suffix = "a" if index == 1 else "b"
+            lines.extend(format_case(f"{title}（样例 {suffix}）", row, note))
 
     lines.extend(
         [
-            "## 5. 当前结论",
+            "## 6. 当前结论",
             "",
             "1. v7 让 L0 和部分 L2 的判分更公平，尤其减少了自由回答带来的同义词、格式和精确 ID 生成损失。",
             "2. v7 没有把所有题都变简单：L1 基本不降，distance_chain 基本不变，viewpoint_transfer 反而显著升高。",

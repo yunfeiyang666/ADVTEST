@@ -70,15 +70,51 @@
 - 严格版 48.3%，v7 81.9%，显著上升。这里不是 bug，而是任务口径变严格了：v7 要求从目标朝向为 0° 的坐标系里，在 `front/front left/front right/back left/back right/back` 六类中选最精确方向。
 - 从错题分布看，模型大量偏向选 `back`，说明它不是不知道选项，而是没有稳定完成视角坐标转换。这一项非常适合作为空间推理 hard case，但要在论文中清楚写明方向角度规则。
 
-## 4. v7 错题 case
+## 4. L0/L1 v7 分题型错误率
+
+L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_question_id` 保留了结构化题型片段。下面的表就是从 `source_question_id` 中解析出的题型，例如 `scene-0003_frame0:l1:direction_reverse:car14:barrier2` 归为 `l1:direction_reverse`。
+
+### ADVTEST-L0
+
+| 题型 | Q | 错题 | 错误率 | 说明 |
+|---|---:|---:|---:|---|
+| `l0:status_yes` | 111 | 103 | 92.8% | 状态肯定式 yes/no；当前 v7 错误率异常高，需优先人工复核题干/GT/图像。 |
+| `l0:count_type` | 110 | 64 | 58.2% | 按类别计数，主要考察能否数清同类对象。 |
+| `l0:type_no` | 105 | 21 | 20.0% | 类别否定式 yes/no。 |
+| `l0:type_yes` | 105 | 8 | 7.6% | 类别肯定式 yes/no。 |
+| `l0:exists` | 100 | 40 | 40.0% | 判断具体对象是否存在。 |
+| `l0:exists_status_type` | 99 | 44 | 44.4% | 判断某类/某状态对象是否存在，带类型和状态约束。 |
+| `l0:status` | 99 | 48 | 48.5% | 询问具体对象运动状态。 |
+| `l0:status_no` | 96 | 0 | 0.0% | 状态否定式 yes/no。 |
+| `l0:type` | 91 | 2 | 2.2% | 询问具体对象类别。 |
+| `l0:more_type` | 84 | 32 | 38.1% | 比较两类对象数量多少。 |
+
+### ADVTEST-L1
+
+| 题型 | Q | 错题 | 错误率 | 说明 |
+|---|---:|---:|---:|---|
+| `l1:direction` | 111 | 61 | 55.0% | 对象相对方向。 |
+| `l1:exists_direction_type` | 110 | 90 | 81.8% | 某方向是否存在某类对象。 |
+| `l1:relation_yes` | 108 | 108 | 100.0% | 关系肯定式 yes/no；当前错误率极高，需优先检查是否存在 yes/no 选项或 GT 方向口径问题。 |
+| `l1:count_direction_type` | 107 | 51 | 47.7% | 带方向约束的类别计数。 |
+| `l1:relation_no` | 104 | 21 | 20.2% | 关系否定式 yes/no。 |
+| `l1:exists_status_direction_type` | 97 | 92 | 94.8% | 某方向是否存在某类且某状态对象。 |
+| `l1:count_status_direction_type` | 96 | 58 | 60.4% | 带方向、类别、状态约束的计数。 |
+| `l1:object_at` | 96 | 35 | 36.5% | 具体对象是否位于某方向。 |
+| `l1:direction_reverse` | 92 | 43 | 46.7% | 反向对象相对方向。 |
+| `l1:exists_direction_type_no` | 79 | 2 | 2.5% | 方向存在题的否定式。 |
+
+从这张表看，L0/L1 不是均匀难：有些 yes/no 子类很低，有些状态/关系子类异常高。后续人工复核应该优先抽 `l0:status_yes`、`l1:relation_yes`、`l1:exists_status_direction_type` 这类极端项，判断是模型确实错、题干口径问题，还是 GT/自动判分问题。
+
+## 5. v7 错题 case
 
 下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出和图像路径。
 
-### Case L0-1：数量题仍然容易错
+### Case L0-1：数量题仍然容易错（样例 a）
 
 ```text
 Method: advtest_l0_choice
-Family: unknown
+Family: l0:count_type
 Scene: scene-0003_frame9
 Question: How many pedestrians are visible?
 
@@ -94,11 +130,31 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 
 分析：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。
 
-### Case L0-2：状态/属性题的视觉判断错误
+### Case L0-1：数量题仍然容易错（样例 b）
 
 ```text
 Method: advtest_l0_choice
-Family: unknown
+Family: l0:count_type
+Scene: scene-0003_frame10
+Question: How many pedestrians are visible?
+
+A. 6
+B. 7
+C. 5
+D. 8
+
+GT: B. 7
+Pred: C
+Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
+```
+
+分析：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。
+
+### Case L0-2：状态/属性题的视觉判断错误（样例 a）
+
+```text
+Method: advtest_l0_choice
+Family: l0:status_yes
 Scene: scene-0003_frame1
 Question: Is car10 stopped?
 
@@ -112,11 +168,30 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 
 分析：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。
 
-### Case L1-1：方向关系选错
+### Case L0-2：状态/属性题的视觉判断错误（样例 b）
+
+```text
+Method: advtest_l0_choice
+Family: l0:status
+Scene: scene-0003_frame6
+Question: What is the movement status of car20?
+
+A. parked
+B. moving
+C. stopped
+
+GT: C. stopped
+Pred: B. moving
+Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
+```
+
+分析：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。
+
+### Case L1-1：方向关系选错（样例 a）
 
 ```text
 Method: advtest_l1_choice
-Family: unknown
+Family: l1:direction_reverse
 Scene: scene-0003_frame0
 Question: Where is barrier2 relative to car14?
 
@@ -132,11 +207,31 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 
 分析：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。
 
-### Case L1-2：带方向约束的计数题
+### Case L1-1：方向关系选错（样例 b）
 
 ```text
 Method: advtest_l1_choice
-Family: unknown
+Family: l1:direction
+Scene: scene-0003_frame1
+Question: Where is car25 relative to barrier1?
+
+A. back (otherwise)
+B. front left (30° < theta <= 90°)
+C. back left (90° < theta <= 150°)
+D. front (-30° < theta <= 30°)
+
+GT: C. back left (90° < theta <= 150°)
+Pred: A. back (otherwise)
+Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
+```
+
+分析：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。
+
+### Case L1-2：带方向约束的计数题（样例 a）
+
+```text
+Method: advtest_l1_choice
+Family: l1:count_status_direction_type
 Scene: scene-0003_frame2
 Question: How many stopped cars are to the back (otherwise) of car14?
 
@@ -152,11 +247,31 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 
 分析：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。
 
-### Case L2-1：converge 多约束定位误选同类目标
+### Case L1-2：带方向约束的计数题（样例 b）
+
+```text
+Method: advtest_l1_choice
+Family: l1:count_direction_type
+Scene: scene-0003_frame7
+Question: How many pedestrians are to the back right (-150° < theta <= -90°) of barrier2?
+
+A. 1
+B. 0
+C. 2
+D. 3
+
+GT: A. 1
+Pred: C. 2
+Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame7_mosaic.jpg
+```
+
+分析：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。
+
+### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
 ```text
 Method: advtest_l2_converge_choice
-Family: unknown
+Family: converge
 Scene: scene-0003_frame33
 Question: There is a barrier to the back (otherwise) of car20 and to the front (-30° < theta <= 30°) of pedestrian11, and to the front left (30° < theta <= 90°) of barrier4, and to the back (otherwise) of pedestrian1; what is it?
 
@@ -172,11 +287,31 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 
 分析：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。
 
-### Case L2-2：direction_chain 二值选择仍有少量错
+### Case L2-1：converge 多约束定位误选同类目标（样例 b）
+
+```text
+Method: advtest_l2_converge_choice
+Family: converge
+Scene: scene-0016_frame17
+Question: What pedestrian is positioned to the front left (30° < theta <= 90°) of pedestrian14 and also to the front left (30° < theta <= 90°) of pedestrian20, and to the back left (90° < theta <= 150°) of pedestrian8?
+
+A. pedestrian3
+B. pedestrian24
+C. pedestrian1
+D. pedestrian12
+
+GT: D. pedestrian12
+Pred: A. pedestrian3
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame17_mosaic.jpg
+```
+
+分析：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。
+
+### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
 ```text
 Method: advtest_l2_direction_chain_choice
-Family: unknown
+Family: direction_chain
 Scene: scene-0015_frame19
 Question: Does car8 lie in the same direction from truck1 as car1?
 
@@ -190,11 +325,29 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 
 分析：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。
 
-### Case L2-3：distance_chain 距离比较错误
+### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
+
+```text
+Method: advtest_l2_direction_chain_choice
+Family: direction_chain
+Scene: scene-0016_frame19
+Question: Is pedestrian16 in the same direction from pedestrian10 as pedestrian10 is from pedestrian15?
+
+A. yes
+B. no
+
+GT: A. yes
+Pred: B. no
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
+```
+
+分析：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。
+
+### Case L2-3：distance_chain 距离比较错误（样例 a）
 
 ```text
 Method: advtest_l2_distance_chain_choice
-Family: unknown
+Family: distance_chain
 Scene: scene-0003_frame31
 Question: Which object is barrier1 nearer to, car19 or car20?
 
@@ -208,11 +361,29 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 
 分析：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。
 
-### Case L2-4：viewpoint_transfer 过度选择 back
+### Case L2-3：distance_chain 距离比较错误（样例 b）
+
+```text
+Method: advtest_l2_distance_chain_choice
+Family: distance_chain
+Scene: scene-0016_frame28
+Question: Between car1 and car3, which one is closer to pedestrian2?
+
+A. car1
+B. car3
+
+GT: B. car3
+Pred: A
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame28_mosaic.jpg
+```
+
+分析：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。
+
+### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
 ```text
 Method: advtest_l2_viewpoint_transfer_choice
-Family: unknown
+Family: viewpoint_transfer
 Scene: scene-0003_frame10
 Question: From barrier8, facing pedestrian5, where is car23 relative to you?
 
@@ -228,11 +399,31 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 
 分析：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。
 
-### Case L2-5：viewpoint_transfer 前后/左右混淆
+### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
 ```text
 Method: advtest_l2_viewpoint_transfer_choice
-Family: unknown
+Family: viewpoint_transfer
+Scene: scene-0017_frame15
+Question: From barrier1, facing truck2, where is pedestrian35 relative to you?
+
+A. front left (30° < theta <= 90°)
+B. back left (90° < theta <= 150°)
+C. back (otherwise)
+D. front right (-90° < theta <= -30°)
+
+GT: D. front right (-90° < theta <= -30°)
+Pred: C. back
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
+```
+
+分析：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。
+
+### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
+
+```text
+Method: advtest_l2_viewpoint_transfer_choice
+Family: viewpoint_transfer
 Scene: scene-0003_frame3
 Question: From car21, facing pedestrian8, where is pedestrian9 relative to you?
 
@@ -248,7 +439,27 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 
 分析：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。
 
-## 5. 当前结论
+### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
+
+```text
+Method: advtest_l2_viewpoint_transfer_choice
+Family: viewpoint_transfer
+Scene: scene-0016_frame18
+Question: From pedestrian15, facing pedestrian8, where is pedestrian19 relative to you?
+
+A. front left (30° < theta <= 90°)
+B. back right (-150° < theta <= -90°)
+C. front right (-90° < theta <= -30°)
+D. back left (90° < theta <= 150°)
+
+GT: C. front right (-90° < theta <= -30°)
+Pred: A. front left (30° < theta <= 90°)
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame18_mosaic.jpg
+```
+
+分析：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。
+
+## 6. 当前结论
 
 1. v7 让 L0 和部分 L2 的判分更公平，尤其减少了自由回答带来的同义词、格式和精确 ID 生成损失。
 2. v7 没有把所有题都变简单：L1 基本不降，distance_chain 基本不变，viewpoint_transfer 反而显著升高。
