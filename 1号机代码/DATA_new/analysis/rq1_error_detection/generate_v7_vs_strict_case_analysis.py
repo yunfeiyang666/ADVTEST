@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v3_twocall\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v4_twocall_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -271,7 +271,7 @@ def format_case(
         )
     block.append(f"Image: {clean_text(row.get('image_path'))}")
     lines.extend(["```text", *block, "```", ""])
-    lines.extend([f"分析：{note}", ""])
+    lines.extend(render_human_analysis(row, note, think_row))
     if think_row:
         lines.extend(
             [
@@ -281,6 +281,71 @@ def format_case(
             ]
         )
     return lines
+
+
+def render_human_analysis(
+    row: dict[str, Any], group_note: str, think_row: dict[str, Any] | None
+) -> list[str]:
+    row_method = str(row.get("method") or "")
+    analysis_method = row_method.removesuffix("_choice")
+    family = family_name(analysis_method, row)
+    gt = answer_text(row)
+    pred = prediction_text(row)
+    think_pred = clean_text(think_row.get("think_pred")) if think_row else ""
+    reason = clean_text(think_row.get("think")) if think_row else ""
+
+    validity = "题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。"
+    if family in {"l0:count_type", "l1:count_direction_type", "l1:count_status_direction_type"}:
+        validity = "题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。"
+    elif family in {"l1:direction", "l1:direction_reverse", "viewpoint_transfer"}:
+        validity = "题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。"
+    elif family == "converge":
+        validity = "题目本身可保留，是典型 hard case：多个关系约束共同确定唯一目标，人类也需要逐条排除候选。"
+    elif family == "direction_chain":
+        validity = "题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。"
+    elif family == "distance_chain":
+        validity = "题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。"
+
+    if family == "l0:count_type":
+        error = f"模型把数量答成 `{pred}`，重问后为 `{think_pred}`；这不是同义词判分问题，而是没有数清对象数量。"
+        reason_note = "事后解释没有提到数量或行人，只给出泛化场景描述，说明它没有形成可验证的计数依据。"
+    elif family in {"l0:status", "l0:status_yes"}:
+        error = f"模型在状态判断上与 GT `{gt}` 不一致，原回答 `{pred}`，重问为 `{think_pred}`。"
+        reason_note = "事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。"
+    elif family in {"l1:direction", "l1:direction_reverse"}:
+        error = f"模型选了 `{pred}`，但 GT 是 `{gt}`；重问后 `{think_pred}`，仍然没有稳定落到正确角度区间。"
+        reason_note = "事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。"
+    elif family in {"l1:count_direction_type", "l1:count_status_direction_type"}:
+        error = f"模型在带方向约束的计数上答成 `{pred}`，重问后 `{think_pred}`；错因是方向筛选和计数叠加失败。"
+        reason_note = "事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。"
+    elif family == "converge":
+        error = f"模型选中 `{pred}` 而不是 `{gt}`，重问后 `{think_pred}`；说明它被同类候选或局部关系误导。"
+        reason_note = "事后解释往往只覆盖部分约束，或者复述题干中的一两条关系，不能证明它完成了所有约束交汇。"
+    elif family == "direction_chain":
+        error = f"原回答 `{pred}` 与 GT `{gt}` 不一致，重问后 `{think_pred}`；这一类容易被二次选择题格式纠正。"
+        reason_note = "事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。"
+    elif family == "distance_chain":
+        error = f"模型在二选一距离比较中选了 `{pred}`，GT 是 `{gt}`，重问后 `{think_pred}`。"
+        reason_note = "事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。"
+    elif family == "viewpoint_transfer":
+        error = f"模型把 GT `{gt}` 误选成 `{pred}`，重问后 `{think_pred}`；这是目标朝向坐标系转换失败。"
+        reason_note = "事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。"
+    else:
+        error = f"模型回答 `{pred}`，GT 是 `{gt}`，重问后 `{think_pred}`。"
+        reason_note = "事后解释只能作为辅助线索，仍需人工复核图像。"
+
+    implication = group_note
+    if reason:
+        implication += f" 本题的事后解释是 `{reason}`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。"
+
+    return [
+        "人工分析：",
+        f"- 题目有效性：{validity}",
+        f"- 错误位置：{error}",
+        f"- 事后解释怎么看：{reason_note}",
+        f"- 这个 case 说明什么：{implication}",
+        "",
+    ]
 
 
 def find_case(
@@ -293,7 +358,7 @@ def find_case(
 
 
 def find_cases(
-    rows: list[dict[str, Any]], predicate: Callable[[dict[str, Any]], bool], limit: int = 2
+    rows: list[dict[str, Any]], predicate: Callable[[dict[str, Any]], bool], limit: int = 3
 ) -> list[dict[str, Any]]:
     picked: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
@@ -606,7 +671,7 @@ def build_report() -> None:
 
     for title, rows, note in cases:
         for index, row in enumerate(rows, start=1):
-            suffix = "a" if index == 1 else "b"
+            suffix = chr(ord("a") + index - 1)
             lines.extend(format_case(f"{title}（样例 {suffix}）", row, note, think_rows))
 
     lines.extend(

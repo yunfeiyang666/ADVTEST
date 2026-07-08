@@ -17,6 +17,7 @@ OUTPUT_DIR = (
 )
 OUTPUT_JSONL = OUTPUT_DIR / "v7_case_think_inputs.jsonl"
 OUTPUT_MANIFEST = OUTPUT_DIR / "v7_case_think_inputs_manifest.md"
+SAMPLES_PER_CASE = 3
 
 
 CASE_DEFINITIONS = [
@@ -98,9 +99,11 @@ def main() -> None:
         "|---|---:|---|---|---|---|---|---|",
     ]
     for case_group, case_title, method, predicate in CASE_DEFINITIONS:
-        rows = case_analysis.find_cases(rows_by_method[method], predicate, limit=2)
-        if len(rows) != 2:
-            raise RuntimeError(f"Expected 2 rows for {case_group}, got {len(rows)}")
+        rows = case_analysis.find_cases(rows_by_method[method], predicate, limit=SAMPLES_PER_CASE)
+        if len(rows) != SAMPLES_PER_CASE:
+            raise RuntimeError(
+                f"Expected {SAMPLES_PER_CASE} rows for {case_group}, got {len(rows)}"
+            )
         for sample_index, row in enumerate(rows, start=1):
             item = dict(row)
             item["family"] = case_analysis.family_name(method, row)
