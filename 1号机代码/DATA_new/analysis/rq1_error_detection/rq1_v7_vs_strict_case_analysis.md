@@ -127,12 +127,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型把数量答成 `A`，重问后为 `A. 11`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 11 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 11 pedestrians visible.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：原始答案选 `A`，GT 是 `9`；重问后为 `A. 11`。
+- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 11 pedestrians visible.`
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -155,12 +152,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型把数量答成 `C`，重问后为 `A. 6`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 6 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 6 pedestrians visible.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：原始答案选 `C`，GT 是 `7`；重问后为 `A. 6`。
+- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 6 pedestrians visible.`
 
 ### Case L0-1：数量题仍然容易错（样例 c）
 
@@ -183,12 +177,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型把数量答成 `C`，重问后为 `A. 6`；这不是同义词判分问题，而是没有数清对象数量。
-- 事后解释怎么看：事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。
-- 这个 case 说明什么：这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。 本题的事后解释是 `The image shows a car driving down a street with 6 pedestrians visible.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The image shows a car driving down a street with 6 pedestrians visible.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：原始答案选 `C`，GT 是 `6`；重问后为 `A. 6`。
+- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 6 pedestrians visible.`
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -209,12 +200,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
-- 错误位置：模型在状态判断上与 GT `yes` 不一致，原回答 `B`，重问为 `A. yes`。
-- 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car10 is stopped at the intersection.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car10 is stopped at the intersection.
+- 题目：有效。题干、选项和 GT 都明确。
+- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
+- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car10 is stopped at the intersection.`
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -236,12 +224,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
-- 错误位置：模型在状态判断上与 GT `stopped` 不一致，原回答 `B. moving`，重问为 `B. moving`。
-- 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car20 is moving in the image.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car20 is moving in the image.
+- 题目：有效。题干、选项和 GT 都明确。
+- 错因：原始答案 `B. moving` 和 GT `stopped` 不一致；重问后为 `B. moving`。
+- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car20 is moving in the image.`
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 c）
 
@@ -262,12 +247,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。
-- 错误位置：模型在状态判断上与 GT `yes` 不一致，原回答 `B`，重问为 `A. yes`。
-- 事后解释怎么看：事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。
-- 这个 case 说明什么：状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。 本题的事后解释是 `The car in barrier4 is stopped.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car in barrier4 is stopped.
+- 题目：有效。题干、选项和 GT 都明确。
+- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
+- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car in barrier4 is stopped.`
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -290,12 +272,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型选了 `C. front (-30° < theta <= 30°)`，但 GT 是 `front right (-90° < theta <= -30°)`；重问后 `A. front left (30° < theta <= 90°)`，仍然没有稳定落到正确角度区间。
-- 事后解释怎么看：事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。
-- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `The barrier is located to the left of the car14.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The barrier is located to the left of the car14.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `C. front (-30° < theta <= 30°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `A. front left (30° < theta <= 90°)`。
+- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`The barrier is located to the left of the car14.`
 
 ### Case L1-1：方向关系选错（样例 b）
 
@@ -318,12 +297,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型选了 `A. back (otherwise)`，但 GT 是 `back left (90° < theta <= 150°)`；重问后 `A. back (otherwise)`，仍然没有稳定落到正确角度区间。
-- 事后解释怎么看：事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。
-- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `The car25 is located behind the barrier1.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car25 is located behind the barrier1.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `A. back (otherwise)`，GT 是 `back left (90° < theta <= 150°)`；重问后为 `A. back (otherwise)`。
+- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`The car25 is located behind the barrier1.`
 
 ### Case L1-1：方向关系选错（样例 c）
 
@@ -346,12 +322,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型选了 `A. back (otherwise)`，但 GT 是 `front left (30° < theta <= 90°)`；重问后 `A. back (otherwise)`，仍然没有稳定落到正确角度区间。
-- 事后解释怎么看：事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。
-- 这个 case 说明什么：题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。 本题的事后解释是 `A car is parked in front of a building.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A car is parked in front of a building.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `A. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `A. back (otherwise)`。
+- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`A car is parked in front of a building.`
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -374,12 +347,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型在带方向约束的计数上答成 `A. 3`，重问后 `A. 3`；错因是方向筛选和计数叠加失败。
-- 事后解释怎么看：事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。
-- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `A car is parked behind car14.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A car is parked behind car14.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：模型选 `A. 3`，GT 是 `4`；重问后为 `A. 3`。
+- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`A car is parked behind car14.`
 
 ### Case L1-2：带方向约束的计数题（样例 b）
 
@@ -402,12 +372,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型在带方向约束的计数上答成 `C. 2`，重问后 `C. 2`；错因是方向筛选和计数叠加失败。
-- 事后解释怎么看：事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。
-- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `The pedestrians are to the back right of barrier2.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The pedestrians are to the back right of barrier2.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：模型选 `C. 2`，GT 是 `1`；重问后为 `C. 2`。
+- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`The pedestrians are to the back right of barrier2.`
 
 ### Case L1-2：带方向约束的计数题（样例 c）
 
@@ -430,12 +397,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。
-- 错误位置：模型在带方向约束的计数上答成 `B. 2`，重问后 `B. 2`；错因是方向筛选和计数叠加失败。
-- 事后解释怎么看：事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。
-- 这个 case 说明什么：这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。 本题的事后解释是 `The pedestrian is standing in front of the barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The pedestrian is standing in front of the barrier.
+- 题目：有效，但偏难。它要求先筛对象，再计数。
+- 错因：模型选 `B. 2`，GT 是 `3`；重问后为 `B. 2`。
+- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`The pedestrian is standing in front of the barrier.`
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -458,12 +422,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，是典型 hard case：多个关系约束共同确定唯一目标，人类也需要逐条排除候选。
-- 错误位置：模型选中 `C. barrier3` 而不是 `barrier7`，重问后 `C. barrier3`；说明它被同类候选或局部关系误导。
-- 事后解释怎么看：事后解释往往只覆盖部分约束，或者复述题干中的一两条关系，不能证明它完成了所有约束交汇。
-- 这个 case 说明什么：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。 本题的事后解释是 `The barrier is in front of pedestrian1 and to the back of car20.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The barrier is in front of pedestrian1 and to the back of car20.
+- 题目：有效且较难。需要同时满足多条关系约束。
+- 错因：模型选 `C. barrier3`，GT 是 `barrier7`；重问后为 `C. barrier3`。
+- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`The barrier is in front of pedestrian1 and to the back of car20.`
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 b）
 
@@ -486,12 +447,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，是典型 hard case：多个关系约束共同确定唯一目标，人类也需要逐条排除候选。
-- 错误位置：模型选中 `A. pedestrian3` 而不是 `pedestrian12`，重问后 `A. pedestrian3`；说明它被同类候选或局部关系误导。
-- 事后解释怎么看：事后解释往往只覆盖部分约束，或者复述题干中的一两条关系，不能证明它完成了所有约束交汇。
-- 这个 case 说明什么：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。 本题的事后解释是 `A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.
+- 题目：有效且较难。需要同时满足多条关系约束。
+- 错因：模型选 `A. pedestrian3`，GT 是 `pedestrian12`；重问后为 `A. pedestrian3`。
+- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.`
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 c）
 
@@ -514,12 +472,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，是典型 hard case：多个关系约束共同确定唯一目标，人类也需要逐条排除候选。
-- 错误位置：模型选中 `B. barrier14` 而不是 `barrier29`，重问后 `B. barrier14`；说明它被同类候选或局部关系误导。
-- 事后解释怎么看：事后解释往往只覆盖部分约束，或者复述题干中的一两条关系，不能证明它完成了所有约束交汇。
-- 这个 case 说明什么：converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。 本题的事后解释是 `Barrier14 is the barrier that can be found to the back (otherwise) of barrier11 and to the back (otherwise) of barrier30, and to the back right (-150° < the`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：Barrier14 is the barrier that can be found to the back (otherwise) of barrier11 and to the back (otherwise) of barrier30, and to the back right (-150° < the
+- 题目：有效且较难。需要同时满足多条关系约束。
+- 错因：模型选 `B. barrier14`，GT 是 `barrier29`；重问后为 `B. barrier14`。
+- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`Barrier14 is the barrier that can be found to the back (otherwise) of barrier11 and to the back (otherwise) of barrier30, and to the back right (-150° < the`
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
@@ -540,12 +495,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
-- 错误位置：原回答 `B` 与 GT `no` 不一致，重问后 `A. no`；这一类容易被二次选择题格式纠正。
-- 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The car8 is in the opposite direction from truck1.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car8 is in the opposite direction from truck1.
+- 题目：有效，但选择题会明显降低回答难度。
+- 错因：原始答案 `B` 和 GT `no` 不一致；重问后为 `A. no`。
+- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The car8 is in the opposite direction from truck1.`
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -566,12 +518,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
-- 错误位置：原回答 `B. no` 与 GT `yes` 不一致，重问后 `A. yes`；这一类容易被二次选择题格式纠正。
-- 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
+- 题目：有效，但选择题会明显降低回答难度。
+- 错因：原始答案 `B. no` 和 GT `yes` 不一致；重问后为 `A. yes`。
+- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 c）
 
@@ -592,12 +541,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-- 题目有效性：题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。
-- 错误位置：原回答 `B` 与 GT `yes` 不一致，重问后 `A. yes`；这一类容易被二次选择题格式纠正。
-- 事后解释怎么看：事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。
-- 这个 case 说明什么：虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。 本题的事后解释是 `The bus is in the same direction as the car.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The bus is in the same direction as the car.
+- 题目：有效，但选择题会明显降低回答难度。
+- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
+- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The bus is in the same direction as the car.`
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -618,12 +564,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
-- 错误位置：模型在二选一距离比较中选了 `A`，GT 是 `car20`，重问后 `A. car19`。
-- 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `The barrier1 is nearer to car19.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The barrier1 is nearer to car19.
+- 题目：有效。它考察两个候选的相对距离。
+- 错因：模型选 `A`，GT 是 `car20`；重问后为 `A. car19`。
+- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`The barrier1 is nearer to car19.`
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -644,12 +587,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
-- 错误位置：模型在二选一距离比较中选了 `A`，GT 是 `car3`，重问后 `A. car1`。
-- 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `A. car1 is closer to pedestrian2.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A. car1 is closer to pedestrian2.
+- 题目：有效。它考察两个候选的相对距离。
+- 错因：模型选 `A`，GT 是 `car3`；重问后为 `A. car1`。
+- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`A. car1 is closer to pedestrian2.`
 
 ### Case L2-3：distance_chain 距离比较错误（样例 c）
 
@@ -670,12 +610,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。
-- 错误位置：模型在二选一距离比较中选了 `B`，GT 是 `bicycle1`，重问后 `B. bus1`。
-- 事后解释怎么看：事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。
-- 这个 case 说明什么：distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。 本题的事后解释是 `The bus is closer to the camera than the bicycle.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The bus is closer to the camera than the bicycle.
+- 题目：有效。它考察两个候选的相对距离。
+- 错因：模型选 `B`，GT 是 `bicycle1`；重问后为 `B. bus1`。
+- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`The bus is closer to the camera than the bicycle.`
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -698,12 +635,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `C. back (otherwise)`，重问后 `C. back (otherwise)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The car23 is located behind the pedestrian5.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car23 is located behind the pedestrian5.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `C. back (otherwise)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. back (otherwise)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The car23 is located behind the pedestrian5.`
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
@@ -726,12 +660,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `C. back`，重问后 `C. back (otherwise)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The pedestrian is located behind the barrier and truck.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The pedestrian is located behind the barrier and truck.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `C. back`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. back (otherwise)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The pedestrian is located behind the barrier and truck.`
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 c）
 
@@ -754,12 +685,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front left (30° < theta <= 90°)` 误选成 `B. back (otherwise)`，重问后 `B. back (otherwise)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。 本题的事后解释是 `The car is parked in front of the barrier.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The car is parked in front of the barrier.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `B. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `B. back (otherwise)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The car is parked in front of the barrier.`
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -782,12 +710,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `C. front left (30° < theta <= 90°)`，重问后 `C. front left (30° < theta <= 90°)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `The pedestrian is located to the left of the car21.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：The pedestrian is located to the left of the car21.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `C. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. front left (30° < theta <= 90°)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The pedestrian is located to the left of the car21.`
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
 
@@ -810,12 +735,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front right (-90° < theta <= -30°)` 误选成 `A. front left (30° < theta <= 90°)`，重问后 `A. front left (30° < theta <= 90°)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `A. front left (30° < theta <= 90°)`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A. front left (30° < theta <= 90°)
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `A. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `A. front left (30° < theta <= 90°)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`A. front left (30° < theta <= 90°)`
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 c）
 
@@ -838,12 +760,9 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-- 题目有效性：题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。
-- 错误位置：模型把 GT `front left (30° < theta <= 90°)` 误选成 `C. front right (-90° < theta <= -30°)`，重问后 `A. front left (30° < theta <= 90°)`；这是目标朝向坐标系转换失败。
-- 事后解释怎么看：事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。
-- 这个 case 说明什么：这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。 本题的事后解释是 `A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。
-
-模型事后解释（二次询问得到的视觉依据）：A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.
+- 题目：有效。它考察相对方向和角度区间。
+- 错因：模型选 `C. front right (-90° < theta <= -30°)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `A. front left (30° < theta <= 90°)`。
+- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.`
 
 ## 6. 当前结论
 

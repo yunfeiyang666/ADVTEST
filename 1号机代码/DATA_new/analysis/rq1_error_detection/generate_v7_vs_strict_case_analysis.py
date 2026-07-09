@@ -272,14 +272,6 @@ def format_case(
     block.append(f"Image: {clean_text(row.get('image_path'))}")
     lines.extend(["```text", *block, "```", ""])
     lines.extend(render_human_analysis(row, note, think_row))
-    if think_row:
-        lines.extend(
-            [
-                "模型事后解释（二次询问得到的视觉依据）："
-                f"{clean_text(think_row.get('think'))}",
-                "",
-            ]
-        )
     return lines
 
 
@@ -294,56 +286,54 @@ def render_human_analysis(
     think_pred = clean_text(think_row.get("think_pred")) if think_row else ""
     reason = clean_text(think_row.get("think")) if think_row else ""
 
-    validity = "题目本身可保留：题干给出了明确对象、选项和标答，适合作为该类错误的代表样例。"
+    validity = "有效。题干、选项和 GT 都明确。"
     if family in {"l0:count_type", "l1:count_direction_type", "l1:count_status_direction_type"}:
-        validity = "题目本身可保留，但对视觉模型和人类都偏费眼：需要先识别目标类别/状态，再在指定范围内计数。"
+        validity = "有效，但偏难。它要求先筛对象，再计数。"
     elif family in {"l1:direction", "l1:direction_reverse", "viewpoint_transfer"}:
-        validity = "题目本身可保留，关键在方向坐标系：题干和选项已经给出角度规则，错误更能反映空间方向理解问题。"
+        validity = "有效。它考察相对方向和角度区间。"
     elif family == "converge":
-        validity = "题目本身可保留，是典型 hard case：多个关系约束共同确定唯一目标，人类也需要逐条排除候选。"
+        validity = "有效且较难。需要同时满足多条关系约束。"
     elif family == "direction_chain":
-        validity = "题目可以作为关系链样例，但不宜作为最强 hard case：选项化后模型容易被 yes/no 格式纠正。"
+        validity = "有效，但选择题会明显降低回答难度。"
     elif family == "distance_chain":
-        validity = "题目本身可保留，主要考察相对距离比较；选项化不会明显降低难度。"
+        validity = "有效。它考察两个候选的相对距离。"
 
     if family == "l0:count_type":
-        error = f"模型把数量答成 `{pred}`，重问后为 `{think_pred}`；这不是同义词判分问题，而是没有数清对象数量。"
-        reason_note = "事后解释能给出一个数量判断，但通常只是复述最终数值，没有展示逐个目标的可核验计数过程。"
+        error = f"原始答案选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。"
     elif family in {"l0:status", "l0:status_yes"}:
-        error = f"模型在状态判断上与 GT `{gt}` 不一致，原回答 `{pred}`，重问为 `{think_pred}`。"
-        reason_note = "事后解释直接给出 stopped/moving 之类判断，适合后续人工看图确认状态是否真的可见。"
+        error = f"原始答案 `{pred}` 和 GT `{gt}` 不一致；重问后为 `{think_pred}`。"
+        think_cause = "Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。"
     elif family in {"l1:direction", "l1:direction_reverse"}:
-        error = f"模型选了 `{pred}`，但 GT 是 `{gt}`；重问后 `{think_pred}`，仍然没有稳定落到正确角度区间。"
-        reason_note = "事后解释通常只说 left/back/front 这样的粗方向，没有按 NuScenes-QA 角度表做精确分类。"
+        error = f"模型选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。"
     elif family in {"l1:count_direction_type", "l1:count_status_direction_type"}:
-        error = f"模型在带方向约束的计数上答成 `{pred}`，重问后 `{think_pred}`；错因是方向筛选和计数叠加失败。"
-        reason_note = "事后解释一般只抓到一个局部线索，例如某对象在后方，但没有说明完整计数过程。"
+        error = f"模型选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。"
     elif family == "converge":
-        error = f"模型选中 `{pred}` 而不是 `{gt}`，重问后 `{think_pred}`；说明它被同类候选或局部关系误导。"
-        reason_note = "事后解释往往只覆盖部分约束，或者复述题干中的一两条关系，不能证明它完成了所有约束交汇。"
+        error = f"模型选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。"
     elif family == "direction_chain":
-        error = f"原回答 `{pred}` 与 GT `{gt}` 不一致，重问后 `{think_pred}`；这一类容易被二次选择题格式纠正。"
-        reason_note = "事后解释很泛化，通常没有真正解释关系链，因此这类 case 的 reason 证据弱。"
+        error = f"原始答案 `{pred}` 和 GT `{gt}` 不一致；重问后为 `{think_pred}`。"
+        think_cause = "Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。"
     elif family == "distance_chain":
-        error = f"模型在二选一距离比较中选了 `{pred}`，GT 是 `{gt}`，重问后 `{think_pred}`。"
-        reason_note = "事后解释没有进行距离比较，常常只是描述一个对象在场景中，说明它没有给出可靠距离依据。"
+        error = f"模型选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 直接声称某个对象更近，说明错因是距离比较本身判断错。"
     elif family == "viewpoint_transfer":
-        error = f"模型把 GT `{gt}` 误选成 `{pred}`，重问后 `{think_pred}`；这是目标朝向坐标系转换失败。"
-        reason_note = "事后解释直接暴露了错因：它按粗略的 behind/left 去判断，没有转换到题目指定的观察者朝向。"
+        error = f"模型选 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。"
     else:
-        error = f"模型回答 `{pred}`，GT 是 `{gt}`，重问后 `{think_pred}`。"
-        reason_note = "事后解释只能作为辅助线索，仍需人工复核图像。"
+        error = f"模型答 `{pred}`，GT 是 `{gt}`；重问后为 `{think_pred}`。"
+        think_cause = "Think 只能作为辅助线索，具体错因需要结合图像复核。"
 
-    implication = group_note
     if reason:
-        implication += f" 本题的事后解释是 `{reason}`，它可以帮助判断模型抓住了哪条线索，但不能当作内部推理链。"
+        think_cause += f" 具体看，它说：`{reason}`"
 
     return [
         "人工分析：",
-        f"- 题目有效性：{validity}",
-        f"- 错误位置：{error}",
-        f"- 事后解释怎么看：{reason_note}",
-        f"- 这个 case 说明什么：{implication}",
+        f"- 题目：{validity}",
+        f"- 错因：{error}",
+        f"- Think 暴露的问题：{think_cause}",
         "",
     ]
 
