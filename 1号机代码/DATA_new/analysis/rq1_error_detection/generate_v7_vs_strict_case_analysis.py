@@ -262,6 +262,66 @@ def display_think_text(raw_think: str) -> str:
     return "\n".join(lines).strip()
 
 
+def diagnose_from_think(
+    family: str,
+    gt: str,
+    pred: str,
+    reason: str,
+    think_status: str,
+) -> str:
+    reason_l = reason.lower()
+    is_correct_this_run = "选对" in think_status
+    if pred == "(not provided)":
+        return f"它给了理由但没有按要求给选项，所以这条主要是输出格式失败；理由是 `{reason}`。"
+
+    if is_correct_this_run:
+        if family == "direction_chain":
+            if "same direction" in reason_l or "opposite direction" in reason_l:
+                return f"Think 明确在判断关系链 `{reason}`，说明给出理由后它能抓住这条关系。"
+            return f"但 Think 只是普通位置描述 `{reason}`，不能证明它真的完成了关系链推理。"
+        if family == "viewpoint_transfer":
+            if any(token in reason_l for token in ("image", "middle", "left side", "right side")):
+                return f"但 Think 仍是图像画面位置描述 `{reason}`，不能证明它真的完成了目标朝向坐标转换。"
+            return f"Think 给出的依据是 `{reason}`。"
+        return f"Think 给出的依据是 `{reason}`。"
+
+    if family == "l0:count_type":
+        if not any(ch.isdigit() for ch in reason):
+            return f"Think 没有真正数目标，只是在泛泛描述场景，所以答案偏成 `{pred}`。"
+        return f"Think 里给出的数量线索和标准答案 `{gt}` 不一致，说明它确实数错了。"
+
+    if family in {"l0:status", "l0:status_yes"}:
+        if any(token in reason_l for token in ("moving", "stopped", "parked")):
+            return f"Think 直接把目标状态判断成 `{reason}`，所以错因是状态看错。"
+        return f"Think 没有说清目标状态，说明它没有抓住题目真正问的属性。"
+
+    if family in {"l1:direction", "l1:direction_reverse"}:
+        return f"Think 只给了粗方向关系 `{reason}`，没有按六类角度区间判断，所以选到了 `{pred}`。"
+
+    if family in {"l1:count_direction_type", "l1:count_status_direction_type"}:
+        return f"Think 只抓到一个局部线索 `{reason}`，没有完成“方向筛选后再计数”，所以数量选错。"
+
+    if family == "converge":
+        return f"Think 只验证了部分关系 `{reason}`，没有把题干里的多条约束同时交汇到唯一目标。"
+
+    if family == "direction_chain":
+        if "same direction" in reason_l or "opposite direction" in reason_l:
+            return f"Think 已经在判断关系链 `{reason}`；本题错时主要是关系链方向判断不稳定。"
+        return f"Think 退化成普通位置描述 `{reason}`，没有真正完成关系链判断。"
+
+    if family == "distance_chain":
+        if "closer" in reason_l or "nearer" in reason_l:
+            return f"Think 明确认为 `{reason}`，说明错误来自距离比较本身。"
+        return f"Think 没有比较两个候选距离，只描述了局部对象 `{reason}`，所以答案缺少有效依据。"
+
+    if family == "viewpoint_transfer":
+        if any(token in reason_l for token in ("image", "middle", "left side", "right side")):
+            return f"Think 使用的是图像画面里的左右/中间 `{reason}`，没有切换到目标朝向为 0° 的坐标系。"
+        return f"Think 给的是普通空间描述 `{reason}`，没有体现题目要求的视角转换。"
+
+    return f"Think 给出的理由是 `{reason}`，需要结合图像继续复核。"
+
+
 def direction_error_type(row: dict[str, Any]) -> str:
     gt = answer_text(row).lower()
     pred = predicted_choice_text(row).lower()
@@ -351,29 +411,14 @@ def render_human_analysis(
     else:
         think_status = "没有拿到可解析答案"
 
-    if family == "l0:count_type":
-        analysis = f"这题有效但偏难，要数清目标。标准答案是 `{gt}`，模型答 `{pred}`，主要错在数量判断不准；{think_status}。"
-    elif family in {"l0:status", "l0:status_yes"}:
-        analysis = f"这题有效。标准答案是 `{gt}`，模型答 `{pred}`，主要错在目标状态判断；{think_status}。"
-    elif family in {"l1:direction", "l1:direction_reverse"}:
-        analysis = f"这题有效，考的是相对方向。标准答案是 `{gt}`，模型答 `{pred}`，主要错在方向区间判断；{think_status}。"
-    elif family in {"l1:count_direction_type", "l1:count_status_direction_type"}:
-        analysis = f"这题有效但偏难，要先按方向筛对象再计数。标准答案是 `{gt}`，模型答 `{pred}`，错在筛选和计数叠加；{think_status}。"
-    elif family == "converge":
-        analysis = f"这题是有效 hard case。标准答案是 `{gt}`，模型答 `{pred}`，说明它没有同时满足多条关系，容易被局部条件带偏；{think_status}。"
-    elif family == "direction_chain":
-        analysis = f"这题有效，但选择题会降低难度。标准答案是 `{gt}`，模型答 `{pred}`，主要问题是关系链判断不稳定；{think_status}。"
-    elif family == "distance_chain":
-        analysis = f"这题有效，考相对距离。标准答案是 `{gt}`，模型答 `{pred}`，错在距离比较本身；{think_status}。"
-    elif family == "viewpoint_transfer":
-        analysis = f"这题有效，考视角转换。标准答案是 `{gt}`，模型答 `{pred}`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；{think_status}。"
-    else:
-        analysis = f"标准答案是 `{gt}`，模型答 `{pred}`；{think_status}。具体错因还需要结合图像复核。"
-
     if think_reason:
-        analysis += f" Think 里的理由是：`{think_reason}`。"
+        cause = diagnose_from_think(family, gt, pred, think_reason, think_status)
     elif raw_think:
-        analysis += " Think 原文来自同一次调用；这次模型没有给出可用理由。"
+        cause = "Think 没有给出可用理由，只能根据答案本身判断。"
+    else:
+        cause = "没有拿到 Think 输出，需要结合图像复核。"
+
+    analysis = f"标准答案是 `{gt}`，模型答 `{pred}`，{think_status}。{cause}"
 
     return [
         "人工分析：",

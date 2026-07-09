@@ -124,7 +124,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `9`，模型答 `A. 11`，主要错在数量判断不准；这次选错了。 Think 里的理由是：`Two pedestrians are visible in the image.`。
+标准答案是 `9`，模型答 `A. 11`，这次选错了。Think 没有真正数目标，只是在泛泛描述场景，所以答案偏成 `A. 11`。
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -144,7 +144,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `7`，模型答 `C. 5`，主要错在数量判断不准；这次选错了。 Think 里的理由是：`The image shows a car driving down a street.`。
+标准答案是 `7`，模型答 `C. 5`，这次选错了。Think 没有真正数目标，只是在泛泛描述场景，所以答案偏成 `C. 5`。
 
 ### Case L0-1：数量题仍然容易错（样例 c）
 
@@ -164,7 +164,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `6`，模型答 `C. 5`，主要错在数量判断不准；这次选错了。 Think 里的理由是：`A car is driving down the street.`。
+标准答案是 `6`，模型答 `C. 5`，这次选错了。Think 没有真正数目标，只是在泛泛描述场景，所以答案偏成 `C. 5`。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -182,7 +182,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效。标准答案是 `yes`，模型答 `(not provided)`，主要错在目标状态判断；这次选错了。 Think 里的理由是：`The car is stopped at a red light.`。
+标准答案是 `yes`，模型答 `(not provided)`，这次选错了。它给了理由但没有按要求给选项，所以这条主要是输出格式失败；理由是 `The car is stopped at a red light.`。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -201,7 +201,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效。标准答案是 `stopped`，模型答 `B. moving`，主要错在目标状态判断；这次选错了。 Think 里的理由是：`The car20 is moving in the image.`。
+标准答案是 `stopped`，模型答 `B. moving`，这次选错了。Think 直接把目标状态判断成 `The car20 is moving in the image.`，所以错因是状态看错。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 c）
 
@@ -219,7 +219,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效。标准答案是 `yes`，模型答 `(not provided)`，主要错在目标状态判断；这次选错了。 Think 里的理由是：`The car is stopped at the barrier.`。
+标准答案是 `yes`，模型答 `(not provided)`，这次选错了。它给了理由但没有按要求给选项，所以这条主要是输出格式失败；理由是 `The car is stopped at the barrier.`。
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -239,7 +239,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，主要错在方向区间判断；这次选错了。 Think 里的理由是：`car14 is in front of barrier2.`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，这次选错了。Think 只给了粗方向关系 `car14 is in front of barrier2.`，没有按六类角度区间判断，所以选到了 `A. front left`。
 
 ### Case L1-1：方向关系选错（样例 b）
 
@@ -259,7 +259,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `back left (90° < theta <= 150°)`，模型答 `B. front left`，主要错在方向区间判断；这次选错了。 Think 里的理由是：`car25 is in front of barrier1.`。
+标准答案是 `back left (90° < theta <= 150°)`，模型答 `B. front left`，这次选错了。Think 只给了粗方向关系 `car25 is in front of barrier1.`，没有按六类角度区间判断，所以选到了 `B. front left`。
 
 ### Case L1-1：方向关系选错（样例 c）
 
@@ -279,7 +279,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. back`，主要错在方向区间判断；这次选错了。 Think 里的理由是：`Car21 is behind car23.`。
+标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. back`，这次选错了。Think 只给了粗方向关系 `Car21 is behind car23.`，没有按六类角度区间判断，所以选到了 `A. back`。
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -299,7 +299,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `4`，模型答 `D. 2`，错在筛选和计数叠加；这次选错了。 Think 里的理由是：`The car14 is stopped in the middle of the road.`。
+标准答案是 `4`，模型答 `D. 2`，这次选错了。Think 只抓到一个局部线索 `The car14 is stopped in the middle of the road.`，没有完成“方向筛选后再计数”，所以数量选错。
 
 ### Case L1-2：带方向约束的计数题（样例 b）
 
@@ -319,7 +319,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `1`，模型答 `C. 2`，错在筛选和计数叠加；这次选错了。 Think 里的理由是：`The pedestrians are walking on the sidewalk.`。
+标准答案是 `1`，模型答 `C. 2`，这次选错了。Think 只抓到一个局部线索 `The pedestrians are walking on the sidewalk.`，没有完成“方向筛选后再计数”，所以数量选错。
 
 ### Case L1-2：带方向约束的计数题（样例 c）
 
@@ -339,7 +339,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `3`，模型答 `B. 2`，错在筛选和计数叠加；这次选错了。 Think 里的理由是：`A car is parked in front of the pedestrian.`。
+标准答案是 `3`，模型答 `B. 2`，这次选错了。Think 只抓到一个局部线索 `A car is parked in front of the pedestrian.`，没有完成“方向筛选后再计数”，所以数量选错。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -359,7 +359,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `barrier7`，模型答 `C. barrier3`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 里的理由是：`The barrier is in the back of car20 and in front of pedestrian11.`。
+标准答案是 `barrier7`，模型答 `C. barrier3`，这次选错了。Think 只验证了部分关系 `The barrier is in the back of car20 and in front of pedestrian11.`，没有把题干里的多条约束同时交汇到唯一目标。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 b）
 
@@ -379,7 +379,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `pedestrian12`，模型答 `A. pedestrian3`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 里的理由是：`Pedestrian14 and pedestrian20 are both to the right of pedestrian8.`。
+标准答案是 `pedestrian12`，模型答 `A. pedestrian3`，这次选错了。Think 只验证了部分关系 `Pedestrian14 and pedestrian20 are both to the right of pedestrian8.`，没有把题干里的多条约束同时交汇到唯一目标。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 c）
 
@@ -399,7 +399,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `barrier29`，模型答 `B. barrier14`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 里的理由是：`barrier14 is to the back right of barrier11 and to the back right of barrier30.`。
+标准答案是 `barrier29`，模型答 `B. barrier14`，这次选错了。Think 只验证了部分关系 `barrier14 is to the back right of barrier11 and to the back right of barrier30.`，没有把题干里的多条约束同时交汇到唯一目标。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
@@ -417,7 +417,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `no`，模型答 `A. no`，主要问题是关系链判断不稳定；这次选对了。 Think 里的理由是：`The car8 is on the right side of the road.`。
+标准答案是 `no`，模型答 `A. no`，这次选对了。但 Think 只是普通位置描述 `The car8 is on the right side of the road.`，不能证明它真的完成了关系链推理。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -435,7 +435,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `A. yes`，主要问题是关系链判断不稳定；这次选对了。 Think 里的理由是：`Pedestrian16 is in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`。
+标准答案是 `yes`，模型答 `A. yes`，这次选对了。Think 明确在判断关系链 `Pedestrian16 is in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`，说明给出理由后它能抓住这条关系。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 c）
 
@@ -453,7 +453,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `(not provided)`，主要问题是关系链判断不稳定；这次选错了。 Think 里的理由是：`The bus is on the left side of the road.`。
+标准答案是 `yes`，模型答 `(not provided)`，这次选错了。它给了理由但没有按要求给选项，所以这条主要是输出格式失败；理由是 `The bus is on the left side of the road.`。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -471,7 +471,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `car20`，模型答 `A. car19`，错在距离比较本身；这次选错了。 Think 里的理由是：`The image shows a car with the number 19 on it.`。
+标准答案是 `car20`，模型答 `A. car19`，这次选错了。Think 没有比较两个候选距离，只描述了局部对象 `The image shows a car with the number 19 on it.`，所以答案缺少有效依据。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -489,7 +489,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `car3`，模型答 `A. car1`，错在距离比较本身；这次选错了。 Think 里的理由是：`Car1 is closer to pedestrian2.`。
+标准答案是 `car3`，模型答 `A. car1`，这次选错了。Think 明确认为 `Car1 is closer to pedestrian2.`，说明错误来自距离比较本身。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 c）
 
@@ -507,7 +507,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `bicycle1`，模型答 `(not provided)`，错在距离比较本身；这次选错了。 Think 里的理由是：`The bus is closer to the camera.`。
+标准答案是 `bicycle1`，模型答 `(not provided)`，这次选错了。它给了理由但没有按要求给选项，所以这条主要是输出格式失败；理由是 `The bus is closer to the camera.`。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -527,7 +527,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 里的理由是：`The car is on the right side of the image.`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，这次选错了。Think 使用的是图像画面里的左右/中间 `The car is on the right side of the image.`，没有切换到目标朝向为 0° 的坐标系。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
@@ -547,7 +547,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 里的理由是：`Pedestrian35 is on the right side of the image.`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，这次选错了。Think 使用的是图像画面里的左右/中间 `Pedestrian35 is on the right side of the image.`，没有切换到目标朝向为 0° 的坐标系。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 c）
 
@@ -567,7 +567,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `B. back`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 里的理由是：`The car is driving on the road.`。
+标准答案是 `front left (30° < theta <= 90°)`，模型答 `B. back`，这次选错了。Think 给的是普通空间描述 `The car is driving on the road.`，没有体现题目要求的视角转换。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -587,7 +587,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `B. back left`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 里的理由是：`Pedestrian9 is in the back left of the image.`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `B. back left`，这次选错了。Think 使用的是图像画面里的左右/中间 `Pedestrian9 is in the back left of the image.`，没有切换到目标朝向为 0° 的坐标系。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
 
@@ -607,7 +607,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 里的理由是：`pedestrian15 is facing pedestrian8.`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，这次选错了。Think 给的是普通空间描述 `pedestrian15 is facing pedestrian8.`，没有体现题目要求的视角转换。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 c）
 
@@ -627,7 +627,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. front left`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选对了。 Think 里的理由是：`pedestrian4 is in the middle of the image.`。
+标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. front left`，这次选对了。但 Think 仍是图像画面位置描述 `pedestrian4 is in the middle of the image.`，不能证明它真的完成了目标朝向坐标转换。
 
 ## 6. 当前结论
 
