@@ -102,9 +102,9 @@ L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_
 
 ## 5. v7 错题 case
 
-下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、模型输出、two-call think 和图像路径。
+下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、正式模型输出、think prompt 第一次输出和图像路径。
 
-说明：`Think` 不是模型内部推理，而是第二次固定其选择后，让模型补充的一句视觉依据；它用于解释错因，不进入正式指标。
+说明：这里的 `Think` 只取 think prompt 的第一次真实输出；如果第一次没有给出理由，报告会明确标注未提供理由。
 
 ### Case L0-1：数量题仍然容易错（样例 a）
 
@@ -122,14 +122,15 @@ D. 7
 GT: B. 9
 Pred: A
 Think Pred: A. 11
-Think: The image shows a car driving down a street with 11 pedestrians visible.
+Think Raw Output: A. 11
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：原始答案选 `A`，GT 是 `9`；重问后为 `A. 11`。
-- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 11 pedestrians visible.`
+- 错因：正式答案选 `A`，GT 是 `9`；think 版第一次输出仍是 `A. 11`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是数量判断不准。 但第一次 think 输出只给了答案 `A. 11`，没有给出可用理由。
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -147,14 +148,15 @@ D. 8
 GT: B. 7
 Pred: C
 Think Pred: A. 6
-Think: The image shows a car driving down a street with 6 pedestrians visible.
+Think Raw Output: A. 6
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：原始答案选 `C`，GT 是 `7`；重问后为 `A. 6`。
-- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 6 pedestrians visible.`
+- 错因：正式答案选 `C`，GT 是 `7`；think 版第一次输出为 `A. 6`，和正式选择 `C` 不同，这次仍然错误，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是数量判断不准。 但第一次 think 输出只给了答案 `A. 6`，没有给出可用理由。
 
 ### Case L0-1：数量题仍然容易错（样例 c）
 
@@ -172,14 +174,15 @@ D. 9
 GT: A. 6
 Pred: C
 Think Pred: A. 6
-Think: The image shows a car driving down a street with 6 pedestrians visible.
+Think Raw Output: A. 6
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame16_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：原始答案选 `C`，GT 是 `6`；重问后为 `A. 6`。
-- Think 暴露的问题：Think 只给出一个总数，说明它是在估数量，没有可靠地数清每个目标。 具体看，它说：`The image shows a car driving down a street with 6 pedestrians visible.`
+- 错因：正式答案选 `C`，GT 是 `6`；think 版第一次输出为 `A. 6`，和正式选择 `C` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是数量判断不准。 但第一次 think 输出只给了答案 `A. 6`，没有给出可用理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -195,14 +198,15 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: The car10 is stopped at the intersection.
+Think Raw Output: A. yes
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。题干、选项和 GT 都明确。
-- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
-- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car10 is stopped at the intersection.`
+- 错因：正式答案 `B` 和 GT `yes` 不一致；think 版第一次输出为 `A. yes`，和正式选择 `B` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是目标状态判断不准。 但第一次 think 输出只给了答案 `A. yes`，没有给出可用理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -219,14 +223,15 @@ C. stopped
 GT: C. stopped
 Pred: B. moving
 Think Pred: B. moving
-Think: The car20 is moving in the image.
+Think Raw Output: B. moving
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。题干、选项和 GT 都明确。
-- 错因：原始答案 `B. moving` 和 GT `stopped` 不一致；重问后为 `B. moving`。
-- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car20 is moving in the image.`
+- 错因：正式答案 `B. moving` 和 GT `stopped` 不一致；think 版第一次输出仍是 `B. moving`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是目标状态判断不准。 但第一次 think 输出只给了答案 `B. moving`，没有给出可用理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 c）
 
@@ -242,14 +247,15 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: The car in barrier4 is stopped.
+Think Raw Output: A. yes
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。题干、选项和 GT 都明确。
-- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
-- Think 暴露的问题：Think 直接判断 stopped/moving，错因主要是把目标状态看错或前后两次判断不稳定。 具体看，它说：`The car in barrier4 is stopped.`
+- 错因：正式答案 `B` 和 GT `yes` 不一致；think 版第一次输出为 `A. yes`，和正式选择 `B` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是目标状态判断不准。 但第一次 think 输出只给了答案 `A. yes`，没有给出可用理由。
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -267,14 +273,15 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. front (-30° < theta <= 30°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think: The barrier is located to the left of the car14.
+Think Raw Output: A. front left (30° < theta <= 90°)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame0_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `C. front (-30° < theta <= 30°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `A. front left (30° < theta <= 90°)`。
-- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`The barrier is located to the left of the car14.`
+- 错因：正式答案选 `C. front (-30° < theta <= 30°)`，GT 是 `front right (-90° < theta <= -30°)`；think 版第一次输出为 `A. front left (30° < theta <= 90°)`，和正式选择 `C. front (-30° < theta <= 30°)` 不同，这次仍然错误，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是方向区间判断不准。 但第一次 think 输出只给了答案 `A. front left (30° < theta <= 90°)`，没有给出可用理由。
 
 ### Case L1-1：方向关系选错（样例 b）
 
@@ -292,14 +299,15 @@ D. front (-30° < theta <= 30°)
 GT: C. back left (90° < theta <= 150°)
 Pred: A. back (otherwise)
 Think Pred: A. back (otherwise)
-Think: The car25 is located behind the barrier1.
+Think Raw Output: A. back (otherwise)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `A. back (otherwise)`，GT 是 `back left (90° < theta <= 150°)`；重问后为 `A. back (otherwise)`。
-- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`The car25 is located behind the barrier1.`
+- 错因：正式答案选 `A. back (otherwise)`，GT 是 `back left (90° < theta <= 150°)`；think 版第一次输出仍是 `A. back (otherwise)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是方向区间判断不准。 但第一次 think 输出只给了答案 `A. back (otherwise)`，没有给出可用理由。
 
 ### Case L1-1：方向关系选错（样例 c）
 
@@ -317,14 +325,15 @@ D. left (around +90°)
 GT: C. front left (30° < theta <= 90°)
 Pred: A. back (otherwise)
 Think Pred: A. back (otherwise)
-Think: A car is parked in front of a building.
+Think Raw Output: A. back (otherwise)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `A. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `A. back (otherwise)`。
-- Think 暴露的问题：Think 用的是粗略 left/back/front，没有按角度区间精确区分方向。 具体看，它说：`A car is parked in front of a building.`
+- 错因：正式答案选 `A. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；think 版第一次输出仍是 `A. back (otherwise)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是方向区间判断不准。 但第一次 think 输出只给了答案 `A. back (otherwise)`，没有给出可用理由。
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -342,14 +351,15 @@ D. 2
 GT: B. 4
 Pred: A. 3
 Think Pred: A. 3
-Think: A car is parked behind car14.
+Think Raw Output: A. 3
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame2_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：模型选 `A. 3`，GT 是 `4`；重问后为 `A. 3`。
-- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`A car is parked behind car14.`
+- 错因：正式答案选 `A. 3`，GT 是 `4`；think 版第一次输出仍是 `A. 3`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是方向筛选和计数叠加失败。 但第一次 think 输出只给了答案 `A. 3`，没有给出可用理由。
 
 ### Case L1-2：带方向约束的计数题（样例 b）
 
@@ -367,14 +377,15 @@ D. 3
 GT: A. 1
 Pred: C. 2
 Think Pred: C. 2
-Think: The pedestrians are to the back right of barrier2.
+Think Raw Output: C. 2
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame7_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：模型选 `C. 2`，GT 是 `1`；重问后为 `C. 2`。
-- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`The pedestrians are to the back right of barrier2.`
+- 错因：正式答案选 `C. 2`，GT 是 `1`；think 版第一次输出仍是 `C. 2`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是方向筛选和计数叠加失败。 但第一次 think 输出只给了答案 `C. 2`，没有给出可用理由。
 
 ### Case L1-2：带方向约束的计数题（样例 c）
 
@@ -392,14 +403,15 @@ D. 3
 GT: D. 3
 Pred: B. 2
 Think Pred: B. 2
-Think: The pedestrian is standing in front of the barrier.
+Think Raw Output: B. 2
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但偏难。它要求先筛对象，再计数。
-- 错因：模型选 `B. 2`，GT 是 `3`；重问后为 `B. 2`。
-- Think 暴露的问题：Think 只抓到局部方向线索，没有完成方向筛选后的完整计数。 具体看，它说：`The pedestrian is standing in front of the barrier.`
+- 错因：正式答案选 `B. 2`，GT 是 `3`；think 版第一次输出仍是 `B. 2`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是方向筛选和计数叠加失败。 但第一次 think 输出只给了答案 `B. 2`，没有给出可用理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -417,14 +429,15 @@ D. barrier9
 GT: B. barrier7
 Pred: C. barrier3
 Think Pred: C. barrier3
-Think: The barrier is in front of pedestrian1 and to the back of car20.
+Think Raw Output: C. barrier3
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0003_frame33_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效且较难。需要同时满足多条关系约束。
-- 错因：模型选 `C. barrier3`，GT 是 `barrier7`；重问后为 `C. barrier3`。
-- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`The barrier is in front of pedestrian1 and to the back of car20.`
+- 错因：正式答案选 `C. barrier3`，GT 是 `barrier7`；think 版第一次输出仍是 `C. barrier3`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是多条关系没有同时满足，被局部约束带偏。 但第一次 think 输出只给了答案 `C. barrier3`，没有给出可用理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 b）
 
@@ -442,14 +455,15 @@ D. pedestrian12
 GT: D. pedestrian12
 Pred: A. pedestrian3
 Think Pred: A. pedestrian3
-Think: A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.
+Think Raw Output: A. pedestrian3
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame17_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效且较难。需要同时满足多条关系约束。
-- 错因：模型选 `A. pedestrian3`，GT 是 `pedestrian12`；重问后为 `A. pedestrian3`。
-- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`A pedestrian is positioned to the front left of pedestrian14 and pedestrian20, and to the back left of pedestrian8.`
+- 错因：正式答案选 `A. pedestrian3`，GT 是 `pedestrian12`；think 版第一次输出仍是 `A. pedestrian3`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是多条关系没有同时满足，被局部约束带偏。 但第一次 think 输出只给了答案 `A. pedestrian3`，没有给出可用理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 c）
 
@@ -467,14 +481,15 @@ D. barrier16
 GT: C. barrier29
 Pred: B. barrier14
 Think Pred: B. barrier14
-Think: Barrier14 is the barrier that can be found to the back (otherwise) of barrier11 and to the back (otherwise) of barrier30, and to the back right (-150° < the
+Think Raw Output: B. barrier14
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0017_frame24_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效且较难。需要同时满足多条关系约束。
-- 错因：模型选 `B. barrier14`，GT 是 `barrier29`；重问后为 `B. barrier14`。
-- Think 暴露的问题：Think 只验证了部分关系，说明它被局部约束带偏，没有把所有条件交汇起来。 具体看，它说：`Barrier14 is the barrier that can be found to the back (otherwise) of barrier11 and to the back (otherwise) of barrier30, and to the back right (-150° < the`
+- 错因：正式答案选 `B. barrier14`，GT 是 `barrier29`；think 版第一次输出仍是 `B. barrier14`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是多条关系没有同时满足，被局部约束带偏。 但第一次 think 输出只给了答案 `B. barrier14`，没有给出可用理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
@@ -490,14 +505,15 @@ B. yes
 GT: A. no
 Pred: B
 Think Pred: A. no
-Think: The car8 is in the opposite direction from truck1.
+Think Raw Output: A. no
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但选择题会明显降低回答难度。
-- 错因：原始答案 `B` 和 GT `no` 不一致；重问后为 `A. no`。
-- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The car8 is in the opposite direction from truck1.`
+- 错因：正式答案 `B` 和 GT `no` 不一致；think 版第一次输出为 `A. no`，和正式选择 `B` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是关系链判断不稳定。 但第一次 think 输出只给了答案 `A. no`，没有给出可用理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -513,14 +529,15 @@ B. no
 GT: A. yes
 Pred: B. no
 Think Pred: A. yes
-Think: The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
+Think Raw Output: A. yes
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但选择题会明显降低回答难度。
-- 错因：原始答案 `B. no` 和 GT `yes` 不一致；重问后为 `A. yes`。
-- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The pedestrians are in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.`
+- 错因：正式答案 `B. no` 和 GT `yes` 不一致；think 版第一次输出为 `A. yes`，和正式选择 `B. no` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是关系链判断不稳定。 但第一次 think 输出只给了答案 `A. yes`，没有给出可用理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 c）
 
@@ -536,14 +553,15 @@ B. no
 GT: A. yes
 Pred: B
 Think Pred: A. yes
-Think: The bus is in the same direction as the car.
+Think Raw Output: A. yes
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame17_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效，但选择题会明显降低回答难度。
-- 错因：原始答案 `B` 和 GT `yes` 不一致；重问后为 `A. yes`。
-- Think 暴露的问题：Think 有时能说出关系链，但原始选择不稳；这类题更多暴露关系链判断稳定性。 具体看，它说：`The bus is in the same direction as the car.`
+- 错因：正式答案 `B` 和 GT `yes` 不一致；think 版第一次输出为 `A. yes`，和正式选择 `B` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是关系链判断不稳定。 但第一次 think 输出只给了答案 `A. yes`，没有给出可用理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -559,14 +577,15 @@ B. car20
 GT: B. car20
 Pred: A
 Think Pred: A. car19
-Think: The barrier1 is nearer to car19.
+Think Raw Output: A. car19
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame31_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察两个候选的相对距离。
-- 错因：模型选 `A`，GT 是 `car20`；重问后为 `A. car19`。
-- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`The barrier1 is nearer to car19.`
+- 错因：正式答案选 `A`，GT 是 `car20`；think 版第一次输出仍是 `A. car19`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是距离比较本身判断错。 但第一次 think 输出只给了答案 `A. car19`，没有给出可用理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -582,14 +601,15 @@ B. car3
 GT: B. car3
 Pred: A
 Think Pred: A. car1
-Think: A. car1 is closer to pedestrian2.
+Think Raw Output: A. car1
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame28_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察两个候选的相对距离。
-- 错因：模型选 `A`，GT 是 `car3`；重问后为 `A. car1`。
-- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`A. car1 is closer to pedestrian2.`
+- 错因：正式答案选 `A`，GT 是 `car3`；think 版第一次输出仍是 `A. car1`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是距离比较本身判断错。 但第一次 think 输出只给了答案 `A. car1`，没有给出可用理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 c）
 
@@ -605,14 +625,15 @@ B. bus1
 GT: A. bicycle1
 Pred: B
 Think Pred: B. bus1
-Think: The bus is closer to the camera than the bicycle.
+Think Raw Output: B. bus1
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0015_frame24_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察两个候选的相对距离。
-- 错因：模型选 `B`，GT 是 `bicycle1`；重问后为 `B. bus1`。
-- Think 暴露的问题：Think 直接声称某个对象更近，说明错因是距离比较本身判断错。 具体看，它说：`The bus is closer to the camera than the bicycle.`
+- 错因：正式答案选 `B`，GT 是 `bicycle1`；think 版第一次输出仍是 `B. bus1`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是距离比较本身判断错。 但第一次 think 输出只给了答案 `B. bus1`，没有给出可用理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -630,14 +651,15 @@ D. back right (-150° < theta <= -90°)
 GT: A. front right (-90° < theta <= -30°)
 Pred: C. back (otherwise)
 Think Pred: C. back (otherwise)
-Think: The car23 is located behind the pedestrian5.
+Think Raw Output: C. back (otherwise)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `C. back (otherwise)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. back (otherwise)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The car23 is located behind the pedestrian5.`
+- 错因：正式答案选 `C. back (otherwise)`，GT 是 `front right (-90° < theta <= -30°)`；think 版第一次输出仍是 `C. back (otherwise)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `C. back (otherwise)`，没有给出可用理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
@@ -655,14 +677,15 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. back
 Think Pred: C. back (otherwise)
-Think: The pedestrian is located behind the barrier and truck.
+Think Raw Output: C. back (otherwise)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `C. back`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. back (otherwise)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The pedestrian is located behind the barrier and truck.`
+- 错因：正式答案选 `C. back`，GT 是 `front right (-90° < theta <= -30°)`；think 版第一次输出仍是 `C. back (otherwise)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `C. back (otherwise)`，没有给出可用理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 c）
 
@@ -680,14 +703,15 @@ D. front left (30° < theta <= 90°)
 GT: D. front left (30° < theta <= 90°)
 Pred: B. back (otherwise)
 Think Pred: B. back (otherwise)
-Think: The car is parked in front of the barrier.
+Think Raw Output: B. back (otherwise)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `B. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `B. back (otherwise)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The car is parked in front of the barrier.`
+- 错因：正式答案选 `B. back (otherwise)`，GT 是 `front left (30° < theta <= 90°)`；think 版第一次输出仍是 `B. back (otherwise)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `B. back (otherwise)`，没有给出可用理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -705,14 +729,15 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Pred: C. front left (30° < theta <= 90°)
 Think Pred: C. front left (30° < theta <= 90°)
-Think: The pedestrian is located to the left of the car21.
+Think Raw Output: C. front left (30° < theta <= 90°)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame3_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `C. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `C. front left (30° < theta <= 90°)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`The pedestrian is located to the left of the car21.`
+- 错因：正式答案选 `C. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；think 版第一次输出仍是 `C. front left (30° < theta <= 90°)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `C. front left (30° < theta <= 90°)`，没有给出可用理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
 
@@ -730,14 +755,15 @@ D. back left (90° < theta <= 150°)
 GT: C. front right (-90° < theta <= -30°)
 Pred: A. front left (30° < theta <= 90°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think: A. front left (30° < theta <= 90°)
+Think Raw Output: A. front left (30° < theta <= 90°)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame18_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `A. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；重问后为 `A. front left (30° < theta <= 90°)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`A. front left (30° < theta <= 90°)`
+- 错因：正式答案选 `A. front left (30° < theta <= 90°)`，GT 是 `front right (-90° < theta <= -30°)`；think 版第一次输出仍是 `A. front left (30° < theta <= 90°)`，和正式选择一致，这次仍然错误。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `A. front left (30° < theta <= 90°)`，没有给出可用理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 c）
 
@@ -755,14 +781,15 @@ D. front (-30° < theta <= 30°)
 GT: A. front left (30° < theta <= 90°)
 Pred: C. front right (-90° < theta <= -30°)
 Think Pred: A. front left (30° < theta <= 90°)
-Think: A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.
+Think Raw Output: A. front left (30° < theta <= 90°)
+Think Reason: (not provided in first output)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame25_mosaic.jpg
 ```
 
 人工分析：
 - 题目：有效。它考察相对方向和角度区间。
-- 错因：模型选 `C. front right (-90° < theta <= -30°)`，GT 是 `front left (30° < theta <= 90°)`；重问后为 `A. front left (30° < theta <= 90°)`。
-- Think 暴露的问题：Think 仍按普通视角说 behind/left，没有切到目标朝向为 0° 的坐标系。 具体看，它说：`A car is driving down the street and is facing pedestrian8. Pedestrian4 is located to the left of the car.`
+- 错因：正式答案选 `C. front right (-90° < theta <= -30°)`，GT 是 `front left (30° < theta <= 90°)`；think 版第一次输出为 `A. front left (30° < theta <= 90°)`，和正式选择 `C. front right (-90° < theta <= -30°)` 不同，这次是正确的，说明该题回答不稳定。
+- Think 暴露的问题：错因主要是没有稳定切到目标朝向为 0° 的坐标系。 但第一次 think 输出只给了答案 `A. front left (30° < theta <= 90°)`，没有给出可用理由。
 
 ## 6. 当前结论
 
