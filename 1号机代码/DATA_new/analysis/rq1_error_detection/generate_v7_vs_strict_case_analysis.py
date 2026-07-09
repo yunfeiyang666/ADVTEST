@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v5_targeted_q27\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v6_singlecall_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -269,7 +269,8 @@ def format_case(
     row_method = str(row.get("method") or "")
     analysis_method = row_method.removesuffix("_choice")
     think_row = (think_rows or {}).get(think_key(row))
-    _think_pred, _think_reason, raw_think = first_think_fields(think_row)
+    think_pred, _think_reason, raw_think = first_think_fields(think_row)
+    pred_for_case = think_pred or full_prediction_text(row)
     block = [
         f"Scene: {clean_text(row.get('scene_frame'))}",
         f"Question: {short_question(row)}",
@@ -285,7 +286,7 @@ def format_case(
             f"GT: {clean_text(row.get('choice_answer_label'))}. {answer_text(row)}"
             if row.get("choice_answer_label")
             else f"GT: {answer_text(row)}",
-            f"Pred: {full_prediction_text(row)}",
+            f"Pred: {pred_for_case}",
             f"Think: {raw_think or '(not available)'}",
         ]
     )
@@ -302,8 +303,8 @@ def render_human_analysis(
     analysis_method = row_method.removesuffix("_choice")
     family = family_name(analysis_method, row)
     gt = answer_text(row)
-    pred = full_prediction_text(row)
     think_pred, think_reason, raw_think = first_think_fields(think_row)
+    pred = think_pred or full_prediction_text(row)
 
     validity = "有效。题干、选项和 GT 都明确。"
     if family in {"l0:count_type", "l1:count_direction_type", "l1:count_status_direction_type"}:
@@ -317,23 +318,16 @@ def render_human_analysis(
     elif family == "distance_chain":
         validity = "有效。它考察两个候选的相对距离。"
 
-    if think_pred:
-        pred_label = choice_label_from_text(pred)
-        think_label = choice_label_from_text(think_pred)
-        same_choice = bool(pred_label and think_label and pred_label == think_label) or think_pred == pred
+    if pred:
         think_ok = think_row.get("think_is_correct") if think_row else None
         if think_ok is True:
-            correctness = "think 这次选对了"
+            think_status = "这次选对了"
         elif think_ok is False:
-            correctness = "think 这次仍然选错"
+            think_status = "这次选错了"
         else:
-            correctness = "think 这次无法自动判断正误"
-        if same_choice:
-            think_status = f"think 原文仍选 `{think_pred}`，和模型答案一致，{correctness}"
-        else:
-            think_status = f"think 原文选 `{think_pred}`，和模型答案 `{pred}` 不同，{correctness}，说明这题回答不稳定"
+            think_status = "这次无法自动判断正误"
     else:
-        think_status = "think 原文没有可解析答案"
+        think_status = "没有拿到可解析答案"
 
     if family == "l0:count_type":
         analysis = f"这题有效但偏难，要数清目标。标准答案是 `{gt}`，模型答 `{pred}`，主要错在数量判断不准；{think_status}。"
@@ -357,7 +351,7 @@ def render_human_analysis(
     if think_reason:
         analysis += f" Think 里的理由是：`{think_reason}`。"
     elif raw_think:
-        analysis += " Think 原文只给了答案，没有给出理由。"
+        analysis += " Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。"
 
     return [
         "人工分析：",

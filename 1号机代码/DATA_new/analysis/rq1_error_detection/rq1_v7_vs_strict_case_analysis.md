@@ -124,7 +124,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `9`，模型答 `A. 11`，主要错在数量判断不准；think 原文仍选 `A. 11`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要数清目标。标准答案是 `9`，模型答 `A. 11`，主要错在数量判断不准；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L0-1：数量题仍然容易错（样例 b）
 
@@ -138,13 +138,13 @@ C. 5
 D. 8
 
 GT: B. 7
-Pred: C. 5
+Pred: A. 6
 Think: A. 6
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `7`，模型答 `C. 5`，主要错在数量判断不准；think 原文选 `A. 6`，和模型答案 `C. 5` 不同，think 这次仍然选错，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要数清目标。标准答案是 `7`，模型答 `A. 6`，主要错在数量判断不准；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L0-1：数量题仍然容易错（样例 c）
 
@@ -158,13 +158,13 @@ C. 5
 D. 9
 
 GT: A. 6
-Pred: C. 5
+Pred: A. 6
 Think: A. 6
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame16_mosaic.jpg
 ```
 
 人工分析：
-这题有效但偏难，要数清目标。标准答案是 `6`，模型答 `C. 5`，主要错在数量判断不准；think 原文选 `A. 6`，和模型答案 `C. 5` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要数清目标。标准答案是 `6`，模型答 `A. 6`，主要错在数量判断不准；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 a）
 
@@ -176,13 +176,13 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: B. no
+Pred: A. yes
 Think: A. yes
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
 人工分析：
-这题有效。标准答案是 `yes`，模型答 `B. no`，主要错在目标状态判断；think 原文选 `A. yes`，和模型答案 `B. no` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效。标准答案是 `yes`，模型答 `A. yes`，主要错在目标状态判断；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 b）
 
@@ -201,7 +201,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效。标准答案是 `stopped`，模型答 `B. moving`，主要错在目标状态判断；think 原文仍选 `B. moving`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效。标准答案是 `stopped`，模型答 `B. moving`，主要错在目标状态判断；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L0-2：状态/属性题的视觉判断错误（样例 c）
 
@@ -213,13 +213,13 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: B. no
+Pred: A. yes
 Think: A. yes
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
 人工分析：
-这题有效。标准答案是 `yes`，模型答 `B. no`，主要错在目标状态判断；think 原文选 `A. yes`，和模型答案 `B. no` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效。标准答案是 `yes`，模型答 `A. yes`，主要错在目标状态判断；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-1：方向关系选错（样例 a）
 
@@ -233,13 +233,13 @@ C. front (-30° < theta <= 30°)
 D. front right (-90° < theta <= -30°)
 
 GT: D. front right (-90° < theta <= -30°)
-Pred: C. front (-30° < theta <= 30°)
+Pred: A. front left (30° < theta <= 90°)
 Think: A. front left (30° < theta <= 90°)
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame0_mosaic.jpg
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. front (-30° < theta <= 30°)`，主要错在方向区间判断；think 原文选 `A. front left (30° < theta <= 90°)`，和模型答案 `C. front (-30° < theta <= 30°)` 不同，think 这次仍然选错，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效，考的是相对方向。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left (30° < theta <= 90°)`，主要错在方向区间判断；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-1：方向关系选错（样例 b）
 
@@ -259,7 +259,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `back left (90° < theta <= 150°)`，模型答 `A. back (otherwise)`，主要错在方向区间判断；think 原文仍选 `A. back (otherwise)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考的是相对方向。标准答案是 `back left (90° < theta <= 150°)`，模型答 `A. back (otherwise)`，主要错在方向区间判断；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-1：方向关系选错（样例 c）
 
@@ -279,7 +279,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效，考的是相对方向。标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. back (otherwise)`，主要错在方向区间判断；think 原文仍选 `A. back (otherwise)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考的是相对方向。标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. back (otherwise)`，主要错在方向区间判断；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-2：带方向约束的计数题（样例 a）
 
@@ -299,7 +299,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `4`，模型答 `A. 3`，错在筛选和计数叠加；think 原文仍选 `A. 3`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要先按方向筛对象再计数。标准答案是 `4`，模型答 `A. 3`，错在筛选和计数叠加；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-2：带方向约束的计数题（样例 b）
 
@@ -319,7 +319,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `1`，模型答 `C. 2`，错在筛选和计数叠加；think 原文仍选 `C. 2`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要先按方向筛对象再计数。标准答案是 `1`，模型答 `C. 2`，错在筛选和计数叠加；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L1-2：带方向约束的计数题（样例 c）
 
@@ -339,7 +339,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-te
 ```
 
 人工分析：
-这题有效但偏难，要先按方向筛对象再计数。标准答案是 `3`，模型答 `B. 2`，错在筛选和计数叠加；think 原文仍选 `B. 2`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效但偏难，要先按方向筛对象再计数。标准答案是 `3`，模型答 `B. 2`，错在筛选和计数叠加；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 a）
 
@@ -359,7 +359,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `barrier7`，模型答 `C. barrier3`，说明它没有同时满足多条关系，容易被局部条件带偏；think 原文仍选 `C. barrier3`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题是有效 hard case。标准答案是 `barrier7`，模型答 `C. barrier3`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 b）
 
@@ -379,7 +379,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `pedestrian12`，模型答 `A. pedestrian3`，说明它没有同时满足多条关系，容易被局部条件带偏；think 原文仍选 `A. pedestrian3`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题是有效 hard case。标准答案是 `pedestrian12`，模型答 `A. pedestrian3`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-1：converge 多约束定位误选同类目标（样例 c）
 
@@ -399,7 +399,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaic
 ```
 
 人工分析：
-这题是有效 hard case。标准答案是 `barrier29`，模型答 `B. barrier14`，说明它没有同时满足多条关系，容易被局部条件带偏；think 原文仍选 `B. barrier14`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题是有效 hard case。标准答案是 `barrier29`，模型答 `B. barrier14`，说明它没有同时满足多条关系，容易被局部条件带偏；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 a）
 
@@ -411,13 +411,13 @@ A. no
 B. yes
 
 GT: A. no
-Pred: B. yes
+Pred: A. no
 Think: A. no
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `no`，模型答 `B. yes`，主要问题是关系链判断不稳定；think 原文选 `A. no`，和模型答案 `B. yes` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效，但选择题会降低难度。标准答案是 `no`，模型答 `A. no`，主要问题是关系链判断不稳定；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 b）
 
@@ -429,13 +429,13 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: B. no
+Pred: A. yes
 Think: A. yes
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `B. no`，主要问题是关系链判断不稳定；think 原文选 `A. yes`，和模型答案 `B. no` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `A. yes`，主要问题是关系链判断不稳定；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-2：direction_chain 二值选择仍有少量错（样例 c）
 
@@ -447,13 +447,13 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: B. no
+Pred: A. yes
 Think: A. yes
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame17_mosaic.jpg
 ```
 
 人工分析：
-这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `B. no`，主要问题是关系链判断不稳定；think 原文选 `A. yes`，和模型答案 `B. no` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效，但选择题会降低难度。标准答案是 `yes`，模型答 `A. yes`，主要问题是关系链判断不稳定；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 a）
 
@@ -471,7 +471,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `car20`，模型答 `A. car19`，错在距离比较本身；think 原文仍选 `A. car19`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考相对距离。标准答案是 `car20`，模型答 `A. car19`，错在距离比较本身；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 b）
 
@@ -489,7 +489,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `car3`，模型答 `A. car1`，错在距离比较本身；think 原文仍选 `A. car1`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考相对距离。标准答案是 `car3`，模型答 `A. car1`，错在距离比较本身；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-3：distance_chain 距离比较错误（样例 c）
 
@@ -507,7 +507,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考相对距离。标准答案是 `bicycle1`，模型答 `B. bus1`，错在距离比较本身；think 原文仍选 `B. bus1`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考相对距离。标准答案是 `bicycle1`，模型答 `B. bus1`，错在距离比较本身；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 a）
 
@@ -527,7 +527,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back (otherwise)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文仍选 `C. back (otherwise)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back (otherwise)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 b）
 
@@ -541,13 +541,13 @@ C. back (otherwise)
 D. front right (-90° < theta <= -30°)
 
 GT: D. front right (-90° < theta <= -30°)
-Pred: C. back
+Pred: C. back (otherwise)
 Think: C. back (otherwise)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文仍选 `C. back (otherwise)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back (otherwise)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-4：viewpoint_transfer 过度选择 back（样例 c）
 
@@ -567,7 +567,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `B. back (otherwise)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文仍选 `B. back (otherwise)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `B. back (otherwise)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 a）
 
@@ -587,7 +587,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. front left (30° < theta <= 90°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文仍选 `C. front left (30° < theta <= 90°)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. front left (30° < theta <= 90°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 b）
 
@@ -607,7 +607,7 @@ Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\result
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left (30° < theta <= 90°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文仍选 `A. front left (30° < theta <= 90°)`，和模型答案一致，think 这次仍然选错。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left (30° < theta <= 90°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选错了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ### Case L2-5：viewpoint_transfer 前后/左右混淆（样例 c）
 
@@ -621,13 +621,13 @@ C. front right (-90° < theta <= -30°)
 D. front (-30° < theta <= 30°)
 
 GT: A. front left (30° < theta <= 90°)
-Pred: C. front right (-90° < theta <= -30°)
+Pred: A. front left (30° < theta <= 90°)
 Think: A. front left (30° < theta <= 90°)
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame25_mosaic.jpg
 ```
 
 人工分析：
-这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `C. front right (-90° < theta <= -30°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；think 原文选 `A. front left (30° < theta <= 90°)`，和模型答案 `C. front right (-90° < theta <= -30°)` 不同，think 这次选对了，说明这题回答不稳定。 Think 原文只给了答案，没有给出理由。
+这题有效，考视角转换。标准答案是 `front left (30° < theta <= 90°)`，模型答 `A. front left (30° < theta <= 90°)`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；这次选对了。 Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。
 
 ## 6. 当前结论
 
