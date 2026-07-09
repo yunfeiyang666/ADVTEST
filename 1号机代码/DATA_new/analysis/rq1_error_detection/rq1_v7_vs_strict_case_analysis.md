@@ -74,6 +74,29 @@
 - 严格版 48.3%，v7 81.9%，显著上升。这里不是 bug，而是任务口径变严格了：v7 要求从目标朝向为 0° 的坐标系里，在 `front/front left/front right/back left/back right/back` 六类中选最精确方向。
 - 从错题分布看，模型大量偏向选 `back`，说明它不是不知道选项，而是没有稳定完成视角坐标转换。这一项非常适合作为空间推理 hard case，但要在论文中清楚写明方向角度规则。
 
+四方向宽松重判：
+
+| 判分口径 | 错题数/Q | 错误率 | 说明 |
+|---|---:|---:|---|
+| 六方向严格 | 819/1000 | 81.9% | 原 v7：front/front left/front right/back left/back right/back 六类精确匹配 |
+| 四方向折叠 | 527/1000 | 52.7% | front-left/front-right 算 front，back-left/back-right 算 back |
+| 主方向命中 | 484/1000 | 48.4% | 只要 front/back/left/right 任一主方向词命中就算对 |
+
+按四方向折叠后，有 292 道原本六方向判错的题被改判为对，说明 v7 的高错误率里确实有一部分来自左右细分；但四方向错误率仍有 52.7%，说明不是全部由细粒度边界造成。
+
+主要 GT→Pred 分布：
+
+| GT 六方向 | Pred 六方向 | 数量 |
+|---|---|---:|
+| front | back | 173 |
+| front right | back | 127 |
+| front left | back | 99 |
+| back | back | 87 |
+| back left | back | 72 |
+| front | front left | 71 |
+| back right | back | 68 |
+| front left | front left | 54 |
+
 ## 4. L0/L1 v7 分题型错误率
 
 L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_question_id` 保留了结构化题型片段。下面的表就是从 `source_question_id` 中解析出的题型，例如 `scene-0003_frame0:l1:direction_reverse:car14:barrier2` 归为 `l1:direction_reverse`。

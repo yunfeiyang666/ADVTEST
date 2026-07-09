@@ -166,6 +166,65 @@ def raw_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {"rows": len(rows), "wrong": wrong, "rate": wrong / len(rows) if rows else 0.0}
 
 
+def direction_6_text(text: str) -> str:
+    value = clean_text(text).lower()
+    for direction in ("front left", "front right", "back left", "back right"):
+        if direction in value:
+            return direction
+    for direction in ("front", "back", "left", "right"):
+        if direction in value:
+            return direction
+    return ""
+
+
+def direction_axis_4(text: str) -> str:
+    direction = direction_6_text(text)
+    if direction.startswith("front"):
+        return "front"
+    if direction.startswith("back"):
+        return "back"
+    if direction in {"left", "right"}:
+        return direction
+    return ""
+
+
+def direction_tokens(text: str) -> set[str]:
+    direction = direction_6_text(text)
+    return {token for token in ("front", "back", "left", "right") if token in direction}
+
+
+def viewpoint_relaxed_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    total = len(rows)
+    six_wrong = sum(not is_correct(row) for row in rows)
+    four_wrong = 0
+    partial_wrong = 0
+    transitions: Counter[tuple[str, str]] = Counter()
+    recovered_by_four = 0
+    for row in rows:
+        gt = answer_text(row)
+        pred = predicted_choice_text(row)
+        gt6 = direction_6_text(gt)
+        pred6 = direction_6_text(pred)
+        transitions[(gt6, pred6)] += 1
+        four_ok = bool(direction_axis_4(gt)) and direction_axis_4(gt) == direction_axis_4(pred)
+        partial_ok = bool(direction_tokens(gt) & direction_tokens(pred))
+        four_wrong += not four_ok
+        partial_wrong += not partial_ok
+        if (not is_correct(row)) and four_ok:
+            recovered_by_four += 1
+    return {
+        "total": total,
+        "six_wrong": six_wrong,
+        "six_rate": six_wrong / total if total else 0.0,
+        "four_wrong": four_wrong,
+        "four_rate": four_wrong / total if total else 0.0,
+        "partial_wrong": partial_wrong,
+        "partial_rate": partial_wrong / total if total else 0.0,
+        "recovered_by_four": recovered_by_four,
+        "top_transitions": transitions.most_common(8),
+    }
+
+
 def qid_family(row: dict[str, Any]) -> str:
     qid = str(row.get("source_question_id") or row.get("question_id") or "")
     parts = qid.split(":")
@@ -704,6 +763,29 @@ def build_report() -> None:
         lines.extend([f"### {LABELS[method]}", ""])
         for item in per_method[method]:
             lines.append(f"- {item}")
+        if method == "advtest_l2_viewpoint_transfer":
+            relaxed = viewpoint_relaxed_metrics(v7_rows[method])
+            lines.extend(
+                [
+                    "",
+                    "四方向宽松重判：",
+                    "",
+                    "| 判分口径 | 错题数/Q | 错误率 | 说明 |",
+                    "|---|---:|---:|---|",
+                    f"| 六方向严格 | {relaxed['six_wrong']}/{relaxed['total']} | {pct(relaxed['six_rate'])} | 原 v7：front/front left/front right/back left/back right/back 六类精确匹配 |",
+                    f"| 四方向折叠 | {relaxed['four_wrong']}/{relaxed['total']} | {pct(relaxed['four_rate'])} | front-left/front-right 算 front，back-left/back-right 算 back |",
+                    f"| 主方向命中 | {relaxed['partial_wrong']}/{relaxed['total']} | {pct(relaxed['partial_rate'])} | 只要 front/back/left/right 任一主方向词命中就算对 |",
+                    "",
+                    f"按四方向折叠后，有 {relaxed['recovered_by_four']} 道原本六方向判错的题被改判为对，说明 v7 的高错误率里确实有一部分来自左右细分；但四方向错误率仍有 {pct(relaxed['four_rate'])}，说明不是全部由细粒度边界造成。",
+                    "",
+                    "主要 GT→Pred 分布：",
+                    "",
+                    "| GT 六方向 | Pred 六方向 | 数量 |",
+                    "|---|---|---:|",
+                ]
+            )
+            for (gt, pred), count in relaxed["top_transitions"]:
+                lines.append(f"| {gt} | {pred} | {count} |")
         lines.append("")
 
     lines.extend(
