@@ -210,6 +210,25 @@ def family_name(method: str, row: dict[str, Any]) -> str:
     return "unknown"
 
 
+TABLE_FAMILY_ALIASES = {
+    "l0:status_yes": "l0:status_bool",
+    "l0:status_no": "l0:status_bool",
+    "l0:type_yes": "l0:type_bool",
+    "l0:type_no": "l0:type_bool",
+    "l1:relation_yes": "l1:relation_bool",
+    "l1:relation_no": "l1:relation_bool",
+    "l1:exists_direction_type": "l1:exists_direction_type_bool",
+    "l1:exists_direction_type_no": "l1:exists_direction_type_bool",
+}
+
+
+def table_family_name(method: str, row: dict[str, Any]) -> str:
+    family = family_name(method, row)
+    if method in {"advtest_l0", "advtest_l1"}:
+        return TABLE_FAMILY_ALIASES.get(family, family)
+    return family
+
+
 def choice_lines(row: dict[str, Any]) -> list[str]:
     lines = []
     for choice in row.get("choices") or []:
@@ -494,7 +513,7 @@ def family_metrics(rows: list[dict[str, Any]], method: str) -> list[tuple[str, i
     counts: Counter[str] = Counter()
     wrong_counts: Counter[str] = Counter()
     for row in rows:
-        family = family_name(method, row)
+        family = table_family_name(method, row)
         counts[family] += 1
         if not is_correct(row):
             wrong_counts[family] += 1
@@ -522,27 +541,50 @@ def compact_family_metrics(
     return selected
 
 
+def yes_no_bias_metrics(
+    rows: list[dict[str, Any]], method: str, families: set[str]
+) -> tuple[int, int, Counter[str], Counter[str]]:
+    selected = [row for row in rows if family_name(method, row) in families]
+    gt_counts: Counter[str] = Counter()
+    pred_counts: Counter[str] = Counter()
+    wrong = 0
+    for row in selected:
+        gt = answer_text(row).lower()
+        pred = predicted_choice_text(row).lower()
+        if gt in {"yes", "no"}:
+            gt_counts[gt] += 1
+        if pred in {"yes", "no"}:
+            pred_counts[pred] += 1
+        if not is_correct(row):
+            wrong += 1
+    return len(selected), wrong, gt_counts, pred_counts
+
+
+def yes_no_ratio_text(counts: Counter[str], total: int) -> str:
+    if total == 0:
+        return "yes 0 / no 0"
+    yes = counts["yes"]
+    no = counts["no"]
+    return f"yes {yes} ({pct(yes / total)}) / no {no} ({pct(no / total)})"
+
+
 FAMILY_EXPLANATIONS = {
     "l0:count_type": "按类别计数，主要考察能否数清同类对象。",
     "l0:exists": "判断具体对象是否存在。",
     "l0:exists_status_type": "判断某类/某状态对象是否存在，带类型和状态约束。",
     "l0:more_type": "比较两类对象数量多少。",
     "l0:status": "直接问具体对象运动状态，需要在 moving/stopped/parked 中选。",
-    "l0:status_no": "状态否定式 yes/no；低错主要因为模型在状态判断里强烈倾向答 no。",
-    "l0:status_yes": "状态肯定式 yes/no；高错主要因为模型在具体 ID 状态确认题里强烈倾向答 no。",
+    "l0:status_bool": "状态 yes/no 确认题，合并原 `status_yes` 和 `status_no` 统计。",
     "l0:type": "询问具体对象类别。",
-    "l0:type_no": "类别否定式 yes/no。",
-    "l0:type_yes": "类别肯定式 yes/no。",
+    "l0:type_bool": "类别 yes/no 确认题，合并原 `type_yes` 和 `type_no` 统计。",
     "l1:count_direction_type": "带方向约束的类别计数。",
     "l1:count_status_direction_type": "带方向、类别、状态约束的计数。",
     "l1:direction": "对象相对方向。",
     "l1:direction_reverse": "反向对象相对方向。",
-    "l1:exists_direction_type": "某方向是否存在某类对象。",
-    "l1:exists_direction_type_no": "方向存在题的否定式。",
+    "l1:exists_direction_type_bool": "方向存在 yes/no 题，合并原肯定式和否定式统计。",
     "l1:exists_status_direction_type": "某方向是否存在某类且某状态对象。",
     "l1:object_at": "具体对象是否位于某方向。",
-    "l1:relation_no": "关系否定式 yes/no；低错同样受模型 no 倾向影响。",
-    "l1:relation_yes": "关系肯定式 yes/no；当前 108/108 都被答成 no，主要反映模型对具体空间陈述的默认否定。",
+    "l1:relation_bool": "关系 yes/no 确认题，合并原 `relation_yes` 和 `relation_no` 统计。",
 }
 
 
@@ -670,7 +712,7 @@ def build_report() -> None:
             "",
             "L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_question_id` 保留了结构化题型片段。下面的表就是从 `source_question_id` 中解析出的题型，例如 `scene-0003_frame0:l1:direction_reverse:car14:barrier2` 归为 `l1:direction_reverse`。",
             "",
-            "注意：`status_yes/status_no` 和 `relation_yes/relation_no` 的差异不是 yes/no 题本身难度差异，而是模型在这批具体陈述确认题里明显偏向回答 `no`：`status_yes` 有 103/111 被答成 no，`status_no` 有 96/96 被答成 no；`relation_yes` 有 108/108 被答成 no，`relation_no` 有 83/104 被答成 no。",
+            "注意：主表不再把 `*_yes` 和 `*_no` 拆开比较。`status_yes/status_no` 合并为 `l0:status_bool`，`relation_yes/relation_no` 合并为 `l1:relation_bool`；模型回答 yes/no 的比例单独放在表后。",
             "",
         ]
     )
@@ -686,7 +728,34 @@ def build_report() -> None:
 
     lines.extend(
         [
-            "完整 L0/L1 明细不放正文铺开。当前最需要人工复核的是高错项：`l0:status_yes`、`l1:relation_yes`、`l1:exists_status_direction_type`；它们可能混有模型错误、题干口径问题和 GT/自动判分问题。",
+            "### yes/no 回答比例",
+            "",
+            "| 合并题类 | Q | 错题率 | GT yes/no | 模型回答 yes/no |",
+            "|---|---:|---:|---|---|",
+        ]
+    )
+    for method, label, families in (
+        ("advtest_l0", "l0:status_bool", {"l0:status_yes", "l0:status_no"}),
+        ("advtest_l0", "l0:type_bool", {"l0:type_yes", "l0:type_no"}),
+        ("advtest_l1", "l1:relation_bool", {"l1:relation_yes", "l1:relation_no"}),
+        (
+            "advtest_l1",
+            "l1:exists_direction_type_bool",
+            {"l1:exists_direction_type", "l1:exists_direction_type_no"},
+        ),
+    ):
+        total, wrong, gt_counts, pred_counts = yes_no_bias_metrics(
+            v7_rows[method], method, families
+        )
+        lines.append(
+            f"| `{label}` | {total} | {pct(wrong / total) if total else '0.0%'} | "
+            f"{yes_no_ratio_text(gt_counts, total)} | {yes_no_ratio_text(pred_counts, total)} |"
+        )
+    lines.append("")
+
+    lines.extend(
+        [
+            "完整 L0/L1 明细不放正文铺开。当前最需要人工复核的是高错项：`l0:status_bool`、`l1:relation_bool`、`l1:exists_status_direction_type`；它们可能混有模型错误、题干口径问题和 GT/自动判分问题。",
             "",
             "## 5. v7 错题 case",
             "",
