@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v9_finalanswer_q27\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v10_think3_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -87,11 +87,13 @@ def first_think_fields(think_row: dict[str, Any] | None) -> tuple[str, str, str]
         return "", "", ""
     raw = clean_text(think_row.get("raw_think_output"))
     pred = clean_text(think_row.get("think_pred"))
-    reason = ""
-    match = re.search(r"(?im)^\s*(?:Think|Reason|Because)\s*:\s*(.+?)\s*$", raw)
-    if match:
-        reason = clean_text(match.group(1))
-    return pred, reason, raw
+    think = clean_text(think_row.get("think"))
+    if not think:
+        matches = re.findall(r"(?im)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*(.+?)\s*$", raw)
+        think = "\n".join(clean_text(match) for match in matches if clean_text(match))
+    think_lines = [line.strip() for line in think.splitlines() if line.strip()]
+    think = "\n".join(think_lines[:3])
+    return pred, think, raw
 
 
 def choice_label_from_text(text: str) -> str:
@@ -259,7 +261,8 @@ def display_think_text(raw_think: str) -> str:
             continue
         line = re.sub(r"(?i)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*", "", line).strip()
         lines.append(line)
-    return "\n".join(lines).strip()
+    visible_lines = [line for line in lines if line.strip()]
+    return "\n".join(visible_lines[:3]).strip()
 
 
 def diagnose_from_think(
@@ -468,6 +471,7 @@ def choose_case(
     think_rows: dict[tuple[str, str, str], dict[str, Any]],
     predicate: Callable[[dict[str, Any], dict[str, Any], str], bool],
 ) -> list[dict[str, Any]]:
+    fallback: dict[str, Any] | None = None
     for row in rows:
         if is_correct(row):
             continue
@@ -479,9 +483,11 @@ def choose_case(
             continue
         if think_row.get("think_is_correct") is True:
             continue
+        if fallback is None:
+            fallback = row
         if predicate(row, think_row, family_name(method, row)):
             return [row]
-    return []
+    return [fallback] if fallback is not None else []
 
 
 def family_metrics(rows: list[dict[str, Any]], method: str) -> list[tuple[str, int, int, float]]:
@@ -686,15 +692,14 @@ def build_report() -> None:
     l0_rows = v7_rows["advtest_l0"]
     cases.append(
         (
-            "Case L0-1：数量题，Think 没有真正计数",
+            "Case L0-1：数量题，数目判断错",
             choose_case(
                 l0_rows,
                 "advtest_l0",
                 think_rows,
-                lambda r, t, f: f == "l0:count_type"
-                and not any(ch.isdigit() for ch in clean_text(t.get("think"))),
+                lambda r, t, f: f == "l0:count_type",
             ),
-            "代表错误：题目要求数目标，但 Think 只泛泛描述场景，没有逐个计数。",
+            "代表错误：题目要求数目标，Think 给出了计数过程，但最终数目判断与 GT 不一致。",
         )
     )
     cases.append(
@@ -797,7 +802,10 @@ def build_report() -> None:
                 v7_rows["advtest_l2_viewpoint_transfer"],
                 "advtest_l2_viewpoint_transfer",
                 think_rows,
-                lambda r, t, f: "facing" in clean_text(t.get("think")).lower(),
+                lambda r, t, f: any(
+                    token in clean_text(t.get("think")).lower()
+                    for token in ("theta", "reference direction", "relative to the reference")
+                ),
             ),
             "代表错误：模型注意到了 facing 关系，但没有把它转成正确的六类方向答案。",
         )

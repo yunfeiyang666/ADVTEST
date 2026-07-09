@@ -106,7 +106,7 @@ L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_
 
 说明：`Think` 是让模型带理由作答时的第一次原始输出；如果它只写理由、没写答案，报告也按原样保留。
 
-### Case L0-1：数量题，Think 没有真正计数
+### Case L0-1：数量题，数目判断错
 
 ```text
 Scene: scene-0003_frame9
@@ -118,13 +118,15 @@ C. 8
 D. 7
 
 GT: B. 9
-Answer: C. 8
-Think: The image shows a car driving down a street.
+Answer: A. 11
+Think: 2 pedestrians are visible.
+1 is in the left image and 1 is in the right image.
+The other options are incorrect because there are only 2 pedestrians.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `9`，模型答 `C. 8`，这次选错了。Think 没有真正数目标，只是在泛泛描述场景，所以答案偏成 `C. 8`。
+标准答案是 `9`，模型答 `A. 11`，这次选错了。Think 里给出的数量线索和标准答案 `9` 不一致，说明它确实数错了。
 
 ### Case L0-2：状态题，目标状态看错
 
@@ -138,12 +140,16 @@ C. stopped
 
 GT: C. stopped
 Answer: B. moving
-Think: The car is driving down the street.
+Think: The car is driving on the road.
+The car is not parked.
+The car is not stopped.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `stopped`，模型答 `B. moving`，这次选错了。Think 没有说清目标状态，说明它没有抓住题目真正问的属性。
+标准答案是 `stopped`，模型答 `B. moving`，这次选错了。Think 直接把目标状态判断成 `The car is driving on the road.
+The car is not parked.
+The car is not stopped.`，所以错因是状态看错。
 
 ### Case L1-1：方向题，只做粗方向判断
 
@@ -159,11 +165,15 @@ D. front right (-90° < theta <= -30°)
 GT: D. front right (-90° < theta <= -30°)
 Answer: A. front left
 Think: The barrier is in front of the car.
+The barrier is in front of the car.
+The barrier is in front of the car.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame0_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，这次选错了。Think 只给了粗方向关系 `The barrier is in front of the car.`，没有按六类角度区间判断，所以选到了 `A. front left`。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `A. front left`，这次选错了。Think 只给了粗方向关系 `The barrier is in front of the car.
+The barrier is in front of the car.
+The barrier is in front of the car.`，没有按六类角度区间判断，所以选到了 `A. front left`。
 
 ### Case L1-2：方向约束计数，只抓局部线索
 
@@ -178,12 +188,16 @@ D. 2
 
 GT: B. 4
 Answer: D. 2
-Think: The car14 is stopped in the middle of the road.
+Think: The cars are stopped.
+The cars are in the back.
+The cars are to the back of car14.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame2_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `4`，模型答 `D. 2`，这次选错了。Think 只抓到一个局部线索 `The car14 is stopped in the middle of the road.`，没有完成“方向筛选后再计数”，所以数量选错。
+标准答案是 `4`，模型答 `D. 2`，这次选错了。Think 只抓到一个局部线索 `The cars are stopped.
+The cars are in the back.
+The cars are to the back of car14.`，没有完成“方向筛选后再计数”，所以数量选错。
 
 ### Case L2-1：converge，只验证部分约束
 
@@ -198,12 +212,16 @@ D. barrier9
 
 GT: B. barrier7
 Answer: C. barrier3
-Think: The barrier is in the back of car20 and in front of pedestrian11.
+Think: The barrier is in the back of car20.
+The barrier is in the front of pedestrian11.
+The barrier is in the front left of barrier4.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0003_frame33_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `barrier7`，模型答 `C. barrier3`，这次选错了。Think 只验证了部分关系 `The barrier is in the back of car20 and in front of pedestrian11.`，没有把题干里的多条约束同时交汇到唯一目标。
+标准答案是 `barrier7`，模型答 `C. barrier3`，这次选错了。Think 只验证了部分关系 `The barrier is in the back of car20.
+The barrier is in the front of pedestrian11.
+The barrier is in the front left of barrier4.`，没有把题干里的多条约束同时交汇到唯一目标。
 
 ### Case L2-2：direction_chain，退化成普通场景描述
 
@@ -217,11 +235,15 @@ B. yes
 GT: A. no
 Answer: B. yes
 Think: The cars are lined up in a row.
+Car8 is in the same row as truck1.
+Car8 is in the same direction as truck1.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `no`，模型答 `B. yes`，这次选错了。Think 退化成普通位置描述 `The cars are lined up in a row.`，没有真正完成关系链判断。
+标准答案是 `no`，模型答 `B. yes`，这次选错了。Think 已经在判断关系链 `The cars are lined up in a row.
+Car8 is in the same row as truck1.
+Car8 is in the same direction as truck1.`；本题错时主要是关系链方向判断不稳定。
 
 ### Case L2-3：distance_chain，没有完成距离比较
 
@@ -234,12 +256,16 @@ B. car20
 
 GT: B. car20
 Answer: A. car19
-Think: The image shows a car with the number 19 and another car with the number 20.
+Think: Barrier1 is nearer to car19.
+Barrier1 is in the middle of the image.
+Car19 is on the left side of the image.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame31_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `car20`，模型答 `A. car19`，这次选错了。Think 没有比较两个候选距离，只描述了局部对象 `The image shows a car with the number 19 and another car with the number 20.`，所以答案缺少有效依据。
+标准答案是 `car20`，模型答 `A. car19`，这次选错了。Think 明确认为 `Barrier1 is nearer to car19.
+Barrier1 is in the middle of the image.
+Car19 is on the left side of the image.`，说明错误来自距离比较本身。
 
 ### Case L2-4：viewpoint_transfer，使用图像坐标而非目标朝向坐标
 
@@ -255,31 +281,39 @@ D. back right (-150° < theta <= -90°)
 GT: A. front right (-90° < theta <= -30°)
 Answer: C. back
 Think: The car is in the middle of the image.
+The car is facing pedestrian5.
+The car is not facing pedestrian2.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，这次选错了。Think 使用的是图像画面里的左右/中间 `The car is in the middle of the image.`，没有切换到目标朝向为 0° 的坐标系。
+标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. back`，这次选错了。Think 使用的是图像画面里的左右/中间 `The car is in the middle of the image.
+The car is facing pedestrian5.
+The car is not facing pedestrian2.`，没有切换到目标朝向为 0° 的坐标系。
 
 ### Case L2-5：viewpoint_transfer，朝向对象被看见但方向转换仍错
 
 ```text
-Scene: scene-0003_frame3
-Question: From car21, facing pedestrian8, where is pedestrian9 relative to you?
+Scene: scene-0003_frame10
+Question: From barrier2, facing ego, where is barrier4 relative to you?
 
-A. front (-30° < theta <= 30°)
-B. back left (90° < theta <= 150°)
-C. front left (30° < theta <= 90°)
-D. front right (-90° < theta <= -30°)
+A. back left (90° < theta <= 150°)
+B. back (otherwise)
+C. front (-30° < theta <= 30°)
+D. front left (30° < theta <= 90°)
 
-GT: D. front right (-90° < theta <= -30°)
-Answer: C. front left
-Think: The car21 is facing pedestrian8.
-Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame3_mosaic.jpg
+GT: D. front left (30° < theta <= 90°)
+Answer: B. back
+Think: Theta is measured relative to the current facing/reference direction.
+Barrier2 is facing ego.
+Barrier4 is relative to the reference object.
+Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
 人工分析：
-标准答案是 `front right (-90° < theta <= -30°)`，模型答 `C. front left`，这次选错了。Think 给的是普通空间描述 `The car21 is facing pedestrian8.`，没有体现题目要求的视角转换。
+标准答案是 `front left (30° < theta <= 90°)`，模型答 `B. back`，这次选错了。Think 给的是普通空间描述 `Theta is measured relative to the current facing/reference direction.
+Barrier2 is facing ego.
+Barrier4 is relative to the reference object.`，没有体现题目要求的视角转换。
 
 ## 6. 当前结论
 

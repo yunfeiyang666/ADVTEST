@@ -74,14 +74,16 @@ def prior_prediction(row: dict) -> str:
 
 def build_think_prompt(row: dict) -> str:
     return (
-        "Answer the visual multiple-choice question with a visible reason.\n"
-        "You must output exactly two lines. The second line is mandatory.\n"
-        "Line 1 must start with Reason: and explain the visible clue.\n"
-        "Line 2 must start with Final answer: and include one option letter plus option text.\n"
+        "Answer the visual multiple-choice question.\n"
+        "You must output exactly four lines.\n"
+        "Lines 1-3 must start with Think: and be short.\n"
+        "Line 4 must start with Final answer: and include one option letter plus option text.\n"
         "Do not omit the final answer line.\n"
         "Format:\n"
-        "Reason: <one short sentence about the visible object/count/direction/relation>\n"
-        "Final answer: <A/B/C/D. option text>\n\n"
+        "Think: <what you see>\n"
+        "Think: <how it matches an option>\n"
+        "Think: <why the other close option is less likely, or say no close option>\n"
+        "Final answer: <one option, for example A. yes>\n\n"
         f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
         "Options:\n"
         f"{option_lines(row)}"
@@ -105,13 +107,17 @@ def build_reason_prompt(row: dict, selected_answer: str) -> str:
 def parse_pred_and_think(output: str) -> Tuple[str, str]:
     text = str(output or "").strip()
     pred_match = re.search(r"(?im)^\s*(?:Pred|Answer|Final answer|Final)\s*:\s*(.+?)\s*$", text)
-    think_match = re.search(r"(?im)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*(.+?)\s*$", text)
+    think_matches = re.findall(r"(?im)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*(.+?)\s*$", text)
     if pred_match:
         pred = pred_match.group(1).strip()
     else:
         first_line = text.splitlines()[0].strip() if text.splitlines() else ""
         pred = first_line if re.match(r"^\s*(?:option\s*)?[A-D](?:[\).:,\-\s]|$)", first_line, re.I) else ""
-    think = think_match.group(1).strip() if think_match else ""
+    slash_placeholder = re.match(r"(?i)^\s*A/B/C/D\.\s*([A-D])\s*$", pred)
+    if slash_placeholder:
+        pred = slash_placeholder.group(1).upper()
+    think_lines = [match.strip() for match in think_matches if match.strip()]
+    think = "\n".join(think_lines[:3])
     return pred, think
 
 
@@ -154,6 +160,7 @@ def evaluate_row(
     question = dict(row)
     question["question"] = build_think_prompt(row)
     question["prompt"] = question["question"]
+    question["max_new_tokens"] = 120
     image_path: Optional[Path] = None
     if mode != "MOCK":
         image_path = resolve_image_path(question, outputs_root, image_cache_dir, dataroot)

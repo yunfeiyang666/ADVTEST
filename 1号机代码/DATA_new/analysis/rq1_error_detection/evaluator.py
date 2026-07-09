@@ -938,7 +938,7 @@ class MPLUGEvaluator:
                     images=image_tensor,
                     do_sample=False,
                     temperature=0.0,
-                    max_new_tokens=50,
+                    max_new_tokens=int(question.get("max_new_tokens", 50)),
                     stopping_criteria=[stopping_criteria],
                     use_cache=True
                 )
