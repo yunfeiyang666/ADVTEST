@@ -74,11 +74,11 @@ def prior_prediction(row: dict) -> str:
 
 def build_think_prompt(row: dict) -> str:
     return (
-        "Answer the visual multiple-choice question.\n"
-        "You MUST output exactly two lines:\n"
-        "Pred: <option letter and option text>\n"
-        "Reason: <one short visual reason, no more than 15 words>\n"
-        "Do not output only the option. The second line is required.\n\n"
+        "Give one short visual reason first, then answer the multiple-choice question.\n"
+        "Do not start with A, B, C, or D.\n"
+        "Output exactly this format:\n"
+        "Reason: <one short sentence about the visible object/count/direction/relation>\n"
+        "Answer: <option letter and option text>\n\n"
         f"Question:\n{clean_choice_question(source_question_text(row))}\n\n"
         "Options:\n"
         f"{option_lines(row)}"
@@ -101,9 +101,13 @@ def build_reason_prompt(row: dict, selected_answer: str) -> str:
 
 def parse_pred_and_think(output: str) -> Tuple[str, str]:
     text = str(output or "").strip()
-    pred_match = re.search(r"(?im)^\s*Pred\s*:\s*(.+?)\s*$", text)
-    think_match = re.search(r"(?im)^\s*(?:Think|Reason|Because)\s*:\s*(.+?)\s*$", text)
-    pred = pred_match.group(1).strip() if pred_match else text.splitlines()[0].strip()
+    pred_match = re.search(r"(?im)^\s*(?:Pred|Answer)\s*:\s*(.+?)\s*$", text)
+    think_match = re.search(r"(?im)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*(.+?)\s*$", text)
+    if pred_match:
+        pred = pred_match.group(1).strip()
+    else:
+        first_line = text.splitlines()[0].strip() if text.splitlines() else ""
+        pred = first_line if re.match(r"^\s*(?:option\s*)?[A-D](?:[\).:,\-\s]|$)", first_line, re.I) else ""
     think = think_match.group(1).strip() if think_match else ""
     return pred, think
 

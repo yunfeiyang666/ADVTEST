@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v6_singlecall_q27\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v8_reasonfirst_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -240,6 +240,18 @@ def full_prediction_text(row: dict[str, Any]) -> str:
     return pred
 
 
+def full_choice_text_from_answer(row: dict[str, Any], answer: str) -> str:
+    value = clean_text(answer)
+    label = choice_label_from_text(value)
+    if not label:
+        return value
+    for choice in row.get("choices") or []:
+        if str(choice.get("label") or "").upper() == label:
+            text = clean_text(choice.get("canonical_text") or choice.get("text"))
+            return f"{label}. {text}" if text else label
+    return value
+
+
 def direction_error_type(row: dict[str, Any]) -> str:
     gt = answer_text(row).lower()
     pred = predicted_choice_text(row).lower()
@@ -270,7 +282,7 @@ def format_case(
     analysis_method = row_method.removesuffix("_choice")
     think_row = (think_rows or {}).get(think_key(row))
     think_pred, _think_reason, raw_think = first_think_fields(think_row)
-    pred_for_case = think_pred or full_prediction_text(row)
+    pred_for_case = full_choice_text_from_answer(row, think_pred) if think_pred else "(not provided)"
     block = [
         f"Scene: {clean_text(row.get('scene_frame'))}",
         f"Question: {short_question(row)}",
@@ -304,7 +316,7 @@ def render_human_analysis(
     family = family_name(analysis_method, row)
     gt = answer_text(row)
     think_pred, think_reason, raw_think = first_think_fields(think_row)
-    pred = think_pred or full_prediction_text(row)
+    pred = full_choice_text_from_answer(row, think_pred) if think_pred else "(not provided)"
 
     validity = "有效。题干、选项和 GT 都明确。"
     if family in {"l0:count_type", "l1:count_direction_type", "l1:count_status_direction_type"}:
@@ -351,7 +363,7 @@ def render_human_analysis(
     if think_reason:
         analysis += f" Think 里的理由是：`{think_reason}`。"
     elif raw_think:
-        analysis += " Think 原文和答案来自同一次调用；这次模型只给了答案，没有给出理由。"
+        analysis += " Think 原文来自同一次调用；这次模型没有给出可用理由。"
 
     return [
         "人工分析：",
@@ -588,7 +600,7 @@ def build_report() -> None:
             "",
             "下面只放 v7 错题。每个 case 只展示题目、标准答案、模型答案、Think 原文和图像路径。",
             "",
-            "说明：`Think` 是让模型带理由作答时的第一次原始输出；如果它只给答案、不写理由，报告就按原样保留。",
+            "说明：`Think` 是让模型带理由作答时的第一次原始输出；如果它只写理由、没写答案，报告也按原样保留。",
             "",
         ]
     )
