@@ -118,9 +118,8 @@ C. 8
 D. 7
 
 GT: B. 9
-Pred: A. 11
-Think: Reason: Two pedestrians are visible in the image.
-Answer: A
+Answer: A. 11
+Think: Two pedestrians are visible in the image.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
@@ -139,9 +138,8 @@ C. 5
 D. 8
 
 GT: B. 7
-Pred: C. 5
-Think: Reason: The image shows a car driving down a street.
-Answer: C
+Answer: C. 5
+Think: The image shows a car driving down a street.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
@@ -160,9 +158,8 @@ C. 5
 D. 9
 
 GT: A. 6
-Pred: C. 5
-Think: Reason: A car is driving down the street.
-Answer: C
+Answer: C. 5
+Think: A car is driving down the street.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame16_mosaic.jpg
 ```
 
@@ -179,8 +176,8 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: (not provided)
-Think: Reason: The car is stopped at a red light.
+Answer: (not provided)
+Think: The car is stopped at a red light.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -198,9 +195,8 @@ B. moving
 C. stopped
 
 GT: C. stopped
-Pred: B. moving
-Think: Reason: The car20 is moving in the image.
-Answer: B
+Answer: B. moving
+Think: The car20 is moving in the image.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
@@ -217,8 +213,8 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: (not provided)
-Think: Reason: The car is stopped at the barrier.
+Answer: (not provided)
+Think: The car is stopped at the barrier.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame6_mosaic.jpg
 ```
 
@@ -237,9 +233,8 @@ C. front (-30° < theta <= 30°)
 D. front right (-90° < theta <= -30°)
 
 GT: D. front right (-90° < theta <= -30°)
-Pred: A. front left
-Think: Reason: car14 is in front of barrier2.
-Answer: A. front left (30° < theta <= 90°)
+Answer: A. front left
+Think: car14 is in front of barrier2.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame0_mosaic.jpg
 ```
 
@@ -258,9 +253,8 @@ C. back left (90° < theta <= 150°)
 D. front (-30° < theta <= 30°)
 
 GT: C. back left (90° < theta <= 150°)
-Pred: B. front left
-Think: Reason: car25 is in front of barrier1.
-Answer: B. front left (30° < theta <= 90°)
+Answer: B. front left
+Think: car25 is in front of barrier1.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -279,9 +273,8 @@ C. front left (30° < theta <= 90°)
 D. left (around +90°)
 
 GT: C. front left (30° < theta <= 90°)
-Pred: A. back
-Think: Reason: Car21 is behind car23.
-Answer: A. back (otherwise)
+Answer: A. back
+Think: Car21 is behind car23.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame1_mosaic.jpg
 ```
 
@@ -300,9 +293,8 @@ C. 6
 D. 2
 
 GT: B. 4
-Pred: D. 2
-Think: Reason: The car14 is stopped in the middle of the road.
 Answer: D. 2
+Think: The car14 is stopped in the middle of the road.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame2_mosaic.jpg
 ```
 
@@ -321,9 +313,8 @@ C. 2
 D. 3
 
 GT: A. 1
-Pred: C. 2
-Think: Reason: The pedestrians are walking on the sidewalk.
 Answer: C. 2
+Think: The pedestrians are walking on the sidewalk.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame7_mosaic.jpg
 ```
 
@@ -342,9 +333,8 @@ C. 1
 D. 3
 
 GT: D. 3
-Pred: B. 2
-Think: Reason: A car is parked in front of the pedestrian.
-Answer: B
+Answer: B. 2
+Think: A car is parked in front of the pedestrian.
 Image: E:\Project\ADVTEST\scratch\rq1_seed_expansion\runs\mplug-advtest-l0-l1-templatebalanced-v5-q1000-v1\results\mosaics\scene-0003_frame9_mosaic.jpg
 ```
 
@@ -363,9 +353,8 @@ C. barrier3
 D. barrier9
 
 GT: B. barrier7
-Pred: C. barrier3
-Think: Reason: The barrier is in the back of car20 and in front of pedestrian11.
 Answer: C. barrier3
+Think: The barrier is in the back of car20 and in front of pedestrian11.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0003_frame33_mosaic.jpg
 ```
 
@@ -384,9 +373,8 @@ C. pedestrian1
 D. pedestrian12
 
 GT: D. pedestrian12
-Pred: A. pedestrian3
-Think: Reason: Pedestrian14 and pedestrian20 are both to the right of pedestrian8.
 Answer: A. pedestrian3
+Think: Pedestrian14 and pedestrian20 are both to the right of pedestrian8.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame17_mosaic.jpg
 ```
 
@@ -405,9 +393,8 @@ C. barrier29
 D. barrier16
 
 GT: C. barrier29
-Pred: B. barrier14
-Think: Reason: barrier14 is to the back right of barrier11 and to the back right of barrier30.
-Answer: B
+Answer: B. barrier14
+Think: barrier14 is to the back right of barrier11 and to the back right of barrier30.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0017_frame24_mosaic.jpg
 ```
 
@@ -424,9 +411,8 @@ A. no
 B. yes
 
 GT: A. no
-Pred: A. no
-Think: Reason: The car8 is on the right side of the road.
-Answer: A
+Answer: A. no
+Think: The car8 is on the right side of the road.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame19_mosaic.jpg
 ```
 
@@ -443,9 +429,8 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: A. yes
-Think: Reason: Pedestrian16 is in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
-Answer: A
+Answer: A. yes
+Think: Pedestrian16 is in the same direction from pedestrian10 as pedestrian10 is from pedestrian15.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0016_frame19_mosaic.jpg
 ```
 
@@ -462,8 +447,8 @@ A. yes
 B. no
 
 GT: A. yes
-Pred: (not provided)
-Think: Reason: The bus is on the left side of the road.
+Answer: (not provided)
+Think: The bus is on the left side of the road.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000\results\mosaics\scene-0015_frame17_mosaic.jpg
 ```
 
@@ -480,9 +465,8 @@ A. car19
 B. car20
 
 GT: B. car20
-Pred: A. car19
-Think: Reason: The image shows a car with the number 19 on it.
-Answer: A
+Answer: A. car19
+Think: The image shows a car with the number 19 on it.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame31_mosaic.jpg
 ```
 
@@ -499,9 +483,8 @@ A. car1
 B. car3
 
 GT: B. car3
-Pred: A. car1
-Think: Reason: Car1 is closer to pedestrian2.
-Answer: A
+Answer: A. car1
+Think: Car1 is closer to pedestrian2.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame28_mosaic.jpg
 ```
 
@@ -518,8 +501,8 @@ A. bicycle1
 B. bus1
 
 GT: A. bicycle1
-Pred: (not provided)
-Think: Reason: The bus is closer to the camera.
+Answer: (not provided)
+Think: The bus is closer to the camera.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0015_frame24_mosaic.jpg
 ```
 
@@ -538,9 +521,8 @@ C. back (otherwise)
 D. back right (-150° < theta <= -90°)
 
 GT: A. front right (-90° < theta <= -30°)
-Pred: C. back
-Think: Reason: The car is on the right side of the image.
-Answer: C. back (otherwise)
+Answer: C. back
+Think: The car is on the right side of the image.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
@@ -559,9 +541,8 @@ C. back (otherwise)
 D. front right (-90° < theta <= -30°)
 
 GT: D. front right (-90° < theta <= -30°)
-Pred: C. back
-Think: Reason: Pedestrian35 is on the right side of the image.
-Answer: C. back (otherwise)
+Answer: C. back
+Think: Pedestrian35 is on the right side of the image.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0017_frame15_mosaic.jpg
 ```
 
@@ -580,9 +561,8 @@ C. front (-30° < theta <= 30°)
 D. front left (30° < theta <= 90°)
 
 GT: D. front left (30° < theta <= 90°)
-Pred: B. back
-Think: Reason: The car is driving on the road.
-Answer: B. back (otherwise)
+Answer: B. back
+Think: The car is driving on the road.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame10_mosaic.jpg
 ```
 
@@ -601,9 +581,8 @@ C. front left (30° < theta <= 90°)
 D. front right (-90° < theta <= -30°)
 
 GT: D. front right (-90° < theta <= -30°)
-Pred: B. back left
-Think: Reason: Pedestrian9 is in the back left of the image.
-Answer: B. back left (90° < theta <= 150°)
+Answer: B. back left
+Think: Pedestrian9 is in the back left of the image.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0003_frame3_mosaic.jpg
 ```
 
@@ -622,9 +601,8 @@ C. front right (-90° < theta <= -30°)
 D. back left (90° < theta <= 150°)
 
 GT: C. front right (-90° < theta <= -30°)
-Pred: A. front left
-Think: Reason: pedestrian15 is facing pedestrian8.
-Answer: A. front left (30° < theta <= 90°)
+Answer: A. front left
+Think: pedestrian15 is facing pedestrian8.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame18_mosaic.jpg
 ```
 
@@ -643,9 +621,8 @@ C. front right (-90° < theta <= -30°)
 D. front (-30° < theta <= 30°)
 
 GT: A. front left (30° < theta <= 90°)
-Pred: A. front left
-Think: Reason: pedestrian4 is in the middle of the image.
-Answer: A. front left (30° < theta <= 90°)
+Answer: A. front left
+Think: pedestrian4 is in the middle of the image.
 Image: E:\Project\ADVTEST\scratch\rq1_l2_family_formal_mplug_1000_resume1\results\mosaics\scene-0016_frame25_mosaic.jpg
 ```
 

@@ -252,6 +252,16 @@ def full_choice_text_from_answer(row: dict[str, Any], answer: str) -> str:
     return value
 
 
+def display_think_text(raw_think: str) -> str:
+    lines = []
+    for line in clean_text(raw_think).splitlines():
+        if re.match(r"(?i)^\s*(?:Pred|Answer)\s*:", line):
+            continue
+        line = re.sub(r"(?i)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*", "", line).strip()
+        lines.append(line)
+    return "\n".join(lines).strip()
+
+
 def direction_error_type(row: dict[str, Any]) -> str:
     gt = answer_text(row).lower()
     pred = predicted_choice_text(row).lower()
@@ -298,8 +308,8 @@ def format_case(
             f"GT: {clean_text(row.get('choice_answer_label'))}. {answer_text(row)}"
             if row.get("choice_answer_label")
             else f"GT: {answer_text(row)}",
-            f"Pred: {pred_for_case}",
-            f"Think: {raw_think or '(not available)'}",
+            f"Answer: {pred_for_case}",
+            f"Think: {display_think_text(raw_think) or '(not available)'}",
         ]
     )
     block.append(f"Image: {clean_text(row.get('image_path'))}")
