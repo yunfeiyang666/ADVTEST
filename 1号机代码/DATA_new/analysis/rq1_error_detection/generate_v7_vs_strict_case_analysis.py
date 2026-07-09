@@ -32,7 +32,7 @@ V7_RAW = {
 
 THINK_AUDIT_RAW = (
     ROOT
-    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v8_reasonfirst_q27\think_audit_raw_results.jsonl"
+    / r"scratch\rq1_choice_suites_v7_option_consistency\think_audit_v7_cases_mplug_v9_finalanswer_q27\think_audit_raw_results.jsonl"
 )
 
 LABELS = {
@@ -255,7 +255,7 @@ def full_choice_text_from_answer(row: dict[str, Any], answer: str) -> str:
 def display_think_text(raw_think: str) -> str:
     lines = []
     for line in clean_text(raw_think).splitlines():
-        if re.match(r"(?i)^\s*(?:Pred|Answer)\s*:", line):
+        if re.match(r"(?i)^\s*(?:Pred|Answer|Final answer|Final)\s*:", line):
             continue
         line = re.sub(r"(?i)^\s*(?:Think|Reason|Because|Evidence)\s*:\s*", "", line).strip()
         lines.append(line)
@@ -462,6 +462,28 @@ def find_cases(
     return picked
 
 
+def choose_case(
+    rows: list[dict[str, Any]],
+    method: str,
+    think_rows: dict[tuple[str, str, str], dict[str, Any]],
+    predicate: Callable[[dict[str, Any], dict[str, Any], str], bool],
+) -> list[dict[str, Any]]:
+    for row in rows:
+        if is_correct(row):
+            continue
+        think_row = think_rows.get(think_key(row))
+        if not think_row:
+            continue
+        think_pred, think_reason, _raw_think = first_think_fields(think_row)
+        if not think_pred or not think_reason:
+            continue
+        if think_row.get("think_is_correct") is True:
+            continue
+        if predicate(row, think_row, family_name(method, row)):
+            return [row]
+    return []
+
+
 def family_metrics(rows: list[dict[str, Any]], method: str) -> list[tuple[str, int, int, float]]:
     counts: Counter[str] = Counter()
     wrong_counts: Counter[str] = Counter()
@@ -664,92 +686,128 @@ def build_report() -> None:
     l0_rows = v7_rows["advtest_l0"]
     cases.append(
         (
-            "Case L0-1：数量题仍然容易错",
-            find_cases(l0_rows, lambda r: family_name("advtest_l0", r) == "l0:count_type"),
-            "这类题不是同义词问题，而是需要模型数清同一类对象数量；v7 给了选项后仍会错。",
+            "Case L0-1：数量题，Think 没有真正计数",
+            choose_case(
+                l0_rows,
+                "advtest_l0",
+                think_rows,
+                lambda r, t, f: f == "l0:count_type"
+                and not any(ch.isdigit() for ch in clean_text(t.get("think"))),
+            ),
+            "代表错误：题目要求数目标，但 Think 只泛泛描述场景，没有逐个计数。",
         )
     )
     cases.append(
         (
-            "Case L0-2：状态/属性题的视觉判断错误",
-            find_cases(
+            "Case L0-2：状态题，目标状态看错",
+            choose_case(
                 l0_rows,
-                lambda r: family_name("advtest_l0", r) in {"l0:status", "l0:status_yes"},
+                "advtest_l0",
+                think_rows,
+                lambda r, t, f: f in {"l0:status", "l0:status_yes"}
+                and any(token in clean_text(t.get("think")).lower() for token in ("moving", "stopped", "parked", "driving")),
             ),
-            "状态题在严格版里有同义词风险，v7 后仍错的 case 更接近真实视觉状态识别失败。",
+            "代表错误：Think 明确给出一个状态判断，但该状态和标准答案不一致。",
         )
     )
 
     l1_rows = v7_rows["advtest_l1"]
     cases.append(
         (
-            "Case L1-1：方向关系选错",
-            find_cases(
+            "Case L1-1：方向题，只做粗方向判断",
+            choose_case(
                 l1_rows,
-                lambda r: family_name("advtest_l1", r) in {"l1:direction", "l1:direction_reverse"},
+                "advtest_l1",
+                think_rows,
+                lambda r, t, f: f in {"l1:direction", "l1:direction_reverse"},
             ),
-            "题干已经要求相对方向，v7 也给了角度标准；仍错说明模型的相对方位判断不稳。",
+            "代表错误：Think 没有按六类角度区间精确判断，只给了粗略空间描述。",
         )
     )
     cases.append(
         (
-            "Case L1-2：带方向约束的计数题",
-            find_cases(
+            "Case L1-2：方向约束计数，只抓局部线索",
+            choose_case(
                 l1_rows,
-                lambda r: family_name("advtest_l1", r)
-                in {"l1:count_direction_type", "l1:count_status_direction_type"},
+                "advtest_l1",
+                think_rows,
+                lambda r, t, f: f in {"l1:count_direction_type", "l1:count_status_direction_type"},
             ),
-            "这类题同时要求识别类别、判断方位、再计数，比单纯 yes/no 难很多。",
+            "代表错误：题目要求方向筛选后计数，但 Think 只抓到单个方向/状态线索。",
         )
     )
 
     cases.append(
         (
-            "Case L2-1：converge 多约束定位误选同类目标",
-            find_cases(v7_rows["advtest_l2_converge"], lambda r: True),
-            "converge 的核心价值在这里：选项都是可混淆同类对象，模型必须同时满足多个关系约束。",
-        )
-    )
-    cases.append(
-        (
-            "Case L2-2：direction_chain 二值选择仍有少量错",
-            find_cases(v7_rows["advtest_l2_direction_chain"], lambda r: True),
-            "虽然 v7 后错误率大幅下降，但剩下的错题说明关系链判断并非完全 trivial。",
-        )
-    )
-    cases.append(
-        (
-            "Case L2-3：distance_chain 距离比较错误",
-            find_cases(v7_rows["advtest_l2_distance_chain"], lambda r: True),
-            "distance_chain 在两版之间错误率几乎不变，这类错更可能是真正的距离关系理解问题。",
-        )
-    )
-    cases.append(
-        (
-            "Case L2-4：viewpoint_transfer 过度选择 back",
-            find_cases(
-                v7_rows["advtest_l2_viewpoint_transfer"],
-                lambda r: "back" in predicted_choice_text(r).lower()
-                and "back" not in answer_text(r).lower(),
+            "Case L2-1：converge，只验证部分约束",
+            choose_case(
+                v7_rows["advtest_l2_converge"],
+                "advtest_l2_converge",
+                think_rows,
+                lambda r, t, f: True,
             ),
-            "v7 把角度规则说清后，模型仍大量选 back，说明它对目标朝向坐标系的转换能力弱。",
+            "代表错误：多条关系共同确定答案，但 Think 只覆盖其中一部分关系。",
         )
     )
     cases.append(
         (
-            "Case L2-5：viewpoint_transfer 前后/左右混淆",
-            find_cases(
-                v7_rows["advtest_l2_viewpoint_transfer"],
-                lambda r: direction_error_type(r) == "left_right_flip",
+            "Case L2-2：direction_chain，退化成普通场景描述",
+            choose_case(
+                v7_rows["advtest_l2_direction_chain"],
+                "advtest_l2_direction_chain",
+                think_rows,
+                lambda r, t, f: "same direction" not in clean_text(t.get("think")).lower()
+                and "opposite direction" not in clean_text(t.get("think")).lower(),
             ),
-            "这类错不是答案格式问题，而是在六方向角度标准下选到了相反或邻近方向。",
+            "代表错误：题目问关系链，但 Think 没有真正解释链式方向关系。",
+        )
+    )
+    cases.append(
+        (
+            "Case L2-3：distance_chain，没有完成距离比较",
+            choose_case(
+                v7_rows["advtest_l2_distance_chain"],
+                "advtest_l2_distance_chain",
+                think_rows,
+                lambda r, t, f: "closer" not in clean_text(t.get("think")).lower()
+                and "nearer" not in clean_text(t.get("think")).lower(),
+            ),
+            "代表错误：题目要求比较两个候选距离，但 Think 只是描述对象，没有给出比较依据。",
+        )
+    )
+    cases.append(
+        (
+            "Case L2-4：viewpoint_transfer，使用图像坐标而非目标朝向坐标",
+            choose_case(
+                v7_rows["advtest_l2_viewpoint_transfer"],
+                "advtest_l2_viewpoint_transfer",
+                think_rows,
+                lambda r, t, f: any(
+                    token in clean_text(t.get("think")).lower()
+                    for token in ("image", "middle", "left side", "right side")
+                ),
+            ),
+            "代表错误：Think 依据图像中的左右/中间位置，而不是题目指定的目标朝向坐标系。",
+        )
+    )
+    cases.append(
+        (
+            "Case L2-5：viewpoint_transfer，朝向对象被看见但方向转换仍错",
+            choose_case(
+                v7_rows["advtest_l2_viewpoint_transfer"],
+                "advtest_l2_viewpoint_transfer",
+                think_rows,
+                lambda r, t, f: "facing" in clean_text(t.get("think")).lower(),
+            ),
+            "代表错误：模型注意到了 facing 关系，但没有把它转成正确的六类方向答案。",
         )
     )
 
     for title, rows, note in cases:
-        for index, row in enumerate(rows, start=1):
-            suffix = chr(ord("a") + index - 1)
-            lines.extend(format_case(f"{title}（样例 {suffix}）", row, note, think_rows))
+        if not rows:
+            continue
+        row = rows[0]
+        lines.extend(format_case(title, row, note, think_rows))
 
     lines.extend(
         [
