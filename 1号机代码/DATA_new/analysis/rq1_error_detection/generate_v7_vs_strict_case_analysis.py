@@ -231,6 +231,15 @@ def predicted_choice_text(row: dict[str, Any]) -> str:
     return prediction_text(row)
 
 
+def full_prediction_text(row: dict[str, Any]) -> str:
+    pred = prediction_text(row)
+    label = predicted_label(row)
+    text = predicted_choice_text(row)
+    if label and text and pred.strip().upper() == label:
+        return f"{label}. {text}"
+    return pred
+
+
 def direction_error_type(row: dict[str, Any]) -> str:
     gt = answer_text(row).lower()
     pred = predicted_choice_text(row).lower()
@@ -259,10 +268,9 @@ def format_case(
     lines = [f"### {title}", ""]
     row_method = str(row.get("method") or "")
     analysis_method = row_method.removesuffix("_choice")
-    parsed_family = family_name(analysis_method, row)
+    think_row = (think_rows or {}).get(think_key(row))
+    _think_pred, _think_reason, raw_think = first_think_fields(think_row)
     block = [
-        f"Method: {clean_text(row.get('method'))}",
-        f"Family: {clean_text(parsed_family)}",
         f"Scene: {clean_text(row.get('scene_frame'))}",
         f"Question: {short_question(row)}",
     ]
@@ -277,18 +285,10 @@ def format_case(
             f"GT: {clean_text(row.get('choice_answer_label'))}. {answer_text(row)}"
             if row.get("choice_answer_label")
             else f"GT: {answer_text(row)}",
-            f"Pred: {prediction_text(row)}",
+            f"Pred: {full_prediction_text(row)}",
+            f"Think: {raw_think or '(not available)'}",
         ]
     )
-    if think_row:
-        think_pred, think_reason, raw_think = first_think_fields(think_row)
-        block.extend(
-            [
-                f"Think Pred: {think_pred}",
-                f"Think Raw Output: {raw_think}",
-                f"Think Reason: {think_reason or '(not provided in first output)'}",
-            ]
-        )
     block.append(f"Image: {clean_text(row.get('image_path'))}")
     lines.extend(["```text", *block, "```", ""])
     lines.extend(render_human_analysis(row, note, think_row))
@@ -302,7 +302,7 @@ def render_human_analysis(
     analysis_method = row_method.removesuffix("_choice")
     family = family_name(analysis_method, row)
     gt = answer_text(row)
-    pred = prediction_text(row)
+    pred = full_prediction_text(row)
     think_pred, think_reason, raw_think = first_think_fields(think_row)
 
     validity = "有效。题干、选项和 GT 都明确。"
@@ -323,56 +323,45 @@ def render_human_analysis(
         same_choice = bool(pred_label and think_label and pred_label == think_label) or think_pred == pred
         think_ok = think_row.get("think_is_correct") if think_row else None
         if think_ok is True:
-            correctness = "这次是正确的"
+            correctness = "think 这次选对了"
         elif think_ok is False:
-            correctness = "这次仍然错误"
+            correctness = "think 这次仍然选错"
         else:
-            correctness = "无法自动判断正误"
+            correctness = "think 这次无法自动判断正误"
         if same_choice:
-            think_status = f"think 版第一次输出仍是 `{think_pred}`，和正式选择一致，{correctness}。"
+            think_status = f"think 原文仍选 `{think_pred}`，和模型答案一致，{correctness}"
         else:
-            think_status = f"think 版第一次输出为 `{think_pred}`，和正式选择 `{pred}` 不同，{correctness}，说明该题回答不稳定。"
+            think_status = f"think 原文选 `{think_pred}`，和模型答案 `{pred}` 不同，{correctness}，说明这题回答不稳定"
     else:
-        think_status = "没有拿到可解析的 think 版答案。"
+        think_status = "think 原文没有可解析答案"
 
     if family == "l0:count_type":
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是数量判断不准。"
+        analysis = f"这题有效但偏难，要数清目标。标准答案是 `{gt}`，模型答 `{pred}`，主要错在数量判断不准；{think_status}。"
     elif family in {"l0:status", "l0:status_yes"}:
-        error = f"正式答案 `{pred}` 和 GT `{gt}` 不一致；{think_status}"
-        think_cause = "错因主要是目标状态判断不准。"
+        analysis = f"这题有效。标准答案是 `{gt}`，模型答 `{pred}`，主要错在目标状态判断；{think_status}。"
     elif family in {"l1:direction", "l1:direction_reverse"}:
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是方向区间判断不准。"
+        analysis = f"这题有效，考的是相对方向。标准答案是 `{gt}`，模型答 `{pred}`，主要错在方向区间判断；{think_status}。"
     elif family in {"l1:count_direction_type", "l1:count_status_direction_type"}:
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是方向筛选和计数叠加失败。"
+        analysis = f"这题有效但偏难，要先按方向筛对象再计数。标准答案是 `{gt}`，模型答 `{pred}`，错在筛选和计数叠加；{think_status}。"
     elif family == "converge":
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是多条关系没有同时满足，被局部约束带偏。"
+        analysis = f"这题是有效 hard case。标准答案是 `{gt}`，模型答 `{pred}`，说明它没有同时满足多条关系，容易被局部条件带偏；{think_status}。"
     elif family == "direction_chain":
-        error = f"正式答案 `{pred}` 和 GT `{gt}` 不一致；{think_status}"
-        think_cause = "错因主要是关系链判断不稳定。"
+        analysis = f"这题有效，但选择题会降低难度。标准答案是 `{gt}`，模型答 `{pred}`，主要问题是关系链判断不稳定；{think_status}。"
     elif family == "distance_chain":
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是距离比较本身判断错。"
+        analysis = f"这题有效，考相对距离。标准答案是 `{gt}`，模型答 `{pred}`，错在距离比较本身；{think_status}。"
     elif family == "viewpoint_transfer":
-        error = f"正式答案选 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "错因主要是没有稳定切到目标朝向为 0° 的坐标系。"
+        analysis = f"这题有效，考视角转换。标准答案是 `{gt}`，模型答 `{pred}`，主要问题是没有稳定切到目标朝向为 0° 的坐标系；{think_status}。"
     else:
-        error = f"正式答案 `{pred}`，GT 是 `{gt}`；{think_status}"
-        think_cause = "Think 只能作为辅助线索，具体错因需要结合图像复核。"
+        analysis = f"标准答案是 `{gt}`，模型答 `{pred}`；{think_status}。具体错因还需要结合图像复核。"
 
     if think_reason:
-        think_cause += f" 第一次 think 给出的理由是：`{think_reason}`"
+        analysis += f" Think 里的理由是：`{think_reason}`。"
     elif raw_think:
-        think_cause += f" 但第一次 think 输出只给了答案 `{raw_think}`，没有给出可用理由。"
+        analysis += " Think 原文只给了答案，没有给出理由。"
 
     return [
         "人工分析：",
-        f"- 题目：{validity}",
-        f"- 错因：{error}",
-        f"- Think 暴露的问题：{think_cause}",
+        analysis,
         "",
     ]
 
@@ -603,9 +592,9 @@ def build_report() -> None:
             "",
             "## 5. v7 错题 case",
             "",
-            "下面只放 v7 错题。每个 case 都按当前选择题版口径展示：题干、选项、GT、正式模型输出、think prompt 第一次输出和图像路径。",
+            "下面只放 v7 错题。每个 case 只展示题目、标准答案、模型答案、Think 原文和图像路径。",
             "",
-            "说明：这里的 `Think` 只取 think prompt 的第一次真实输出；如果第一次没有给出理由，报告会明确标注未提供理由。",
+            "说明：`Think` 是让模型带理由作答时的第一次原始输出；如果它只给答案、不写理由，报告就按原样保留。",
             "",
         ]
     )
