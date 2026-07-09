@@ -527,9 +527,9 @@ FAMILY_EXPLANATIONS = {
     "l0:exists": "判断具体对象是否存在。",
     "l0:exists_status_type": "判断某类/某状态对象是否存在，带类型和状态约束。",
     "l0:more_type": "比较两类对象数量多少。",
-    "l0:status": "询问具体对象运动状态。",
-    "l0:status_no": "状态否定式 yes/no。",
-    "l0:status_yes": "状态肯定式 yes/no；当前 v7 错误率异常高，需优先人工复核题干/GT/图像。",
+    "l0:status": "直接问具体对象运动状态，需要在 moving/stopped/parked 中选。",
+    "l0:status_no": "状态否定式 yes/no；低错主要因为模型在状态判断里强烈倾向答 no。",
+    "l0:status_yes": "状态肯定式 yes/no；高错主要因为模型在具体 ID 状态确认题里强烈倾向答 no。",
     "l0:type": "询问具体对象类别。",
     "l0:type_no": "类别否定式 yes/no。",
     "l0:type_yes": "类别肯定式 yes/no。",
@@ -541,8 +541,8 @@ FAMILY_EXPLANATIONS = {
     "l1:exists_direction_type_no": "方向存在题的否定式。",
     "l1:exists_status_direction_type": "某方向是否存在某类且某状态对象。",
     "l1:object_at": "具体对象是否位于某方向。",
-    "l1:relation_no": "关系否定式 yes/no。",
-    "l1:relation_yes": "关系肯定式 yes/no；当前错误率极高，需优先检查是否存在 yes/no 选项或 GT 方向口径问题。",
+    "l1:relation_no": "关系否定式 yes/no；低错同样受模型 no 倾向影响。",
+    "l1:relation_yes": "关系肯定式 yes/no；当前 108/108 都被答成 no，主要反映模型对具体空间陈述的默认否定。",
 }
 
 
@@ -583,7 +583,7 @@ def build_report() -> None:
         "- 严格问答版：模型自由生成答案，按冻结的自动判分结果统计。",
         "- v7 角度精细化选择题版：题目来源保持一致，转成选择题；涉及方向的题，在题干和选项里显式给出 NuScenes-QA 的方向角度标准，角度以目标朝向为 0°。",
         "",
-        "这里不讨论 v1/v3/v6，也不重算 QATest、QAAskeR；重点是看我们的题在“自由回答”和“选项明确化”之后，错误率变化是否合理。",
+        "这里不讨论 v1/v3/v6；QATest、QAAskeR 只补回严格问答版结果，v7 列留空，方便横向对比。",
         "",
         "## 1. 总体对比",
         "",
@@ -597,10 +597,17 @@ def build_report() -> None:
         delta = v["rate"] - s["rate"]
         lines.append(f"| {LABELS[method]} | {pct(s['rate'])} | {pct(v['rate'])} | {pp(delta)} |")
 
+    for method, label in (
+        ("qatest_l2_mixed", "QATest"),
+        ("qaasker_l2_mixed", "QAAskeR"),
+    ):
+        source = strict_sources[method]
+        lines.append(f"| {label} | {pct(source['error_rate'])} |  |  |")
+
     lines.extend(
         [
             "",
-            "补充：严格版各项均为 1000 题；v7 中 `mixed` 为 955 题、`converge` 为 973 题，因为选择题转换时强制要求同类候选、唯一正确项、无重复选项，转换不出的题没有纳入正式判分。",
+            "补充：严格版各项均为 1000 题；v7 中 `mixed` 为 955 题、`converge` 为 973 题，因为选择题转换时强制要求同类候选、唯一正确项、无重复选项，转换不出的题没有纳入正式判分。QATest、QAAskeR 没有做 v7 选择题重跑，所以对应列留空。",
             "",
             "## 2. 同一题目上的变化",
             "",
@@ -662,6 +669,8 @@ def build_report() -> None:
             "## 4. L0/L1 v7 分题型错误率",
             "",
             "L0/L1 的原始评测结果里 `family` 字段统一是 `unknown`，但 `source_question_id` 保留了结构化题型片段。下面的表就是从 `source_question_id` 中解析出的题型，例如 `scene-0003_frame0:l1:direction_reverse:car14:barrier2` 归为 `l1:direction_reverse`。",
+            "",
+            "注意：`status_yes/status_no` 和 `relation_yes/relation_no` 的差异不是 yes/no 题本身难度差异，而是模型在这批具体陈述确认题里明显偏向回答 `no`：`status_yes` 有 103/111 被答成 no，`status_no` 有 96/96 被答成 no；`relation_yes` 有 108/108 被答成 no，`relation_no` 有 83/104 被答成 no。",
             "",
         ]
     )
