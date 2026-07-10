@@ -6,7 +6,10 @@ $SuiteDir = Join-Path $RunRoot "choice_suites"
 $OutputDir = Join-Path $RunRoot "mplug_formal"
 $LogDir = Join-Path $RunRoot "logs"
 $StatusPath = Join-Path $RunRoot "status.json"
-$DataNew = Join-Path $ProjectRoot "1号机代码\DATA_new"
+$CodeRoot = (Get-ChildItem $ProjectRoot -Directory | Where-Object {
+    $_.Name -like "1*"
+} | Select-Object -First 1).FullName
+$DataNew = Join-Path $CodeRoot "DATA_new"
 $EvalScript = "analysis\rq1_error_detection\run_suite_evaluation.py"
 $Python = Join-Path $ProjectRoot ".venv310\Scripts\python.exe"
 
@@ -33,11 +36,16 @@ try {
         "--mode", "MPLUG",
         "--methods", "advtest_l2_viewpoint_transfer_4way_choice"
     )
-    $Process = Start-Process -FilePath $Python -ArgumentList $Arguments `
-        -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr `
-        -WorkingDirectory $DataNew -NoNewWindow -Wait -PassThru
-    if ($Process.ExitCode -ne 0) {
-        throw "Formal evaluation exited with code $($Process.ExitCode)"
+    Push-Location $DataNew
+    try {
+        & $Python @Arguments 1> $Stdout 2> $Stderr
+        $ExitCode = $LASTEXITCODE
+    }
+    finally {
+        Pop-Location
+    }
+    if ($ExitCode -ne 0) {
+        throw "Formal evaluation exited with code $ExitCode"
     }
     @{
         status = "completed"
