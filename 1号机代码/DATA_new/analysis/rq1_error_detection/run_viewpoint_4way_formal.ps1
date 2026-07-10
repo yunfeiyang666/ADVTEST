@@ -37,11 +37,16 @@ try {
         "--methods", "advtest_l2_viewpoint_transfer_4way_choice"
     )
     Push-Location $DataNew
+    $PreviousErrorActionPreference = $ErrorActionPreference
     try {
+        # Model libraries emit deprecation warnings on stderr. Let Python's exit
+        # code decide success instead of promoting those warnings to PS errors.
+        $ErrorActionPreference = "Continue"
         & $Python @Arguments 1> $Stdout 2> $Stderr
         $ExitCode = $LASTEXITCODE
     }
     finally {
+        $ErrorActionPreference = $PreviousErrorActionPreference
         Pop-Location
     }
     if ($ExitCode -ne 0) {
