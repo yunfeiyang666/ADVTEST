@@ -277,17 +277,17 @@ def viewpoint_path_pattern(row: dict) -> str:
     return ""
 
 
-def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
+def viewpoint_relative_angle(row: dict, outputs_root: Path) -> float | None:
     path_pattern = viewpoint_path_pattern(row)
     parts = path_pattern.split("|")
     if len(parts) != 3:
-        return ""
+        return None
     scene_frame = str(row.get("scene_frame") or "")
     if not scene_frame:
-        return ""
+        return None
     sg_path = scene_graph_path(outputs_root, scene_frame)
     if not sg_path.exists():
-        return ""
+        return None
     scene_graph = json.loads(sg_path.read_text(encoding="utf-8"))
     nodes = {
         str(node.get("unique_id") or node.get("id")): node
@@ -302,13 +302,17 @@ def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
         tx = float(target["translation"]["x"]) - ox
         ty = float(target["translation"]["y"]) - oy
     except Exception:
-        return ""
+        return None
     if (fx == 0 and fy == 0) or (tx == 0 and ty == 0):
-        return ""
+        return None
     dot = fx * tx + fy * ty
     cross = fx * ty - fy * tx
-    angle = math.degrees(math.atan2(cross, dot))
-    return discretize_direction_nuscenes(angle)
+    return math.degrees(math.atan2(cross, dot))
+
+
+def viewpoint_direction_nuscenes(row: dict, outputs_root: Path) -> str:
+    angle = viewpoint_relative_angle(row, outputs_root)
+    return discretize_direction_nuscenes(angle) if angle is not None else ""
 
 
 def viewpoint_choice_question(row: dict) -> str:

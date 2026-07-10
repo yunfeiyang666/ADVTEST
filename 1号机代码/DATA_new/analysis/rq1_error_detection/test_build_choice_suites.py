@@ -18,6 +18,7 @@ from build_choice_suites import (
     viewpoint_choice_question,
     viewpoint_path_pattern,
 )
+from build_viewpoint_4way_suite import discretize_direction_4way
 
 
 class ChoiceSuiteConstructionTests(unittest.TestCase):
@@ -87,6 +88,15 @@ class ChoiceSuiteConstructionTests(unittest.TestCase):
         options = choose_options(rows[0], pools, random.Random(1), Path(tempfile.gettempdir()))
 
         self.assertEqual(set(options), set(STATUS_OPTIONS))
+
+    def test_viewpoint_four_way_boundaries(self):
+        self.assertEqual(discretize_direction_4way(-180), "back")
+        self.assertEqual(discretize_direction_4way(-135), "right")
+        self.assertEqual(discretize_direction_4way(-45), "front")
+        self.assertEqual(discretize_direction_4way(44.9), "front")
+        self.assertEqual(discretize_direction_4way(45), "left")
+        self.assertEqual(discretize_direction_4way(134.9), "left")
+        self.assertEqual(discretize_direction_4way(135), "back")
 
 
 if __name__ == "__main__":
