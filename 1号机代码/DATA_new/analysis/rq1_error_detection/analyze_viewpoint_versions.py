@@ -73,6 +73,21 @@ def summarize(
         output = str(row.get("predicted") or row.get("raw_model_output") or "")
         match = re.match(r"^\s*([A-D])(?:\.|\)|:|\s)", output, flags=re.IGNORECASE)
         v7_predicted_labels[match.group(1).upper() if match else "unparsed"] += 1
+    back_offered = [
+        row
+        for row in v7_rows
+        if any(
+            str(choice.get("canonical_text") or "").lower() == "back"
+            for choice in row.get("choices") or []
+        )
+    ]
+    back_absent = [row for row in v7_rows if row not in back_offered]
+    back_selected = sum(choice_prediction(row) == "back" for row in back_offered)
+    wrong_back_selected = sum(
+        choice_prediction(row) == "back"
+        and str(row.get("answer") or "").lower() != "back"
+        for row in v7_rows
+    )
 
     summary = {
         "rows": total,
@@ -94,6 +109,26 @@ def summarize(
         "v7_prediction_counts": dict(v7_pred),
         "v7_answer_label_counts": dict(v7_answer_labels),
         "v7_predicted_label_counts": dict(v7_predicted_labels),
+        "v7_back_option_diagnosis": {
+            "offered": len(back_offered),
+            "selected_when_offered": back_selected,
+            "selection_rate_when_offered": (
+                back_selected / len(back_offered) if back_offered else None
+            ),
+            "wrong_back_selections": wrong_back_selected,
+            "error_rate_when_offered": (
+                sum(not bool(row.get("is_correct")) for row in back_offered)
+                / len(back_offered)
+                if back_offered
+                else None
+            ),
+            "error_rate_when_absent": (
+                sum(not bool(row.get("is_correct")) for row in back_absent)
+                / len(back_absent)
+                if back_absent
+                else None
+            ),
+        },
         "v7_top_gt_prediction_pairs": [
             {"ground_truth": gt, "prediction": pred, "count": count}
             for (gt, pred), count in v7_gt_pred.most_common(12)
@@ -161,6 +196,12 @@ def markdown(summary: dict) -> str:
                 )
             )
             + "。",
+            "",
+            "v7 的 `back (otherwise)` 选项具有明显诱导："
+            f"它出现 {summary['v7_back_option_diagnosis']['offered']} 次，模型在出现时选择 back "
+            f"{summary['v7_back_option_diagnosis']['selected_when_offered']} 次，"
+            f"其中 {summary['v7_back_option_diagnosis']['wrong_back_selections']} 次标准答案并非 back。"
+            "因此 v7 的 81.9% 包含选项措辞带来的额外错误，不能全部解释为视觉空间推理失败。",
             "",
             "## 严格版到 v7 的逐题变化",
             "",
