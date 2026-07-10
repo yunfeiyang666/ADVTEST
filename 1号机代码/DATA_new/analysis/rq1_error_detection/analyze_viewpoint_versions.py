@@ -39,6 +39,7 @@ def summarize(
     v7_rows: list[dict],
     fourway_suite: list[dict],
     fourway_results: list[dict] | None,
+    no_catchall_results: list[dict] | None,
 ) -> dict:
     if not (len(strict_rows) == len(v7_rows) == len(fourway_suite)):
         raise ValueError("Strict, v7, and four-way suites must have equal row counts")
@@ -158,6 +159,39 @@ def summarize(
                 ),
             }
         )
+    if no_catchall_results is not None:
+        if len(no_catchall_results) != total:
+            raise ValueError("No-catchall result count does not match the suite")
+        for index, (v7, fixed) in enumerate(
+            zip(v7_rows, no_catchall_results), start=1
+        ):
+            key = (str(v7.get("scene_frame")), str(v7.get("question_id")))
+            if key != (str(fixed.get("scene_frame")), str(fixed.get("question_id"))):
+                raise ValueError(f"no-catchall alignment mismatch at row {index}")
+        wrong = sum(not bool(row.get("is_correct")) for row in no_catchall_results)
+        fixed_back_offered = [
+            row
+            for row in no_catchall_results
+            if any(
+                str(choice.get("canonical_text") or "").lower() == "back"
+                for choice in row.get("choices") or []
+            )
+        ]
+        summary.update(
+            {
+                "no_catchall_wrong": wrong,
+                "no_catchall_error_rate": wrong / total if total else None,
+                "no_catchall_prediction_counts": dict(
+                    Counter(choice_prediction(row) for row in no_catchall_results)
+                ),
+                "no_catchall_back_selection_rate_when_offered": (
+                    sum(choice_prediction(row) == "back" for row in fixed_back_offered)
+                    / len(fixed_back_offered)
+                    if fixed_back_offered
+                    else None
+                ),
+            }
+        )
     return summary
 
 
@@ -177,6 +211,12 @@ def markdown(summary: dict) -> str:
         )
     else:
         lines.append("| 四方向重跑 | front/left/back/right 四分类，完整四选项 | 待正式评测 | 待正式评测 |")
+    if "no_catchall_wrong" in summary:
+        lines.append(
+            f"| 六方向去诱导词 | 与 v7 相同，只改 back 的角度措辞 | {summary['no_catchall_wrong']}/{rows} | {percent(summary['no_catchall_wrong'], rows)} |"
+        )
+    else:
+        lines.append("| 六方向去诱导词 | 与 v7 相同，只改 back 的角度措辞 | 待正式评测 | 待正式评测 |")
     lines.extend(
         [
             "",
@@ -223,6 +263,7 @@ def main() -> None:
     parser.add_argument("--v7-results", type=Path, required=True)
     parser.add_argument("--fourway-suite", type=Path, required=True)
     parser.add_argument("--fourway-results", type=Path)
+    parser.add_argument("--no-catchall-results", type=Path)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
     summary = summarize(
@@ -230,6 +271,7 @@ def main() -> None:
         load_jsonl(args.v7_results),
         load_jsonl(args.fourway_suite),
         load_jsonl(args.fourway_results) if args.fourway_results else None,
+        load_jsonl(args.no_catchall_results) if args.no_catchall_results else None,
     )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir / "viewpoint_version_diagnosis.json").write_text(
