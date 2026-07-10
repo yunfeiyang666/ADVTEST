@@ -7,7 +7,7 @@ $OutputDir = Join-Path $RunRoot "mplug_formal"
 $LogDir = Join-Path $RunRoot "logs"
 $StatusPath = Join-Path $RunRoot "status.json"
 $DataNew = Join-Path $ProjectRoot "1号机代码\DATA_new"
-$EvalScript = Join-Path $DataNew "analysis\rq1_error_detection\run_suite_evaluation.py"
+$EvalScript = "analysis\rq1_error_detection\run_suite_evaluation.py"
 $Python = Join-Path $ProjectRoot ".venv310\Scripts\python.exe"
 
 New-Item -ItemType Directory -Force -Path $OutputDir, $LogDir | Out-Null
@@ -28,14 +28,14 @@ try {
         $EvalScript,
         "--suite-dir", $SuiteDir,
         "--output-dir", $OutputDir,
-        "--outputs-root", (Join-Path $DataNew "outputs"),
-        "--dataroot", (Join-Path $DataNew "data"),
+        "--outputs-root", "outputs",
+        "--dataroot", "data",
         "--mode", "MPLUG",
         "--methods", "advtest_l2_viewpoint_transfer_4way_choice"
     )
     $Process = Start-Process -FilePath $Python -ArgumentList $Arguments `
         -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr `
-        -NoNewWindow -Wait -PassThru
+        -WorkingDirectory $DataNew -NoNewWindow -Wait -PassThru
     if ($Process.ExitCode -ne 0) {
         throw "Formal evaluation exited with code $($Process.ExitCode)"
     }
