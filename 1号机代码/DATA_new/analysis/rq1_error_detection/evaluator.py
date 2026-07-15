@@ -148,6 +148,7 @@ def get_sample_token(scene_graph: Dict[str, Any], dataroot: Path) -> Optional[st
 
 _SAMPLE_TOKEN_TO_CAM_FILES = None
 _METADATA_RECORD_CACHE: Dict[Tuple[str, str], Dict[str, dict]] = {}
+_SAMPLE_CAMERA_RECORD_CACHE: Dict[Tuple[str, str], Dict[str, dict]] = {}
 
 
 
@@ -309,6 +310,27 @@ def get_sample_camera_files(sample_token: str, dataroot: Path) -> Dict[str, Path
     return camera_files
 
 
+def cache_sample_camera_records(
+    dataroot: Path, records_by_sample: Dict[str, Dict[str, dict]]
+) -> None:
+    """Prime camera metadata and image paths for a batch of sample tokens."""
+    global _SAMPLE_TOKEN_TO_CAM_FILES
+    if _SAMPLE_TOKEN_TO_CAM_FILES is None:
+        _SAMPLE_TOKEN_TO_CAM_FILES = {}
+    root_key = str(dataroot.absolute())
+    for sample_token, camera_records in records_by_sample.items():
+        _SAMPLE_CAMERA_RECORD_CACHE[(root_key, sample_token)] = camera_records
+        image_paths = _SAMPLE_TOKEN_TO_CAM_FILES.setdefault(sample_token, {})
+        for channel, record in camera_records.items():
+            filename = record.get("filename")
+            if not filename:
+                continue
+            image_path = dataroot / filename
+            if not image_path.exists():
+                image_path = dataroot.parent / filename
+            image_paths[channel] = image_path
+
+
 def _records_by_token(dataroot: Path, filename: str) -> Dict[str, dict]:
     """Load a nuScenes metadata table keyed by token."""
     cache_key = (str(dataroot.absolute()), filename)
@@ -330,6 +352,9 @@ def _records_by_token(dataroot: Path, filename: str) -> Dict[str, dict]:
 
 def _sample_camera_records(sample_token: str, dataroot: Path) -> Dict[str, dict]:
     """Find sample_data records for the six key-frame cameras of one sample."""
+    cache_key = (str(dataroot.absolute()), sample_token)
+    if cache_key in _SAMPLE_CAMERA_RECORD_CACHE:
+        return _SAMPLE_CAMERA_RECORD_CACHE[cache_key]
     sample_data_file = _find_metadata_file(dataroot, "sample_data.json")
     if not sample_data_file:
         return {}
@@ -360,6 +385,7 @@ def _sample_camera_records(sample_token: str, dataroot: Path) -> Dict[str, dict]
                     pos = end + 2
     except Exception as exc:
         print(f"Error scanning camera metadata for {sample_token}: {exc}")
+    _SAMPLE_CAMERA_RECORD_CACHE[cache_key] = records
     return records
 
 

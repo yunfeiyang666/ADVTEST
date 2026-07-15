@@ -41,7 +41,8 @@
         "scene_frame",
         "scene_name",
         "source_question_id",
-        "family"
+        "family",
+        "image_sha256"
       ],
       "properties": {
         "dataset_name": {"type": "string", "minLength": 1},
@@ -49,10 +50,10 @@
         "scene_frame": {"type": "string", "pattern": "^scene-\\d+_frame\\d+$"},
         "scene_name": {"type": "string", "pattern": "^scene-\\d+$"},
         "source_question_id": {"type": "string", "minLength": 1},
-        "family": {"type": "string", "minLength": 1}
+        "family": {"type": "string", "minLength": 1},
+        "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       },
       "additionalProperties": true
     }
   }
 }
-

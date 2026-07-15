@@ -3,19 +3,56 @@ import csv
 import hashlib
 import json
 import re
+import sys
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Iterable
 
+from jsonschema import Draft202012Validator
+from PIL import Image
+
 from config import (
     ALL_FRAMES_STATS,
+    DATAROOT,
     EXPECTED_COUNTS,
     FORMAL_TEST_FRAME_CACHE,
+    HARD_CANDIDATE_QUOTAS,
+    OFFICIAL_QUESTIONS_PATH,
     OUTPUTS_ROOT,
     SCRATCH_ROOT,
     SPLIT_SEED,
     TEST_SCENES,
+    TRAINING_QUOTAS,
     VALIDATION_SCENES,
 )
+from data_ops import (
+    assert_no_test_scene,
+    build_official_dataset,
+    build_structural_pair,
+    convert_to_choice,
+    family_name,
+    file_sha256,
+    iter_jsonl,
+    load_scene_graph,
+    normalize_open_rows,
+    preload_camera_records,
+    project_visible_ids,
+    read_json,
+    required_visible_ids,
+    row_scene_frame,
+    row_source_id,
+    select_common_frames,
+    select_hard_rows,
+    to_sft_record,
+    write_json,
+    write_jsonl,
+)
+
+
+RQ1_MODULE_DIR = Path(__file__).resolve().parent.parent / "rq1_error_detection"
+if str(RQ1_MODULE_DIR) not in sys.path:
+    sys.path.insert(0, str(RQ1_MODULE_DIR))
+import evaluator  # noqa: E402
 
 
 SCENE_FRAME_RE = re.compile(r"^(scene-\d+)_frame(\d+)$")
@@ -236,6 +273,382 @@ def run_split(args: argparse.Namespace) -> None:
     print(f"[rq3-data] split artifacts: {args.output_dir.resolve()}")
 
 
+def _dataset_manifest(name: str, rows: list[dict], path: Path) -> dict:
+    return {
+        "dataset_name": name,
+        "path": str(path.resolve()),
+        "sha256": file_sha256(path),
+        "rows": len(rows),
+        "unique_frames": len({row_scene_frame(row) for row in rows}),
+        "family_counts": dict(sorted(Counter(family_name(row) for row in rows).items())),
+        "test_scene_leakage": 0,
+    }
+
+
+def _smoke_quotas() -> dict[str, int]:
+    return {key: 2 for key in TRAINING_QUOTAS}
+
+
+def run_build(args: argparse.Namespace) -> None:
+    split_manifest = read_json(args.split_dir / "split_manifest.json")
+    if split_manifest["checks"]["scene_overlap_count"] != 0:
+        raise ValueError("Refusing to build from a split manifest with scene leakage")
+    train_frames = read_json(args.split_dir / "train_frames.json")
+    common_frames = select_common_frames(
+        train_frames,
+        args.frame_pool_size,
+        args.seed,
+    )
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    write_json(args.output_dir / "common_train_frames.json", common_frames)
+
+    quotas = (
+        _smoke_quotas()
+        if args.smoke
+        else (HARD_CANDIDATE_QUOTAS if args.kind == "hard-candidates" else TRAINING_QUOTAS)
+    )
+    structural, assignments = build_structural_pair(
+        common_frames,
+        quotas,
+        args.outputs_root,
+        args.dataroot,
+        args.seed,
+        args.per_frame_candidate_limit,
+    )
+    manifests = {}
+    if args.kind == "hard-candidates":
+        datasets = {"advtest_hard_candidates": structural["advtest"]}
+    else:
+        official_budget = sum(quotas.values())
+        official = build_official_dataset(
+            common_frames if args.smoke else train_frames,
+            args.official_questions,
+            args.outputs_root,
+            args.dataroot,
+            official_budget,
+            args.seed,
+            args.official_per_frame_cap,
+        )
+        datasets = {
+            "advtest_10k": structural["advtest"],
+            "random_10k": structural["random"],
+            "official_qa_10k": official,
+        }
+    source_dir = args.output_dir / "sources"
+    for name, rows in datasets.items():
+        assert_no_test_scene(rows)
+        path = source_dir / f"{name}_source.jsonl"
+        write_jsonl(path, rows)
+        manifests[name] = _dataset_manifest(name, rows, path)
+    manifest = {
+        "schema_version": "rq3_source_datasets_v1",
+        "kind": args.kind,
+        "smoke": args.smoke,
+        "seed": args.seed,
+        "frame_pool_size": args.frame_pool_size,
+        "common_frame_manifest": str((args.output_dir / "common_train_frames.json").resolve()),
+        "quotas": quotas,
+        "per_frame_candidate_limit": args.per_frame_candidate_limit,
+        "frame_assignments": assignments,
+        "datasets": manifests,
+    }
+    write_json(args.output_dir / "source_dataset_manifest.json", manifest)
+    print(json.dumps({name: value["rows"] for name, value in manifests.items()}))
+    print(f"[rq3-data] source datasets: {args.output_dir.resolve()}")
+
+
+def run_screen_hard(args: argparse.Namespace) -> None:
+    raw_results = list(iter_jsonl(args.raw_results))
+    source_rows = list(iter_jsonl(args.source_suite))
+    quotas = _smoke_quotas() if args.smoke else TRAINING_QUOTAS
+    selected, summary = select_hard_rows(
+        raw_results,
+        source_rows,
+        quotas,
+        args.seed,
+    )
+    assert_no_test_scene(selected)
+    write_jsonl(args.output_suite, selected)
+    manifest = {
+        "schema_version": "rq3_hard_screen_v1",
+        "source_suite": str(args.source_suite.resolve()),
+        "raw_results": str(args.raw_results.resolve()),
+        "output_suite": str(args.output_suite.resolve()),
+        "output_sha256": file_sha256(args.output_suite),
+        "seed": args.seed,
+        "quotas": quotas,
+        "rows": len(selected),
+        **summary,
+    }
+    write_json(args.output_manifest, manifest)
+    print(json.dumps({"rows": len(selected), **summary}, ensure_ascii=False))
+
+
+def _project_visible_ids(scene_graph: dict, dataroot: Path) -> set[str]:
+    return project_visible_ids(scene_graph, dataroot)
+
+
+def _required_visible_ids(row: dict) -> set[str]:
+    return required_visible_ids(row)
+
+
+def _render_images_and_validate_visibility(
+    rows_by_dataset: dict[str, list[dict]],
+    output_dir: Path,
+    outputs_root: Path,
+    dataroot: Path,
+) -> tuple[dict[str, str], list[dict], dict[str, set[str]]]:
+    images_dir = output_dir / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+    by_frame: dict[str, list[tuple[str, dict]]] = defaultdict(list)
+    for dataset_name, rows in rows_by_dataset.items():
+        for row in rows:
+            by_frame[row_scene_frame(row)].append((dataset_name, row))
+    image_hashes = {}
+    rejected = []
+    visible_ids_by_frame = {}
+    graphs_by_frame = {
+        sf: load_scene_graph(outputs_root, sf) for sf in sorted(by_frame)
+    }
+    preload_camera_records(
+        (evaluator.get_sample_token(graph, dataroot) for graph in graphs_by_frame.values()),
+        dataroot,
+    )
+    for index, (sf, tagged_rows) in enumerate(sorted(by_frame.items()), start=1):
+        scene_graph = graphs_by_frame[sf]
+        visible_ids = _project_visible_ids(scene_graph, dataroot)
+        visible_ids_by_frame[sf] = visible_ids
+        image_path = images_dir / f"{sf}_labeled_mosaic.jpg"
+        if not image_path.exists():
+            if not evaluator.render_labeled_mosaic(scene_graph, dataroot, image_path):
+                raise RuntimeError(f"Could not render labeled mosaic for {sf}")
+        with Image.open(image_path) as image:
+            image.verify()
+        image_hashes[sf] = file_sha256(image_path)
+        for dataset_name, row in tagged_rows:
+            required = _required_visible_ids(row)
+            missing = sorted(required - visible_ids)
+            if missing:
+                rejected.append(
+                    {
+                        "dataset_name": dataset_name,
+                        "scene_frame": sf,
+                        "source_question_id": row_source_id(row),
+                        "reason": "referenced_object_not_rendered",
+                        "missing_object_ids": missing,
+                    }
+                )
+        if index % 50 == 0:
+            print(f"[rq3-data] rendered {index}/{len(by_frame)} mosaics", flush=True)
+    return image_hashes, rejected, visible_ids_by_frame
+
+
+def run_export(args: argparse.Namespace) -> None:
+    sources = dict(args.source)
+    rows_by_dataset = {name: list(iter_jsonl(path)) for name, path in sources.items()}
+    for rows in rows_by_dataset.values():
+        assert_no_test_scene(rows)
+    image_hashes, rejected, visible_ids_by_frame = _render_images_and_validate_visibility(
+        rows_by_dataset,
+        args.output_dir,
+        args.outputs_root,
+        args.dataroot,
+    )
+    write_jsonl(args.output_dir / "visibility_rejected.jsonl", rejected)
+    if rejected and not args.allow_visibility_rejections:
+        raise ValueError(
+            f"Visibility validation rejected {len(rejected)} rows; "
+            "source datasets must be backfilled before formal export"
+        )
+    rejected_keys = {
+        (row["dataset_name"], row["scene_frame"], row["source_question_id"])
+        for row in rejected
+    }
+    manifests = {}
+    datasets_dir = args.output_dir / "datasets"
+    for dataset_name, rows in rows_by_dataset.items():
+        valid_rows = [
+            row
+            for row in rows
+            if (dataset_name, row_scene_frame(row), row_source_id(row))
+            not in rejected_keys
+        ]
+        choice_rows = convert_to_choice(
+            valid_rows,
+            args.outputs_root,
+            args.seed,
+            visible_ids_by_frame,
+        )
+        valid_rows = normalize_open_rows(valid_rows, choice_rows)
+        open_records = [
+            to_sft_record(
+                row,
+                dataset_name,
+                "open",
+                image_hashes[row_scene_frame(row)],
+            )
+            for row in valid_rows
+        ]
+        choice_records = [
+            to_sft_record(
+                row,
+                dataset_name,
+                "choice",
+                image_hashes[row_scene_frame(row)],
+            )
+            for row in choice_rows
+        ]
+        open_path = datasets_dir / f"{dataset_name}_open.json"
+        choice_path = datasets_dir / f"{dataset_name}_choice.json"
+        write_json(open_path, open_records)
+        write_json(choice_path, choice_records)
+        manifests[dataset_name] = {
+            "source": str(sources[dataset_name].resolve()),
+            "source_rows": len(rows),
+            "valid_rows": len(valid_rows),
+            "visibility_rejected": len(rows) - len(valid_rows),
+            "open_dataset": str(open_path.resolve()),
+            "open_sha256": file_sha256(open_path),
+            "choice_dataset": str(choice_path.resolve()),
+            "choice_sha256": file_sha256(choice_path),
+            "unique_images": len({row_scene_frame(row) for row in valid_rows}),
+            "family_counts": dict(
+                sorted(Counter(family_name(row) for row in valid_rows).items())
+            ),
+        }
+    manifest = {
+        "schema_version": "rq3_mplug_sft_export_v1",
+        "seed": args.seed,
+        "image_root": str((args.output_dir / "images").resolve()),
+        "image_count": len(image_hashes),
+        "image_hashes": image_hashes,
+        "datasets": manifests,
+    }
+    write_json(args.output_dir / "sft_export_manifest.json", manifest)
+    print(json.dumps({name: value["valid_rows"] for name, value in manifests.items()}))
+
+
+def _validate_sft_record(record: dict, image_root: Path) -> list[str]:
+    errors = []
+    if not str(record.get("id") or ""):
+        errors.append("missing_id")
+    conversations = record.get("conversations") or []
+    if len(conversations) != 2:
+        errors.append("conversation_count")
+    else:
+        if conversations[0].get("from") != "human" or not str(
+            conversations[0].get("value") or ""
+        ).startswith("<|image|>"):
+            errors.append("human_prompt")
+        if conversations[1].get("from") != "gpt" or not str(
+            conversations[1].get("value") or ""
+        ).strip():
+            errors.append("gpt_target")
+    metadata = record.get("metadata") or {}
+    sf = str(metadata.get("scene_frame") or "")
+    if sf.split("_frame", 1)[0] in TEST_SCENES:
+        errors.append("test_scene_leakage")
+    image_path = image_root / str(record.get("image") or "")
+    if not image_path.exists():
+        errors.append("missing_image")
+    elif metadata.get("image_sha256") != file_sha256(image_path):
+        errors.append("image_hash_mismatch")
+    return errors
+
+
+def run_validate(args: argparse.Namespace) -> None:
+    records = read_json(args.dataset)
+    if not isinstance(records, list):
+        raise ValueError("SFT dataset must be a JSON list")
+    if args.expected_count and len(records) != args.expected_count:
+        raise ValueError(
+            f"Expected {args.expected_count} rows, found {len(records)}"
+        )
+    ids = [str(record.get("id") or "") for record in records]
+    source_ids = [
+        str((record.get("metadata") or {}).get("source_question_id") or "")
+        for record in records
+    ]
+    if len(ids) != len(set(ids)):
+        raise ValueError("Duplicate SFT record IDs")
+    if len(source_ids) != len(set(source_ids)):
+        raise ValueError("Duplicate source_question_id values")
+    errors = Counter()
+    schema = read_json(Path(__file__).resolve().parent / "sft_schema.json")
+    schema_validator = Draft202012Validator(schema)
+    for record in records:
+        for schema_error in schema_validator.iter_errors(record):
+            errors[f"schema:{schema_error.validator}"] += 1
+        errors.update(_validate_sft_record(record, args.image_root))
+    family_counts = Counter(
+        str((record.get("metadata") or {}).get("family") or "")
+        for record in records
+    )
+    if args.structural:
+        expected_quotas = _smoke_quotas() if args.smoke else TRAINING_QUOTAS
+        if dict(family_counts) != expected_quotas:
+            raise ValueError(
+                f"Structural quotas differ: expected={expected_quotas}, "
+                f"actual={dict(family_counts)}"
+            )
+    paired_summary = None
+    if args.paired_dataset:
+        paired = read_json(args.paired_dataset)
+        if not isinstance(paired, list):
+            raise ValueError("Paired SFT dataset must be a JSON list")
+        paired_source_ids = [
+            str((record.get("metadata") or {}).get("source_question_id") or "")
+            for record in paired
+        ]
+        if len(paired_source_ids) != len(set(paired_source_ids)):
+            raise ValueError("Duplicate source IDs in paired SFT dataset")
+        if len(records) != len(paired) or set(source_ids) != set(paired_source_ids):
+            raise ValueError("Paired open/choice datasets do not contain the same sources")
+        paired_by_source = {
+            source_id: record for source_id, record in zip(paired_source_ids, paired)
+        }
+        for source_id, record in zip(source_ids, records):
+            other = paired_by_source[source_id]
+            for schema_error in schema_validator.iter_errors(other):
+                errors[f"paired_schema:{schema_error.validator}"] += 1
+            errors.update(
+                f"paired_{error}"
+                for error in _validate_sft_record(other, args.image_root)
+            )
+            left_metadata = record.get("metadata") or {}
+            right_metadata = other.get("metadata") or {}
+            if record.get("image") != other.get("image") or left_metadata.get(
+                "image_sha256"
+            ) != right_metadata.get("image_sha256"):
+                errors["paired_image_mismatch"] += 1
+        paired_summary = {"path": str(args.paired_dataset.resolve()), "rows": len(paired)}
+    if errors:
+        raise ValueError(f"SFT validation failed: {dict(errors)}")
+    manifest = {
+        "schema_version": "rq3_sft_validation_v1",
+        "dataset": str(args.dataset.resolve()),
+        "dataset_sha256": file_sha256(args.dataset),
+        "rows": len(records),
+        "unique_source_questions": len(set(source_ids)),
+        "unique_images": len({record["image"] for record in records}),
+        "family_counts": dict(sorted(family_counts.items())),
+        "test_scene_leakage": 0,
+        "validation_errors": {},
+        "paired_dataset": paired_summary,
+    }
+    write_json(args.output_manifest, manifest)
+    print(json.dumps(manifest, ensure_ascii=False))
+
+
+def parse_named_path(value: str) -> tuple[str, Path]:
+    if "=" not in value:
+        raise argparse.ArgumentTypeError("Expected NAME=PATH")
+    name, raw_path = value.split("=", 1)
+    if not name or not raw_path:
+        raise argparse.ArgumentTypeError("Expected non-empty NAME=PATH")
+    return name, Path(raw_path)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Prepare RQ3 VLM repair datasets.")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -258,6 +671,58 @@ def build_parser() -> argparse.ArgumentParser:
         help="Only for isolated unit fixtures; formal runs must enforce fixed counts.",
     )
     split_parser.set_defaults(func=run_split)
+
+    build_parser = subparsers.add_parser("build", help="Build source QA datasets.")
+    build_parser.add_argument("--kind", choices=["main", "hard-candidates"], default="main")
+    build_parser.add_argument(
+        "--split-dir", type=Path, default=SCRATCH_ROOT / "data" / "splits"
+    )
+    build_parser.add_argument("--outputs-root", type=Path, default=OUTPUTS_ROOT)
+    build_parser.add_argument("--dataroot", type=Path, default=DATAROOT)
+    build_parser.add_argument(
+        "--official-questions", type=Path, default=OFFICIAL_QUESTIONS_PATH
+    )
+    build_parser.add_argument(
+        "--output-dir", type=Path, default=SCRATCH_ROOT / "data" / "source_datasets"
+    )
+    build_parser.add_argument("--frame-pool-size", type=int, default=600)
+    build_parser.add_argument("--per-frame-candidate-limit", type=int, default=300)
+    build_parser.add_argument("--official-per-frame-cap", type=int, default=10)
+    build_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
+    build_parser.add_argument("--smoke", action="store_true")
+    build_parser.set_defaults(func=run_build)
+
+    hard_parser = subparsers.add_parser(
+        "screen-hard", help="Select genuinely wrong rows from mPLUG choice results."
+    )
+    hard_parser.add_argument("--raw-results", type=Path, required=True)
+    hard_parser.add_argument("--source-suite", type=Path, required=True)
+    hard_parser.add_argument("--output-suite", type=Path, required=True)
+    hard_parser.add_argument("--output-manifest", type=Path, required=True)
+    hard_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
+    hard_parser.add_argument("--smoke", action="store_true")
+    hard_parser.set_defaults(func=run_screen_hard)
+
+    export_parser = subparsers.add_parser(
+        "export", help="Render shared mosaics and export paired mPLUG SFT JSON."
+    )
+    export_parser.add_argument("--source", action="append", type=parse_named_path, required=True)
+    export_parser.add_argument("--output-dir", type=Path, default=SCRATCH_ROOT / "data" / "sft")
+    export_parser.add_argument("--outputs-root", type=Path, default=OUTPUTS_ROOT)
+    export_parser.add_argument("--dataroot", type=Path, default=DATAROOT)
+    export_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
+    export_parser.add_argument("--allow-visibility-rejections", action="store_true")
+    export_parser.set_defaults(func=run_export)
+
+    validate_parser = subparsers.add_parser("validate", help="Validate an exported SFT dataset.")
+    validate_parser.add_argument("--dataset", type=Path, required=True)
+    validate_parser.add_argument("--paired-dataset", type=Path)
+    validate_parser.add_argument("--image-root", type=Path, required=True)
+    validate_parser.add_argument("--output-manifest", type=Path, required=True)
+    validate_parser.add_argument("--expected-count", type=int, default=0)
+    validate_parser.add_argument("--structural", action="store_true")
+    validate_parser.add_argument("--smoke", action="store_true")
+    validate_parser.set_defaults(func=run_validate)
     return parser
 
 
