@@ -276,12 +276,20 @@ def filter_frame_inputs_by_visibility(
     filtered = []
     for frame in frames:
         visible_ids = visible_ids_by_frame[frame.scene_frame]
-        questions = [
-            question
-            for question in frame.questions
-            if required_visible_ids(question) <= visible_ids
-            and choice_candidate_is_usable(question, visible_ids)
-        ]
+        questions = []
+        seen_text = set()
+        for question in frame.questions:
+            text_key = str(question.get("question") or "").strip().lower()
+            if (
+                not text_key
+                or text_key in seen_text
+                or not _basic_valid(question)
+                or not required_visible_ids(question) <= visible_ids
+                or not choice_candidate_is_usable(question, visible_ids)
+            ):
+                continue
+            seen_text.add(text_key)
+            questions.append(question)
         filtered.append(
             FrameInput(
                 scene_frame=frame.scene_frame,
@@ -360,13 +368,19 @@ def dedupe_and_validate_rows(rows: Iterable[Mapping], expected: int) -> list[dic
     output = []
     seen_ids = set()
     seen_text = set()
+    rejected = Counter()
     for index, raw in enumerate(rows, start=1):
         row = dict(raw)
         if not _basic_valid(row):
+            rejected["invalid"] += 1
             continue
         source_id = row_source_id(row, index)
         key = (row_scene_frame(row), str(row.get("question") or "").strip().lower())
-        if source_id in seen_ids or key in seen_text:
+        if source_id in seen_ids:
+            rejected["duplicate_id"] += 1
+            continue
+        if key in seen_text:
+            rejected["duplicate_text"] += 1
             continue
         seen_ids.add(source_id)
         seen_text.add(key)
@@ -375,7 +389,10 @@ def dedupe_and_validate_rows(rows: Iterable[Mapping], expected: int) -> list[dic
         if len(output) == expected:
             break
     if len(output) != expected:
-        raise ValueError(f"Expected {expected} valid unique rows, found {len(output)}")
+        raise ValueError(
+            f"Expected {expected} valid unique rows, found {len(output)}; "
+            f"rejected={dict(rejected)}"
+        )
     return output
 
 
@@ -404,7 +421,9 @@ def build_structural_pair(
     }
 
     for level in ("l0", "l1"):
-        quota = int(quotas[level])
+        quota = int(quotas.get(level, 0))
+        if quota <= 0:
+            continue
         frames = build_frame_inputs(frame_names, outputs_root, level)
         frames = filter_frame_inputs_by_visibility(frames, visible_ids_by_frame)
         raw_assignment = build_frame_question_counts(frame_names, quota, seed)
@@ -440,7 +459,9 @@ def build_structural_pair(
         for family, frames in l2_frames.items()
     }
     for family in L2_FAMILIES:
-        quota = int(quotas[family])
+        quota = int(quotas.get(family, 0))
+        if quota <= 0:
+            continue
         frames = l2_frames[family]
         raw_assignment = build_frame_question_counts(frame_names, quota, seed)
         adjusted = redistribute_frame_question_counts(
@@ -756,12 +777,14 @@ def select_hard_rows(
         (row_scene_frame(row), row_source_id(row)): dict(row) for row in source_rows
     }
     wrong_by_family: dict[str, list[dict]] = defaultdict(list)
+    seen_wrong = set()
     for result in raw_results:
         if result.get("error") not in (None, "") or bool(result.get("is_correct")):
             continue
         key = (row_scene_frame(result), row_source_id(result))
         source = source_index.get(key)
-        if source is not None:
+        if source is not None and key not in seen_wrong:
+            seen_wrong.add(key)
             wrong_by_family[family_name(source)].append(source)
     rng = random.Random(seed)
     selected = []

@@ -23,6 +23,8 @@ from config import (
     SPLIT_SEED,
     TEST_SCENES,
     TRAINING_QUOTAS,
+    VALIDATION_OFFICIAL_QUOTA,
+    VALIDATION_STRUCTURAL_QUOTAS,
     VALIDATION_SCENES,
 )
 from data_ops import (
@@ -30,6 +32,7 @@ from data_ops import (
     build_official_dataset,
     build_structural_pair,
     convert_to_choice,
+    dedupe_and_validate_rows,
     family_name,
     file_sha256,
     iter_jsonl,
@@ -285,28 +288,52 @@ def _dataset_manifest(name: str, rows: list[dict], path: Path) -> dict:
     }
 
 
-def _smoke_quotas() -> dict[str, int]:
-    return {key: 2 for key in TRAINING_QUOTAS}
+def _smoke_quotas(per_family: int = 2) -> dict[str, int]:
+    if per_family < 1:
+        raise ValueError("smoke_per_family must be positive")
+    return {key: per_family for key in TRAINING_QUOTAS}
+
+
+def _hard_quotas(path: Path | None) -> dict[str, int]:
+    if path is None:
+        return dict(HARD_CANDIDATE_QUOTAS)
+    raw = read_json(path)
+    if not isinstance(raw, dict):
+        raise ValueError("Hard quota override must be a JSON object")
+    unknown = sorted(set(raw) - set(TRAINING_QUOTAS))
+    if unknown:
+        raise ValueError(f"Unknown hard quota families: {unknown}")
+    quotas = {family: int(raw.get(family, 0)) for family in TRAINING_QUOTAS}
+    if any(value < 0 for value in quotas.values()) or sum(quotas.values()) <= 0:
+        raise ValueError("Hard quota override must contain a positive total")
+    return quotas
 
 
 def run_build(args: argparse.Namespace) -> None:
     split_manifest = read_json(args.split_dir / "split_manifest.json")
     if split_manifest["checks"]["scene_overlap_count"] != 0:
         raise ValueError("Refusing to build from a split manifest with scene leakage")
-    train_frames = read_json(args.split_dir / "train_frames.json")
-    common_frames = select_common_frames(
-        train_frames,
-        args.frame_pool_size,
-        args.seed,
-    )
+    split_name = "validation" if args.kind == "validation" else "train"
+    split_frames = read_json(args.split_dir / f"{split_name}_frames.json")
+    if args.kind == "validation" and not args.smoke:
+        common_frames = split_frames
+    else:
+        common_frames = select_common_frames(
+            split_frames,
+            min(args.frame_pool_size, len(split_frames)),
+            args.seed,
+        )
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_json(args.output_dir / "common_train_frames.json", common_frames)
 
-    quotas = (
-        _smoke_quotas()
-        if args.smoke
-        else (HARD_CANDIDATE_QUOTAS if args.kind == "hard-candidates" else TRAINING_QUOTAS)
-    )
+    if args.smoke:
+        quotas = _smoke_quotas(args.smoke_per_family)
+    elif args.kind == "hard-candidates":
+        quotas = _hard_quotas(args.quotas_json)
+    elif args.kind == "validation":
+        quotas = VALIDATION_STRUCTURAL_QUOTAS
+    else:
+        quotas = TRAINING_QUOTAS
     structural, assignments = build_structural_pair(
         common_frames,
         quotas,
@@ -318,10 +345,29 @@ def run_build(args: argparse.Namespace) -> None:
     manifests = {}
     if args.kind == "hard-candidates":
         datasets = {"advtest_hard_candidates": structural["advtest"]}
+    elif args.kind == "validation":
+        official_budget = (
+            args.smoke_per_family if args.smoke else VALIDATION_OFFICIAL_QUOTA
+        )
+        official = build_official_dataset(
+            common_frames,
+            args.official_questions,
+            args.outputs_root,
+            args.dataroot,
+            official_budget,
+            args.seed,
+            args.official_per_frame_cap,
+        )
+        datasets = {
+            "validation_1000": dedupe_and_validate_rows(
+                structural["advtest"] + official,
+                sum(quotas.values()) + official_budget,
+            )
+        }
     else:
         official_budget = sum(quotas.values())
         official = build_official_dataset(
-            common_frames if args.smoke else train_frames,
+            common_frames if args.smoke else split_frames,
             args.official_questions,
             args.outputs_root,
             args.dataroot,
@@ -358,9 +404,15 @@ def run_build(args: argparse.Namespace) -> None:
 
 
 def run_screen_hard(args: argparse.Namespace) -> None:
-    raw_results = list(iter_jsonl(args.raw_results))
-    source_rows = list(iter_jsonl(args.source_suite))
-    quotas = _smoke_quotas() if args.smoke else TRAINING_QUOTAS
+    raw_results = [
+        row for path in args.raw_results for row in iter_jsonl(path)
+    ]
+    source_rows = [
+        row for path in args.source_suite for row in iter_jsonl(path)
+    ]
+    quotas = (
+        _smoke_quotas(args.smoke_per_family) if args.smoke else TRAINING_QUOTAS
+    )
     selected, summary = select_hard_rows(
         raw_results,
         source_rows,
@@ -371,8 +423,8 @@ def run_screen_hard(args: argparse.Namespace) -> None:
     write_jsonl(args.output_suite, selected)
     manifest = {
         "schema_version": "rq3_hard_screen_v1",
-        "source_suite": str(args.source_suite.resolve()),
-        "raw_results": str(args.raw_results.resolve()),
+        "source_suites": [str(path.resolve()) for path in args.source_suite],
+        "raw_results": [str(path.resolve()) for path in args.raw_results],
         "output_suite": str(args.output_suite.resolve()),
         "output_sha256": file_sha256(args.output_suite),
         "seed": args.seed,
@@ -480,6 +532,20 @@ def run_export(args: argparse.Namespace) -> None:
             visible_ids_by_frame,
         )
         valid_rows = normalize_open_rows(valid_rows, choice_rows)
+        open_eval_rows = []
+        choice_eval_rows = []
+        for row in valid_rows:
+            evaluation_row = dict(row)
+            evaluation_row["image_path"] = str(
+                (args.output_dir / "images" / f"{row_scene_frame(row)}_labeled_mosaic.jpg").resolve()
+            )
+            open_eval_rows.append(evaluation_row)
+        for row in choice_rows:
+            evaluation_row = dict(row)
+            evaluation_row["image_path"] = str(
+                (args.output_dir / "images" / f"{row_scene_frame(row)}_labeled_mosaic.jpg").resolve()
+            )
+            choice_eval_rows.append(evaluation_row)
         open_records = [
             to_sft_record(
                 row,
@@ -500,8 +566,12 @@ def run_export(args: argparse.Namespace) -> None:
         ]
         open_path = datasets_dir / f"{dataset_name}_open.json"
         choice_path = datasets_dir / f"{dataset_name}_choice.json"
+        open_eval_path = args.output_dir / "eval_suites" / f"{dataset_name}_open_suite.jsonl"
+        choice_eval_path = args.output_dir / "eval_suites" / f"{dataset_name}_choice_suite.jsonl"
         write_json(open_path, open_records)
         write_json(choice_path, choice_records)
+        write_jsonl(open_eval_path, open_eval_rows)
+        write_jsonl(choice_eval_path, choice_eval_rows)
         manifests[dataset_name] = {
             "source": str(sources[dataset_name].resolve()),
             "source_rows": len(rows),
@@ -511,6 +581,10 @@ def run_export(args: argparse.Namespace) -> None:
             "open_sha256": file_sha256(open_path),
             "choice_dataset": str(choice_path.resolve()),
             "choice_sha256": file_sha256(choice_path),
+            "open_eval_suite": str(open_eval_path.resolve()),
+            "open_eval_sha256": file_sha256(open_eval_path),
+            "choice_eval_suite": str(choice_eval_path.resolve()),
+            "choice_eval_sha256": file_sha256(choice_eval_path),
             "unique_images": len({row_scene_frame(row) for row in valid_rows}),
             "family_counts": dict(
                 sorted(Counter(family_name(row) for row in valid_rows).items())
@@ -585,10 +659,22 @@ def run_validate(args: argparse.Namespace) -> None:
         for record in records
     )
     if args.structural:
-        expected_quotas = _smoke_quotas() if args.smoke else TRAINING_QUOTAS
+        expected_quotas = (
+            _smoke_quotas(args.smoke_per_family)
+            if args.smoke
+            else TRAINING_QUOTAS
+        )
         if dict(family_counts) != expected_quotas:
             raise ValueError(
                 f"Structural quotas differ: expected={expected_quotas}, "
+                f"actual={dict(family_counts)}"
+            )
+    if args.validation:
+        expected_quotas = dict(VALIDATION_STRUCTURAL_QUOTAS)
+        expected_quotas["official_qa"] = VALIDATION_OFFICIAL_QUOTA
+        if dict(family_counts) != expected_quotas:
+            raise ValueError(
+                f"Validation quotas differ: expected={expected_quotas}, "
                 f"actual={dict(family_counts)}"
             )
     paired_summary = None
@@ -673,7 +759,9 @@ def build_parser() -> argparse.ArgumentParser:
     split_parser.set_defaults(func=run_split)
 
     build_parser = subparsers.add_parser("build", help="Build source QA datasets.")
-    build_parser.add_argument("--kind", choices=["main", "hard-candidates"], default="main")
+    build_parser.add_argument(
+        "--kind", choices=["main", "hard-candidates", "validation"], default="main"
+    )
     build_parser.add_argument(
         "--split-dir", type=Path, default=SCRATCH_ROOT / "data" / "splits"
     )
@@ -688,19 +776,26 @@ def build_parser() -> argparse.ArgumentParser:
     build_parser.add_argument("--frame-pool-size", type=int, default=600)
     build_parser.add_argument("--per-frame-candidate-limit", type=int, default=300)
     build_parser.add_argument("--official-per-frame-cap", type=int, default=10)
+    build_parser.add_argument(
+        "--quotas-json",
+        type=Path,
+        help="Hard-candidate-only quota override; use 2000 for a deficient family.",
+    )
     build_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
     build_parser.add_argument("--smoke", action="store_true")
+    build_parser.add_argument("--smoke-per-family", type=int, default=2)
     build_parser.set_defaults(func=run_build)
 
     hard_parser = subparsers.add_parser(
         "screen-hard", help="Select genuinely wrong rows from mPLUG choice results."
     )
-    hard_parser.add_argument("--raw-results", type=Path, required=True)
-    hard_parser.add_argument("--source-suite", type=Path, required=True)
+    hard_parser.add_argument("--raw-results", action="append", type=Path, required=True)
+    hard_parser.add_argument("--source-suite", action="append", type=Path, required=True)
     hard_parser.add_argument("--output-suite", type=Path, required=True)
     hard_parser.add_argument("--output-manifest", type=Path, required=True)
     hard_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
     hard_parser.add_argument("--smoke", action="store_true")
+    hard_parser.add_argument("--smoke-per-family", type=int, default=2)
     hard_parser.set_defaults(func=run_screen_hard)
 
     export_parser = subparsers.add_parser(
@@ -721,7 +816,9 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--output-manifest", type=Path, required=True)
     validate_parser.add_argument("--expected-count", type=int, default=0)
     validate_parser.add_argument("--structural", action="store_true")
+    validate_parser.add_argument("--validation", action="store_true")
     validate_parser.add_argument("--smoke", action="store_true")
+    validate_parser.add_argument("--smoke-per-family", type=int, default=2)
     validate_parser.set_defaults(func=run_validate)
     return parser
 

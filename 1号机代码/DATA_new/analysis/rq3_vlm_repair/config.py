@@ -55,6 +55,15 @@ TRAINING_QUOTAS = {
     "distance_chain": 1750,
     "viewpoint_transfer": 2300,
 }
+VALIDATION_STRUCTURAL_QUOTAS = {
+    "l0": 100,
+    "l1": 100,
+    "converge": 100,
+    "direction_chain": 100,
+    "distance_chain": 100,
+    "viewpoint_transfer": 100,
+}
+VALIDATION_OFFICIAL_QUOTA = 400
 HARD_CANDIDATE_QUOTAS = {
     "l0": 5000,
     "l1": 4500,

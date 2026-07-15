@@ -203,6 +203,29 @@ class DatasetOperationTests(unittest.TestCase):
         self.assertEqual(len(selected), 2)
         self.assertEqual(summary["redistributed"], 0)
 
+    def test_hard_screen_deduplicates_repeated_candidate_batches(self):
+        source = [
+            {
+                "scene_frame": "scene-0200_frame0",
+                "question": "Is car1 moving?",
+                "answer": "yes",
+                "family": "l0",
+                "source_question_id": "q1",
+                "logic_verification": "IN_MEMORY_VERIFIED",
+            }
+        ]
+        raw = [
+            {
+                "scene_frame": "scene-0200_frame0",
+                "source_question_id": "q1",
+                "is_correct": False,
+                "error": None,
+            }
+        ] * 2
+        selected, summary = select_hard_rows(raw, source, {"l0": 1}, seed=3)
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(summary["wrong_available_by_family"]["l0"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
