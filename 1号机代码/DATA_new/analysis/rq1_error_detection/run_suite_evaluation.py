@@ -161,6 +161,7 @@ def evaluate_suite(
     limit: int = 0,
     vlm_call_budget: int = 0,
     write_raw: bool = True,
+    resume: bool = False,
 ) -> dict:
     start = time.time()
     total = 0
@@ -180,9 +181,24 @@ def evaluate_suite(
     ] = {}
     raw_path = output_dir / f"{path.stem}_raw_results.jsonl"
     image_cache_dir = output_dir / "mosaics"
+    resume_rows = []
+    if resume:
+        if not write_raw:
+            raise ValueError("--resume requires raw-result writing")
+        if raw_path.exists():
+            resume_rows = list(iter_jsonl(raw_path))
+        if limit and len(resume_rows) > limit:
+            raise ValueError(
+                f"Raw results contain {len(resume_rows)} rows, exceeding limit={limit}"
+            )
+        resumed_calls = sum(int(row.get("vlm_call_cost") or 1) for row in resume_rows)
+        if vlm_call_budget and resumed_calls > vlm_call_budget:
+            raise ValueError(
+                "Existing raw results already exceed the requested VLM call budget"
+            )
     if write_raw:
         output_dir.mkdir(parents=True, exist_ok=True)
-        raw_handle = raw_path.open("w", encoding="utf-8")
+        raw_handle = raw_path.open("a" if resume else "w", encoding="utf-8")
     else:
         raw_handle = None
 
@@ -207,7 +223,35 @@ def evaluate_suite(
             q_text = str(question.get("question", ""))
             cache_key = (scene_frame, q_text)
             use_cache = mode == "MOCK"
-            if use_cache and cache_key in cache:
+            resume_row = resume_rows[total - 1] if total <= len(resume_rows) else None
+            if resume_row is not None:
+                expected_identity = (
+                    scene_frame,
+                    str(question.get("source_question_id") or ""),
+                    q_text,
+                    mode,
+                    call_cost,
+                )
+                actual_identity = (
+                    str(resume_row.get("scene_frame") or ""),
+                    str(resume_row.get("source_question_id") or ""),
+                    str(resume_row.get("question") or ""),
+                    str(resume_row.get("mode") or ""),
+                    int(resume_row.get("vlm_call_cost") or 1),
+                )
+                if actual_identity != expected_identity:
+                    raise ValueError(
+                        "Resume raw results are not an exact prefix of the suite at "
+                        f"question {total}: expected={expected_identity}, "
+                        f"found={actual_identity}"
+                    )
+                predicted = str(resume_row.get("predicted") or "")
+                is_correct = bool(resume_row.get("is_correct"))
+                image_path_text = resume_row.get("image_path")
+                inference_elapsed = float(
+                    resume_row.get("inference_elapsed_seconds") or 0.0
+                )
+            elif use_cache and cache_key in cache:
                 predicted, is_correct, image_path_text, inference_elapsed = cache[
                     cache_key
                 ]
@@ -227,7 +271,7 @@ def evaluate_suite(
                         inference_elapsed,
                     )
             family = question_family(question)
-            if raw_handle is not None:
+            if raw_handle is not None and resume_row is None:
                 raw_handle.write(
                     json.dumps(
                         {
@@ -266,6 +310,7 @@ def evaluate_suite(
                     )
                     + "\n"
                 )
+                raw_handle.flush()
             if is_correct:
                 correct += 1
                 continue
@@ -292,6 +337,11 @@ def evaluate_suite(
         if raw_handle is not None:
             raw_handle.close()
 
+    if len(resume_rows) > total:
+        raise ValueError(
+            "Suite ended before all existing resume rows could be matched"
+        )
+
     elapsed = time.time() - start
     unique_failures = len(unique_failure_keys)
     return {
@@ -300,6 +350,7 @@ def evaluate_suite(
         "mode": mode,
         "limit": limit or None,
         "questions": total,
+        "resumed_questions": min(len(resume_rows), total),
         "vlm_calls": vlm_calls,
         "vlm_call_budget": vlm_call_budget or None,
         "budget_stop_reason": budget_stop_reason,
@@ -404,6 +455,11 @@ def main():
         "--no-raw", action="store_true", help="Do not write raw per-question JSONL results."
     )
     parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Continue an existing raw JSONL after verifying it is an exact suite prefix.",
+    )
+    parser.add_argument(
         "--limit", type=int, default=0, help="Optional per-suite question cap for smoke runs."
     )
     parser.add_argument(
@@ -440,6 +496,7 @@ def main():
             args.limit,
             vlm_call_budget=args.vlm_call_budget,
             write_raw=not args.no_raw,
+            resume=args.resume,
         )
         print(
             f"[suite-eval]   wrong={result['wrong']}/{result['questions']} "

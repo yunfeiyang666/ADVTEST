@@ -103,6 +103,11 @@ $hardSft = "$root\scratch\rq3_vlm_repair\data\hard_candidates_sft_v1"
 & $py "$rq3\prepare_data.py" export `
   --source "advtest_hard_candidates=$hardSrc\sources\advtest_hard_candidates_source.jsonl" `
   --output-dir $hardSft
+& $py "$rq3\prepare_data.py" validate `
+  --dataset "$hardSft\datasets\advtest_hard_candidates_open.json" `
+  --paired-dataset "$hardSft\datasets\advtest_hard_candidates_choice.json" `
+  --image-root $hardSft --expected-count 32000 --hard-candidates `
+  --output-manifest "$hardSft\validation_manifest.json"
 ```
 
 只用冻结基模评测候选选择题：
@@ -112,8 +117,11 @@ $hardEval = "$root\scratch\rq3_vlm_repair\hard_screen\batch0_eval"
 & $py $eval --mode MPLUG `
   --suite-dir "$hardSft\eval_suites" `
   --methods advtest_hard_candidates_choice `
-  --model-path $model --output-dir $hardEval
+  --model-path $model --output-dir $hardEval --resume
 ```
+
+任务中断后原命令重跑即可。`--resume` 会验证已有逐题结果是当前 suite 的严格
+前缀；题目、场景或 source ID 任一不一致都会立即退出，禁止错位续跑。
 
 从同一次真实调用的错题中筛 10000 题。训练 GT 始终取源问题 GT，不取模型预测：
 
@@ -179,6 +187,16 @@ $matrix = "$root\scratch\rq3_vlm_repair\training\formal_matrix_v1"
 先执行三个 seed=42 pilot，检查 OOM、NaN、解冻边界和 checkpoint 文件；
 正常后再执行剩余主实验和消融。任一主组 OOM 时必须统一修改三组配置并
 全部重跑，禁止只给某组降低 LoRA r 或关闭 visual abstractor。
+
+Linux 服务器执行顺序：
+
+```bash
+bash <matrix-dir>/execute_pilots.sh
+# 三个 pilot 都通过后再执行：
+bash <matrix-dir>/execute_after_pilots.sh
+```
+
+不要直接先跑 `execute_matrix.sh`；否则 pilot 失败时仍会继续浪费其余训练资源。
 
 ## 7. 验证与 checkpoint 选择
 

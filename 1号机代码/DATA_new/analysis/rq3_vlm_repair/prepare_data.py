@@ -658,6 +658,15 @@ def run_validate(args: argparse.Namespace) -> None:
         str((record.get("metadata") or {}).get("family") or "")
         for record in records
     )
+    quota_mode_count = sum(
+        bool(value)
+        for value in (args.structural, args.validation, args.hard_candidates)
+    )
+    if quota_mode_count > 1:
+        raise ValueError(
+            "Choose only one quota mode: --structural, --validation, or "
+            "--hard-candidates"
+        )
     if args.structural:
         expected_quotas = (
             _smoke_quotas(args.smoke_per_family)
@@ -677,6 +686,11 @@ def run_validate(args: argparse.Namespace) -> None:
                 f"Validation quotas differ: expected={expected_quotas}, "
                 f"actual={dict(family_counts)}"
             )
+    if args.hard_candidates and dict(family_counts) != HARD_CANDIDATE_QUOTAS:
+        raise ValueError(
+            f"Hard-candidate quotas differ: expected={HARD_CANDIDATE_QUOTAS}, "
+            f"actual={dict(family_counts)}"
+        )
     paired_summary = None
     if args.paired_dataset:
         paired = read_json(args.paired_dataset)
@@ -817,6 +831,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--expected-count", type=int, default=0)
     validate_parser.add_argument("--structural", action="store_true")
     validate_parser.add_argument("--validation", action="store_true")
+    validate_parser.add_argument("--hard-candidates", action="store_true")
     validate_parser.add_argument("--smoke", action="store_true")
     validate_parser.add_argument("--smoke-per-family", type=int, default=2)
     validate_parser.set_defaults(func=run_validate)
