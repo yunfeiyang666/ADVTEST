@@ -171,6 +171,11 @@ $matrix = "$root\scratch\rq3_vlm_repair\training\formal_matrix_v1"
   --python-executable $py
 ```
 
+若 checkpoint 都未通过官方题保持条件，使用新的输出目录，并在同一条矩阵命令
+末尾增加 `--learning-rate 5e-5`，整套矩阵统一重建、重跑。若 pilot OOM，整套
+矩阵统一增加 `--disable-visual-abstractor`；仍 OOM 时统一设置
+`--lora-r 8 --lora-alpha 16`。这些参数会逐组写入 manifest，禁止手工只改某组。
+
 先执行三个 seed=42 pilot，检查 OOM、NaN、解冻边界和 checkpoint 文件；
 正常后再执行剩余主实验和消融。任一主组 OOM 时必须统一修改三组配置并
 全部重跑，禁止只给某组降低 LoRA r 或关闭 visual abstractor。

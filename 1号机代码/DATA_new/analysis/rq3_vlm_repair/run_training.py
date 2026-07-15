@@ -22,6 +22,7 @@ MODEL_FINGERPRINT_CACHE = SCRATCH_ROOT / "cache" / "model_fingerprints.json"
 
 PROFILES = {
     "smoke": {
+        "learning_rate": 1e-4,
         "bits": 4,
         "lora_r": 8,
         "lora_alpha": 16,
@@ -37,6 +38,7 @@ PROFILES = {
         "dataloader_num_workers": 0,
     },
     "formal": {
+        "learning_rate": 1e-4,
         "bits": 4,
         "lora_r": 16,
         "lora_alpha": 32,
@@ -220,7 +222,7 @@ def build_training_command(config: dict) -> list[str]:
         "--save_total_limit",
         "3",
         "--learning_rate",
-        "1e-4",
+        str(profile["learning_rate"]),
         "--weight_decay",
         "0",
         "--warmup_ratio",
@@ -286,6 +288,17 @@ def prepare_run(args: argparse.Namespace) -> Path:
     )
     model_fingerprint = fingerprint_model(model_path)
     profile = dict(PROFILES[args.profile])
+    if args.profile == "formal":
+        profile["learning_rate"] = float(
+            getattr(args, "learning_rate", profile["learning_rate"])
+        )
+        profile["lora_r"] = int(getattr(args, "lora_r", profile["lora_r"]))
+        profile["lora_alpha"] = int(
+            getattr(args, "lora_alpha", profile["lora_alpha"])
+        )
+        if getattr(args, "disable_visual_abstractor", False):
+            profile["tune_visual_abstractor"] = False
+            profile["visual_abstractor_lr"] = None
     config = {
         "schema_version": "rq3_mplug_qlora_run_v1",
         "profile": args.profile,
@@ -502,6 +515,10 @@ def prepare_matrix(args: argparse.Namespace) -> None:
                 profile="formal",
                 seed=seed,
                 python_executable=args.python_executable,
+                learning_rate=args.learning_rate,
+                lora_r=args.lora_r,
+                lora_alpha=args.lora_alpha,
+                disable_visual_abstractor=args.disable_visual_abstractor,
             )
         )
         config = read_json(config_path)
@@ -515,6 +532,7 @@ def prepare_matrix(args: argparse.Namespace) -> None:
                 "image_root": str(image_root.resolve()),
                 "config": str(config_path.resolve()),
                 "adapter_output": config["adapter_output"],
+                "training": config["training"],
             }
         )
     script_path = Path(__file__).resolve()
@@ -623,6 +641,10 @@ def build_parser() -> argparse.ArgumentParser:
     matrix.add_argument("--model", type=Path, default=DEFAULT_MODEL)
     matrix.add_argument("--output-dir", type=Path, required=True)
     matrix.add_argument("--python-executable", default=sys.executable)
+    matrix.add_argument("--learning-rate", type=float, default=1e-4)
+    matrix.add_argument("--lora-r", type=int, default=16)
+    matrix.add_argument("--lora-alpha", type=int, default=32)
+    matrix.add_argument("--disable-visual-abstractor", action="store_true")
     matrix.set_defaults(func=prepare_matrix)
     return parser
 

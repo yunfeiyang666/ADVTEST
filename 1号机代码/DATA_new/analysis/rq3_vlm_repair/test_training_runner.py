@@ -63,6 +63,23 @@ class TrainingRunnerTests(unittest.TestCase):
         self.assertIn("--freeze_vision_model True", joined)
         self.assertIn("--optim paged_adamw_8bit", joined)
 
+    def test_training_command_uses_profile_learning_rate(self):
+        profile = dict(PROFILES["formal"])
+        profile["learning_rate"] = 5e-5
+        config = {
+            "python_executable": "python",
+            "model_path": "/model",
+            "training_data": "/data.json",
+            "image_root": "/images",
+            "adapter_output": "/adapter",
+            "seed": 42,
+            "training": profile,
+        }
+
+        joined = " ".join(build_training_command(config))
+
+        self.assertIn("--learning_rate 5e-05", joined)
+
     def test_artifact_check_requires_finite_decreasing_loss(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             adapter = Path(temp_dir) / "adapter"
