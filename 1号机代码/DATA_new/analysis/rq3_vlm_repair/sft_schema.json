@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://advtest.local/schemas/rq3-mplug-sft-v1.json",
+  "title": "RQ3 mPLUG-Owl2 SFT record",
+  "type": "object",
+  "required": ["id", "image", "conversations", "metadata"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "image": {"type": "string", "pattern": "^images/.+_labeled_mosaic\\.jpg$"},
+    "conversations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "required": ["from", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "from": {"const": "human"},
+            "value": {"type": "string", "pattern": "^<\\|image\\|>"}
+          }
+        },
+        {
+          "type": "object",
+          "required": ["from", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "from": {"const": "gpt"},
+            "value": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "dataset_name",
+        "question_format",
+        "scene_frame",
+        "scene_name",
+        "source_question_id",
+        "family"
+      ],
+      "properties": {
+        "dataset_name": {"type": "string", "minLength": 1},
+        "question_format": {"enum": ["open", "choice"]},
+        "scene_frame": {"type": "string", "pattern": "^scene-\\d+_frame\\d+$"},
+        "scene_name": {"type": "string", "pattern": "^scene-\\d+$"},
+        "source_question_id": {"type": "string", "minLength": 1},
+        "family": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    }
+  }
+}
+
