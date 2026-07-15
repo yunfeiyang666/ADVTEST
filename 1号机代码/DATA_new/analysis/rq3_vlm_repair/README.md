@@ -4,6 +4,10 @@ This module builds scene-disjoint fine-tuning data and evaluates whether
 ADVTEST-generated questions repair mPLUG-Owl2 more effectively than equal-size
 Random and official NuScenes-QA data.
 
+The complete command-by-command workflow, server pilot order, checkpoint
+selection rule, statistical reporting commands, and unfilled human-review
+workflow are documented in [RUNBOOK.md](RUNBOOK.md).
+
 Formal test scenes are frozen in `config.py`. They must never appear in train
 or validation manifests.
 
@@ -38,7 +42,8 @@ E:\Project\ADVTEST\.venv310\Scripts\python.exe prepare_data.py export `
   --source official_qa_10k=E:\Project\ADVTEST\scratch\rq3_vlm_repair\data\source_datasets\sources\official_qa_10k_source.jsonl
 ```
 
-`validate` checks the JSON schema, exact quotas, unique IDs, image decoding and
+`build --kind validation` creates the fixed 600-structural plus 400-official
+validation set. `validate` checks the JSON schema, exact quotas, unique IDs, image decoding and
 SHA256 values, open/choice alignment, and frozen-scene leakage. Use
 `build --kind hard-candidates`, evaluate its choice questions with the frozen
 base model, then pass the real raw predictions to `screen-hard` to create the

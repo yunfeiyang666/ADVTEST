@@ -879,8 +879,13 @@ class MockVLMEvaluator:
 
 class MPLUGEvaluator:
     """mPLUG-Owl2 VLM Evaluator for GPU deployment."""
-    def __init__(self, model_path: str = "models/mplug-owl2-llama2-7b"):
+    def __init__(
+        self,
+        model_path: str = "models/mplug-owl2-llama2-7b",
+        model_base: Optional[str] = None,
+    ):
         self.model_path = model_path
+        self.model_base = model_base
         self.model = None
         self.tokenizer = None
         self.image_processor = None
@@ -899,10 +904,68 @@ class MPLUGEvaluator:
             from mplug_owl2.model.builder import load_pretrained_model
             from mplug_owl2.mm_utils import get_model_name_from_path
 
+            if self.model_base:
+                from peft import PeftModel
+                from transformers import AutoTokenizer, BitsAndBytesConfig
+                from transformers.models.clip.image_processing_clip import (
+                    CLIPImageProcessor,
+                )
+                from mplug_owl2.model import MPLUGOwl2LlamaForCausalLM
+
+                adapter_path = Path(self.model_path)
+                base_path = Path(self.model_base)
+                if not adapter_path.exists() or not base_path.exists():
+                    raise FileNotFoundError(
+                        f"Adapter/base path missing: {adapter_path}, {base_path}"
+                    )
+                quantization = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_compute_dtype=torch.float16,
+                    bnb_4bit_use_double_quant=True,
+                    bnb_4bit_quant_type="nf4",
+                )
+                print(f"Loading mPLUG-Owl2 base from {base_path}...")
+                base = MPLUGOwl2LlamaForCausalLM.from_pretrained(
+                    str(base_path),
+                    low_cpu_mem_usage=True,
+                    device_map={"": 0},
+                    quantization_config=quantization,
+                )
+                base.get_model().vision_model.to(dtype=torch.float16, device="cuda")
+                base.get_model().visual_abstractor.to(
+                    dtype=torch.float16, device="cuda"
+                )
+                non_lora_path = adapter_path / "non_lora_trainables.bin"
+                if non_lora_path.exists():
+                    weights = torch.load(non_lora_path, map_location="cpu")
+                    weights = {
+                        (key[11:] if key.startswith("base_model.") else key): value
+                        for key, value in weights.items()
+                    }
+                    if any(key.startswith("model.model.") for key in weights):
+                        weights = {
+                            (key[6:] if key.startswith("model.") else key): value
+                            for key, value in weights.items()
+                        }
+                    base.load_state_dict(weights, strict=False)
+                self.model = PeftModel.from_pretrained(base, str(adapter_path))
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    str(base_path), use_fast=False
+                )
+                self.image_processor = CLIPImageProcessor.from_pretrained(
+                    str(base_path)
+                )
+                self.context_len = getattr(base.config, "max_sequence_length", 2048)
+                print(f"Loaded LoRA adapter from {adapter_path}.")
+                return
+
             # Check if there is a ModelScope cache first
             modelscope_path = Path("E:/hf_cache/modelscope/iic/mPLUG-Owl2")
             model_path_to_use = self.model_path
-            if modelscope_path.exists():
+            if (
+                self.model_path == "models/mplug-owl2-llama2-7b"
+                and modelscope_path.exists()
+            ):
                 print(f"Using local ModelScope path: {modelscope_path}")
                 model_path_to_use = str(modelscope_path)
             elif not Path(model_path_to_use).exists():

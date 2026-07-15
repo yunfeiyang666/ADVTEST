@@ -54,7 +54,8 @@ def frame_qualified_l2_items(question: dict) -> set:
 
 def question_family(question: dict) -> str:
     return str(
-        question.get("l2_family")
+        question.get("family")
+        or question.get("l2_family")
         or question.get("template_id")
         or question.get("template_type")
         or question.get("mutation_operator")
@@ -112,13 +113,22 @@ def resolve_image_path(
     return cached if ok and cached.exists() else None
 
 
-def make_evaluator(mode: str):
+def make_evaluator(
+    mode: str,
+    model_path: Optional[str] = None,
+    model_base: Optional[str] = None,
+):
     if mode == "MOCK":
         return evaluator.MockVLMEvaluator()
     if mode == "LOCAL_GPU":
         return evaluator.LocalGPUEvaluator()
     if mode == "MPLUG":
-        return evaluator.MPLUGEvaluator()
+        kwargs = {}
+        if model_path:
+            kwargs["model_path"] = model_path
+        if model_base:
+            kwargs["model_base"] = model_base
+        return evaluator.MPLUGEvaluator(**kwargs)
     if mode == "MINICPM":
         return evaluator.MiniCPMOEvaluator()
     if mode == "API":
@@ -381,6 +391,14 @@ def main():
         default="MOCK",
     )
     parser.add_argument("--dataroot", type=Path, default=DEFAULT_DATAROOT)
+    parser.add_argument(
+        "--model-path",
+        help="Explicit base checkpoint or LoRA adapter directory for MPLUG mode.",
+    )
+    parser.add_argument(
+        "--model-base",
+        help="Base checkpoint directory when --model-path is a LoRA adapter.",
+    )
     parser.add_argument("--methods", nargs="*", default=None)
     parser.add_argument(
         "--no-raw", action="store_true", help="Do not write raw per-question JSONL results."
@@ -406,7 +424,9 @@ def main():
         ]
     if not suites:
         raise FileNotFoundError(f"No *_suite.jsonl files found in {args.suite_dir}")
-    vlm = make_evaluator(args.mode)
+    if args.model_base and args.mode != "MPLUG":
+        parser.error("--model-base is only supported in MPLUG mode")
+    vlm = make_evaluator(args.mode, args.model_path, args.model_base)
     results = []
     for suite in suites:
         print(f"[suite-eval] Evaluating {suite.name} mode={args.mode} limit={args.limit or 'all'}", flush=True)
