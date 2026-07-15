@@ -556,9 +556,24 @@ def build_official_dataset(
                 flush=True,
             )
 
+    unique_candidates = []
+    seen_candidate_ids = set()
+    seen_candidate_text = set()
+    for row in candidates:
+        source_id = row_source_id(row)
+        text_key = (
+            row_scene_frame(row),
+            str(row.get("question") or "").strip().lower(),
+        )
+        if source_id in seen_candidate_ids or text_key in seen_candidate_text:
+            continue
+        seen_candidate_ids.add(source_id)
+        seen_candidate_text.add(text_key)
+        unique_candidates.append(row)
+
     rng = random.Random(seed)
     strata: dict[str, list[dict]] = defaultdict(list)
-    for row in candidates:
+    for row in unique_candidates:
         key = f"hop={row.get('num_hop')}|template={row.get('template_type')}"
         strata[key].append(row)
     for rows in strata.values():

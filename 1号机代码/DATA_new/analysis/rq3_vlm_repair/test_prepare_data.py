@@ -5,6 +5,7 @@ from pathlib import Path
 
 from data_ops import (
     build_prompt,
+    dedupe_and_validate_rows,
     frame_family_distribution,
     normalize_open_rows,
     select_common_frames,
@@ -225,6 +226,20 @@ class DatasetOperationTests(unittest.TestCase):
         selected, summary = select_hard_rows(raw, source, {"l0": 1}, seed=3)
         self.assertEqual(len(selected), 1)
         self.assertEqual(summary["wrong_available_by_family"]["l0"], 1)
+
+    def test_dedupe_reports_same_frame_same_text(self):
+        rows = [
+            {
+                "scene_frame": "scene-0200_frame0",
+                "question": "Is car1 moving?",
+                "answer": "yes",
+                "source_question_id": f"q{index}",
+                "logic_verification": "OFFICIAL_DATASET",
+            }
+            for index in range(2)
+        ]
+        with self.assertRaisesRegex(ValueError, "duplicate_text"):
+            dedupe_and_validate_rows(rows, 2)
 
 
 if __name__ == "__main__":
