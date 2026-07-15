@@ -19,6 +19,10 @@ $model = 'E:\hf_cache\modelscope\iic\mPLUG-Owl2'
 服务器将 `$py`、`$root`、`$model` 换成服务器实际路径，其他参数不变。
 正式训练要求 Linux GPU 显存至少 24GB。
 
+当前 checkpoint 缺少 visual abstractor 的 12 个位置参数。训练和评测入口均先用
+固定种子 `20260715` 初始化这些缺失参数，再恢复训练种子 `42/43/44`。不要删除
+`--rq3_base_init_seed`，否则不同实验可能从不同的临时基模参数开始。
+
 ## 1. 冻结场景划分
 
 ```powershell

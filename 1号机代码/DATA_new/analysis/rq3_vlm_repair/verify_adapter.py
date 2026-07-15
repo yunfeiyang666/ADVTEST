@@ -6,7 +6,7 @@ from pathlib import Path
 import torch
 from PIL import Image
 from peft import PeftModel
-from transformers import BitsAndBytesConfig
+from transformers import BitsAndBytesConfig, set_seed
 from transformers.models.clip.image_processing_clip import CLIPImageProcessor
 
 from data_ops import read_json, write_json
@@ -20,10 +20,12 @@ from mplug_owl2.constants import DEFAULT_IMAGE_TOKEN, IMAGE_TOKEN_INDEX  # noqa:
 from mplug_owl2.conversation import conv_templates  # noqa: E402
 from mplug_owl2.mm_utils import tokenizer_image_token  # noqa: E402
 from mplug_owl2.model import MPLUGOwl2LlamaForCausalLM  # noqa: E402
+from mplug_owl2.train.trainability import RQ3_BASE_INIT_SEED  # noqa: E402
 from transformers import AutoTokenizer  # noqa: E402
 
 
 def load_adapter(config: dict):
+    set_seed(int(config.get("base_missing_weight_init_seed", RQ3_BASE_INIT_SEED)))
     quantization = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.float16,

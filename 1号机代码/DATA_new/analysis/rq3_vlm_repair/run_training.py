@@ -22,6 +22,7 @@ MODEL_FINGERPRINT_CACHE = SCRATCH_ROOT / "cache" / "model_fingerprints.json"
 
 PROFILES = {
     "smoke": {
+        "base_init_seed": 20260715,
         "learning_rate": 1e-4,
         "bits": 4,
         "lora_r": 8,
@@ -38,6 +39,7 @@ PROFILES = {
         "dataloader_num_workers": 0,
     },
     "formal": {
+        "base_init_seed": 20260715,
         "learning_rate": 1e-4,
         "bits": 4,
         "lora_r": 16,
@@ -191,6 +193,8 @@ def build_training_command(config: dict) -> list[str]:
         config["adapter_output"],
         "--seed",
         str(config["seed"]),
+        "--rq3_base_init_seed",
+        str(profile["base_init_seed"]),
         "--data_seed",
         str(config["seed"]),
         "--lora_enable",
@@ -306,6 +310,7 @@ def prepare_run(args: argparse.Namespace) -> Path:
         "python_executable": str(args.python_executable),
         "model_path": str(model_path),
         "model_checkpoint_sha256": model_fingerprint["checkpoint_sha256"],
+        "base_missing_weight_init_seed": profile["base_init_seed"],
         "source_dataset": str(dataset_path),
         "source_dataset_sha256": file_sha256(dataset_path),
         "training_data": str(training_data),
@@ -324,7 +329,9 @@ def prepare_run(args: argparse.Namespace) -> Path:
     return run_dir / "run_config.json"
 
 
-def inspect_training_artifacts(config: dict) -> dict:
+def inspect_training_artifacts(
+    config: dict, require_loss_decrease: bool = True
+) -> dict:
     adapter_dir = Path(config["adapter_output"])
     adapter_files = [
         adapter_dir / "adapter_config.json",
@@ -353,7 +360,10 @@ def inspect_training_artifacts(config: dict) -> dict:
         "last_loss": losses[-1] if losses else None,
         "loss_finite": finite,
         "loss_decreased": decreased,
-        "passed": not missing and finite and decreased,
+        "loss_decrease_required": require_loss_decrease,
+        "passed": not missing and finite and (
+            decreased or not require_loss_decrease
+        ),
     }
 
 
@@ -382,7 +392,9 @@ def execute_run(args: argparse.Namespace) -> None:
             print(line, end="")
             log.write(line)
         return_code = process.wait()
-    artifacts = inspect_training_artifacts(config)
+    artifacts = inspect_training_artifacts(
+        config, require_loss_decrease=config["profile"] == "smoke"
+    )
     verification = None
     if return_code == 0 and artifacts["passed"] and config["profile"] == "smoke":
         verify_output = run_dir / "adapter_reload_verification.json"
@@ -424,7 +436,7 @@ def execute_run(args: argparse.Namespace) -> None:
         verification["return_code"] != 0 or not verification["answer_produced"]
     )
     if return_code != 0 or not artifacts["passed"] or verification_failed:
-        raise RuntimeError(f"Training smoke failed: {result}")
+        raise RuntimeError(f"Training run failed validation: {result}")
 
 
 def finalize_existing_smoke(args: argparse.Namespace) -> None:

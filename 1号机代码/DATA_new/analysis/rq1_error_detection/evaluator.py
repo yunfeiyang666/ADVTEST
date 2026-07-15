@@ -901,8 +901,12 @@ class MPLUGEvaluator:
     def _load_model(self):
         try:
             import torch
+            from transformers import set_seed
             from mplug_owl2.model.builder import load_pretrained_model
             from mplug_owl2.mm_utils import get_model_name_from_path
+            from mplug_owl2.train.trainability import RQ3_BASE_INIT_SEED
+
+            set_seed(RQ3_BASE_INIT_SEED)
 
             if self.model_base:
                 from peft import PeftModel

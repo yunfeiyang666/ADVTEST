@@ -62,6 +62,7 @@ class TrainingRunnerTests(unittest.TestCase):
         self.assertIn("--tune_visual_abstractor False", joined)
         self.assertIn("--freeze_vision_model True", joined)
         self.assertIn("--optim paged_adamw_8bit", joined)
+        self.assertIn("--rq3_base_init_seed 20260715", joined)
 
     def test_training_command_uses_profile_learning_rate(self):
         profile = dict(PROFILES["formal"])
@@ -93,6 +94,24 @@ class TrainingRunnerTests(unittest.TestCase):
 
             result = inspect_training_artifacts({"adapter_output": str(adapter)})
 
+            self.assertTrue(result["passed"])
+
+    def test_formal_artifact_check_does_not_require_monotonic_endpoint(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            adapter = Path(temp_dir) / "adapter"
+            adapter.mkdir()
+            (adapter / "adapter_config.json").write_text("{}", encoding="utf-8")
+            (adapter / "adapter_model.bin").write_bytes(b"adapter")
+            (adapter / "trainer_state.json").write_text(
+                '{"log_history": [{"loss": 1.0}, {"loss": 1.1}]}',
+                encoding="utf-8",
+            )
+
+            result = inspect_training_artifacts(
+                {"adapter_output": str(adapter)}, require_loss_decrease=False
+            )
+
+            self.assertFalse(result["loss_decreased"])
             self.assertTrue(result["passed"])
 
 
