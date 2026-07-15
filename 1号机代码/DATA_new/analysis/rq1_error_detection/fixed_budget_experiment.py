@@ -203,6 +203,37 @@ def redistribute_frame_question_counts(
     }
 
 
+def load_frame_question_counts(
+    summary_path: Path,
+    frame_names: Sequence[str],
+    generation_budget: int,
+) -> dict:
+    with summary_path.open("r", encoding="utf-8") as handle:
+        summary = json.load(handle)
+    source_frames = list(summary.get("frame_pool") or [])
+    expected_frames = list(frame_names)
+    if source_frames != expected_frames:
+        raise ValueError(
+            "Reused frame assignment does not match the current ordered frame pool"
+        )
+    source_assignment = summary.get("frame_assignment") or {}
+    counts = {
+        str(name): int(value)
+        for name, value in (source_assignment.get("frame_question_counts") or {}).items()
+    }
+    if set(counts) != set(expected_frames):
+        raise ValueError("Reused frame assignment does not contain the same frames")
+    assigned = sum(counts.values())
+    if assigned != generation_budget:
+        raise ValueError(
+            f"Reused frame assignment totals {assigned}, expected {generation_budget}"
+        )
+    reused = dict(source_assignment)
+    reused["frame_question_counts"] = counts
+    reused["source_summary"] = str(summary_path)
+    return reused
+
+
 def _question_file(frame_dir: Path, scene_frame: str) -> Path:
     qa_dir = frame_dir / "generation" / "qa"
     candidates = [
@@ -894,6 +925,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--outputs-root", type=Path, default=DEFAULT_OUTPUTS_ROOT)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_RESULT_DIR)
     parser.add_argument(
+        "--frame-assignment-summary",
+        type=Path,
+        default=None,
+        help=(
+            "Reuse the exact frame_question_counts from another fixed-budget "
+            "summary. Only valid with presampled_frames."
+        ),
+    )
+    parser.add_argument(
         "--l2-family-filter",
         nargs="+",
         default=None,
@@ -929,22 +969,34 @@ def main() -> None:
     results = []
     frame_assignment = None
     if args.execution_mode == "presampled_frames":
-        raw_frame_assignment = build_frame_question_counts(
-            [frame.scene_frame for frame in frames],
-            args.generation_budget,
-            args.seed,
-        )
-        frame_assignment = redistribute_frame_question_counts(
-            frames,
-            raw_frame_assignment["frame_question_counts"],
-            args.generation_budget,
-        )
-        frame_assignment["seed"] = raw_frame_assignment["seed"]
-        print(
-            "[fixed-budget] Presampled frame question counts with seed "
-            f"{args.seed}.",
-            flush=True,
-        )
+        if args.frame_assignment_summary:
+            frame_assignment = load_frame_question_counts(
+                args.frame_assignment_summary,
+                [frame.scene_frame for frame in frames],
+                args.generation_budget,
+            )
+            print(
+                "[fixed-budget] Reused exact frame question counts from "
+                f"{args.frame_assignment_summary}.",
+                flush=True,
+            )
+        else:
+            raw_frame_assignment = build_frame_question_counts(
+                [frame.scene_frame for frame in frames],
+                args.generation_budget,
+                args.seed,
+            )
+            frame_assignment = redistribute_frame_question_counts(
+                frames,
+                raw_frame_assignment["frame_question_counts"],
+                args.generation_budget,
+            )
+            frame_assignment["seed"] = raw_frame_assignment["seed"]
+            print(
+                "[fixed-budget] Presampled frame question counts with seed "
+                f"{args.seed}.",
+                flush=True,
+            )
     for method in args.methods:
         print(f"[fixed-budget] Running {method}...", flush=True)
         if args.execution_mode == "presampled_frames":

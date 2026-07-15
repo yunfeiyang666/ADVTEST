@@ -1,4 +1,6 @@
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -17,10 +19,48 @@ from fixed_budget_experiment import (
     compute_aggregate_metrics,
     filter_questions_by_l2_family,
     limit_questions_per_frame,
+    load_frame_question_counts,
     run_method,
     run_method_presampled_frames,
     redistribute_frame_question_counts,
 )
+
+
+class ReusedFrameAssignmentTests(unittest.TestCase):
+    def test_reuses_exact_counts_from_summary(self):
+        payload = {
+            "frame_pool": ["frame-a", "frame-b"],
+            "frame_assignment": {
+                "seed": 42,
+                "frame_question_counts": {"frame-a": 2, "frame-b": 1},
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "summary.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            result = load_frame_question_counts(
+                path, ["frame-a", "frame-b"], generation_budget=3
+            )
+
+        self.assertEqual(
+            result["frame_question_counts"], {"frame-a": 2, "frame-b": 1}
+        )
+        self.assertEqual(result["source_summary"], str(path))
+
+    def test_rejects_different_frame_order(self):
+        payload = {
+            "frame_pool": ["frame-a", "frame-b"],
+            "frame_assignment": {
+                "frame_question_counts": {"frame-a": 2, "frame-b": 1},
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "summary.json"
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "ordered frame pool"):
+                load_frame_question_counts(
+                    path, ["frame-b", "frame-a"], generation_budget=3
+                )
 
 
 class SwitchPolicyTests(unittest.TestCase):

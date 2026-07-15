@@ -1,0 +1,67 @@
+{
+  "date": "2026-07-15",
+  "random_fixed_budget": {
+    "run_id": "random-expanded-f308-q1000-v2",
+    "generation_budget": 1000,
+    "frame_pool_size": 308,
+    "assigned_frame_count": 239,
+    "random_seed": 42,
+    "frame_assignment_source": "advtest-expanded-f308-q1000-v2/results/fixed_budget_summary.json",
+    "seed_bank_rows": 1001,
+    "seed_rows_matched": 1001,
+    "seed_rows_unmatched": 0,
+    "levels": {
+      "l0": {
+        "universe_total": 4925,
+        "seed_covered": 1128,
+        "random_newly_covered": 1216,
+        "random_new_rate": 0.24690355329949237,
+        "random_final_covered": 2344,
+        "random_final_rate": 0.4759390862944162,
+        "advtest_newly_covered": 1851,
+        "advtest_new_rate": 0.37583756345177666
+      },
+      "l1": {
+        "universe_total": 69791,
+        "seed_covered": 286,
+        "random_newly_covered": 1666,
+        "random_new_rate": 0.023871272800217794,
+        "random_final_covered": 1952,
+        "random_final_rate": 0.02796922239257211,
+        "advtest_newly_covered": 2756,
+        "advtest_new_rate": 0.03948933243541431
+      },
+      "l2": {
+        "universe_total": 2507514,
+        "seed_covered": 736,
+        "random_newly_covered": 1328,
+        "random_new_rate": 0.0005296082095653305,
+        "random_final_covered": 2064,
+        "random_final_rate": 0.0008231260124569594,
+        "advtest_newly_covered": 4959,
+        "advtest_new_rate": 0.001977655957254875
+      }
+    }
+  },
+  "baseline_choice": {
+    "protocol": "free_form_answer_then_option_mapping",
+    "vlm_calls_per_question": 2,
+    "model": "mPLUG-Owl2",
+    "methods": {
+      "qatest": {
+        "questions": 1000,
+        "strict_wrong": 152,
+        "strict_failure_rate": 0.152,
+        "choice_wrong": 153,
+        "choice_failure_rate": 0.153
+      },
+      "qaasker": {
+        "questions": 1000,
+        "strict_wrong": 58,
+        "strict_failure_rate": 0.058,
+        "choice_wrong": 55,
+        "choice_failure_rate": 0.055
+      }
+    }
+  }
+}
