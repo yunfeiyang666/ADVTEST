@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 
-DEFAULT_MODEL = Path("E:/hf_cache/huggingface/openbmb/MiniCPM-o-2_6")
+DEFAULT_MODEL = Path("E:/hf_cache/modelscope_minicpm_clean/openbmb/MiniCPM-o-2_6")
 DEFAULT_DATASET = Path(
     "E:/Project/ADVTEST/scratch/rq3_vlm_repair/data/"
     "sft_minicpm_pilot_300_v1/datasets/advtest_minicpm_pilot_300_open.json"
@@ -63,11 +63,19 @@ def check_model_shards(model_dir: Path) -> dict:
     sizes = {name: (model_dir / name).stat().st_size for name in shard_names}
     if any(size <= 0 for size in sizes.values()):
         raise ValueError("MiniCPM model contains an empty weight shard")
+    expected_total = int((index.get("metadata") or {}).get("total_size") or 0)
+    actual_total = sum(sizes.values())
+    if expected_total and actual_total != expected_total:
+        raise ValueError(
+            "MiniCPM model weight size does not match its index: "
+            f"expected={expected_total}, actual={actual_total}"
+        )
     return {
         "index": str(index_path.resolve()),
         "index_sha256": file_sha256(index_path),
         "shard_count": len(shard_names),
-        "total_weight_bytes": sum(sizes.values()),
+        "total_weight_bytes": actual_total,
+        "expected_total_weight_bytes": expected_total,
         "shards": sizes,
     }
 

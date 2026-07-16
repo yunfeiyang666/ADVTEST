@@ -17,6 +17,22 @@ class MiniCPMTrainingTests(unittest.TestCase):
             with self.assertRaisesRegex(FileNotFoundError, "model is incomplete"):
                 check_model_shards(root)
 
+    def test_model_preflight_rejects_truncated_weight_shards(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            (root / "model.safetensors.index.json").write_text(
+                json.dumps(
+                    {
+                        "metadata": {"total_size": 10},
+                        "weight_map": {"x": "model-00001-of-00001.safetensors"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (root / "model-00001-of-00001.safetensors").write_bytes(b"short")
+            with self.assertRaisesRegex(ValueError, "size does not match"):
+                check_model_shards(root)
+
     def test_converts_image_token_and_keeps_one_image(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
