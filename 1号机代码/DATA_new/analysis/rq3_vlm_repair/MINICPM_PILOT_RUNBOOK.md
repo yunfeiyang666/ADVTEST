@@ -58,7 +58,17 @@ python $train verify
 
 `preflight` 会读取 `model.safetensors.index.json` 并检查四个权重分片全部存在。缺少任何分片都会立即退出，不允许使用空模型、MOCK 或静默降级。
 
-模型完整权重目录固定为 `E:\hf_cache\huggingface\openbmb\MiniCPM-o-2_6`。旧的 ModelScope 目录只有配置文件，不作为训练输入。
+模型完整权重目录固定为 `E:\hf_cache\modelscope_minicpm_core\openbmb\MiniCPM-o-2_6`。使用以下命令可断点续传训练所需的核心文件：
+
+```powershell
+python "$rq3\download_minicpm_o.py"
+```
+
+下载完成后，以下命令会先执行完整性预检，再运行 smoke：
+
+```powershell
+python "$rq3\run_minicpm_smoke_after_download.py" --download-pid <download_pid>
+```
 
 smoke 固定参数：32 道题、4-bit QLoRA、LoRA `r=8/alpha=16/dropout=0.05`、视觉编码器和多模态投影层冻结、batch 1、梯度累积 8、20 step、学习率 `1e-4`、最大长度 512。
 
