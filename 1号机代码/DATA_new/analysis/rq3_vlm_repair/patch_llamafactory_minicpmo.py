@@ -44,9 +44,15 @@ def _unwrap_minicpmo_batch_encoding(value):
 MM_INPUTS_ORIGINAL = '''        )
         if "token_type_ids" in mm_inputs:
 '''
-MM_INPUTS_PATCHED = '''        )
+MM_INPUTS_PREVIOUS = '''        )
         if getattr(getattr(self.model, "config", None), "model_type", None) == "minicpmo":
             mm_inputs = _unwrap_minicpmo_batch_encoding(mm_inputs)
+        if "token_type_ids" in mm_inputs:
+'''
+MM_INPUTS_PATCHED = '''        )
+        # Keep tensor values intact, but remove nested BatchEncoding containers
+        # before Accelerate recursively moves the batch to the device.
+        mm_inputs = _unwrap_minicpmo_batch_encoding(mm_inputs)
         if "token_type_ids" in mm_inputs:
 '''
 
@@ -66,6 +72,9 @@ def apply_patch(path: Path) -> str:
         content = content.replace(IMPORT_ORIGINAL, IMPORT_PATCHED, 1)
         content = content.replace(HELPER_ANCHOR, HELPER + HELPER_ANCHOR, 1)
         content = content.replace(MM_INPUTS_ORIGINAL, MM_INPUTS_PATCHED, 1)
+        changed = True
+    elif MM_INPUTS_PREVIOUS in content:
+        content = content.replace(MM_INPUTS_PREVIOUS, MM_INPUTS_PATCHED, 1)
         changed = True
 
     if changed:

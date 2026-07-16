@@ -8,6 +8,7 @@ from patch_llamafactory_minicpmo import (
     IMPORT_ORIGINAL,
     MARKER,
     MM_INPUTS_ORIGINAL,
+    MM_INPUTS_PATCHED,
     ORIGINAL,
     apply_patch,
 )
@@ -25,6 +26,7 @@ class MiniCPMOPatchTests(unittest.TestCase):
             patched = collator.read_text(encoding="utf-8")
             self.assertIn(MARKER, patched)
             self.assertIn(BATCH_ENCODING_MARKER, patched)
+            self.assertIn(MM_INPUTS_PATCHED.strip(), patched)
             self.assertEqual(apply_patch(collator), "already_patched")
 
 
