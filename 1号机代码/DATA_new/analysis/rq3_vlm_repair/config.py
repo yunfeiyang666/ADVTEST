@@ -20,6 +20,7 @@ FORMAL_TEST_FRAME_CACHE = (
 )
 
 SPLIT_SEED = 20260715
+MINICPM_PILOT_SEED = 20260716
 TEST_SCENES = (
     "scene-0003",
     "scene-0012",
@@ -54,6 +55,14 @@ TRAINING_QUOTAS = {
     "direction_chain": 800,
     "distance_chain": 1750,
     "viewpoint_transfer": 2300,
+}
+MINICPM_PILOT_QUOTAS = {
+    "l0": 50,
+    "l1": 50,
+    "converge": 50,
+    "direction_chain": 50,
+    "distance_chain": 50,
+    "viewpoint_transfer": 50,
 }
 VALIDATION_STRUCTURAL_QUOTAS = {
     "l0": 100,

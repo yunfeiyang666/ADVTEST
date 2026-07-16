@@ -403,9 +403,13 @@ def build_structural_pair(
     dataroot: Path,
     seed: int,
     per_frame_candidate_limit: int = 300,
+    dataset_names: Sequence[str] = ("advtest", "random"),
 ) -> tuple[dict[str, list[dict]], dict]:
+    unsupported = sorted(set(dataset_names) - {"advtest", "random"})
+    if unsupported or not dataset_names:
+        raise ValueError(f"Unsupported structural datasets: {unsupported}")
     frame_names = [str(row["scene_frame"]) for row in frame_rows]
-    datasets = {"advtest": [], "random": []}
+    datasets = {name: [] for name in dataset_names}
     assignment_manifest = {}
     graphs_by_frame = {
         scene_frame: load_scene_graph(outputs_root, scene_frame)
@@ -435,6 +439,8 @@ def build_structural_pair(
             ("advtest", f"greedy_{level}"),
             ("random", "random"),
         ):
+            if dataset_name not in datasets:
+                continue
             suite, _ = annotate_suite(
                 level=level,
                 frames=frames,
@@ -472,6 +478,8 @@ def build_structural_pair(
             ("advtest", "advtest"),
             ("random", "random"),
         ):
+            if dataset_name not in datasets:
+                continue
             result = run_method_presampled_frames(
                 selection_method,
                 frames,
@@ -490,9 +498,9 @@ def build_structural_pair(
         datasets[dataset_name] = dedupe_and_validate_rows(
             datasets[dataset_name], expected_total
         )
-    if frame_family_distribution(datasets["advtest"]) != frame_family_distribution(
-        datasets["random"]
-    ):
+    if {"advtest", "random"} <= set(datasets) and frame_family_distribution(
+        datasets["advtest"]
+    ) != frame_family_distribution(datasets["random"]):
         raise ValueError(
             "ADVTEST and Random do not have identical per-frame family budgets"
         )

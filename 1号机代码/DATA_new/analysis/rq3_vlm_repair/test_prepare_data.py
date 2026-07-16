@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from data_ops import (
+    build_structural_pair,
     build_prompt,
     dedupe_and_validate_rows,
     frame_family_distribution,
@@ -100,6 +101,17 @@ class SceneSplitTests(unittest.TestCase):
 
 
 class DatasetOperationTests(unittest.TestCase):
+    def test_structural_builder_rejects_unknown_dataset(self):
+        with self.assertRaisesRegex(ValueError, "Unsupported structural datasets"):
+            build_structural_pair(
+                [],
+                {},
+                Path("outputs"),
+                Path("data"),
+                seed=1,
+                dataset_names=("advtest", "not-a-method"),
+            )
+
     def test_frame_family_distribution_detects_budget_mismatch(self):
         rows = [
             {"scene_frame": "scene-0200_frame0", "family": "l0"},

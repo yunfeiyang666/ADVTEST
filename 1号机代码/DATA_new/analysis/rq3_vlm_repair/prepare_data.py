@@ -17,6 +17,8 @@ from config import (
     EXPECTED_COUNTS,
     FORMAL_TEST_FRAME_CACHE,
     HARD_CANDIDATE_QUOTAS,
+    MINICPM_PILOT_QUOTAS,
+    MINICPM_PILOT_SEED,
     OFFICIAL_QUESTIONS_PATH,
     OUTPUTS_ROOT,
     SCRATCH_ROOT,
@@ -326,7 +328,9 @@ def run_build(args: argparse.Namespace) -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_json(args.output_dir / "common_train_frames.json", common_frames)
 
-    if args.smoke:
+    if args.kind == "minicpm-pilot":
+        quotas = MINICPM_PILOT_QUOTAS
+    elif args.smoke:
         quotas = _smoke_quotas(args.smoke_per_family)
     elif args.kind == "hard-candidates":
         quotas = _hard_quotas(args.quotas_json)
@@ -341,9 +345,16 @@ def run_build(args: argparse.Namespace) -> None:
         args.dataroot,
         args.seed,
         args.per_frame_candidate_limit,
+        dataset_names=(
+            ("advtest",)
+            if args.kind == "minicpm-pilot"
+            else ("advtest", "random")
+        ),
     )
     manifests = {}
-    if args.kind == "hard-candidates":
+    if args.kind == "minicpm-pilot":
+        datasets = {"advtest_minicpm_pilot_300": structural["advtest"]}
+    elif args.kind == "hard-candidates":
         datasets = {"advtest_hard_candidates": structural["advtest"]}
     elif args.kind == "validation":
         official_budget = (
@@ -390,6 +401,7 @@ def run_build(args: argparse.Namespace) -> None:
         "schema_version": "rq3_source_datasets_v1",
         "kind": args.kind,
         "smoke": args.smoke,
+        "fresh_training_scenes_only": args.kind == "minicpm-pilot",
         "seed": args.seed,
         "frame_pool_size": args.frame_pool_size,
         "common_frame_manifest": str((args.output_dir / "common_train_frames.json").resolve()),
@@ -660,12 +672,22 @@ def run_validate(args: argparse.Namespace) -> None:
     )
     quota_mode_count = sum(
         bool(value)
-        for value in (args.structural, args.validation, args.hard_candidates)
+        for value in (
+            args.structural,
+            args.validation,
+            args.hard_candidates,
+            args.minicpm_pilot,
+        )
     )
     if quota_mode_count > 1:
         raise ValueError(
             "Choose only one quota mode: --structural, --validation, or "
-            "--hard-candidates"
+            "--hard-candidates, or --minicpm-pilot"
+        )
+    if args.minicpm_pilot and dict(family_counts) != MINICPM_PILOT_QUOTAS:
+        raise ValueError(
+            f"MiniCPM pilot quotas differ: expected={MINICPM_PILOT_QUOTAS}, "
+            f"actual={dict(family_counts)}"
         )
     if args.structural:
         expected_quotas = (
@@ -774,7 +796,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     build_parser = subparsers.add_parser("build", help="Build source QA datasets.")
     build_parser.add_argument(
-        "--kind", choices=["main", "hard-candidates", "validation"], default="main"
+        "--kind",
+        choices=["main", "hard-candidates", "validation", "minicpm-pilot"],
+        default="main",
     )
     build_parser.add_argument(
         "--split-dir", type=Path, default=SCRATCH_ROOT / "data" / "splits"
@@ -795,7 +819,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="Hard-candidate-only quota override; use 2000 for a deficient family.",
     )
-    build_parser.add_argument("--seed", type=int, default=SPLIT_SEED)
+    build_parser.add_argument("--seed", type=int)
     build_parser.add_argument("--smoke", action="store_true")
     build_parser.add_argument("--smoke-per-family", type=int, default=2)
     build_parser.set_defaults(func=run_build)
@@ -832,6 +856,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate_parser.add_argument("--structural", action="store_true")
     validate_parser.add_argument("--validation", action="store_true")
     validate_parser.add_argument("--hard-candidates", action="store_true")
+    validate_parser.add_argument("--minicpm-pilot", action="store_true")
     validate_parser.add_argument("--smoke", action="store_true")
     validate_parser.add_argument("--smoke-per-family", type=int, default=2)
     validate_parser.set_defaults(func=run_validate)
@@ -840,6 +865,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.command == "build" and args.seed is None:
+        args.seed = (
+            MINICPM_PILOT_SEED if args.kind == "minicpm-pilot" else SPLIT_SEED
+        )
     args.func(args)
 
 
