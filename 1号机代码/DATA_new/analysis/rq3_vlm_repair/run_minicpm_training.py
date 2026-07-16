@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 
-DEFAULT_MODEL = Path("E:/hf_cache/modelscope_minicpm_clean/openbmb/MiniCPM-o-2_6")
+DEFAULT_MODEL = Path("E:/hf_cache/modelscope_minicpm_core/openbmb/MiniCPM-o-2_6")
 DEFAULT_DATASET = Path(
     "E:/Project/ADVTEST/scratch/rq3_vlm_repair/data/"
     "sft_minicpm_pilot_300_v1/datasets/advtest_minicpm_pilot_300_open.json"
