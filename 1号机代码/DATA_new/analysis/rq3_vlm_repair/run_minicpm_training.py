@@ -226,7 +226,10 @@ def run_preflight(args: argparse.Namespace) -> dict:
         "-c",
         (
             "import torch,bitsandbytes,transformers,accelerate,peft; "
+            "from transformers import AutoProcessor; "
             "assert torch.cuda.is_available(); "
+            f"processor=AutoProcessor.from_pretrained({str(args.model)!r}, trust_remote_code=True); "
+            "assert 'Processor' in processor.__class__.__name__; "
             "print(torch.__version__, bitsandbytes.__version__, "
             "transformers.__version__, accelerate.__version__, peft.__version__)"
         ),
