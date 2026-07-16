@@ -24,6 +24,7 @@ DEFAULT_LLAMAFATORY_CLI = Path(
     "E:/Project/ADVTEST/scratch/rq3_vlm_repair/"
     "venv_minicpm/Scripts/llamafactory-cli.exe"
 )
+DEFAULT_LLAMAFATORY_PATCH = Path(__file__).with_name("patch_llamafactory_minicpmo.py")
 
 
 def file_sha256(path: Path) -> str:
@@ -251,6 +252,7 @@ def launch(args: argparse.Namespace) -> None:
     if not config_path.is_file():
         config_path = prepare_run(args)
     run_preflight(args)
+    subprocess.run([sys.executable, str(DEFAULT_LLAMAFATORY_PATCH)], check=True)
     log_path = args.run_dir / "train_smoke.log"
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
         subprocess.run(
