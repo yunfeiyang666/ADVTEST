@@ -10,6 +10,7 @@ DEFAULT_COLLATOR = Path(
 )
 MARKER = "MiniCPM-o image-only batches do not need a synthetic audio sample."
 BATCH_ENCODING_MARKER = "Unwrap MiniCPM-o BatchEncoding values before Accelerate moves the batch."
+FEATURES_NORMALIZATION_MARKER = "Normalize the base collator BatchEncoding before MiniCPM-o wraps it in data."
 ORIGINAL = '''        if (
             self.template.mm_plugin.audio_token is not None and sum(batch_audlens) == 0
         ):  # avoid process hanging in zero3/fsdp case
@@ -55,6 +56,16 @@ MM_INPUTS_PATCHED = '''        )
         mm_inputs = _unwrap_minicpmo_batch_encoding(mm_inputs)
         if "token_type_ids" in mm_inputs:
 '''
+FEATURES_ORIGINAL = '''        features: Dict[str, "torch.Tensor"] = super().__call__(features)
+
+        if self.model is not None and hasattr(self.model, "get_rope_index"):  # for qwen2vl mrope
+'''
+FEATURES_PATCHED = '''        features: Dict[str, "torch.Tensor"] = super().__call__(features)
+        # Normalize the base collator BatchEncoding before MiniCPM-o wraps it in data.
+        features = _unwrap_minicpmo_batch_encoding(features)
+
+        if self.model is not None and hasattr(self.model, "get_rope_index"):  # for qwen2vl mrope
+'''
 
 
 def apply_patch(path: Path) -> str:
@@ -75,6 +86,12 @@ def apply_patch(path: Path) -> str:
         changed = True
     elif MM_INPUTS_PREVIOUS in content:
         content = content.replace(MM_INPUTS_PREVIOUS, MM_INPUTS_PATCHED, 1)
+        changed = True
+
+    if FEATURES_NORMALIZATION_MARKER not in content:
+        if FEATURES_ORIGINAL not in content:
+            raise ValueError(f"Unsupported base-collator patch layout: {path}")
+        content = content.replace(FEATURES_ORIGINAL, FEATURES_PATCHED, 1)
         changed = True
 
     if changed:
