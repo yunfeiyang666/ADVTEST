@@ -32,6 +32,13 @@ from gap_pipeline.l2_dry_run import DryRunInput, L2DryRunner
 from gap_pipeline.l2_constraint_planner import L2ConstraintPlanner
 from gap_pipeline.l2_gap_selector import L2CoverageState, L2GapSelector, l2_key, l1_key
 from gap_pipeline.l2_llm_client import LLMClient
+from gap_pipeline.random_full_coverage import (
+    CoverageAccumulator,
+    StaticRandomSelector,
+    load_checkpoint as load_random_checkpoint,
+    run_until_full as run_random_until_full,
+    write_checkpoint as write_random_checkpoint,
+)
 
 from gap_pipeline.l2_table_export import append_qa_csv, write_qa_csv, write_summary_csv
 
@@ -139,14 +146,14 @@ def fetch_l2_gaps_in_memory(graph_index: Dict[str, Any]) -> List[Dict[str, Any]]
             in_edges.setdefault(tgt, []).append(src)
             
     gaps = []
-    for b_id in objects:
+    for b_id in sorted(objects):
         b_obj = objects[b_id]
         b_tx, b_ty = object_xy(b_obj)
         if b_tx is None:
             continue
             
-        sources = in_edges.get(b_id, [])
-        targets = list(out_edges.get(b_id, {}).keys())
+        sources = sorted(in_edges.get(b_id, []))
+        targets = sorted(out_edges.get(b_id, {}))
         
         for a_id in sources:
             a_obj = objects.get(a_id)
@@ -468,7 +475,7 @@ def graph_converge_rows(graph_index: Dict[str, Any], a_id: str, c_id: str) -> Li
     out = graph_index.get("out", {})
     common = set(out.get(str(a_id), {})) & set(out.get(str(c_id), {}))
     rows_out: List[Dict[str, Any]] = []
-    for x_id in common:
+    for x_id in sorted(common):
         x = objects.get(str(x_id), {})
         tx, ty = object_xy(x)
         rel_a = out[str(a_id)][str(x_id)]
@@ -496,23 +503,25 @@ def graph_directed_refs_for_candidates(graph_index: Dict[str, Any], candidate_id
     objects = graph_index.get("objects", {})
     out = graph_index.get("out", {})
     ref_map: Dict[str, Dict[str, Any]] = {}
-    for ref_id, rels in out.items():
+    for ref_id in sorted(out):
+        rels = out[ref_id]
         hits = candidate_set & set(rels)
         if not hits:
             continue
         ref_obj = objects.get(ref_id, {})
         tx, ty = object_xy(ref_obj)
         ref = ref_map.setdefault(ref_id, {"id": ref_id, "unique_id": ref_id, "type": ref_obj.get("type") or ref_obj.get("category") or "", "status": ref_obj.get("status") or "", "tx": tx, "ty": ty, "dir_to": {}})
-        for cand_id in hits:
+        for cand_id in sorted(hits):
             ref["dir_to"][cand_id] = _rel_dir(rels[cand_id])
-    return list(ref_map.values())
+    return [ref_map[key] for key in sorted(ref_map)]
 
 
 def graph_pivot_neighbors(graph_index: Dict[str, Any], pivot_id: str) -> List[Dict[str, Any]]:
     objects = graph_index.get("objects", {})
     out = graph_index.get("out", {}).get(pivot_id, {})
     rows: List[Dict[str, Any]] = []
-    for obj_id, rel in out.items():
+    for obj_id in sorted(out):
+        rel = out[obj_id]
         obj = objects.get(obj_id, {})
         tx, ty = object_xy(obj)
         metrics = rel.get("metrics") or {}
@@ -1159,6 +1168,35 @@ def plan_attempt_key(gap_key: str, plan: Any) -> str:
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
 
 
+def stable_random_plan_key(gap_key: str, plan: Any) -> str:
+    """Content-derived plan identity used by resumable random sampling."""
+    question = getattr(plan, "question", None)
+    payload = {
+        "gap_key": gap_key,
+        "family": plan.family.value,
+        "answer": getattr(plan, "answer", None),
+        "clauses": [
+            {
+                "kind": getattr(clause, "kind", ""),
+                "value": getattr(clause, "value", ""),
+                "ref_id": getattr(clause, "ref_id", ""),
+                "text_hint": getattr(clause, "text_hint", ""),
+            }
+            for clause in getattr(plan, "clauses", [])
+        ],
+        "footprint": {
+            level: sorted(str(value) for value in values)
+            for level, values in (getattr(plan, "footprint", {}) or {}).items()
+        },
+        "question": {
+            "answer_type": getattr(question, "answer_type", ""),
+            "template_family": getattr(question, "template_family", ""),
+        },
+    }
+    raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
 def classify_verify_failure(qa: Dict[str, Any]) -> str:
     result = qa.get("verify_result")
     family = qa.get("l2_family", "unknown")
@@ -1561,6 +1599,9 @@ def run_neo4j(
     scene_id: str = "global",
     frame_id: str = "all",
     use_llm: bool = False,
+    selection_policy: str = "advtest",
+    checkpoint_interval: int = 1000,
+    max_draws: int | None = None,
 ) -> List[Dict[str, Any]]:
     artifacts = V7ArtifactPaths(artifact_root, scene_id=scene_id, frame_id=frame_id) if artifact_root else None
     use_neo4j = os.environ.get("ADVTEST_USE_NEO4J", "false").lower() in ("1", "true", "yes")
@@ -1892,7 +1933,7 @@ def run_neo4j(
     family_targets = compute_strict_family_targets(len(pool), available_family_counts)
     log_stage(f"generate family_policy desired={FORMAL_FAMILY_RATIO} max_ratio={FORMAL_FAMILY_MAX_RATIO} availability={available_family_counts} targets={family_targets}")
 
-    if artifacts:
+    if artifacts and selection_policy == "advtest":
         artifacts.generated_jsonl.parent.mkdir(parents=True, exist_ok=True)
         artifacts.generated_jsonl.write_text("", encoding="utf-8")
         if artifacts.generated_csv.exists():
@@ -1947,6 +1988,228 @@ def run_neo4j(
             qas.append(qa)
             break
         return qas
+
+    if selection_policy == "random_full":
+        if artifacts is None:
+            raise ValueError("random_full selection requires --artifact-root")
+
+        universe_l0 = set(str(key) for key in graph_index.get("objects", {}))
+        universe_l1 = set()
+        for src, targets in graph_index.get("out", {}).items():
+            for dst in targets:
+                universe_l1.add(l1_key(str(src), str(dst)))
+        universe_l2 = set(pool_index)
+        initial_coverage = {
+            "l0": set(coverage.l0),
+            "l1": set(coverage.l1),
+            "l2": set(coverage.l2),
+        }
+        initial_gap_keys = sorted(universe_l2 - initial_coverage["l2"])
+        if not initial_gap_keys:
+            raise ValueError(
+                f"Random initial gap pool is empty for {scene_id}_frame{frame_id}"
+            )
+
+        gap_to_plan_ids: Dict[str, List[str]] = {}
+        plan_objects: Dict[str, List[Any]] = {}
+        missing_plan_gaps = []
+        for gap_key in initial_gap_keys:
+            _, plans = plan_cache[gap_key]
+            if not plans:
+                missing_plan_gaps.append(gap_key)
+                continue
+            keyed_plans = {}
+            for plan in plans:
+                plan_id = stable_random_plan_key(gap_key, plan)
+                keyed_plans.setdefault(plan_id, plan)
+            ordered = sorted(keyed_plans.items())
+            gap_to_plan_ids[gap_key] = [plan_id for plan_id, _ in ordered]
+            plan_objects[gap_key] = [plan for _, plan in ordered]
+        if missing_plan_gaps:
+            sample = ", ".join(missing_plan_gaps[:5])
+            raise RuntimeError(
+                "Random full-coverage preflight failed: "
+                f"{len(missing_plan_gaps)} initial gaps have no verified plan; "
+                f"sample={sample}"
+            )
+
+        selector = StaticRandomSelector(gap_to_plan_ids, seed=seed)
+        accumulator = CoverageAccumulator.create(
+            universe={
+                "l0": universe_l0,
+                "l1": universe_l1,
+                "l2": universe_l2,
+            },
+            initial_coverage=initial_coverage,
+        )
+        random_dir = artifacts.frame_dir / "random_full" / f"seed_{seed}"
+        checkpoint_path = random_dir / "checkpoint.json"
+        draws_path = random_dir / "draws.jsonl"
+        unique_questions_path = random_dir / "unique_questions.jsonl"
+        summary_path = random_dir / "summary.json"
+        manifest_path = random_dir / "manifest.json"
+        random_dir.mkdir(parents=True, exist_ok=True)
+
+        if checkpoint_path.exists():
+            checkpoint_metadata = load_random_checkpoint(
+                checkpoint_path,
+                selector=selector,
+                accumulator=accumulator,
+            )
+            expected_frame = f"{scene_id}_frame{frame_id}"
+            if checkpoint_metadata.get("frame_key") != expected_frame:
+                raise ValueError("Random checkpoint belongs to a different frame")
+            if draws_path.exists():
+                retained = []
+                with draws_path.open("r", encoding="utf-8") as handle:
+                    for index, line in enumerate(handle):
+                        if index >= accumulator.draws:
+                            break
+                        retained.append(line)
+                draws_path.write_text("".join(retained), encoding="utf-8")
+            log_stage(
+                f"random_full resume seed={seed} draws={accumulator.draws} "
+                f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
+            )
+        else:
+            draws_path.write_text("", encoding="utf-8")
+            unique_questions_path.write_text("", encoding="utf-8")
+
+        metadata = {
+            "frame_key": f"{scene_id}_frame{frame_id}",
+            "seed": seed,
+            "selection_policy": "static_initial_gap_with_replacement_random_plan",
+            "initial_gap_count": len(initial_gap_keys),
+            "candidate_fingerprint": selector.fingerprint,
+        }
+
+        def realize_random_draw(draw, draw_index: int) -> Dict[str, Any]:
+            plans = plan_objects[draw.gap_id]
+            plan = plans[draw.plan_index]
+            wording_seed = int(
+                hashlib.sha256(
+                    f"{seed}:{draw_index}:{draw.gap_id}:{draw.plan_id}".encode("utf-8")
+                ).hexdigest()[:8],
+                16,
+            )
+            set_variant_seed(wording_seed)
+            qas = process_gap(pool_index[draw.gap_id], preferred_plan=plan)
+            if not qas:
+                raise RuntimeError(
+                    f"Preverified random plan failed to realize: {draw.plan_id}"
+                )
+            qa = qas[0]
+            qa["question_id"] = str(draw_index)
+            qa["selection_phase"] = "random_static"
+            qa["generation_phase"] = 0
+            qa["generation_round"] = 0
+            qa["random_gap_id"] = draw.gap_id
+            qa["random_plan_id"] = draw.plan_id
+            qa["random_wording_seed"] = wording_seed
+            return normalize_and_validate(qa)
+
+        draw_handle = draws_path.open("a", encoding="utf-8")
+        unique_handle = unique_questions_path.open("a", encoding="utf-8")
+
+        def record_random_draw(draw, record, gain) -> None:
+            question_hash = hashlib.sha256(
+                str(record.get("question") or "").encode("utf-8")
+            ).hexdigest()
+            compact = {
+                "draw_index": accumulator.draws,
+                "gap_id": draw.gap_id,
+                "plan_id": draw.plan_id,
+                "template_id": record.get("template_id", ""),
+                "question_hash": question_hash,
+                "gain": dict(gain),
+                "coverage_l0": len(accumulator.covered_l0),
+                "coverage_l1": len(accumulator.covered_l1),
+                "coverage_l2": len(accumulator.covered_l2),
+            }
+            draw_handle.write(json.dumps(compact, ensure_ascii=False) + "\n")
+            if accumulator.text_counts[question_hash] == 1:
+                unique_handle.write(json.dumps(dict(record), ensure_ascii=False) + "\n")
+            if accumulator.draws % checkpoint_interval == 0:
+                draw_handle.flush()
+                unique_handle.flush()
+                log_stage(
+                    f"random_full Q{accumulator.draws} seed={seed} "
+                    f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
+                )
+
+        try:
+            random_summary = run_random_until_full(
+                selector=selector,
+                accumulator=accumulator,
+                realize=realize_random_draw,
+                on_draw=record_random_draw,
+                checkpoint_path=checkpoint_path,
+                checkpoint_interval=checkpoint_interval,
+                max_draws=max_draws,
+                metadata=metadata,
+            )
+        finally:
+            draw_handle.flush()
+            unique_handle.flush()
+            draw_handle.close()
+            unique_handle.close()
+            write_random_checkpoint(
+                checkpoint_path,
+                selector=selector,
+                accumulator=accumulator,
+                metadata=metadata,
+            )
+
+        random_summary.update(
+            {
+                "scene_id": scene_id,
+                "frame_id": frame_id,
+                "seed": seed,
+                "selection_policy": metadata["selection_policy"],
+                "candidate_fingerprint": selector.fingerprint,
+                "initial_coverage": {
+                    level: {
+                        "covered": len(initial_coverage[level]),
+                        "total": len(getattr(accumulator, f"universe_{level}")),
+                        "rate": (
+                            len(initial_coverage[level])
+                            / len(getattr(accumulator, f"universe_{level}"))
+                            if getattr(accumulator, f"universe_{level}")
+                            else 1.0
+                        ),
+                    }
+                    for level in ("l0", "l1", "l2")
+                },
+                "paths": {
+                    "checkpoint": str(checkpoint_path),
+                    "draws": str(draws_path),
+                    "unique_questions": str(unique_questions_path),
+                    "summary": str(summary_path),
+                },
+            }
+        )
+        write_summary(summary_path, random_summary)
+        write_summary(
+            manifest_path,
+            {
+                "schema": "rq2_random_full_coverage_manifest_v1",
+                "metadata": metadata,
+                "summary_sha256": hashlib.sha256(
+                    summary_path.read_bytes()
+                ).hexdigest(),
+                "paths": random_summary["paths"],
+            },
+        )
+        log_stage(
+            f"random_full DONE seed={seed} draws={accumulator.draws} "
+            f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
+        )
+        if session:
+            session.close()
+        return []
+
+    if selection_policy != "advtest":
+        raise ValueError(f"Unknown selection_policy: {selection_policy}")
 
     def find_underserved_family() -> str | None:
         """Find a family below its minimum quota."""
@@ -2577,6 +2840,19 @@ def main() -> None:
 
     p.add_argument("--output", type=str, default="")
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument(
+        "--selection-policy",
+        choices=("advtest", "random_full"),
+        default="advtest",
+        help="ADVTEST coverage-guided selection or coverage-blind random full coverage",
+    )
+    p.add_argument("--checkpoint-interval", type=int, default=1000)
+    p.add_argument(
+        "--max-draws",
+        type=int,
+        default=None,
+        help="Watchdog only; reaching it is a failed/incomplete random run",
+    )
 
     p.add_argument("--plan-file", type=str, default="")
     p.add_argument("--frame-index", type=int, default=0)
@@ -2627,10 +2903,30 @@ def main() -> None:
         elif plan == "prepare_initial_coverage":
             plan_prepare_initial_coverage(root, scene_id=scene_id, frame_id=frame_id, initial_qa=initial_qa, use_llm=initial_coverage_llm, concurrency=args.concurrency)
         elif plan == "generate":
-            run_neo4j(output, seed=args.seed, artifact_root=root, scene_id=scene_id, frame_id=frame_id, use_llm=args.use_llm)
+            run_neo4j(
+                output,
+                seed=args.seed,
+                artifact_root=root,
+                scene_id=scene_id,
+                frame_id=frame_id,
+                use_llm=args.use_llm,
+                selection_policy=args.selection_policy,
+                checkpoint_interval=args.checkpoint_interval,
+                max_draws=args.max_draws,
+            )
         elif plan == "full":
             run_offline_artifacts(root, scene_id=scene_id, frame_id=frame_id, gap_limit=gap_limit, initial_qa=initial_qa, scene_graph_source=scene_graph_source, initial_coverage_llm=initial_coverage_llm, concurrency=args.concurrency)
-            run_neo4j(output, seed=args.seed, artifact_root=root, scene_id=scene_id, frame_id=frame_id, use_llm=args.use_llm)
+            run_neo4j(
+                output,
+                seed=args.seed,
+                artifact_root=root,
+                scene_id=scene_id,
+                frame_id=frame_id,
+                use_llm=args.use_llm,
+                selection_policy=args.selection_policy,
+                checkpoint_interval=args.checkpoint_interval,
+                max_draws=args.max_draws,
+            )
         else:
             p.error("Unknown --plan value")
         return

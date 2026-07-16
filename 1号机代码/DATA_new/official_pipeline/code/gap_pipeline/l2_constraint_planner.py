@@ -148,7 +148,10 @@ class L2ConstraintPlanner:
         plan, forcing the planner to pick a different landmark. Only plans
         that achieve uniqueness are returned.
         """
-        refs_list = list(available_refs) if available_refs is not None else list(candidates)
+        refs_list = sorted(
+            list(available_refs) if available_refs is not None else list(candidates),
+            key=obj_id,
+        )
         seen_ref_sets: List[frozenset[str]] = []
         results: List[L2PlanResult] = []
         exclude_refs: Set[str] = set()
@@ -213,4 +216,3 @@ class L2ConstraintPlanner:
             return None
         _, ref, direction, kept = best
         return ref, direction, kept
-
