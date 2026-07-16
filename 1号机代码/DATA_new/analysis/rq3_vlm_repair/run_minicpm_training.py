@@ -65,10 +65,17 @@ def check_model_shards(model_dir: Path) -> dict:
         raise ValueError("MiniCPM model contains an empty weight shard")
     expected_total = int((index.get("metadata") or {}).get("total_size") or 0)
     actual_total = sum(sizes.values())
-    if expected_total and actual_total != expected_total:
+    # The index total counts tensor payload only; each safetensors shard adds a
+    # small header. Reject truncation and implausibly large extra payloads.
+    max_header_overhead = len(shard_names) * 1024 * 1024
+    if expected_total and (
+        actual_total < expected_total
+        or actual_total - expected_total > max_header_overhead
+    ):
         raise ValueError(
             "MiniCPM model weight size does not match its index: "
-            f"expected={expected_total}, actual={actual_total}"
+            f"expected={expected_total}, actual={actual_total}, "
+            f"max_header_overhead={max_header_overhead}"
         )
     return {
         "index": str(index_path.resolve()),
