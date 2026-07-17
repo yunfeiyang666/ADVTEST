@@ -267,6 +267,18 @@ def launch(args: argparse.Namespace) -> None:
     environment = os.environ.copy()
     environment.setdefault("OMP_NUM_THREADS", "1")
     environment.setdefault("MKL_NUM_THREADS", "1")
+    # Dataset preprocessing uses Arrow cache files. Keep every Hugging Face
+    # cache root local to this run; HF_HOME otherwise overrides the dataset
+    # cache inherited from the desktop environment.
+    hf_home = (args.run_dir / "hf_home").resolve()
+    temp_dir = (args.run_dir / "tmp").resolve()
+    hf_home.mkdir(parents=True, exist_ok=True)
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    environment["HF_HOME"] = str(hf_home)
+    environment["HF_DATASETS_CACHE"] = str(hf_home / "datasets")
+    environment["HF_DATASETS_DOWNLOADED_DATASETS_PATH"] = str(hf_home / "downloads")
+    environment["TMP"] = str(temp_dir)
+    environment["TEMP"] = environment["TMP"]
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
         subprocess.run(
             [str(args.llamafactory_cli), "train", str(config_path)],
