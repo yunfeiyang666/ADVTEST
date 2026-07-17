@@ -265,7 +265,19 @@ def launch(args: argparse.Namespace) -> None:
 
 
 def verify_adapter(run_dir: Path) -> dict:
-    adapter_dir = run_dir / "adapter"
+    adapter_root = run_dir / "adapter"
+    adapter_dir = adapter_root
+    if not (adapter_dir / "adapter_model.safetensors").is_file():
+        checkpoints = sorted(
+            (
+                path
+                for path in adapter_root.glob("checkpoint-*")
+                if (path / "adapter_model.safetensors").is_file()
+            ),
+            key=lambda path: int(path.name.rsplit("-", 1)[-1]),
+        )
+        if checkpoints:
+            adapter_dir = checkpoints[-1]
     required = [adapter_dir / "adapter_config.json", adapter_dir / "adapter_model.safetensors"]
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
@@ -277,6 +289,14 @@ def verify_adapter(run_dir: Path) -> dict:
         for row in state.get("log_history") or []
         if row.get("loss") is not None
     ]
+    if not losses:
+        trainer_log = adapter_root / "trainer_log.jsonl"
+        if trainer_log.is_file():
+            losses = [
+                float(json.loads(line)["loss"])
+                for line in trainer_log.read_text(encoding="utf-8").splitlines()
+                if line.strip() and json.loads(line).get("loss") is not None
+            ]
     if not losses or any(not (loss == loss and abs(loss) < float("inf")) for loss in losses):
         raise ValueError("Training did not record finite losses")
     result = {
