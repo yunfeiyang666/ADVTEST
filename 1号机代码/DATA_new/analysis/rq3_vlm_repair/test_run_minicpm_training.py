@@ -3,7 +3,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from run_minicpm_training import check_model_shards, convert_for_llamafactory
+from run_minicpm_training import (
+    check_model_shards,
+    convert_for_llamafactory,
+    training_config,
+)
 
 
 class MiniCPMTrainingTests(unittest.TestCase):
@@ -53,6 +57,15 @@ class MiniCPMTrainingTests(unittest.TestCase):
             converted = convert_for_llamafactory(records, root, 1, 42)
             self.assertEqual(converted[0]["conversations"][0]["value"].count("<image>"), 1)
             self.assertEqual(converted[0]["images"], [str(image.resolve())])
+
+    def test_formal_profile_uses_all_rows_and_three_epochs(self):
+        config = training_config(
+            Path("model"), Path("run"), "formal", "pilot_formal", 300
+        )
+        self.assertEqual(config["max_samples"], 300)
+        self.assertEqual(config["num_train_epochs"], 3.0)
+        self.assertEqual(config["max_steps"], -1)
+        self.assertEqual(config["save_strategy"], "epoch")
 
 
 if __name__ == "__main__":

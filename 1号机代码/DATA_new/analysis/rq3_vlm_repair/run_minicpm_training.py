@@ -127,8 +127,10 @@ def convert_for_llamafactory(
     return output
 
 
-def smoke_config(model: Path, run_dir: Path) -> dict:
-    return {
+def training_config(model: Path, run_dir: Path, profile: str, dataset_name: str, rows: int) -> dict:
+    if profile not in {"smoke", "formal"}:
+        raise ValueError(f"Unsupported MiniCPM profile: {profile}")
+    config = {
         "model_name_or_path": str(model.resolve()),
         "trust_remote_code": True,
         "image_max_pixels": 262144,
@@ -143,26 +145,26 @@ def smoke_config(model: Path, run_dir: Path) -> dict:
         "freeze_multi_modal_projector": True,
         "quantization_bit": 4,
         "quantization_method": "bitsandbytes",
-        "dataset": "rq3_minicpm_pilot_smoke",
+        "dataset": dataset_name,
         "dataset_dir": str((run_dir / "data").resolve()),
         "template": "minicpm_o",
         "cutoff_len": 512,
-        "max_samples": 32,
+        "max_samples": rows,
         "overwrite_cache": True,
         "preprocessing_num_workers": 1,
         "dataloader_num_workers": 0,
         "output_dir": str((run_dir / "adapter").resolve()),
         "logging_steps": 1,
-        "save_strategy": "steps",
-        "save_steps": 20,
+        "save_strategy": "steps" if profile == "smoke" else "epoch",
+        "save_steps": 20 if profile == "smoke" else 0,
         "save_total_limit": 1,
         "plot_loss": True,
         "overwrite_output_dir": True,
         "per_device_train_batch_size": 1,
         "gradient_accumulation_steps": 8,
         "learning_rate": 1e-4,
-        "num_train_epochs": 1.0,
-        "max_steps": 20,
+        "num_train_epochs": 1.0 if profile == "smoke" else 3.0,
+        "max_steps": 20 if profile == "smoke" else -1,
         "lr_scheduler_type": "cosine",
         "warmup_ratio": 0.03,
         "fp16": True,
@@ -173,6 +175,7 @@ def smoke_config(model: Path, run_dir: Path) -> dict:
         "data_seed": 42,
         "report_to": "none",
     }
+    return config
 
 
 def prepare_run(args: argparse.Namespace) -> Path:
@@ -181,28 +184,31 @@ def prepare_run(args: argparse.Namespace) -> Path:
     records = read_json(args.dataset)
     if not isinstance(records, list):
         raise ValueError("SFT dataset must be a JSON list")
-    converted = convert_for_llamafactory(records, args.image_root, 32, 42)
+    row_limit = 32 if args.profile == "smoke" else len(records)
+    converted = convert_for_llamafactory(records, args.image_root, row_limit, args.seed)
     data_dir = run_dir / "data"
-    data_path = data_dir / "rq3_minicpm_pilot_smoke.json"
+    dataset_name = f"rq3_minicpm_pilot_{args.profile}"
+    data_path = data_dir / f"{dataset_name}.json"
     write_json(data_path, converted)
     write_json(
         data_dir / "dataset_info.json",
         {
-            "rq3_minicpm_pilot_smoke": {
+            dataset_name: {
                 "file_name": data_path.name,
                 "formatting": "sharegpt",
                 "columns": {"messages": "conversations", "images": "images"},
             }
         },
     )
-    config = smoke_config(args.model, run_dir)
-    config_path = run_dir / "train_smoke.yaml"
+    config = training_config(args.model, run_dir, args.profile, dataset_name, len(converted))
+    config_path = run_dir / f"train_{args.profile}.yaml"
     config_path.write_text(
         yaml.safe_dump(config, sort_keys=False, allow_unicode=True),
         encoding="utf-8",
     )
     manifest = {
-        "schema_version": "rq3_minicpm_o_2_6_smoke_v1",
+        "schema_version": "rq3_minicpm_o_2_6_training_v1",
+        "profile": args.profile,
         "model": str(args.model.resolve()),
         "model_complete": False,
         "source_dataset": str(args.dataset.resolve()),
@@ -210,7 +216,7 @@ def prepare_run(args: argparse.Namespace) -> Path:
         "converted_dataset": str(data_path.resolve()),
         "converted_dataset_sha256": file_sha256(data_path),
         "rows": len(converted),
-        "seed": 42,
+        "seed": args.seed,
         "config": str(config_path.resolve()),
         "llamafactory_cli": str(args.llamafactory_cli.resolve()),
     }
@@ -248,12 +254,12 @@ def run_preflight(args: argparse.Namespace) -> dict:
 
 
 def launch(args: argparse.Namespace) -> None:
-    config_path = args.run_dir / "train_smoke.yaml"
+    config_path = args.run_dir / f"train_{args.profile}.yaml"
     if not config_path.is_file():
         config_path = prepare_run(args)
     run_preflight(args)
     subprocess.run([sys.executable, str(DEFAULT_LLAMAFATORY_PATCH)], check=True)
-    log_path = args.run_dir / "train_smoke.log"
+    log_path = args.run_dir / f"train_{args.profile}.log"
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
         subprocess.run(
             [str(args.llamafactory_cli), "train", str(config_path)],
@@ -313,6 +319,8 @@ def verify_adapter(run_dir: Path) -> dict:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the RQ3 MiniCPM-o 2.6 QLoRA pilot.")
     parser.add_argument("command", choices=["prepare", "preflight", "launch", "verify"])
+    parser.add_argument("--profile", choices=["smoke", "formal"], default="smoke")
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--model", type=Path, default=DEFAULT_MODEL)
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--image-root", type=Path, default=DEFAULT_IMAGE_ROOT)
