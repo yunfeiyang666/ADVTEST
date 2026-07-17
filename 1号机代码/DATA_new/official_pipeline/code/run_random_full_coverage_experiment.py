@@ -19,7 +19,7 @@ WORKSPACE_ROOT = CODE_DIR.parents[3]
 DEFAULT_OUTPUTS_ROOT = DATA_NEW_ROOT / "outputs"
 DEFAULT_STATS = DEFAULT_OUTPUTS_ROOT / "all_frames_stats.csv"
 DEFAULT_RUN_ROOT = WORKSPACE_ROOT / "scratch" / "rq2_random_full_coverage"
-DEFAULT_RANDOM_RUN_ID = "rq2_formal_v1"
+DEFAULT_RANDOM_RUN_ID = "rq2_formal_v2"
 THRESHOLDS = (50, 75, 90, 95, 99, 100)
 
 
@@ -107,6 +107,18 @@ def run_frames(args: argparse.Namespace) -> int:
                 skipped += 1
                 continue
             scene_id, frame_id = split_scene_frame(scene_frame)
+            prepare_command = [
+                sys.executable,
+                str(CODE_DIR / "run_gap_pipeline_v7.py"),
+                "--plan",
+                "prepare_initial_coverage",
+                "--artifact-root",
+                str(args.outputs_root),
+                "--scene-id",
+                scene_id,
+                "--frame-id",
+                frame_id,
+            ]
             command = [
                 sys.executable,
                 str(CODE_DIR / "run_gap_pipeline_v7.py"),
@@ -142,13 +154,25 @@ def run_frames(args: argparse.Namespace) -> int:
                 },
             )
             with log_path.open("a", encoding="utf-8") as log_handle:
-                result = subprocess.run(
-                    command,
+                log_handle.write("$ " + " ".join(prepare_command) + "\n")
+                prepared = subprocess.run(
+                    prepare_command,
                     cwd=CODE_DIR,
                     stdout=log_handle,
                     stderr=subprocess.STDOUT,
                     check=False,
                 )
+                if prepared.returncode != 0:
+                    result = prepared
+                else:
+                    log_handle.write("$ " + " ".join(command) + "\n")
+                    result = subprocess.run(
+                        command,
+                        cwd=CODE_DIR,
+                        stdout=log_handle,
+                        stderr=subprocess.STDOUT,
+                        check=False,
+                    )
             if result.returncode == 0 and is_complete(summary_path):
                 completed += 1
                 continue
