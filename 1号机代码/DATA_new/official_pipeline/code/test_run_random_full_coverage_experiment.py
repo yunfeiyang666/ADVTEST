@@ -31,6 +31,14 @@ class RandomFullCoverageExperimentTests(unittest.TestCase):
             )
             self.assertTrue(experiment.is_complete(path))
 
+    def test_summary_paths_are_isolated_by_formal_run_id(self):
+        root = Path("outputs")
+        path = experiment.random_summary_path(root, "scene-0003_frame17", 42, "formal-a")
+        self.assertEqual(
+            path,
+            root / "scene-0003_frame17" / "random_full" / "formal-a" / "seed_42" / "summary.json",
+        )
+
     def test_size_groups(self):
         self.assertEqual(experiment.size_group(3), "S(3-15)")
         self.assertEqual(experiment.size_group(16), "M(16-30)")

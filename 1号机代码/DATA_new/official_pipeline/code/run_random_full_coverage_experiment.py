@@ -19,6 +19,7 @@ WORKSPACE_ROOT = CODE_DIR.parents[3]
 DEFAULT_OUTPUTS_ROOT = DATA_NEW_ROOT / "outputs"
 DEFAULT_STATS = DEFAULT_OUTPUTS_ROOT / "all_frames_stats.csv"
 DEFAULT_RUN_ROOT = WORKSPACE_ROOT / "scratch" / "rq2_random_full_coverage"
+DEFAULT_RANDOM_RUN_ID = "rq2_formal_v1"
 THRESHOLDS = (50, 75, 90, 95, 99, 100)
 
 
@@ -56,11 +57,14 @@ def split_scene_frame(scene_frame: str) -> tuple[str, str]:
     return tuple(scene_frame.rsplit(marker, 1))  # type: ignore[return-value]
 
 
-def random_summary_path(outputs_root: Path, scene_frame: str, seed: int) -> Path:
+def random_summary_path(
+    outputs_root: Path, scene_frame: str, seed: int, random_run_id: str
+) -> Path:
     return (
         outputs_root
         / scene_frame
         / "random_full"
+        / random_run_id
         / f"seed_{seed}"
         / "summary.json"
     )
@@ -96,7 +100,9 @@ def run_frames(args: argparse.Namespace) -> int:
     for seed in args.seeds:
         for frame in frames:
             scene_frame = frame["scene_frame"]
-            summary_path = random_summary_path(args.outputs_root, scene_frame, seed)
+            summary_path = random_summary_path(
+                args.outputs_root, scene_frame, seed, args.random_run_id
+            )
             if is_complete(summary_path):
                 skipped += 1
                 continue
@@ -116,6 +122,8 @@ def run_frames(args: argparse.Namespace) -> int:
                 str(seed),
                 "--selection-policy",
                 "random_full",
+                "--random-run-id",
+                args.random_run_id,
                 "--checkpoint-interval",
                 str(args.checkpoint_interval),
             ]
@@ -234,7 +242,9 @@ def build_report(args: argparse.Namespace) -> int:
     for seed in args.seeds:
         for frame in frames:
             scene_frame = frame["scene_frame"]
-            path = random_summary_path(args.outputs_root, scene_frame, seed)
+            path = random_summary_path(
+                args.outputs_root, scene_frame, seed, args.random_run_id
+            )
             if not is_complete(path):
                 missing.append({"seed": seed, "scene_frame": scene_frame})
                 continue
@@ -300,6 +310,7 @@ def build_report(args: argparse.Namespace) -> int:
 
     payload = {
         "schema": "rq2_random_full_coverage_report_v1",
+        "random_run_id": args.random_run_id,
         "expected_frames": len(frames),
         "seeds": args.seeds,
         "completed_frame_runs": len(frame_rows),
@@ -320,6 +331,7 @@ def build_parser() -> argparse.ArgumentParser:
         child.add_argument("--outputs-root", type=Path, default=DEFAULT_OUTPUTS_ROOT)
         child.add_argument("--stats", type=Path, default=DEFAULT_STATS)
         child.add_argument("--seeds", nargs="+", type=int, default=[42, 43, 44])
+        child.add_argument("--random-run-id", default=DEFAULT_RANDOM_RUN_ID)
         child.add_argument("--min-nodes", type=int, default=3)
         if name == "run":
             child.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)

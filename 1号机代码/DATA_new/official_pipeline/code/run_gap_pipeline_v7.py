@@ -1600,6 +1600,7 @@ def run_neo4j(
     frame_id: str = "all",
     use_llm: bool = False,
     selection_policy: str = "advtest",
+    random_run_id: str = "",
     checkpoint_interval: int = 1000,
     max_draws: int | None = None,
 ) -> List[Dict[str, Any]]:
@@ -2042,7 +2043,10 @@ def run_neo4j(
             },
             initial_coverage=initial_coverage,
         )
-        random_dir = artifacts.frame_dir / "random_full" / f"seed_{seed}"
+        random_dir = artifacts.frame_dir / "random_full"
+        if random_run_id:
+            random_dir = random_dir / random_run_id
+        random_dir = random_dir / f"seed_{seed}"
         checkpoint_path = random_dir / "checkpoint.json"
         draws_path = random_dir / "draws.jsonl"
         unique_questions_path = random_dir / "unique_questions.jsonl"
@@ -2078,7 +2082,8 @@ def run_neo4j(
         metadata = {
             "frame_key": f"{scene_id}_frame{frame_id}",
             "seed": seed,
-            "selection_policy": "static_initial_gap_with_replacement_random_plan",
+                "selection_policy": "static_initial_gap_with_replacement_random_plan",
+                "random_run_id": random_run_id,
             "initial_gap_count": len(initial_gap_keys),
             "candidate_fingerprint": selector.fingerprint,
         }
@@ -2846,6 +2851,12 @@ def main() -> None:
         default="advtest",
         help="ADVTEST coverage-guided selection or coverage-blind random full coverage",
     )
+    p.add_argument(
+        "--random-run-id",
+        type=str,
+        default="",
+        help="Isolate random_full checkpoints and summaries for one formal run.",
+    )
     p.add_argument("--checkpoint-interval", type=int, default=1000)
     p.add_argument(
         "--max-draws",
@@ -2911,6 +2922,7 @@ def main() -> None:
                 frame_id=frame_id,
                 use_llm=args.use_llm,
                 selection_policy=args.selection_policy,
+                random_run_id=args.random_run_id,
                 checkpoint_interval=args.checkpoint_interval,
                 max_draws=args.max_draws,
             )
@@ -2924,6 +2936,7 @@ def main() -> None:
                 frame_id=frame_id,
                 use_llm=args.use_llm,
                 selection_policy=args.selection_policy,
+                random_run_id=args.random_run_id,
                 checkpoint_interval=args.checkpoint_interval,
                 max_draws=args.max_draws,
             )
