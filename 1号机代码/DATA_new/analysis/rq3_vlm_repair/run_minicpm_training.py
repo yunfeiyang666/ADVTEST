@@ -1,6 +1,7 @@
 import argparse
 import hashlib
 import json
+import os
 import random
 import subprocess
 import sys
@@ -257,9 +258,15 @@ def launch(args: argparse.Namespace) -> None:
     config_path = args.run_dir / f"train_{args.profile}.yaml"
     if not config_path.is_file():
         config_path = prepare_run(args)
-    run_preflight(args)
+    manifest_path = args.run_dir / "run_manifest.json"
+    manifest = read_json(manifest_path) if manifest_path.is_file() else {}
+    if not manifest.get("model_complete"):
+        run_preflight(args)
     subprocess.run([sys.executable, str(DEFAULT_LLAMAFATORY_PATCH)], check=True)
     log_path = args.run_dir / f"train_{args.profile}.log"
+    environment = os.environ.copy()
+    environment.setdefault("OMP_NUM_THREADS", "1")
+    environment.setdefault("MKL_NUM_THREADS", "1")
     with log_path.open("w", encoding="utf-8", newline="\n") as log:
         subprocess.run(
             [str(args.llamafactory_cli), "train", str(config_path)],
@@ -267,6 +274,7 @@ def launch(args: argparse.Namespace) -> None:
             stderr=subprocess.STDOUT,
             text=True,
             check=True,
+            env=environment,
         )
 
 
