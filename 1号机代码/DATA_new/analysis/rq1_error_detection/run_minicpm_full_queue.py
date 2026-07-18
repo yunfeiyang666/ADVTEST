@@ -61,7 +61,7 @@ def main() -> None:
     adapter_smoke_dir = args.run_root / "smokes" / "adapter_l0_limit1"
     adapter_smoke_dir.mkdir(parents=True, exist_ok=True)
     adapter_smoke = [
-        str(args.python), str(args.runner), "--suite-manifest", str(args.manifest),
+        str(args.python), "-u", str(args.runner), "--suite-manifest", str(args.manifest),
         "--methods", "advtest_l0", "--output-dir", str(adapter_smoke_dir),
         "--outputs-root", str(args.outputs_root), "--dataroot", str(args.dataroot),
         "--mode", "MINICPM", "--model-path", str(args.model_path),
@@ -78,7 +78,7 @@ def main() -> None:
 
     base_output = args.run_root / "base_full"
     base_command = [
-        str(args.python), str(args.runner), "--suite-manifest", str(args.manifest),
+        str(args.python), "-u", str(args.runner), "--suite-manifest", str(args.manifest),
         "--output-dir", str(base_output), "--outputs-root", str(args.outputs_root),
         "--dataroot", str(args.dataroot), "--mode", "MINICPM",
         "--model-path", str(args.model_path), "--resume",
@@ -90,7 +90,7 @@ def main() -> None:
 
     adapter_output = args.run_root / "adapter_full"
     adapter_command = [
-        str(args.python), str(args.runner), "--suite-manifest", str(args.manifest),
+        str(args.python), "-u", str(args.runner), "--suite-manifest", str(args.manifest),
         "--output-dir", str(adapter_output), "--outputs-root", str(args.outputs_root),
         "--dataroot", str(args.dataroot), "--mode", "MINICPM",
         "--model-path", str(args.model_path), "--adapter-path", str(args.adapter_path), "--resume",
