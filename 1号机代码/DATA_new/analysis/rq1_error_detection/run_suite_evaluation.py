@@ -117,6 +117,7 @@ def make_evaluator(
     mode: str,
     model_path: Optional[str] = None,
     model_base: Optional[str] = None,
+    adapter_path: Optional[str] = None,
 ):
     if mode == "MOCK":
         return evaluator.MockVLMEvaluator()
@@ -130,7 +131,12 @@ def make_evaluator(
             kwargs["model_base"] = model_base
         return evaluator.MPLUGEvaluator(**kwargs)
     if mode == "MINICPM":
-        return evaluator.MiniCPMOEvaluator(model_path=model_path) if model_path else evaluator.MiniCPMOEvaluator()
+        kwargs = {}
+        if model_path:
+            kwargs["model_path"] = model_path
+        if adapter_path:
+            kwargs["adapter_path"] = adapter_path
+        return evaluator.MiniCPMOEvaluator(**kwargs)
     if mode == "API":
         return evaluator.APIEvaluator()
     raise ValueError(f"Unknown mode: {mode}")
@@ -427,9 +433,39 @@ def write_report(results: list, output_dir: Path) -> None:
     (output_dir / "suite_eval_report.md").write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 
 
+def load_manifest_suites(path: Path) -> list[Path]:
+    """Load an explicit, ordered suite list instead of relying on a directory glob."""
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise ValueError(f"Could not parse suite manifest {path}: {exc}") from exc
+    entries = payload.get("suites") if isinstance(payload, dict) else payload
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("Suite manifest must contain a non-empty 'suites' list")
+
+    suites = []
+    seen = set()
+    for entry in entries:
+        raw_path = entry.get("path") if isinstance(entry, dict) else entry
+        suite = Path(str(raw_path))
+        if not suite.is_file():
+            raise FileNotFoundError(f"Manifest suite does not exist: {suite}")
+        resolved = suite.resolve()
+        if resolved in seen:
+            raise ValueError(f"Manifest repeats suite: {suite}")
+        seen.add(resolved)
+        suites.append(suite)
+    return suites
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evaluate fixed-budget suites end-to-end.")
     parser.add_argument("--suite-dir", type=Path, default=DEFAULT_SUITE_DIR)
+    parser.add_argument(
+        "--suite-manifest",
+        type=Path,
+        help="Explicit ordered JSON manifest of suites; overrides --suite-dir discovery.",
+    )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument(
         "--outputs-root",
@@ -449,6 +485,10 @@ def main():
     parser.add_argument(
         "--model-base",
         help="Base checkpoint directory when --model-path is a LoRA adapter.",
+    )
+    parser.add_argument(
+        "--adapter-path",
+        help="LoRA adapter directory for MINICPM mode.",
     )
     parser.add_argument("--methods", nargs="*", default=None)
     parser.add_argument(
@@ -470,7 +510,11 @@ def main():
     )
     args = parser.parse_args()
 
-    suites = sorted(args.suite_dir.glob("*_suite.jsonl"))
+    suites = (
+        load_manifest_suites(args.suite_manifest)
+        if args.suite_manifest
+        else sorted(args.suite_dir.glob("*_suite.jsonl"))
+    )
     if args.methods:
         allowed = {method.lower() for method in args.methods}
         suites = [
@@ -482,7 +526,9 @@ def main():
         raise FileNotFoundError(f"No *_suite.jsonl files found in {args.suite_dir}")
     if args.model_base and args.mode != "MPLUG":
         parser.error("--model-base is only supported in MPLUG mode")
-    vlm = make_evaluator(args.mode, args.model_path, args.model_base)
+    if args.adapter_path and args.mode != "MINICPM":
+        parser.error("--adapter-path is only supported in MINICPM mode")
+    vlm = make_evaluator(args.mode, args.model_path, args.model_base, args.adapter_path)
     results = []
     for suite in suites:
         print(f"[suite-eval] Evaluating {suite.name} mode={args.mode} limit={args.limit or 'all'}", flush=True)

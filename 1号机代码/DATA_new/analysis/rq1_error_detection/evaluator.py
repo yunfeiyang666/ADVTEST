@@ -1127,8 +1127,10 @@ class MiniCPMOEvaluator:
     def __init__(
         self,
         model_path: str = "E:/hf_cache/modelscope_minicpm_core/openbmb/MiniCPM-o-2_6",
+        adapter_path: Optional[str] = None,
     ):
         self.model_path = model_path
+        self.adapter_path = adapter_path
         self.model = None
         self.tokenizer = None
         self.device = "cuda"
@@ -1164,6 +1166,16 @@ class MiniCPMOEvaluator:
                 init_audio=False,
                 init_tts=False
             )
+            if self.adapter_path:
+                adapter_path = Path(self.adapter_path)
+                if not adapter_path.is_dir():
+                    raise FileNotFoundError(
+                        f"MiniCPM LoRA adapter directory does not exist: {adapter_path}"
+                    )
+                from peft import PeftModel
+
+                print(f"Loading MiniCPM LoRA adapter from {adapter_path}...")
+                self.model = PeftModel.from_pretrained(self.model, str(adapter_path))
             self.model.eval()
             self.tokenizer = AutoTokenizer.from_pretrained(model_path_to_use, trust_remote_code=True)
             print("MiniCPM-o-2_6 model loaded successfully.")

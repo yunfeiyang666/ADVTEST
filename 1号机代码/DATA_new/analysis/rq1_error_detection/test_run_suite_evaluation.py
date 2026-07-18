@@ -9,7 +9,12 @@ from unittest.mock import patch
 MODULE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE_DIR))
 
-from run_suite_evaluation import evaluate_question, evaluate_suite, failure_signature
+from run_suite_evaluation import (
+    evaluate_question,
+    evaluate_suite,
+    failure_signature,
+    load_manifest_suites,
+)
 
 
 class AlwaysWrongEvaluator:
@@ -27,6 +32,27 @@ class RealStyleEvaluator:
 
 
 class SuiteEvaluationMetricsTests(unittest.TestCase):
+    def test_explicit_manifest_preserves_order_and_rejects_duplicates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first = root / "first_suite.jsonl"
+            second = root / "second_suite.jsonl"
+            first.write_text("{}\n", encoding="utf-8")
+            second.write_text("{}\n", encoding="utf-8")
+            manifest = root / "manifest.json"
+            manifest.write_text(
+                json.dumps({"suites": [{"path": str(second)}, {"path": str(first)}]}),
+                encoding="utf-8",
+            )
+            self.assertEqual(load_manifest_suites(manifest), [second, first])
+
+            manifest.write_text(
+                json.dumps({"suites": [{"path": str(first)}, {"path": str(first)}]}),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "repeats"):
+                load_manifest_suites(manifest)
+
     def test_mplug_missing_image_raises_instead_of_using_mock(self):
         with self.assertRaisesRegex(FileNotFoundError, "real mosaic"):
             evaluate_question(
