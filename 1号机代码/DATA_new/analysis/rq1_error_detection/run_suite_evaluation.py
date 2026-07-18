@@ -130,7 +130,7 @@ def make_evaluator(
             kwargs["model_base"] = model_base
         return evaluator.MPLUGEvaluator(**kwargs)
     if mode == "MINICPM":
-        return evaluator.MiniCPMOEvaluator()
+        return evaluator.MiniCPMOEvaluator(model_path=model_path) if model_path else evaluator.MiniCPMOEvaluator()
     if mode == "API":
         return evaluator.APIEvaluator()
     raise ValueError(f"Unknown mode: {mode}")
@@ -444,7 +444,7 @@ def main():
     parser.add_argument("--dataroot", type=Path, default=DEFAULT_DATAROOT)
     parser.add_argument(
         "--model-path",
-        help="Explicit base checkpoint or LoRA adapter directory for MPLUG mode.",
+        help="Explicit checkpoint path for MPLUG or MINICPM mode; LoRA adapter directory for MPLUG mode.",
     )
     parser.add_argument(
         "--model-base",

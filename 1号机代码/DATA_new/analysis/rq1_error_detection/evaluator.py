@@ -1124,7 +1124,10 @@ class LocalGPUEvaluator:
 
 class MiniCPMOEvaluator:
     """MiniCPM-o-2_6 VLM Evaluator for local GPU."""
-    def __init__(self, model_path: str = "openbmb/MiniCPM-o-2_6"):
+    def __init__(
+        self,
+        model_path: str = "E:/hf_cache/modelscope_minicpm_core/openbmb/MiniCPM-o-2_6",
+    ):
         self.model_path = model_path
         self.model = None
         self.tokenizer = None
@@ -1136,12 +1139,12 @@ class MiniCPMOEvaluator:
             import torch
             from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
 
-            # Check if there is a ModelScope cache first
-            modelscope_path = Path("E:/hf_cache/modelscope/openbmb/MiniCPM-o-2_6")
             model_path_to_use = self.model_path
-            if modelscope_path.exists():
-                print(f"Using local ModelScope path: {modelscope_path}")
-                model_path_to_use = str(modelscope_path)
+            if not Path(model_path_to_use).exists():
+                raise FileNotFoundError(
+                    "MiniCPM-o model directory does not exist: "
+                    f"{model_path_to_use}"
+                )
 
             print(f"Loading MiniCPM-o-2_6 model from {model_path_to_use}...")
 
@@ -1165,13 +1168,15 @@ class MiniCPMOEvaluator:
             self.tokenizer = AutoTokenizer.from_pretrained(model_path_to_use, trust_remote_code=True)
             print("MiniCPM-o-2_6 model loaded successfully.")
         except Exception as e:
-            print(f"Warning: Could not load MiniCPM-o-2_6 from {self.model_path}: {e}")
-            print("Graceful fallback to MockVLMEvaluator.")
-            self.model = None
+            raise RuntimeError(
+                f"MiniCPM-o-2_6 failed to load from {self.model_path}: {e}"
+            ) from e
 
     def evaluate(self, question: Dict, image_path: Path) -> Tuple[str, bool]:
-        if not self.model or not image_path.exists():
-            return MockVLMEvaluator().evaluate(question)
+        if not self.model:
+            raise RuntimeError("MiniCPM-o-2_6 is not loaded")
+        if not image_path.exists():
+            raise FileNotFoundError(f"MiniCPM-o image does not exist: {image_path}")
 
         try:
             from PIL import Image
@@ -1179,7 +1184,10 @@ class MiniCPMOEvaluator:
             gt = str(question.get("answer", ""))
 
             image = Image.open(image_path).convert('RGB')
-            msgs = [{'role': 'user', 'content': f"<image>\n{q_text}"}]
+            # MiniCPM-o's chat API inserts its own image placeholder when the
+            # image argument is supplied.  Adding a second textual <image>
+            # marker makes the processor see two image spans for one image.
+            msgs = [{'role': 'user', 'content': q_text}]
 
             outputs = self.model.chat(
                 image=image,
@@ -1190,8 +1198,7 @@ class MiniCPMOEvaluator:
             is_correct = check_correctness(outputs, gt)
             return outputs, is_correct
         except Exception as e:
-            print(f"MiniCPM-o inference error: {e}. Falling back to MOCK.")
-            return MockVLMEvaluator().evaluate(question)
+            raise RuntimeError(f"MiniCPM-o inference failed: {e}") from e
 
 
 class APIEvaluator:
