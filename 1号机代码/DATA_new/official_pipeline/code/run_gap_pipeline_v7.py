@@ -2048,7 +2048,10 @@ def run_neo4j(
         if random_run_id:
             random_base_dir = random_base_dir / random_run_id
         random_dir = random_base_dir / f"seed_{seed}"
-        cache_path = random_base_dir / "verified_plan_cache.json"
+        # The cache can contain tens of thousands of fully validated records
+        # per frame.  Compression keeps it resumable without turning a full
+        # multi-frame experiment into a disk-capacity experiment.
+        cache_path = random_base_dir / "verified_plan_cache.json.gz"
         checkpoint_path = random_dir / "checkpoint.json"
         draws_path = random_dir / "draws.jsonl"
         unique_questions_path = random_dir / "unique_questions.jsonl"

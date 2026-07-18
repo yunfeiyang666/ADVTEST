@@ -44,7 +44,7 @@ class StaticRandomSelectorTests(unittest.TestCase):
         self.assertIn(first.plan_id, cache.plan_ids)
 
         with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "cache.json"
+            path = Path(tmp) / "cache.json.gz"
             cache.write(path, candidate_fingerprint=selector.fingerprint)
             loaded = VerifiedPlanCache.load(path, candidate_fingerprint=selector.fingerprint)
             self.assertEqual(loaded.fingerprint, cache.fingerprint)

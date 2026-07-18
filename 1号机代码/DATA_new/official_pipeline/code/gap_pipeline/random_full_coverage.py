@@ -8,6 +8,7 @@ never affect which gap or plan is drawn next.
 from __future__ import annotations
 
 import hashlib
+import gzip
 import json
 import os
 import random
@@ -115,12 +116,21 @@ class VerifiedPlanCache:
         }
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_suffix(path.suffix + ".tmp")
-        temporary.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        encoded = json.dumps(payload, ensure_ascii=False)
+        if path.suffix == ".gz":
+            with gzip.open(temporary, "wt", encoding="utf-8") as handle:
+                handle.write(encoded)
+        else:
+            temporary.write_text(encoded, encoding="utf-8")
         os.replace(temporary, path)
 
     @classmethod
     def load(cls, path: Path, *, candidate_fingerprint: str) -> "VerifiedPlanCache":
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        if path.suffix == ".gz":
+            with gzip.open(path, "rt", encoding="utf-8") as handle:
+                payload = json.load(handle)
+        else:
+            payload = json.loads(path.read_text(encoding="utf-8"))
         if payload.get("schema") != cls.SCHEMA:
             raise ValueError("Unsupported verified random plan cache schema")
         if payload.get("candidate_fingerprint") != str(candidate_fingerprint):
