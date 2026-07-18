@@ -35,6 +35,7 @@ from gap_pipeline.l2_llm_client import LLMClient
 from gap_pipeline.random_full_coverage import (
     CoverageAccumulator,
     StaticRandomSelector,
+    VerifiedPlanCache,
     load_checkpoint as load_random_checkpoint,
     run_until_full as run_random_until_full,
     write_checkpoint as write_random_checkpoint,
@@ -2043,16 +2044,69 @@ def run_neo4j(
             },
             initial_coverage=initial_coverage,
         )
-        random_dir = artifacts.frame_dir / "random_full"
+        random_base_dir = artifacts.frame_dir / "random_full"
         if random_run_id:
-            random_dir = random_dir / random_run_id
-        random_dir = random_dir / f"seed_{seed}"
+            random_base_dir = random_base_dir / random_run_id
+        random_dir = random_base_dir / f"seed_{seed}"
+        cache_path = random_base_dir / "verified_plan_cache.json"
         checkpoint_path = random_dir / "checkpoint.json"
         draws_path = random_dir / "draws.jsonl"
         unique_questions_path = random_dir / "unique_questions.jsonl"
         summary_path = random_dir / "summary.json"
         manifest_path = random_dir / "manifest.json"
         random_dir.mkdir(parents=True, exist_ok=True)
+
+        expected_plan_ids = [
+            plan_id
+            for plan_ids in gap_to_plan_ids.values()
+            for plan_id in plan_ids
+        ]
+        if cache_path.exists():
+            verified_cache = VerifiedPlanCache.load(
+                cache_path,
+                candidate_fingerprint=selector.fingerprint,
+            )
+            verified_cache.validate_plan_ids(expected_plan_ids)
+            log_stage(
+                f"random_full cache reuse records={len(verified_cache.plan_ids)} "
+                f"fingerprint={verified_cache.fingerprint[:12]}"
+            )
+        else:
+            cached_records: Dict[str, Dict[str, Any]] = {}
+            for gap_key in initial_gap_keys:
+                for plan_index, plan_id in enumerate(gap_to_plan_ids[gap_key]):
+                    plan = plan_objects[gap_key][plan_index]
+                    # The plan has already been feasibility-checked.  Materialize it
+                    # exactly once so every later repeat has the same validated text
+                    # and coverage footprint without affecting random selection.
+                    set_variant_seed(
+                        int(
+                            hashlib.sha256(
+                                f"cache:{gap_key}:{plan_id}".encode("utf-8")
+                            ).hexdigest()[:8],
+                            16,
+                        )
+                    )
+                    qas = process_gap(pool_index[gap_key], preferred_plan=plan)
+                    if not qas:
+                        raise RuntimeError(
+                            f"Preverified random plan failed to materialize: {plan_id}"
+                        )
+                    qa = normalize_and_validate(qas[0])
+                    qa["random_gap_id"] = gap_key
+                    qa["random_plan_id"] = plan_id
+                    qa["random_cache_prepared"] = True
+                    cached_records[plan_id] = qa
+            verified_cache = VerifiedPlanCache(cached_records)
+            verified_cache.validate_plan_ids(expected_plan_ids)
+            verified_cache.write(
+                cache_path,
+                candidate_fingerprint=selector.fingerprint,
+            )
+            log_stage(
+                f"random_full cache prepared records={len(verified_cache.plan_ids)} "
+                f"fingerprint={verified_cache.fingerprint[:12]}"
+            )
 
         if checkpoint_path.exists():
             checkpoint_metadata = load_random_checkpoint(
@@ -2086,32 +2140,20 @@ def run_neo4j(
                 "random_run_id": random_run_id,
             "initial_gap_count": len(initial_gap_keys),
             "candidate_fingerprint": selector.fingerprint,
+            "verified_plan_cache": str(cache_path),
+            "verified_plan_cache_fingerprint": verified_cache.fingerprint,
         }
 
         def realize_random_draw(draw, draw_index: int) -> Dict[str, Any]:
-            plans = plan_objects[draw.gap_id]
-            plan = plans[draw.plan_index]
-            wording_seed = int(
-                hashlib.sha256(
-                    f"{seed}:{draw_index}:{draw.gap_id}:{draw.plan_id}".encode("utf-8")
-                ).hexdigest()[:8],
-                16,
-            )
-            set_variant_seed(wording_seed)
-            qas = process_gap(pool_index[draw.gap_id], preferred_plan=plan)
-            if not qas:
-                raise RuntimeError(
-                    f"Preverified random plan failed to realize: {draw.plan_id}"
-                )
-            qa = qas[0]
+            qa = verified_cache.get(draw.plan_id)
             qa["question_id"] = str(draw_index)
             qa["selection_phase"] = "random_static"
             qa["generation_phase"] = 0
             qa["generation_round"] = 0
             qa["random_gap_id"] = draw.gap_id
             qa["random_plan_id"] = draw.plan_id
-            qa["random_wording_seed"] = wording_seed
-            return normalize_and_validate(qa)
+            qa["random_cache_hit"] = True
+            return qa
 
         draw_handle = draws_path.open("a", encoding="utf-8")
         unique_handle = unique_questions_path.open("a", encoding="utf-8")
@@ -2189,6 +2231,7 @@ def run_neo4j(
                     "checkpoint": str(checkpoint_path),
                     "draws": str(draws_path),
                     "unique_questions": str(unique_questions_path),
+                    "verified_plan_cache": str(cache_path),
                     "summary": str(summary_path),
                 },
             }

@@ -42,6 +42,104 @@ class RandomDraw:
     plan_id: str
 
 
+class VerifiedPlanCache:
+    """Immutable, validated question records keyed by static random plan id.
+
+    Random selection is intentionally unaware of this cache.  The cache only
+    prevents a repeated draw of the same pre-verified plan from executing the
+    deterministic programmatic realization again.  Each cached record retains
+    the actual question text and coverage footprint produced by that pipeline.
+    """
+
+    SCHEMA = "rq2_verified_random_plan_cache_v1"
+
+    def __init__(self, records: Mapping[str, Mapping[str, Any]]) -> None:
+        normalized: Dict[str, Dict[str, Any]] = {}
+        for raw_plan_id, raw_record in records.items():
+            plan_id = str(raw_plan_id)
+            record = dict(raw_record)
+            if not plan_id:
+                raise ValueError("Verified random plan cache contains an empty plan id")
+            if not str(record.get("question") or "").strip():
+                raise ValueError(f"Verified random plan cache has no question: {plan_id}")
+            footprint = record.get("coverage_footprint") or {}
+            if not isinstance(footprint, Mapping):
+                raise ValueError(f"Verified random plan cache has invalid footprint: {plan_id}")
+            normalized[plan_id] = record
+        self._records = normalized
+        self._fingerprint = _stable_hash(
+            {
+                plan_id: {
+                    "question": str(record.get("question") or ""),
+                    "answer": record.get("answer"),
+                    "template_id": str(record.get("template_id") or ""),
+                    "coverage_footprint": record.get("coverage_footprint") or {},
+                }
+                for plan_id, record in sorted(self._records.items())
+            }
+        )
+
+    @property
+    def fingerprint(self) -> str:
+        return self._fingerprint
+
+    @property
+    def plan_ids(self) -> set[str]:
+        return set(self._records)
+
+    def get(self, plan_id: str) -> Dict[str, Any]:
+        try:
+            return dict(self._records[plan_id])
+        except KeyError as exc:
+            raise KeyError(f"No cached record for random plan: {plan_id}") from exc
+
+    def validate_plan_ids(self, expected_plan_ids: Iterable[str]) -> None:
+        expected = {str(plan_id) for plan_id in expected_plan_ids}
+        missing = expected - self.plan_ids
+        extra = self.plan_ids - expected
+        if missing or extra:
+            raise ValueError(
+                "Verified random plan cache does not match the static plan pool: "
+                f"missing={len(missing)}, extra={len(extra)}"
+            )
+
+    def write(self, path: Path, *, candidate_fingerprint: str) -> None:
+        payload = {
+            "schema": self.SCHEMA,
+            "candidate_fingerprint": str(candidate_fingerprint),
+            "cache_fingerprint": self.fingerprint,
+            "records": [
+                {"plan_id": plan_id, "record": record}
+                for plan_id, record in sorted(self._records.items())
+            ],
+        }
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_suffix(path.suffix + ".tmp")
+        temporary.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        os.replace(temporary, path)
+
+    @classmethod
+    def load(cls, path: Path, *, candidate_fingerprint: str) -> "VerifiedPlanCache":
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if payload.get("schema") != cls.SCHEMA:
+            raise ValueError("Unsupported verified random plan cache schema")
+        if payload.get("candidate_fingerprint") != str(candidate_fingerprint):
+            raise ValueError("Verified random plan cache belongs to another candidate pool")
+        records: Dict[str, Mapping[str, Any]] = {}
+        for item in payload.get("records") or []:
+            if not isinstance(item, Mapping):
+                raise ValueError("Invalid verified random plan cache record")
+            plan_id = str(item.get("plan_id") or "")
+            record = item.get("record")
+            if plan_id in records or not isinstance(record, Mapping):
+                raise ValueError("Invalid or duplicate verified random plan cache entry")
+            records[plan_id] = record
+        cache = cls(records)
+        if payload.get("cache_fingerprint") != cache.fingerprint:
+            raise ValueError("Verified random plan cache fingerprint mismatch")
+        return cache
+
+
 class StaticRandomSelector:
     """Sample a fixed initial gap pool and its verified plans with replacement."""
 
