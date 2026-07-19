@@ -828,6 +828,17 @@ def build_vlm_prompt(question: Dict[str, Any]) -> str:
     return str(question.get("question", ""))
 
 
+def build_minicpm_prompt(question: Dict[str, Any]) -> str:
+    """Use a bounded answer protocol so MiniCPM does not spend minutes explaining."""
+    text = build_vlm_prompt(question)
+    if question.get("choices"):
+        return (
+            f"{text}\n\nChoose the correct option. Reply with only the option letter "
+            "(A, B, C, or D). Do not explain."
+        )
+    return f"{text}\n\nReply with only the final answer as a single word or short phrase. Do not explain."
+
+
 # --- Evaluator Classes ---
 class MockVLMEvaluator:
     """Deterministic failure simulation based on question complexity and metamorphic mutations."""
@@ -1007,7 +1018,7 @@ class MPLUGEvaluator:
             from mplug_owl2.conversation import conv_templates, SeparatorStyle
             from mplug_owl2.mm_utils import tokenizer_image_token, KeywordsStoppingCriteria
 
-            q_text = build_vlm_prompt(question)
+            q_text = build_minicpm_prompt(question)
             gt = str(question.get("answer", ""))
 
             prompt = DEFAULT_IMAGE_TOKEN + "\n" + q_text
@@ -1204,7 +1215,9 @@ class MiniCPMOEvaluator:
             outputs = self.model.chat(
                 image=image,
                 msgs=msgs,
-                tokenizer=self.tokenizer
+                tokenizer=self.tokenizer,
+                max_new_tokens=16,
+                sampling=False,
             )
             outputs = str(outputs).strip()
             is_correct = check_correctness(outputs, gt)

@@ -227,6 +227,11 @@ def evaluate_suite(
             qualified_question_l2 = frame_qualified_l2_items(question)
             unique_l2.update(qualified_question_l2)
             q_text = str(question.get("question", ""))
+            prompt_text = (
+                evaluator.build_minicpm_prompt(question)
+                if mode == "MINICPM"
+                else q_text
+            )
             cache_key = (scene_frame, q_text)
             use_cache = mode == "MOCK"
             resume_row = resume_rows[total - 1] if total <= len(resume_rows) else None
@@ -287,7 +292,7 @@ def evaluate_suite(
                             "question_id": question.get("question_id", ""),
                             "family": family,
                             "question": q_text,
-                            "prompt": q_text,
+                            "prompt": prompt_text,
                             "answer": question.get("answer", ""),
                             "choices": question.get("choices", []),
                             "choice_answer_label": question.get(

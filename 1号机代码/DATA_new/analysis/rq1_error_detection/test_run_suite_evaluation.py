@@ -15,6 +15,7 @@ from run_suite_evaluation import (
     failure_signature,
     load_manifest_suites,
 )
+import evaluator
 
 
 class AlwaysWrongEvaluator:
@@ -32,6 +33,14 @@ class RealStyleEvaluator:
 
 
 class SuiteEvaluationMetricsTests(unittest.TestCase):
+    def test_minicpm_prompt_requires_a_short_exact_answer(self):
+        open_prompt = evaluator.build_minicpm_prompt({"question": "What type is car1?"})
+        choice_prompt = evaluator.build_minicpm_prompt(
+            {"question": "What type is car1?", "choices": ["car", "bus"]}
+        )
+        self.assertIn("single word or short phrase", open_prompt)
+        self.assertIn("only the option letter", choice_prompt)
+
     def test_explicit_manifest_preserves_order_and_rejects_duplicates(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
