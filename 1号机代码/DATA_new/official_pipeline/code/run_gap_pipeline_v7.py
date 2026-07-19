@@ -2147,68 +2147,35 @@ def run_neo4j(
             "verified_plan_cache_fingerprint": verified_cache.fingerprint,
         }
 
-        def realize_random_draw(draw, draw_index: int) -> Dict[str, Any]:
-            qa = verified_cache.get(draw.plan_id)
-            qa["question_id"] = str(draw_index)
-            qa["selection_phase"] = "random_static"
-            qa["generation_phase"] = 0
-            qa["generation_round"] = 0
-            qa["random_gap_id"] = draw.gap_id
-            qa["random_plan_id"] = draw.plan_id
-            qa["random_cache_hit"] = True
-            return qa
-
-        draw_handle = draws_path.open("a", encoding="utf-8")
-        unique_handle = unique_questions_path.open("a", encoding="utf-8")
-
-        def record_random_draw(draw, record, gain) -> None:
-            question_hash = hashlib.sha256(
-                str(record.get("question") or "").encode("utf-8")
-            ).hexdigest()
-            compact = {
-                "draw_index": accumulator.draws,
-                "gap_id": draw.gap_id,
-                "plan_id": draw.plan_id,
-                "template_id": record.get("template_id", ""),
-                "question_hash": question_hash,
-                "gain": dict(gain),
-                "coverage_l0": len(accumulator.covered_l0),
-                "coverage_l1": len(accumulator.covered_l1),
-                "coverage_l2": len(accumulator.covered_l2),
+        # The verified cache already stores the complete, validated question
+        # for every legal plan.  A repeated random draw only needs its static
+        # footprint and text identity; rebuilding or writing the same JSON on
+        # every draw turns the coupon-collector tail into an I/O benchmark.
+        draw_records: Dict[str, Dict[str, Any]] = {}
+        for plan_id in expected_plan_ids:
+            qa = verified_cache.get(plan_id)
+            draw_records[plan_id] = {
+                "coverage_footprint": {
+                    level: frozenset((qa.get("coverage_footprint") or {}).get(level, []))
+                    for level in ("l0", "l1", "l2")
+                },
+                "question_text_hash": hashlib.sha256(
+                    str(qa.get("question") or "").encode("utf-8")
+                ).hexdigest(),
             }
-            draw_handle.write(json.dumps(compact, ensure_ascii=False) + "\n")
-            if accumulator.text_counts[question_hash] == 1:
-                unique_handle.write(json.dumps(dict(record), ensure_ascii=False) + "\n")
-            if accumulator.draws % checkpoint_interval == 0:
-                draw_handle.flush()
-                unique_handle.flush()
-                log_stage(
-                    f"random_full Q{accumulator.draws} seed={seed} "
-                    f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
-                )
 
-        try:
-            random_summary = run_random_until_full(
-                selector=selector,
-                accumulator=accumulator,
-                realize=realize_random_draw,
-                on_draw=record_random_draw,
-                checkpoint_path=checkpoint_path,
-                checkpoint_interval=checkpoint_interval,
-                max_draws=max_draws,
-                metadata=metadata,
-            )
-        finally:
-            draw_handle.flush()
-            unique_handle.flush()
-            draw_handle.close()
-            unique_handle.close()
-            write_random_checkpoint(
-                checkpoint_path,
-                selector=selector,
-                accumulator=accumulator,
-                metadata=metadata,
-            )
+        def realize_random_draw(draw, _draw_index: int) -> Dict[str, Any]:
+            return draw_records[draw.plan_id]
+
+        random_summary = run_random_until_full(
+            selector=selector,
+            accumulator=accumulator,
+            realize=realize_random_draw,
+            checkpoint_path=checkpoint_path,
+            checkpoint_interval=checkpoint_interval,
+            max_draws=max_draws,
+            metadata=metadata,
+        )
 
         random_summary.update(
             {
@@ -2232,9 +2199,11 @@ def run_neo4j(
                 },
                 "paths": {
                     "checkpoint": str(checkpoint_path),
-                    "draws": str(draws_path),
-                    "unique_questions": str(unique_questions_path),
                     "verified_plan_cache": str(cache_path),
+                    "replay": (
+                        "Reconstruct the exact draw sequence from the seed, "
+                        "candidate fingerprint, and saved selector checkpoint."
+                    ),
                     "summary": str(summary_path),
                 },
             }

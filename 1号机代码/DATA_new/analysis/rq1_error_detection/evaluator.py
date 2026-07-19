@@ -51,6 +51,7 @@ import json
 import math
 import hashlib
 import copy
+from collections import OrderedDict
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from typing import Dict, Any, List, Tuple, Optional
@@ -1144,13 +1145,19 @@ class MiniCPMOEvaluator:
         self.adapter_path = adapter_path
         self.model = None
         self.tokenizer = None
+        self.processor = None
         self.device = "cuda"
+        # A six-camera mosaic is reused by many questions in each suite.  Keep
+        # only two GPU-resident feature sets so we skip repeated VPM passes
+        # without allowing the cache to consume unbounded VRAM.
+        self._vision_cache = OrderedDict()
+        self._vision_cache_size = 2
         self._load_model()
 
     def _load_model(self):
         try:
             import torch
-            from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
+            from transformers import AutoModel, AutoProcessor, AutoTokenizer, BitsAndBytesConfig
 
             model_path_to_use = self.model_path
             if not Path(model_path_to_use).exists():
@@ -1189,11 +1196,46 @@ class MiniCPMOEvaluator:
                 self.model = PeftModel.from_pretrained(self.model, str(adapter_path))
             self.model.eval()
             self.tokenizer = AutoTokenizer.from_pretrained(model_path_to_use, trust_remote_code=True)
+            self.processor = AutoProcessor.from_pretrained(model_path_to_use, trust_remote_code=True)
             print("MiniCPM-o-2_6 model loaded successfully.")
         except Exception as e:
             raise RuntimeError(
                 f"MiniCPM-o-2_6 failed to load from {self.model_path}: {e}"
             ) from e
+
+    def _vision_states_for_image(self, image: Image.Image, image_path: Path, prompt: str):
+        """Encode a mosaic once, then reuse its visual tokens for nearby questions."""
+        import torch
+
+        cache_key = str(image_path.resolve())
+        cached = self._vision_cache.pop(cache_key, None)
+        if cached is not None:
+            self._vision_cache[cache_key] = cached
+            return cached
+
+        # Match MiniCPM's own chat() preprocessing: image=... is converted
+        # into this marker before the tokenizer's chat template is rendered.
+        messages = [{"role": "user", "content": f"(<image>./</image>)\n{prompt}"}]
+        rendered_prompt = self.processor.tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        inputs = self.processor(
+            [rendered_prompt],
+            [[image]],
+            [[]],
+            [[]],
+            return_tensors="pt",
+        ).to(self.model.device)
+        inputs.pop("image_sizes")
+        with torch.inference_mode():
+            _, vision_hidden_states = self.model.get_vllm_embedding(inputs)
+
+        self._vision_cache[cache_key] = vision_hidden_states
+        while len(self._vision_cache) > self._vision_cache_size:
+            self._vision_cache.popitem(last=False)
+        return vision_hidden_states
 
     def evaluate(self, question: Dict, image_path: Path) -> Tuple[str, bool]:
         if not self.model:
@@ -1203,7 +1245,7 @@ class MiniCPMOEvaluator:
 
         try:
             from PIL import Image
-            q_text = build_vlm_prompt(question)
+            q_text = build_minicpm_prompt(question)
             gt = str(question.get("answer", ""))
 
             image = Image.open(image_path).convert('RGB')
@@ -1212,10 +1254,13 @@ class MiniCPMOEvaluator:
             # marker makes the processor see two image spans for one image.
             msgs = [{'role': 'user', 'content': q_text}]
 
+            vision_hidden_states = self._vision_states_for_image(image, image_path, q_text)
             outputs = self.model.chat(
                 image=image,
                 msgs=msgs,
                 tokenizer=self.tokenizer,
+                processor=self.processor,
+                vision_hidden_states=vision_hidden_states,
                 max_new_tokens=16,
                 sampling=False,
             )

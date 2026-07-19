@@ -293,20 +293,31 @@ class CoverageAccumulator:
         footprint: Mapping[str, Iterable[Any]],
         *,
         question_text: str = "",
+        question_text_hash: str = "",
     ) -> Dict[str, int]:
         before = {
             level: len(getattr(self, f"covered_{level}"))
             for level in ("l0", "l1", "l2")
         }
         for level in ("l0", "l1", "l2"):
-            values = _as_set(footprint.get(level, []))
+            raw_values = footprint.get(level, ())
+            # Random full-coverage can make millions of repeated draws.  Its
+            # plan footprints are immutable, so callers may pass frozensets
+            # and avoid rebuilding the same set on every draw.
+            values = (
+                raw_values
+                if isinstance(raw_values, (set, frozenset))
+                else _as_set(raw_values)
+            )
             universe = getattr(self, f"universe_{level}")
             getattr(self, f"covered_{level}").update(values & universe)
 
         self.draws += 1
         self.gap_counts[draw.gap_id] += 1
         self.plan_counts[draw.plan_id] += 1
-        if question_text:
+        if question_text_hash:
+            self.text_counts[question_text_hash] += 1
+        elif question_text:
             self.text_counts[hashlib.sha256(question_text.encode("utf-8")).hexdigest()] += 1
 
         gain = {
@@ -501,6 +512,7 @@ def run_until_full(
             draw,
             footprint,
             question_text=str(record.get("question") or ""),
+            question_text_hash=str(record.get("question_text_hash") or ""),
         )
         if on_draw is not None:
             on_draw(draw, record, gain)
