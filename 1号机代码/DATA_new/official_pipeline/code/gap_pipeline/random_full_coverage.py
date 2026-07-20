@@ -531,3 +531,52 @@ def run_until_full(
             metadata=metadata,
         )
     return accumulator.summary()
+
+
+def run_fixed_budget(
+    *,
+    selector: StaticRandomSelector,
+    accumulator: CoverageAccumulator,
+    realize: Callable[[RandomDraw, int], Mapping[str, Any]],
+    question_budget: int,
+    checkpoint_path: Path | None = None,
+    checkpoint_interval: int = 1000,
+    metadata: Mapping[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Run coverage-blind random draws for exactly ``question_budget`` calls.
+
+    This is intentionally separate from ``run_until_full``: a budget-matched
+    comparison must finish successfully even when its L2 universe remains
+    uncovered.
+    """
+    if question_budget < 1:
+        raise ValueError("question_budget must be positive")
+    if checkpoint_interval < 1:
+        raise ValueError("checkpoint_interval must be positive")
+    while accumulator.draws < question_budget:
+        draw = selector.draw()
+        record = realize(draw, accumulator.draws + 1)
+        accumulator.observe(
+            draw,
+            record.get("coverage_footprint") or {},
+            question_text=str(record.get("question") or ""),
+            question_text_hash=str(record.get("question_text_hash") or ""),
+        )
+        if checkpoint_path and accumulator.draws % checkpoint_interval == 0:
+            write_checkpoint(
+                checkpoint_path,
+                selector=selector,
+                accumulator=accumulator,
+                metadata=metadata,
+            )
+    if checkpoint_path:
+        write_checkpoint(
+            checkpoint_path,
+            selector=selector,
+            accumulator=accumulator,
+            metadata=metadata,
+        )
+    summary = accumulator.summary()
+    summary["question_budget"] = question_budget
+    summary["budget_exhausted"] = True
+    return summary

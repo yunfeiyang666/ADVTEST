@@ -37,6 +37,7 @@ from gap_pipeline.random_full_coverage import (
     StaticRandomSelector,
     VerifiedPlanCache,
     load_checkpoint as load_random_checkpoint,
+    run_fixed_budget as run_random_fixed_budget,
     run_until_full as run_random_until_full,
     write_checkpoint as write_random_checkpoint,
 )
@@ -1604,6 +1605,7 @@ def run_neo4j(
     random_run_id: str = "",
     checkpoint_interval: int = 1000,
     max_draws: int | None = None,
+    question_budget: int | None = None,
 ) -> List[Dict[str, Any]]:
     artifacts = V7ArtifactPaths(artifact_root, scene_id=scene_id, frame_id=frame_id) if artifact_root else None
     use_neo4j = os.environ.get("ADVTEST_USE_NEO4J", "false").lower() in ("1", "true", "yes")
@@ -1991,9 +1993,11 @@ def run_neo4j(
             break
         return qas
 
-    if selection_policy == "random_full":
+    if selection_policy in ("random_full", "random_fixed_budget"):
         if artifacts is None:
-            raise ValueError("random_full selection requires --artifact-root")
+            raise ValueError("random selection requires --artifact-root")
+        if selection_policy == "random_fixed_budget" and question_budget is None:
+            raise ValueError("random_fixed_budget requires --question-budget")
 
         universe_l0 = set(str(key) for key in graph_index.get("objects", {}))
         universe_l1 = set()
@@ -2044,7 +2048,7 @@ def run_neo4j(
             },
             initial_coverage=initial_coverage,
         )
-        random_base_dir = artifacts.frame_dir / "random_full"
+        random_base_dir = artifacts.frame_dir / selection_policy
         if random_run_id:
             random_base_dir = random_base_dir / random_run_id
         random_dir = random_base_dir / f"seed_{seed}"
@@ -2141,6 +2145,7 @@ def run_neo4j(
             "seed": seed,
                 "selection_policy": "static_initial_gap_with_replacement_random_plan",
                 "random_run_id": random_run_id,
+                "question_budget": question_budget,
             "initial_gap_count": len(initial_gap_keys),
             "candidate_fingerprint": selector.fingerprint,
             "verified_plan_cache": str(cache_path),
@@ -2167,15 +2172,26 @@ def run_neo4j(
         def realize_random_draw(draw, _draw_index: int) -> Dict[str, Any]:
             return draw_records[draw.plan_id]
 
-        random_summary = run_random_until_full(
-            selector=selector,
-            accumulator=accumulator,
-            realize=realize_random_draw,
-            checkpoint_path=checkpoint_path,
-            checkpoint_interval=checkpoint_interval,
-            max_draws=max_draws,
-            metadata=metadata,
-        )
+        if selection_policy == "random_full":
+            random_summary = run_random_until_full(
+                selector=selector,
+                accumulator=accumulator,
+                realize=realize_random_draw,
+                checkpoint_path=checkpoint_path,
+                checkpoint_interval=checkpoint_interval,
+                max_draws=max_draws,
+                metadata=metadata,
+            )
+        else:
+            random_summary = run_random_fixed_budget(
+                selector=selector,
+                accumulator=accumulator,
+                realize=realize_random_draw,
+                question_budget=int(question_budget),
+                checkpoint_path=checkpoint_path,
+                checkpoint_interval=checkpoint_interval,
+                metadata=metadata,
+            )
 
         random_summary.update(
             {
@@ -2212,7 +2228,7 @@ def run_neo4j(
         write_summary(
             manifest_path,
             {
-                "schema": "rq2_random_full_coverage_manifest_v1",
+                "schema": "rq2_random_coverage_manifest_v2",
                 "metadata": metadata,
                 "summary_sha256": hashlib.sha256(
                     summary_path.read_bytes()
@@ -2221,7 +2237,7 @@ def run_neo4j(
             },
         )
         log_stage(
-            f"random_full DONE seed={seed} draws={accumulator.draws} "
+            f"{selection_policy} DONE seed={seed} draws={accumulator.draws} "
             f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
         )
         if session:
@@ -2862,7 +2878,7 @@ def main() -> None:
     p.add_argument("--seed", type=int, default=0)
     p.add_argument(
         "--selection-policy",
-        choices=("advtest", "random_full"),
+        choices=("advtest", "random_full", "random_fixed_budget"),
         default="advtest",
         help="ADVTEST coverage-guided selection or coverage-blind random full coverage",
     )
@@ -2878,6 +2894,12 @@ def main() -> None:
         type=int,
         default=None,
         help="Watchdog only; reaching it is a failed/incomplete random run",
+    )
+    p.add_argument(
+        "--question-budget",
+        type=int,
+        default=None,
+        help="Exact question count for random_fixed_budget.",
     )
 
     p.add_argument("--plan-file", type=str, default="")
@@ -2940,6 +2962,7 @@ def main() -> None:
                 random_run_id=args.random_run_id,
                 checkpoint_interval=args.checkpoint_interval,
                 max_draws=args.max_draws,
+                question_budget=args.question_budget,
             )
         elif plan == "full":
             run_offline_artifacts(root, scene_id=scene_id, frame_id=frame_id, gap_limit=gap_limit, initial_qa=initial_qa, scene_graph_source=scene_graph_source, initial_coverage_llm=initial_coverage_llm, concurrency=args.concurrency)
