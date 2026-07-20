@@ -2048,14 +2048,18 @@ def run_neo4j(
             },
             initial_coverage=initial_coverage,
         )
-        random_base_dir = artifacts.frame_dir / selection_policy
+        # Validated plans depend only on this frame's static candidate pool, not
+        # on the random policy, run label, or seed.  Keep that costly cache in
+        # one shared location while preserving run-specific draws/checkpoints.
+        random_result_base_dir = artifacts.frame_dir / selection_policy
         if random_run_id:
-            random_base_dir = random_base_dir / random_run_id
-        random_dir = random_base_dir / f"seed_{seed}"
+            random_result_base_dir = random_result_base_dir / random_run_id
+        random_dir = random_result_base_dir / f"seed_{seed}"
+        random_cache_dir = artifacts.frame_dir / "random_candidate_cache"
         # The cache can contain tens of thousands of fully validated records
         # per frame.  Compression keeps it resumable without turning a full
         # multi-frame experiment into a disk-capacity experiment.
-        cache_path = random_base_dir / "verified_plan_cache.json.gz"
+        cache_path = random_cache_dir / "verified_plan_cache.json.gz"
         checkpoint_path = random_dir / "checkpoint.json"
         draws_path = random_dir / "draws.jsonl"
         unique_questions_path = random_dir / "unique_questions.jsonl"
@@ -2068,6 +2072,33 @@ def run_neo4j(
             for plan_ids in gap_to_plan_ids.values()
             for plan_id in plan_ids
         ]
+        if not cache_path.exists():
+            # Reuse a cache written before caches were made shared.  Loading it
+            # validates the static candidate fingerprint and exact plan IDs, so
+            # no cache from a different frame or candidate universe can leak in.
+            legacy_cache_paths = sorted(
+                artifacts.frame_dir.glob("random_*/*/verified_plan_cache.json.gz")
+            )
+            for legacy_cache_path in legacy_cache_paths:
+                try:
+                    legacy_cache = VerifiedPlanCache.load(
+                        legacy_cache_path,
+                        candidate_fingerprint=selector.fingerprint,
+                    )
+                    legacy_cache.validate_plan_ids(expected_plan_ids)
+                except (OSError, ValueError, json.JSONDecodeError):
+                    continue
+                cache_path.parent.mkdir(parents=True, exist_ok=True)
+                legacy_cache.write(
+                    cache_path,
+                    candidate_fingerprint=selector.fingerprint,
+                )
+                log_stage(
+                    f"random cache migrated from {legacy_cache_path} "
+                    f"records={len(legacy_cache.plan_ids)}"
+                )
+                break
+
         if cache_path.exists():
             verified_cache = VerifiedPlanCache.load(
                 cache_path,
