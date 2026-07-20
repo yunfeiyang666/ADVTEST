@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 import collections
@@ -1689,6 +1690,198 @@ def run_neo4j(
     else:
         pool = selector.shuffled(fetch_l2_gaps_in_memory(graph_index))
     tried: set[str] = set()
+
+    def run_random_from_verified_cache() -> bool:
+        """Run Random directly from a previously validated static plan cache.
+
+        The cache contains every legal plan's gap id, plan id, question and
+        coverage footprint.  Reconstructing the selector from those immutable
+        records is equivalent to rebuilding all plans, but avoids paying that
+        deterministic planning cost again for each experimental run.
+        """
+        if selection_policy not in ("random_full", "random_fixed_budget"):
+            return False
+        if artifacts is None:
+            raise ValueError("random selection requires --artifact-root")
+        if selection_policy == "random_fixed_budget" and question_budget is None:
+            raise ValueError("random_fixed_budget requires --question-budget")
+
+        universe_l0 = {str(key) for key in graph_index.get("objects", {})}
+        universe_l1 = {
+            l1_key(str(src), str(dst))
+            for src, targets in graph_index.get("out", {}).items()
+            for dst in targets
+        }
+        universe_l2 = {l2_key(g["a_id"], g["b_id"], g["c_id"]) for g in pool}
+        initial_coverage = {
+            "l0": set(coverage.l0),
+            "l1": set(coverage.l1),
+            "l2": set(coverage.l2),
+        }
+        initial_gap_keys = sorted(universe_l2 - initial_coverage["l2"])
+        if not initial_gap_keys:
+            raise ValueError(f"Random initial gap pool is empty for {scene_id}_frame{frame_id}")
+
+        result_base_dir = artifacts.frame_dir / selection_policy
+        if random_run_id:
+            result_base_dir = result_base_dir / random_run_id
+        random_dir = result_base_dir / f"seed_{seed}"
+        shared_cache_path = artifacts.frame_dir / "random_candidate_cache" / "verified_plan_cache.json.gz"
+        candidate_paths = [shared_cache_path]
+        candidate_paths.extend(
+            sorted(artifacts.frame_dir.glob("random_*/*/verified_plan_cache.json.gz"))
+        )
+
+        expected_gaps = set(initial_gap_keys)
+        for candidate_path in candidate_paths:
+            if not candidate_path.exists():
+                continue
+            try:
+                with gzip.open(candidate_path, "rt", encoding="utf-8") as handle:
+                    payload = json.load(handle)
+                if payload.get("schema") != VerifiedPlanCache.SCHEMA:
+                    continue
+                records = {
+                    str(item.get("plan_id") or ""): item.get("record")
+                    for item in payload.get("records") or []
+                    if isinstance(item, dict)
+                    and isinstance(item.get("record"), dict)
+                    and str(item.get("plan_id") or "")
+                }
+                verified_cache = VerifiedPlanCache(records)
+                if payload.get("cache_fingerprint") != verified_cache.fingerprint:
+                    continue
+                gap_to_plan_ids: Dict[str, List[str]] = {}
+                for plan_id, record in records.items():
+                    gap_id = str(record.get("random_gap_id") or "")
+                    if gap_id:
+                        gap_to_plan_ids.setdefault(gap_id, []).append(plan_id)
+                gap_to_plan_ids = {
+                    gap_id: sorted(plan_ids)
+                    for gap_id, plan_ids in gap_to_plan_ids.items()
+                }
+                if set(gap_to_plan_ids) != expected_gaps or any(
+                    not plan_ids for plan_ids in gap_to_plan_ids.values()
+                ):
+                    continue
+                random_selector = StaticRandomSelector(gap_to_plan_ids, seed=seed)
+                if payload.get("candidate_fingerprint") != random_selector.fingerprint:
+                    continue
+            except (OSError, ValueError, json.JSONDecodeError):
+                continue
+
+            random_dir.mkdir(parents=True, exist_ok=True)
+            checkpoint_path = random_dir / "checkpoint.json"
+            draws_path = random_dir / "draws.jsonl"
+            unique_questions_path = random_dir / "unique_questions.jsonl"
+            summary_path = random_dir / "summary.json"
+            manifest_path = random_dir / "manifest.json"
+            accumulator = CoverageAccumulator.create(
+                universe={"l0": universe_l0, "l1": universe_l1, "l2": universe_l2},
+                initial_coverage=initial_coverage,
+            )
+            if checkpoint_path.exists():
+                checkpoint_metadata = load_random_checkpoint(
+                    checkpoint_path, selector=random_selector, accumulator=accumulator
+                )
+                if checkpoint_metadata.get("frame_key") != f"{scene_id}_frame{frame_id}":
+                    raise ValueError("Random checkpoint belongs to a different frame")
+            else:
+                draws_path.write_text("", encoding="utf-8")
+                unique_questions_path.write_text("", encoding="utf-8")
+
+            metadata = {
+                "frame_key": f"{scene_id}_frame{frame_id}",
+                "seed": seed,
+                "selection_policy": "static_initial_gap_with_replacement_random_plan",
+                "random_run_id": random_run_id,
+                "question_budget": question_budget,
+                "initial_gap_count": len(initial_gap_keys),
+                "candidate_fingerprint": random_selector.fingerprint,
+                "verified_plan_cache": str(candidate_path),
+                "verified_plan_cache_fingerprint": verified_cache.fingerprint,
+                "cache_reused_without_replanning": True,
+            }
+            draw_records = {
+                plan_id: {
+                    "coverage_footprint": {
+                        level: frozenset((record.get("coverage_footprint") or {}).get(level, []))
+                        for level in ("l0", "l1", "l2")
+                    },
+                    "question_text_hash": hashlib.sha256(
+                        str(record.get("question") or "").encode("utf-8")
+                    ).hexdigest(),
+                }
+                for plan_id, record in records.items()
+            }
+
+            def realize_random_draw(draw, _draw_index: int) -> Dict[str, Any]:
+                return draw_records[draw.plan_id]
+
+            if selection_policy == "random_full":
+                random_summary = run_random_until_full(
+                    selector=random_selector,
+                    accumulator=accumulator,
+                    realize=realize_random_draw,
+                    checkpoint_path=checkpoint_path,
+                    checkpoint_interval=checkpoint_interval,
+                    max_draws=max_draws,
+                    metadata=metadata,
+                )
+            else:
+                random_summary = run_random_fixed_budget(
+                    selector=random_selector,
+                    accumulator=accumulator,
+                    realize=realize_random_draw,
+                    question_budget=int(question_budget),
+                    checkpoint_path=checkpoint_path,
+                    checkpoint_interval=checkpoint_interval,
+                    metadata=metadata,
+                )
+            random_summary.update(
+                {
+                    "scene_id": scene_id,
+                    "frame_id": frame_id,
+                    "seed": seed,
+                    "selection_policy": metadata["selection_policy"],
+                    "candidate_fingerprint": random_selector.fingerprint,
+                    "initial_coverage": {
+                        level: {
+                            "covered": len(initial_coverage[level]),
+                            "total": len(getattr(accumulator, f"universe_{level}")),
+                            "rate": len(initial_coverage[level]) / len(getattr(accumulator, f"universe_{level}"))
+                            if getattr(accumulator, f"universe_{level}") else 1.0,
+                        }
+                        for level in ("l0", "l1", "l2")
+                    },
+                    "paths": {
+                        "checkpoint": str(checkpoint_path),
+                        "verified_plan_cache": str(candidate_path),
+                        "summary": str(summary_path),
+                    },
+                }
+            )
+            write_summary(summary_path, random_summary)
+            write_summary(
+                manifest_path,
+                {
+                    "schema": "rq2_random_coverage_manifest_v2",
+                    "metadata": metadata,
+                    "summary_sha256": hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+                    "paths": random_summary["paths"],
+                },
+            )
+            log_stage(
+                f"{selection_policy} cache-only DONE seed={seed} draws={accumulator.draws} "
+                f"coverage={len(accumulator.covered_l2)}/{len(accumulator.universe_l2)}"
+            )
+            return True
+        return False
+
+    if run_random_from_verified_cache():
+        if session:
+            session.close()
+        return []
 
     # Seed variant RNG for reproducible question wording
     set_variant_seed(seed)
