@@ -1,3 +1,5 @@
+@HANDOFF.md
+
 # ADVTEST Agent Entry Rules
 
 Read this file before doing anything. This repository contains long-running
@@ -11,7 +13,7 @@ From the repository root, run:
 powershell -ExecutionPolicy Bypass -File .\tools\agent_preflight.ps1
 ```
 
-Then read `EXPERIMENT_STATE.md`. Treat its `Last audited` timestamp and the
+Then read `HANDOFF.md`. Treat its `Last audited` timestamp and the
 machine-readable status files named there as the current state. If they
 conflict with an old report, transcript, or recap, report the conflict before
 starting, modifying, or declaring an experiment complete.
@@ -43,8 +45,17 @@ quality while selecting. Repetitions are valid and must not be redrawn.
 
 At the end of any meaningful work:
 
-1. Update `EXPERIMENT_STATE.md` only with verified facts and paths.
+1. Update `HANDOFF.md` only with verified facts and paths. Replace stale state
+   instead of endlessly appending history.
 2. Record commands, commit hash, validation, active process/run id, and any
    blocker in the `Latest handoff` section.
 3. Keep conclusions separate from planned work. Mark unverified claims as
    `UNVERIFIED`.
+
+## Context and session lifecycle
+
+- Before `/compact`, update `HANDOFF.md` if a task, experiment definition,
+  background process, or verified result changed. The automatic hook stores a
+  compact-summary snapshot, but it is not a substitute for verified state.
+- When a session ends, the hook stores a small event snapshot. A new session
+  still runs preflight once before deciding whether to resume any process.
