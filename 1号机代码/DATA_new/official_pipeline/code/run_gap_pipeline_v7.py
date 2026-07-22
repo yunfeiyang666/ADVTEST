@@ -1420,7 +1420,18 @@ def plan_prepare_scene_graph(artifact_root: Path, *, scene_id: str, frame_id: st
     if scene_graph_source:
         graph = copy_offline_scene_graph(scene_graph_source, artifacts.filtered_scene_graph, scene_id=scene_id, frame_id=frame_id)
     else:
-        graph = export_filtered_scene_graph(make_neo4j_session(), artifacts.filtered_scene_graph, limit_objects=gap_limit)
+        # Auto-discover from filtered_scene_graphs/ before falling back to Neo4j
+        frame_key = f"{scene_id}_frame{frame_id}"
+        local_sg = (Path.cwd() / "filtered_scene_graphs" / f"{frame_key}_scene_graph.json")
+        if not local_sg.exists():
+            local_sg = (Path.cwd().parent / "filtered_scene_graphs" / f"{frame_key}_scene_graph.json")
+        if not local_sg.exists():
+            local_sg = (artifact_root.parent / "filtered_scene_graphs" / f"{frame_key}_scene_graph.json")
+        if local_sg.exists():
+            log_stage(f"prepare_scene_graph auto-discovered sg={local_sg}")
+            graph = copy_offline_scene_graph(local_sg, artifacts.filtered_scene_graph, scene_id=scene_id, frame_id=frame_id)
+        else:
+            graph = export_filtered_scene_graph(make_neo4j_session(), artifacts.filtered_scene_graph, limit_objects=gap_limit)
     update_plan_status(artifact_root, scene_id, frame_id, "prepare_scene_graph", "DONE")
     write_manifest(artifacts, summary={"filtered_scene_graph": graph})
     counts = scene_graph_counts(artifacts.filtered_scene_graph)
