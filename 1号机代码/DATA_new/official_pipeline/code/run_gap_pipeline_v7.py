@@ -5,6 +5,7 @@ import argparse
 import gzip
 import json
 import os
+import shutil
 import collections
 import csv
 import random
@@ -14,9 +15,14 @@ import time
 
 from pathlib import Path
 from datetime import datetime, timezone
-from neo4j import GraphDatabase, Query
-
-from typing import Any, Dict, List, cast
+from typing import Any, Dict, List, cast, Optional
+try:
+    from neo4j import GraphDatabase, Query
+    HAS_NEO4J = True
+except ImportError:
+    GraphDatabase = None  # type: ignore
+    Query = None  # type: ignore
+    HAS_NEO4J = False
 from gap_pipeline.l2_artifacts import V7ArtifactPaths, write_coverage_state, write_jsonl, write_manifest
 
 
@@ -59,6 +65,8 @@ from gap_pipeline.l2_taxonomy import L2Gap
 
 class BoltNeo4jSession:
     def __init__(self, uri: str, user: str, password: str):
+        if not HAS_NEO4J:
+            raise RuntimeError("Neo4j is not available. Install 'pip install neo4j' or use offline/in-memory mode.")
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
         self.session = self.driver.session(database=os.environ.get("NEO4J_DATABASE", "neo4j"))
 
@@ -1646,6 +1654,18 @@ def run_neo4j(
         output = artifacts.generated_jsonl
 
     graph_index = load_graph_index(artifacts.filtered_scene_graph if artifacts else None)
+
+    # Auto-discover scene graph if not at expected artifacts path
+    if artifacts and not artifacts.filtered_scene_graph.exists():
+        frame_key = f"{scene_id}_frame{frame_id}"
+        for try_dir in (Path.cwd(), Path.cwd().parent, artifact_root, artifact_root.parent):
+            sg = try_dir / "filtered_scene_graphs" / f"{frame_key}_scene_graph.json"
+            if sg.exists():
+                artifacts.filtered_scene_graph.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(sg, artifacts.filtered_scene_graph)
+                graph_index = load_graph_index(artifacts.filtered_scene_graph)
+                log_stage(f"generate auto-discovered sg={sg}")
+                break
 
     if use_neo4j and session:
         try:
